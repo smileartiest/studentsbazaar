@@ -26,8 +26,9 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".activity.AjithActivity"></activity>
-        <activity android:name=".activity.Main5Activity"></activity>
+        <activity android:name=".activity.AndroidAct"></activity>
+        <activity android:name=".activity.AjithActivity" />
+        <activity android:name=".activity.Main5Activity" />
         <activity android:name=".activity.WebActivity" />
         <activity android:name=".activity.AddEvent" />
         <activity android:name=".activity.AddEvent2" />
