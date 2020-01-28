@@ -31,9 +31,9 @@ import retrofit2.Callback;
 public class SignUp extends AppCompatActivity {
 
 
-    EditText name, email, phno, cgname, acyear, year, semester, password;
+    EditText name, email, phno, acyear, year, semester, password;
     String uname, umail, uphone, uclname, cacyear, uyear, usemester, upassword, degreestring, deptstring;
-    AutoCompleteTextView degree, department;
+    AutoCompleteTextView cgname ,degree, department;
     String devid;
     FloatingActionButton submit1, submit2, submit3;
     SpotsDialog spotsDialog;
@@ -68,6 +68,10 @@ public class SignUp extends AppCompatActivity {
         ArrayAdapter<String> ad1 = new ArrayAdapter<>(getApplicationContext(), R.layout.listrow, degreelist);
         degree.setAdapter(ad1);
         degree.setThreshold(1);
+
+        ArrayAdapter<String> coll = new ArrayAdapter<>(getApplicationContext(), R.layout.listrow, ApiUtil.COLLEGEARRAY);
+        cgname.setAdapter(coll);
+        cgname.setThreshold(1);
 
         ArrayAdapter<String> ad2 = new ArrayAdapter<>(getApplicationContext(), R.layout.listrow, deptlist);
         department.setAdapter(ad2);

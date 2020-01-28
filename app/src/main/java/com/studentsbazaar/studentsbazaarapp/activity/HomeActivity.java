@@ -11,6 +11,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Html;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -29,10 +30,19 @@ import androidx.viewpager.widget.ViewPager;
 import com.crowdfire.cfalertdialog.CFAlertDialog;
 import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.adapter.SliderPagerAdapter;
+import com.studentsbazaar.studentsbazaarapp.model.College_Details;
+import com.studentsbazaar.studentsbazaarapp.model.DownloadResponse;
+import com.studentsbazaar.studentsbazaarapp.model.Project_details;
+import com.studentsbazaar.studentsbazaarapp.retrofit.ApiUtil;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
@@ -47,6 +57,7 @@ public class HomeActivity extends AppCompatActivity {
     LinearLayout linear1, linear2;
     private ViewPager vp_slider;
     private static final int PERMISSION_REQUEST_CODE = 200;
+
     private LinearLayout ll_dots;
     SliderPagerAdapter sliderPagerAdapter;
     SharedPreferences spUserDetails;
@@ -88,7 +99,6 @@ public class HomeActivity extends AppCompatActivity {
         cvSyllabus = findViewById(R.id.cardview4);
         cvMemes = findViewById(R.id.cardview5);
         cvQuiz = findViewById(R.id.cardview6);
-
         spUserDetails = getSharedPreferences("USER_DETAILS", Context.MODE_PRIVATE);
 
         if (spUserDetails.getString("log", "").equals("visitor") || spUserDetails.getString("log", "").equals("admin")) {
@@ -346,4 +356,5 @@ public class HomeActivity extends AppCompatActivity {
         });
         builder.show();
     }
+
 }

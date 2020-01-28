@@ -61,8 +61,8 @@ public interface RetrofitInterface {
                     String start,
             @Field("end")
                     String end,
-            @Field("coll")
-                    String coll,
+            @Field("conducted")
+                    String conducted,
             @Field("degree")
                     String degree,
             @Field("dept")

@@ -6,6 +6,15 @@ public class DownloadResponse {
     private List<Project_details> Events_Details;
     private List<Campus> campus_details;
     private  List<Quiz_Details> Quiz_Details;
+    private List<College_Details> College_Details;
+
+    public List<College_Details> getCollege_Details() {
+        return College_Details;
+    }
+
+    public void setCollege_Details(List<College_Details> college_Details) {
+        College_Details = college_Details;
+    }
 
 
     private List<Login_Status> Login_Status;
