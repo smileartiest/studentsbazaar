@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_home_black_24dp"
+            android:iconTint="@android:color/white"
+            android:title="Home" />
+
+        <item
+            android:id="@+id/nav_add_event"
+            android:icon="@drawable/ic_add_circle_outline_black_24dp"
+            android:iconTint="@android:color/white"
+            android:title="Add Event" />
+
+        <item
+            android:id="@+id/nav_pending"
+            android:icon="@drawable/ic_event_available_black_24dp"
+            android:iconTint="@android:color/white"
+            android:title="Pending Event" />
+
+        <item
+            android:id="@+id/nav_edit"
+            android:icon="@drawable/ic_mode_edit_black_24dp"
+            android:iconTint="@android:color/white"
+            android:title="Edit Event" />
+        <item
+            android:id="@+id/nav_contact"
+            android:icon="@drawable/ic_call_black_24dp"
+            android:iconTint="@android:color/white"
+            android:title="Contact" />
+
+
+        <item
+            android:id="@+id/nav_aboutus"
+            android:icon="@drawable/ic_info_black_24dp"
+            android:iconTint="@android:color/white"
+            android:title="About Us" />
+
+    </group>
+
+
+
+</menu>
