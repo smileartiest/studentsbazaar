@@ -34,6 +34,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        spUserDetails = getSharedPreferences("USER_DETAILS", Context.MODE_PRIVATE);
+        if(!spUserDetails.getString("log","").isEmpty()){
+            Intent in = new Intent(MainActivity.this,HomeActivity.class);
+            startActivity(in);
+        }
         setContentView(R.layout.activity_main);
 
         etPhone = findViewById(R.id.input_phone);
@@ -44,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         spotsDialog = new SpotsDialog(this);
         sharedPreferences = getSharedPreferences("DEV_ID", MODE_PRIVATE);
         editor = sharedPreferences.edit();
-        spUserDetails = getSharedPreferences("USER_DETAILS", Context.MODE_PRIVATE);
+
         spEdit = spUserDetails.edit();
 
         btSubmit.setOnClickListener(new View.OnClickListener() {

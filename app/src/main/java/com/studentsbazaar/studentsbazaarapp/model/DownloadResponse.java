@@ -7,6 +7,16 @@ public class DownloadResponse {
     private List<Campus> campus_details;
     private  List<Quiz_Details> Quiz_Details;
 
+
+    private List<Login_Status> Login_Status;
+
+    public void setLogin_Status(List<Login_Status> Login_Status){
+        this.Login_Status = Login_Status;
+    }
+    public List<Login_Status> getLogin_Status(){
+        return this.Login_Status;
+    }
+
     public List<Quiz_Details> getQuiz_details() {
         return Quiz_Details;
     }

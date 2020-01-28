@@ -16,12 +16,12 @@
     android:orientation="vertical"
     >
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:fontFamily="serif"
         android:gravity="center"
-        android:text="t h e   u l t i m a t e   s t u d e n t s   z o n e"
+        android:text="T h e   U l t i m a t e   S t u d e n t s   Z o n e"
         android:textColor="#000000"
         android:textSize="18sp"
         android:textStyle="bold" />

@@ -213,6 +213,8 @@ public class HomeActivity extends AppCompatActivity {
         getSupportActionBar().hide();*/
 
         requestPermission();
+        
+        getColleges();
         vp_slider = (ViewPager) findViewById(R.id.vp_slider);
         ll_dots = (LinearLayout) findViewById(R.id.ll_dots);
 
@@ -245,6 +247,9 @@ public class HomeActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void getColleges() {
     }
 
     private void addBottomDots(int currentPage) {
