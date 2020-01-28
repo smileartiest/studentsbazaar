@@ -19,6 +19,7 @@ import com.google.firebase.iid.InstanceIdResult;
 import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.firebase.Config;
 import com.studentsbazaar.studentsbazaarapp.helper.PersistanceUtil;
+import com.studentsbazaar.studentsbazaarapp.model.DownloadResponse;
 import com.studentsbazaar.studentsbazaarapp.retrofit.ApiUtil;
 
 import retrofit2.Call;
@@ -106,10 +107,10 @@ if(getSharedPreferences("USER_DETAILS", MODE_PRIVATE).getString("DEV_ID_STATS","
 
         //updatedeviceid.php?device=12345
 
-        Call<String> call = ApiUtil.getServiceClass().getLoginDetails(apiUtil.DEVICEID_URL + "?device=" + androidId);
-        call.enqueue(new Callback<String>() {
+        Call<DownloadResponse> call = ApiUtil.getServiceClass().getHomeComponentList(apiUtil.DEVICEID_URL + "?device=" + androidId);
+        call.enqueue(new Callback<DownloadResponse>() {
             @Override
-            public void onResponse(Call<String> call, retrofit2.Response<String> response) {
+            public void onResponse(Call<DownloadResponse> call, retrofit2.Response<DownloadResponse> response) {
 
 
                 Log.d("RESPONSE", response.raw().toString() + "log_res");
@@ -137,11 +138,12 @@ if(getSharedPreferences("USER_DETAILS", MODE_PRIVATE).getString("DEV_ID_STATS","
             }
 
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
-
-                Log.d("RESPONSE", "err" + t.getMessage());
+            public void onFailure(Call<DownloadResponse> call, Throwable t) {
 
             }
+
+
         });
     }
+
 }
