@@ -17,11 +17,19 @@ public interface RetrofitInterface {
     @GET
     Call<DownloadResponse> getHomeComponentList(@Url String url);
 
-    @POST
-    Call<String> getLoginDetails(@Url String url);
+    @FormUrlEncoded
+    @POST("/updatedeviceid.php")
+    Call<String> updatedeviceid(@Field("device") String device);
+
+    @FormUrlEncoded
+    @POST("/Login.php")
+    Call<String> getLoginDetails(@Field("mobile") String mobile,
+                                 @Field("password") String password);
 
     @GET
     Call<String> updateEventStatus(@Url String url);
+    @GET
+    Call<DownloadResponse> getcollegedetails(@Url String url);
 
     @FormUrlEncoded
     @POST("/addplacement.php")
@@ -36,6 +44,7 @@ public interface RetrofitInterface {
     @FormUrlEncoded
     @POST("/Register.php")
     Call<String> addaccount(@Field("name") String name,
+                            @Field("uid") String uid,
                             @Field("password") String password,
                             @Field("cname") String collegename,
                             @Field("degree") String degree,

@@ -67,14 +67,12 @@ public class MainActivity extends AppCompatActivity {
                     finish();
                     startActivity(inSignUp);
                 } else {
-                    String path = "?mobile=" + stPhone + "&password=" + stPassword;
-                    Call<String> call = ApiUtil.getServiceClass().getLoginDetails(ApiUtil.LOGIN_URL + path);
+                    Call<String> call = ApiUtil.getServiceClass().getLoginDetails(stPhone,stPassword);
                     call.enqueue(new Callback<String>() {
                         @Override
                         public void onResponse(Call<String> call, retrofit2.Response<String> response) {
                             if (response.body().equals("1")) {
                                 spEdit.putString("log", "visitor").apply();
-                                editor.putString("R", "registered");
                                 editor.commit();
                                 startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                                 finish();

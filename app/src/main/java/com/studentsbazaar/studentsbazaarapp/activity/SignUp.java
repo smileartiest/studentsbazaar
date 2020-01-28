@@ -20,7 +20,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.retrofit.ApiUtil;
 
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -33,7 +32,7 @@ public class SignUp extends AppCompatActivity {
 
     EditText name, email, phno, acyear, year, semester, password;
     String uname, umail, uphone, uclname, cacyear, uyear, usemester, upassword, degreestring, deptstring;
-    AutoCompleteTextView cgname ,degree, department;
+    AutoCompleteTextView cgname, degree, department;
     String devid;
     FloatingActionButton submit1, submit2, submit3;
     SpotsDialog spotsDialog;
@@ -44,13 +43,14 @@ public class SignUp extends AppCompatActivity {
 
     int i = 0;
     SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
         spotsDialog = new SpotsDialog(this);
-
+        sharedPreferences = getSharedPreferences("USER_DETAILS", MODE_PRIVATE);
         name = findViewById(R.id.reg_name);
         email = findViewById(R.id.reg_email);
         phno = findViewById(R.id.reg_phonenumber);
@@ -136,7 +136,6 @@ public class SignUp extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 spotsDialog.show();
-                sharedPreferences = getSharedPreferences("DEV_ID", MODE_PRIVATE);
                 uname = name.getText().toString();
                 umail = email.getText().toString();
                 uphone = phno.getText().toString();
@@ -147,35 +146,24 @@ public class SignUp extends AppCompatActivity {
                 upassword = password.getText().toString();
                 degreestring = degree.getText().toString();
                 deptstring = department.getText().toString();
-                devid = sharedPreferences.getString("did", null);
-                Log.d("Responsdate",devid);
-                Call<String> call = ApiUtil.getServiceClass().addaccount(uname,upassword,uclname,degreestring,deptstring,uyear,usemester,uphone,cacyear,umail,devid);
+                devid = sharedPreferences.getString("DEV_ID", null);
+                Log.d("Responsdate", devid);
+                Call<String> call = ApiUtil.getServiceClass().addaccount(uname, sharedPreferences.getString("UID", null), upassword, uclname, degreestring, deptstring, uyear, usemester, uphone, cacyear, umail, devid);
                 call.enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, retrofit2.Response<String> response) {
-                        Log.d("Responsdate",response.body().toString());
-                            spotsDialog.dismiss();
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.putString("R", "registered");
-                            editor.putString("eid","0");
-                            editor.putString("uid",response.body().toString());
-                            editor.commit();
-                        final AlertDialog.Builder builder = new AlertDialog.Builder(SignUp.this);
-                        builder.setTitle("Congrats...Your User Account Activated...Click DONE to Continue");
-                        builder.setPositiveButton("DONE", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                Intent intent=new Intent(SignUp.this,EventActivity.class);
-                                startActivity(intent);
+                        Log.d("Responsdate", response.body().toString());
+                        spotsDialog.dismiss();
+                        if (response.body().equals("1")) {
 
-                            }
-                        });
+                           getAlert("Congrats...Your User Account Activated...Click DONE to Continue");
+                            editor.putString("log", "registered");
+                            editor.apply();
 
-                        AlertDialog alertDialog = builder.create();
-                        alertDialog.show();
-                            startActivity(new Intent(getApplicationContext(), HomeActivity.class));
-                            finish();
-                            Toast.makeText(SignUp.this, "Registration Success", Toast.LENGTH_SHORT).show();
+                        }else{
+
+                            Toast.makeText(SignUp.this, "Register Failed ", Toast.LENGTH_SHORT).show();
+                        }
 
                     }
 
@@ -228,6 +216,24 @@ public class SignUp extends AppCompatActivity {
             submit2.setVisibility(View.VISIBLE);
             submit3.setVisibility(View.INVISIBLE);
         }
+
+    }
+    void getAlert(String message){
+        final AlertDialog.Builder builder = new AlertDialog.Builder(SignUp.this);
+        builder.setTitle(message);
+        builder.setPositiveButton("DONE", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Intent intent = new Intent(SignUp.this, EventActivity.class);
+                startActivity(intent);
+
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+        finish();
 
     }
 
