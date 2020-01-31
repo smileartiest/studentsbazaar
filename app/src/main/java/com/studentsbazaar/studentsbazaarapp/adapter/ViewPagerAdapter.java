@@ -8,8 +8,10 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.util.Log;
@@ -24,30 +26,38 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-
 import com.crowdfire.cfalertdialog.CFAlertDialog;
 import com.squareup.picasso.Picasso;
 import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.activity.EventActivity;
 import com.studentsbazaar.studentsbazaarapp.activity.View_Details;
+import com.studentsbazaar.studentsbazaarapp.activity.WebActivity;
+import com.studentsbazaar.studentsbazaarapp.helper.DateChecker;
 import com.studentsbazaar.studentsbazaarapp.model.Project_details;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.ViewHolder> {
     View view;
     private LayoutInflater mInflater;
     private Context context;
     Typeface tf_regular;
-    String pdfName,TAG = "FILE";
+    SharedPreferences spUserDetails;
+    SharedPreferences.Editor vieweditor;
+    String pdfName, TAG = "FILE",urlsite;
     String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
     List<Project_details> mData;
+    DateChecker dateChecker;
     Bitmap bitmap;
-    Button tvShare,read_more;
+    Button tvShare, read_more;
     //ViewPager2 viewPager2;
+    String weburl;
 
     public ViewPagerAdapter(EventActivity context, List<Project_details> drawerResponseList) {
         this.mInflater = LayoutInflater.from(context);
@@ -57,14 +67,14 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
     }
 
 
-
-
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         view = mInflater.inflate(R.layout.fragment_child, parent, false);
         tf_regular = Typeface.createFromAsset(view.getContext().getAssets(), "caviar.ttf");
         tvShare = (Button) view.findViewById(R.id.share);
         read_more = (Button) view.findViewById(R.id.read_more);
+        spUserDetails = context.getSharedPreferences("USER_DETAILS", Context.MODE_PRIVATE);
+        vieweditor = spUserDetails.edit();
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
         return new ViewHolder(view);
@@ -76,17 +86,50 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
 
         Resources resources = context.getResources();
         holder.setIsRecyclable(false);
-            Picasso.with(context)
-                    .load(listItem.getPoster())
-                    .into(holder.imageView);
+        Picasso.with(context)
+                .load(listItem.getPoster())
+                .into(holder.imageView);
         Log.d("IMG", listItem.getPoster() + "");
         holder.tvHead.setText(listItem.getEvent_Title());
         holder.tvCategory.setText(listItem.getEvent_Name());
-       // holder.tvStartDate.setText(listItem.getEvent_Start_Date());
-        holder.tvEndDate.setText(listItem.getEvent_End_Date());
+        urlsite=listItem.getEvent_Website();
+        try {
+            Date date1=new SimpleDateFormat("yyyy-MM-dd").parse(listItem.getEvent_Start_Date());
+            String[] sdate=date1.toString().split(" ");
+            if (sdate[0].equals("Sat") || sdate[0].equals("Sun")){
+                holder.tvStartDate.setTextColor(Color.RED);
+                holder.tvmonth.setTextColor(Color.RED);
+
+            }else{
+                holder.tvStartDate.setTextColor(Color.parseColor("#1B4F72"));
+                holder.tvmonth.setTextColor(Color.parseColor("#1B4F72"));
+            }
+            holder.tvStartDate.setText(sdate[0]);
+            holder.tvmonth.setText(sdate[1]+" "+sdate[2]);
+        } catch (Exception e) {
+
+        }
         holder.tvOrganizer.setText(listItem.getEvent_Organiser());
         holder.tvCity.setText(listItem.getCollege_District());
         holder.tvState.setText(listItem.getCollege_State());
+        holder.regview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (listItem.getEvent_Website().contains("http://") || listItem.getEvent_Website().contains("https://")){
+
+                     weburl =listItem.getEvent_Website();
+                }else{
+                     weburl ="http://"+listItem.getEvent_Website();
+                }
+                Bundle bundle = new Bundle();
+                bundle.putString("url",weburl);
+                bundle.putString("data","reg url");
+                bundle.putString("title","reg title");
+                Intent in = new Intent(context, WebActivity.class);
+                in.putExtras(bundle);
+                context.startActivity(in);
+            }
+        });
 
         tvShare.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,36 +147,40 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
         read_more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                vieweditor.putString("PREFER", "MORE").apply();
+                Log.d("SHARED", spUserDetails.getString("PREFER", ""));
+
                 SharedPreferences sharedPreferences = context.getSharedPreferences("view_details", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("coid",listItem.getEvent_Coordinator());
-                editor.putString("post",listItem.getPoster());
-                editor.putString("title",listItem.getEvent_Title());
-                editor.putString("cat",listItem.getEvent_Type());
-                editor.putString("sdate",listItem.getEvent_Start_Date());
-                editor.putString("edate",listItem.getEvent_End_Date());
-                editor.putString("organiser",listItem.getEvent_sponsors());
-                editor.putString("city",listItem.getCollege_District());
-                editor.putString("state",listItem.getCollege_State());
-                editor.putString("dis",listItem.getEvent_Discription());
-                editor.putString("Eventdetails",listItem.getEvent_Details());
-                editor.putString("dept",listItem.getDept());
-                editor.putString("guest",listItem.getEvent_guest());
-                editor.putString("pronites",listItem.getEvent_pro_nites());
-                editor.putString("etheme",listItem.getEvent_Name());
-                editor.putString("accom",listItem.getEvent_accomodations());
-                editor.putString("lastdate",listItem.getLast_date_registration());
-                editor.putString("fees",listItem.getEntry_Fees());
-                editor.putString("htr",listItem.getEvent_how_to_reach());
-                editor.putString("cpname1",listItem.getContact_Person1_Name());
-                editor.putString("cpno1",listItem.getContact_Person1_No());
-                editor.putString("cpname2",listItem.getContact_Person2_Name());
-                editor.putString("cpno2",listItem.getContact_Person2_No());
-                editor.putString("webevent",listItem.getEvent_Website());
-                editor.putString("webcoll",listItem.getCollege_Website());
-                editor.putString("view","view");
-                editor.commit();
-                Intent intent=new Intent(context, View_Details.class);
+                editor.putString("coid", listItem.getEvent_Coordinator());
+                editor.putString("post", listItem.getPoster());
+                editor.putString("title", listItem.getEvent_Title());
+                editor.putString("cat", listItem.getEvent_Type());
+                editor.putString("sdate", listItem.getEvent_Start_Date());
+                editor.putString("edate", listItem.getEvent_End_Date());
+                editor.putString("organiser", listItem.getEvent_sponsors());
+                editor.putString("city", listItem.getCollege_District());
+                editor.putString("state", listItem.getCollege_State());
+                editor.putString("dis", listItem.getEvent_Discription());
+                editor.putString("Eventdetails", listItem.getEvent_Details());
+                editor.putString("dept", listItem.getDept());
+                editor.putString("guest", listItem.getEvent_guest());
+                editor.putString("pronites", listItem.getEvent_pro_nites());
+                editor.putString("etheme", listItem.getEvent_Name());
+                editor.putString("accom", listItem.getEvent_accomodations());
+                editor.putString("lastdate", listItem.getLast_date_registration());
+                editor.putString("fees", listItem.getEntry_Fees());
+                editor.putString("htr", listItem.getEvent_how_to_reach());
+                editor.putString("cpname1", listItem.getContact_Person1_Name());
+                editor.putString("cpno1", listItem.getContact_Person1_No());
+                editor.putString("cpname2", listItem.getContact_Person2_Name());
+                editor.putString("cpno2", listItem.getContact_Person2_No());
+                editor.putString("webevent", listItem.getEvent_Website());
+                editor.putString("webcoll", listItem.getCollege_Website());
+                editor.putString("view", "view");
+                editor.apply();
+                Intent intent = new Intent(context, View_Details.class);
                 context.startActivity(intent);
 
 
@@ -156,7 +203,7 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tvHead, tvCategory, tvStartDate, tvEndDate, tvOrganizer, tvCity, tvState;
+        TextView tvHead, tvCategory, tvStartDate, tvOrganizer, tvCity, tvState, tvmonth,regview;
         ImageView imageView;
 
 
@@ -166,14 +213,13 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
             tvHead = (TextView) itemView.findViewById(R.id.head_title);
             tvCategory = itemView.findViewById(R.id.id_category);
             tvStartDate = itemView.findViewById(R.id.id_start_date);
-            tvEndDate = itemView.findViewById(R.id.id_end_date);
+            tvmonth = itemView.findViewById(R.id.id_start_month);
             tvOrganizer = itemView.findViewById(R.id.id_organiser);
             tvCity = itemView.findViewById(R.id.id_city);
             tvState = itemView.findViewById(R.id.id_state);
+            regview=itemView.findViewById(R.id.regview);
             tvHead.setTypeface(tf_regular);
             tvCategory.setTypeface(tf_regular);
-            tvStartDate.setTypeface(tf_regular);
-            tvEndDate.setTypeface(tf_regular);
             tvOrganizer.setTypeface(tf_regular);
             tvCity.setTypeface(tf_regular);
             tvState.setTypeface(tf_regular);
@@ -230,7 +276,7 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
         Uri uri = Uri.fromFile(imageFile);
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("image/*");
-        intent.putExtra(android.content.Intent.EXTRA_TEXT, "Students Bazaar,India's highest rated students app.");
+        intent.putExtra(android.content.Intent.EXTRA_TEXT, "Students Bazaar,India's highest rated students app.\nplease follow link to participate this event\n"+urlsite);
         intent.putExtra(Intent.EXTRA_STREAM, uri);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);

@@ -1,8 +1,13 @@
 package com.studentsbazaar.studentsbazaarapp.activity;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Typeface;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -25,13 +30,14 @@ import retrofit2.Response;
 
 public class View_Details extends AppCompatActivity {
     TextView title, category, sdate, edate, organizer, city, state, Discription, eventdetails, department, guest, pronites, theme, accomadtation, lastdate, entryfees, howtoreach, cpnam1, cpno1, cpname2, cpno2, eventweb, collegeweb;
-    Button submit, edit,register_now;
+    Button submit, edit, register_now;
     ImageView head_poster;
     String stitle, sategory, ssdate, sedate, sorganizer, scity, sstate, sDiscription, seventdetails, sdepartment, sguest, spronites, stheme, saccomadtation, slastdate, sentryfees, showtoreach, scpnam1, scpno1, scpname2, scpno2;
-    String posterurl, coid, webevent, webcoll;
+    String posterurl, coid, webevent, webcoll,weburl;
     SharedPreferences spUserDetails;
     SpotsDialog spotsDialog;
     Typeface tf_regular;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,7 +70,7 @@ public class View_Details extends AppCompatActivity {
         head_poster = (ImageView) findViewById(R.id.head_slider);
         eventweb = (TextView) findViewById(R.id.head_event_web);
         collegeweb = (TextView) findViewById(R.id.head_college_web);
-        register_now=(Button)findViewById(R.id.register_now);
+        register_now = (Button) findViewById(R.id.register_now);
 
         submit.setTypeface(tf_regular);
         edit.setTypeface(tf_regular);
@@ -85,23 +91,23 @@ public class View_Details extends AppCompatActivity {
         lastdate.setTypeface(tf_regular);
         entryfees.setTypeface(tf_regular);
         howtoreach.setTypeface(tf_regular);
-        cpnam1 .setTypeface(tf_regular);
-        cpno1 .setTypeface(tf_regular);
+        cpnam1.setTypeface(tf_regular);
+        cpno1.setTypeface(tf_regular);
         cpname2.setTypeface(tf_regular);
-        cpno2 .setTypeface(tf_regular);
+        cpno2.setTypeface(tf_regular);
         eventweb.setTypeface(tf_regular);
-        collegeweb .setTypeface(tf_regular);
+        collegeweb.setTypeface(tf_regular);
         register_now.setTypeface(tf_regular);
 
         spotsDialog = new SpotsDialog(this);
         spUserDetails = getSharedPreferences("USER_DETAILS", Context.MODE_PRIVATE);
-        if (spUserDetails.getString("log", null).equals("admin")) {
+       /* if (spUserDetails.getString("PREFER", null).equals("PREF")) {
             submit.setVisibility(View.VISIBLE);
             edit.setVisibility(View.VISIBLE);
         } else {
             submit.setVisibility(View.VISIBLE);
             edit.setVisibility(View.GONE);
-        }
+        }*/
         getviewDetails();
 
 
@@ -119,6 +125,59 @@ public class View_Details extends AppCompatActivity {
 
             }
         });
+
+        cpno1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                makeCall(cpno1.getText().toString());
+            }
+        });
+
+        cpno2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                makeCall(cpno2.getText().toString());
+            }
+        });
+
+        register_now.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (webevent.contains("http://") || webevent.contains("https://")){
+
+                    weburl =webevent;
+                }else{
+                    weburl ="http://"+webevent;
+                }
+                Bundle bundle = new Bundle();
+                bundle.putString("url",weburl);
+                bundle.putString("data","reg url");
+                bundle.putString("title","reg title");
+                Intent in = new Intent(View_Details.this, WebActivity.class);
+                in.putExtras(bundle);
+                startActivity(in);
+
+            }
+        });
+    }
+
+    private void makeCall(String toString) {
+
+        Intent i = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + toString));
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            if (checkSelfPermission(Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+//                // TODO: Consider calling
+//                //    Activity#requestPermissions
+//                // here to request the missing permissions, and then overriding
+//                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+//                //                                          int[] grantResults)
+//                // to handle the case where the user grants the permission. See the documentation
+//                // for Activity#requestPermissions for more details.
+//                return;
+//            }
+//        }
+        startActivity(i);
     }
 
     void getviewDetails() {
@@ -148,11 +207,11 @@ public class View_Details extends AppCompatActivity {
         scpno2 = sharedPreferences.getString("cpno2", null);
         webevent = sharedPreferences.getString("webevent", null);
         webcoll = sharedPreferences.getString("webcoll", null);
-        if (sharedPreferences.getString("view", null).equals("view")) {
+        if (spUserDetails.getString("PREFER", null).equals("MORE")) {
             submit.setVisibility(View.GONE);
             edit.setVisibility(View.GONE);
             register_now.setVisibility(View.VISIBLE);
-        }else if(sharedPreferences.getString("view", null).equals("accept")){
+        }else if(spUserDetails.getString("PREFER", null).equals("PREF")){
             submit.setVisibility(View.VISIBLE);
             edit.setVisibility(View.VISIBLE);
             register_now.setVisibility(View.GONE);
@@ -196,6 +255,9 @@ public class View_Details extends AppCompatActivity {
                 Log.d("Response", response.body().toString());
                 spotsDialog.dismiss();
                 Toast.makeText(View_Details.this, "Updated", Toast.LENGTH_SHORT).show();
+                Intent in = new Intent(View_Details.this,Pending_Events.class);
+                startActivity(in);
+                finish();
             }
 
             @Override

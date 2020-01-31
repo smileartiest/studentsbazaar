@@ -155,7 +155,7 @@
             android:layout_gravity="center"
             android:fontFamily="serif"
             android:gravity="center"
-            android:text="t h e   u l t i m a t e   s t u d e n t s   z o n e"
+            android:text="The Ultimate Student Zone"
             android:textColor="#000000"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -193,7 +193,7 @@
         style="?android:attr/progressBarStyle"
         android:indeterminate="true"
         android:indeterminateTintMode="src_atop"
-        android:indeterminateTint="#56A52B"
+        android:indeterminateTint="#D50000"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/imageView2"

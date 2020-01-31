@@ -51,6 +51,7 @@ public class SignUp extends AppCompatActivity {
         setContentView(R.layout.activity_sign_up);
         spotsDialog = new SpotsDialog(this);
         sharedPreferences = getSharedPreferences("USER_DETAILS", MODE_PRIVATE);
+        editor=sharedPreferences.edit();
         name = findViewById(R.id.reg_name);
         email = findViewById(R.id.reg_email);
         phno = findViewById(R.id.reg_phonenumber);
@@ -155,12 +156,12 @@ public class SignUp extends AppCompatActivity {
                         Log.d("Responsdate", response.body().toString());
                         spotsDialog.dismiss();
                         if (response.body().equals("1")) {
-
-                           getAlert("Congrats...Your User Account Activated...Click DONE to Continue");
-                            editor.putString("log", "registered");
+                            editor.putString("REG", "reg");
                             editor.apply();
+                            getAlert("Congrats...Your User Account Activated...Click DONE to Continue");
+//
 
-                        }else{
+                        } else {
 
                             Toast.makeText(SignUp.this, "Register Failed ", Toast.LENGTH_SHORT).show();
                         }
@@ -218,12 +219,14 @@ public class SignUp extends AppCompatActivity {
         }
 
     }
-    void getAlert(String message){
+
+    void getAlert(String message) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(SignUp.this);
         builder.setTitle(message);
         builder.setPositiveButton("DONE", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+
                 Intent intent = new Intent(SignUp.this, EventActivity.class);
                 startActivity(intent);
 

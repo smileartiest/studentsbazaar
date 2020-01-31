@@ -1,6 +1,7 @@
 package com.studentsbazaar.studentsbazaarapp.activity;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -26,13 +27,11 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
-
 import com.crowdfire.cfalertdialog.CFAlertDialog;
 import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.adapter.SliderPagerAdapter;
-import com.studentsbazaar.studentsbazaarapp.model.College_Details;
 import com.studentsbazaar.studentsbazaarapp.model.DownloadResponse;
-import com.studentsbazaar.studentsbazaarapp.model.Project_details;
+import com.studentsbazaar.studentsbazaarapp.model.Posters_Details;
 import com.studentsbazaar.studentsbazaarapp.retrofit.ApiUtil;
 
 import java.util.ArrayList;
@@ -46,6 +45,7 @@ import retrofit2.Response;
 
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static android.Manifest.permission.CALL_PHONE;
 import static android.Manifest.permission.SEND_SMS;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
@@ -53,7 +53,7 @@ public class HomeActivity extends AppCompatActivity {
 
     TextView tvProfile, tvEvent, tvPlacement, tvSyllabus, tvMemes, tvQuiz, tvHeadTitle;
     Typeface tf_regular;
-    CardView cvEvent, cvPlacement, cvSyllabus, cvMemes, cvQuiz, cvProfile;
+    CardView cvEvent, cvPlacement, cvSyllabus, cvMemes, cvQuiz, cvProfile,cvdis,cvabout;
     LinearLayout linear1, linear2;
     private ViewPager vp_slider;
     private static final int PERMISSION_REQUEST_CODE = 200;
@@ -62,6 +62,7 @@ public class HomeActivity extends AppCompatActivity {
     SliderPagerAdapter sliderPagerAdapter;
     SharedPreferences spUserDetails;
     ArrayList<String> slider_image_list;
+    List<Posters_Details> posters_details;
     private TextView[] dots;
     int page_position = 0;
     private static final int MY_PERMISSIONS_REQUEST_SEND_SMS = 0;
@@ -95,10 +96,13 @@ public class HomeActivity extends AppCompatActivity {
 
         cvEvent = findViewById(R.id.cardview2new);
         cvProfile = findViewById(R.id.cardview);
-        cvPlacement = findViewById(R.id.cardview3);
+        cvPlacement = findViewById(R.id.cvplaced);
         cvSyllabus = findViewById(R.id.cardview4);
         cvMemes = findViewById(R.id.cardview5);
         cvQuiz = findViewById(R.id.cardview6);
+        cvdis=findViewById(R.id.cvdis);
+        cvabout=findViewById(R.id.cvabut);
+
         spUserDetails = getSharedPreferences("USER_DETAILS", Context.MODE_PRIVATE);
 
         if (spUserDetails.getString("log", "").equals("visitor") || spUserDetails.getString("log", "").equals("admin")) {
@@ -155,10 +159,29 @@ public class HomeActivity extends AppCompatActivity {
         cvQuiz.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Bundle b = new Bundle();
-//                b.putString("url", "https://quiz.jagranjosh.com/mod/quiz/instruction-paper-screen.php?id=2388");
-//                b.putString("title", "QUIZ");
                 Intent intEvent = new Intent(HomeActivity.this, Quiz_Events.class);
+                    startActivity(intEvent);
+//                SharedPreferences sharedPreferences = getSharedPreferences("QUIZ_STATUS", MODE_PRIVATE);
+//                if (sharedPreferences.getString("QUIZ", "").isEmpty()) {
+//                    Intent intEvent = new Intent(HomeActivity.this, Quiz_Events.class);
+//                    startActivity(intEvent);
+//                }else {
+//
+//                    getAlertwindow("Today Competition Completed...\nplease wait for your results...");
+//
+//                }
+            }
+        });
+        cvdis.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+        cvabout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intEvent = new Intent(HomeActivity.this, DisclaimerActivity.class);
                 startActivity(intEvent);
             }
         });
@@ -166,12 +189,13 @@ public class HomeActivity extends AppCompatActivity {
         cvMemes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              /*  Bundle b = new Bundle();
-                b.putString("url","");
-                b.putString("title","PLACEMENT");
-                Intent intEvent =  new Intent(HomeActivity.this,WebActivity.class);
+                Bundle b = new Bundle();
+                b.putString("url", "https://coe1.annauniv.edu/home/");
+                b.putString("title", "RESULTS");
+                b.putString("data", "RESULTS");
+                Intent intEvent = new Intent(HomeActivity.this, WebActivity.class);
                 intEvent.putExtras(b);
-                startActivity(intEvent);*/
+                startActivity(intEvent);
                 Toast.makeText(getApplicationContext(), "Still working..", Toast.LENGTH_SHORT).show();
             }
         });
@@ -193,8 +217,9 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Bundle b = new Bundle();
-                b.putString("url", "https://padeepz.com/anna-university-2017-regulation-syllabus-sem-1-to-8-all-department/");
-                b.putString("title", "SYLLABUS");
+                b.putString("url", "https://www.unom.ac.in/");
+                b.putString("title", "RESULTS");
+                b.putString("data", "RESULTS");
                 Intent intEvent = new Intent(HomeActivity.this, WebActivity.class);
                 intEvent.putExtras(b);
                 startActivity(intEvent);
@@ -223,7 +248,7 @@ public class HomeActivity extends AppCompatActivity {
         getSupportActionBar().hide();*/
 
         requestPermission();
-        
+
         getColleges();
         vp_slider = (ViewPager) findViewById(R.id.vp_slider);
         ll_dots = (LinearLayout) findViewById(R.id.ll_dots);
@@ -232,14 +257,32 @@ public class HomeActivity extends AppCompatActivity {
 
 //Add few items to slider_image_list ,this should contain url of images which should be displayed in slider
 // here i am adding few sample image links, you can add your own
+        Call<DownloadResponse> call= ApiUtil.getServiceClass().getposters(ApiUtil.GET_POSTERS);
+        call.enqueue(new Callback<DownloadResponse>() {
+            @Override
+            public void onResponse(Call<DownloadResponse> call, Response<DownloadResponse> response)
 
-        slider_image_list.add("https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRr6m_f_jl9mWL8b6VFzrdblKacY66wDxIKjixCczXUKS454n80");
-        slider_image_list.add("https://ischoolconnect.com/blog/wp-content/uploads/2019/03/line-points-low-poly-businessman-blue-hud_36402-223-1.jpg");
-        slider_image_list.add("https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcS1ZKu_pG5Z-K9mSAV7FBhZCS7SH8fb-huM97Ur1eggMqNXKk7-");
-        slider_image_list.add("https://www.hwzdigital.ch/files/2019/02/Titelbild-1280x0-c-default.jpg");
+            {
+                if (response.isSuccessful()) {
+                    posters_details = response.body().getPosters_details();
+                    for (int i = 0; i < posters_details.size(); i++) {
+                        Log.d("posters",String.valueOf(posters_details.get(i).getPoster()));
+                        slider_image_list.add(String.valueOf(posters_details.get(i).getPoster()));
+                    }
+                    sliderPagerAdapter = new SliderPagerAdapter(HomeActivity.this, slider_image_list);
+                    vp_slider.setAdapter(sliderPagerAdapter);
 
-        sliderPagerAdapter = new SliderPagerAdapter(HomeActivity.this, slider_image_list);
-        vp_slider.setAdapter(sliderPagerAdapter);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DownloadResponse> call, Throwable t) {
+
+            }
+        });
+
+
+
 
         vp_slider.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -279,7 +322,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void requestPermission() {
-        ActivityCompat.requestPermissions(this, new String[]{WRITE_EXTERNAL_STORAGE, ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION,SEND_SMS}, PERMISSION_REQUEST_CODE);
+        ActivityCompat.requestPermissions(this, new String[]{WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
 
     }
 
@@ -287,51 +330,37 @@ public class HomeActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
             case PERMISSION_REQUEST_CODE:
-                boolean locationAccepted = false,locAccepted = false,coaseAccepted=false,smsAccepted=false;
-                if (grantResults.length > 0) {
-                    locationAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                    locAccepted = grantResults[1] == PackageManager.PERMISSION_GRANTED;
-                    coaseAccepted = grantResults[2] == PackageManager.PERMISSION_GRANTED;
-                    smsAccepted = grantResults[3] == PackageManager.PERMISSION_GRANTED;
-
-                    if (locationAccepted && locAccepted && coaseAccepted && smsAccepted) {
-                        // userService.getDownloadingService();
-                        System.out.println("Permission Granted, Now you can access location data and camera.");
-                    } else {
-                        // userService.getDownloadingService();
-                        // openDialog();
-                        System.out.println("Permission Granted, Now you can access location data and camera.");
-                    }
-                }
-
-                if (locationAccepted && locAccepted && coaseAccepted && smsAccepted) {
-                    // userService.getDownloadingService();
-                    System.out.println("Permission Granted, Now you can access location data and camera.");
-                } else {
-                    // userService.getDownloadingService();
-                    openDialog();
-                    System.out.println("Permission Granted, Now you can access location data and camera.");
-                }
+//                boolean locationAccepted = false, locAccepted = false, coaseAccepted = false, smsAccepted = false;
+//                if (grantResults.length > 0) {
+//                    locationAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+//                    locAccepted = grantResults[1] == PackageManager.PERMISSION_GRANTED;
+//                    coaseAccepted = grantResults[2] == PackageManager.PERMISSION_GRANTED;
+//                    smsAccepted = grantResults[3] == PackageManager.PERMISSION_GRANTED;
+//
+//                    if (locationAccepted && locAccepted && coaseAccepted && smsAccepted) {
+//                        // userService.getDownloadingService();
+//                        System.out.println("Permission Granted, Now you can access location data and camera.");
+//                    } else {
+//                        // userService.getDownloadingService();
+//                        // openDialog();
+//                        System.out.println("Permission Granted, Now you can access location data and camera.");
+//                    }
+//                }
+//
+//                if (locationAccepted && locAccepted && coaseAccepted && smsAccepted) {
+//                    // userService.getDownloadingService();
+//                    System.out.println("Permission Granted, Now you can access location data and camera.");
+//                } else {
+//                    // userService.getDownloadingService();
+//                    openDialog();
+//                    System.out.println("Permission Granted, Now you can access location data and camera.");
+//                }
                 break;
         }
     }
 
 
 
-    protected void sendSMSMessage() {
-
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.SEND_SMS)
-                != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.SEND_SMS)) {
-            } else {
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.SEND_SMS},
-                        MY_PERMISSIONS_REQUEST_SEND_SMS);
-            }
-        }
-    }
 
     private void openDialog() {
         CFAlertDialog.Builder builder = new CFAlertDialog.Builder(this);
@@ -355,6 +384,22 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
         builder.show();
+    }
+
+    void getAlertwindow(String message) {
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
+        builder.setTitle(message);
+        builder.setPositiveButton("DONE", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
 }

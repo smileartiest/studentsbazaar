@@ -8,22 +8,23 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+
 public class DateChecker {
 
     boolean result;
 
-    public static final String DATE_INPUT_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    public static final String DATE_INPUT_FORMAT = "yyyy-MM-dd";
     /**
      * DateTime Output Format
      */
     public static final String DATE_OUTPUT_FORMAT = "dd-MMM-yyyy";
 
-    public String dateAlphabet(){
+    public String dateAlphabet(String event_start_date){
 
         String mDateTime = null;
         try {
 
-            mDateTime = DateUtils.formatDateFromDateString(DATE_INPUT_FORMAT, DATE_OUTPUT_FORMAT, "");
+            mDateTime = DateUtils.formatDateFromDateString(DATE_INPUT_FORMAT, DATE_OUTPUT_FORMAT, event_start_date);
         } catch (ParseException e) {
             e.printStackTrace();
 

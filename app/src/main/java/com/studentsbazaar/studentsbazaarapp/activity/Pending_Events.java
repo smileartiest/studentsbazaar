@@ -2,13 +2,14 @@ package com.studentsbazaar.studentsbazaarapp.activity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 
 import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.adapter.PendingEventsAdapter;
@@ -28,6 +29,7 @@ public class Pending_Events extends AppCompatActivity {
     SpotsDialog progressDialog;
     List<Project_details> drawerResponseList = null;
     PendingEventsAdapter mAdapter;
+    LinearLayout layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +40,7 @@ public class Pending_Events extends AppCompatActivity {
         pendingeventsrecycler.setHasFixedSize(true);
         pendingeventsrecycler.setLayoutManager(new LinearLayoutManager(this));
         progressDialog = new SpotsDialog(this, R.style.Custom);
+        layout = (LinearLayout) findViewById(R.id.empty1);
         progressDialog.show();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar1);
         if (toolbar != null) {
@@ -77,7 +80,14 @@ public class Pending_Events extends AppCompatActivity {
                     swipeRefreshLayout.setRefreshing(false);
                     mAdapter = new PendingEventsAdapter(Pending_Events.this, drawerResponseList);
                     pendingeventsrecycler.setAdapter(mAdapter);
+                    if (drawerResponseList.size() == 0) {
+                        layout.setVisibility(View.VISIBLE);
+                        pendingeventsrecycler.setVisibility(View.INVISIBLE);
+                    } else {
 
+                        layout.setVisibility(View.INVISIBLE);
+                        pendingeventsrecycler.setVisibility(View.VISIBLE);
+                    }
 
                     // mAdapter.notifyDataSetChanged();
 

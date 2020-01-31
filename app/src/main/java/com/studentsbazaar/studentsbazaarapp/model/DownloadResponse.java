@@ -1,12 +1,21 @@
 package com.studentsbazaar.studentsbazaarapp.model;
-
 import java.util.List;
-
 public class DownloadResponse {
     private List<Project_details> Events_Details;
     private List<Campus> campus_details;
     private  List<Quiz_Details> Quiz_Details;
     private List<College_Details> College_Details;
+    private List<Posters_Details> Posters_Details;
+
+    public List<Posters_Details> getPosters_details() {
+        return Posters_Details;
+    }
+
+    public void setPosters_details(List<Posters_Details> posters_details) {
+        this.Posters_Details = posters_details;
+    }
+
+
 
     public List<College_Details> getCollege_Details() {
         return College_Details;

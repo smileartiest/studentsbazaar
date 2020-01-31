@@ -17,7 +17,11 @@
     <EditText
         android:id="@+id/add_eventname"
         android:textSize="15sp"
-        android:hint="event name"
+        android:hint="Enter Event Name"
+        android:textColor="#000000"
+        android:fontFamily="serif"
+        android:background="@drawable/shape"
+        android:textStyle="bold"
         android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="70dp"/>
@@ -25,26 +29,22 @@
     <EditText
         android:id="@+id/add_eventdesc"
         android:textSize="15sp"
-        android:hint="event description"
+        android:hint="Enter Event Description"
         android:gravity="bottom"
+        android:textColor="#000000"
+        android:fontFamily="serif"
+        android:background="@drawable/shape"
+        android:textStyle="bold"
         android:layout_width="match_parent"
         android:layout_marginTop="5dp"
-        android:layout_height="150dp"/>
-
-    <EditText
-        android:id="@+id/add_eventamount"
-        android:textSize="15sp"
-        android:hint="event amount"
-        android:layout_marginTop="5dp"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"/>
+        android:layout_height="100dp"/>
 
     <Button
         android:id="@+id/add_eventaddbtn"
         android:textColor="#fff"
         android:textSize="15sp"
         android:text="add"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/button"
         android:layout_width="match_parent"
         android:layout_height="40dp"/>

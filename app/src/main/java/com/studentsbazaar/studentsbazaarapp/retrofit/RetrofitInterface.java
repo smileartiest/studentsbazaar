@@ -21,6 +21,13 @@ public interface RetrofitInterface {
     @POST("/updatedeviceid.php")
     Call<String> updatedeviceid(@Field("device") String device);
 
+
+    @GET
+    Call<String> addresultstoprofile(@Url String url);
+
+    @GET
+    Call<DownloadResponse>getposters(@Url String url);
+
     @FormUrlEncoded
     @POST("/Login.php")
     Call<String> getLoginDetails(@Field("mobile") String mobile,

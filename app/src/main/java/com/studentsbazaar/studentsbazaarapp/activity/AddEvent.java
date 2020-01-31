@@ -18,13 +18,13 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.studentsbazaar.studentsbazaarapp.R;
-
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -37,28 +37,32 @@ import id.zelory.compressor.Compressor;
 
 public class AddEvent extends AppCompatActivity {
 
-    ImageView imagepost,addpost,addevent;
+    ImageView imagepost, addpost, addevent, cancelbtn;
     ListView eventlist;
     TextView evntsts;
     FloatingActionButton next;
     Button addeventbtn;
+
     ArrayList<String> eventlistadapter = new ArrayList<>();
     SQLiteDatabase sq;
     Cursor c;
 
-    String profileimg,elist,epost;
+    String profileimg, elist, epost="0";
     Bitmap profilePicture;
 
     Dialog d;
     private static int RESULT_LOAD_IMAGE = 1;
 
-    EditText event,description,amount;
-    int i =0;
+    EditText event, description;
+    int i = 0;
+    SharedPreferences sf;
+    SharedPreferences.Editor ed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_event);
+        Log.d("sizeofarray", epost);
 
         imagepost = findViewById(R.id.aevent_post_image);
         addpost = findViewById(R.id.aevent_post_icon);
@@ -66,12 +70,16 @@ public class AddEvent extends AppCompatActivity {
         eventlist = findViewById(R.id.aevent_list);
         next = findViewById(R.id.aevent_complete);
         evntsts = findViewById(R.id.aevent_sts);
-
+        cancelbtn = findViewById(R.id.id_event_cancel);
         evntsts.setVisibility(View.INVISIBLE);
-
-        //sq = openOrCreateDatabase("event",MODE_PRIVATE , null);
-        //sq.execSQL("create table edata(id int NOT NULL AUTO_INCREMENT,events varchar(100), PRIMARY KEY (id))");
-
+        cancelbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                eventlistadapter.clear();
+                eventlistview();
+                eventlist.setVisibility(View.INVISIBLE);
+            }
+        });
         eventlistview();
     }
 
@@ -79,7 +87,7 @@ public class AddEvent extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        addpost.setOnClickListener(new View.OnClickListener() {
+        imagepost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -95,44 +103,34 @@ public class AddEvent extends AppCompatActivity {
                 d.setContentView(R.layout.add_even_dialogbox);
                 event = d.findViewById(R.id.add_eventname);
                 description = d.findViewById(R.id.add_eventdesc);
-                amount = d.findViewById(R.id.add_eventamount);
+
                 addeventbtn = d.findViewById(R.id.add_eventaddbtn);
 
                 addeventbtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
-                        if(event.getText().length()!=0)
-                        {
-                            if(description.getText().length()!=0)
-                            {
-                                if(amount.getText().length()!=0)
-                                {
-                                    i++;
-                                    String content = "Event "+i+" : "+event.getText().toString()+"/"+description.getText().toString()+"/"+amount.getText().toString();
-                                    eventlistadapter.add(content);
-                                    eventlistview();
-
-                                }
-                                else
-                                {
-                                    i++;
-                                    String content = "Event "+i+" : "+event.getText().toString()+"/"+description.getText().toString()+"/ Null";
-                                    eventlistadapter.add(content);
-                                    eventlistview();
-
-                                }
-                            }
-                            else
-                            {
-                                description.setError("Please fill somthing");
-                            }
-                        }
-                        else
-                        {
+                        if (event.getText().toString().isEmpty() && description.getText().toString().isEmpty()) {
+                            Toast.makeText(AddEvent.this, "Enter all the fields...", Toast.LENGTH_SHORT).show();
+                        } else if (event.getText().toString().isEmpty()) {
                             event.setError("Please fill");
+                        } else if (description.getText().toString().isEmpty()) {
+                            description.setError("Please fill somthing");
+                        } else {
+
                         }
+
+
+                        i++;
+                        String content = "Event " + i + " : " + event.getText().toString() + "/" + description.getText().toString();
+                        eventlistadapter.add(content);
+                        eventlistview();
+                        eventlist.setVisibility(View.VISIBLE);
+                        i = 0;
+
+
                     }
+
                 });
 
                 d.show();
@@ -143,20 +141,22 @@ public class AddEvent extends AppCompatActivity {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 convertBitmapToString(profilePicture);
                 epost = profileimg;
-                elist = eventlistadapter.toString().replaceAll("\\[", "").replaceAll("\\]","");;
-
-                SharedPreferences sf = getSharedPreferences("event" ,MODE_PRIVATE);
-                SharedPreferences.Editor ed = sf.edit();
-                ed.putString("epost" ,epost);
-                Log.d("IMG_NAME",epost+"");
-                ed.putString("elist" , elist);
-                Log.d("IMG_NAME",elist+"");
+                elist = eventlistadapter.toString().replaceAll("\\[", "").replaceAll("\\]", "");
+                sf = getSharedPreferences("event", MODE_PRIVATE);
+                ed = sf.edit();
+                ed.putString("epost", epost);
+                Log.d("IMG_NAME", epost + "");
+                ed.putString("elist", elist);
+                Log.d("IMG_NAME", elist + "");
                 ed.apply();
+                if (epost.isEmpty() && elist.isEmpty()) {
+                    Toast.makeText(AddEvent.this, "Please add Poster Image and Event Details...", Toast.LENGTH_SHORT).show();
+                } else {
 
-                startActivity(new Intent(getApplicationContext() , AddEvent2.class));
+                    startActivity(new Intent(getApplicationContext(), AddEvent3.class));
+                }
             }
         });
 
@@ -166,8 +166,7 @@ public class AddEvent extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode==RESULT_LOAD_IMAGE)
-        {
+        if (requestCode == RESULT_LOAD_IMAGE) {
             try {
 
                 Uri imageUri = data.getData();
@@ -202,19 +201,27 @@ public class AddEvent extends AppCompatActivity {
         profileimg = Base64.encodeToString(array, Base64.DEFAULT);
     }
 
-    public void eventlistview()
-    {
-        if(eventlistadapter.size()==0)
-        {
+    public void eventlistview() {
+        if (eventlistadapter.size() == 0) {
             evntsts.setVisibility(View.VISIBLE);
-        }
-        else
-        {
+
+        } else {
             d.dismiss();
             evntsts.setVisibility(View.INVISIBLE);
-            ArrayAdapter<String> ad = new ArrayAdapter<>(getApplicationContext() , R.layout.event_row , eventlistadapter);
+            ArrayAdapter<String> ad = new ArrayAdapter<>(getApplicationContext(), R.layout.event_row, eventlistadapter);
             eventlist.setAdapter(ad);
+
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (epost.equals("0")){
+            Intent intent=new Intent(AddEvent.this,AddEvent2.class);
+            startActivity(intent);
+        }
+
+
+    }
 }

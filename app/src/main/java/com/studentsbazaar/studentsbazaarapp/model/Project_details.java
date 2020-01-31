@@ -9,7 +9,16 @@ public class Project_details {
         private String Event_Name;
         private String Event_Start_Date;
         private String Event_End_Date;
-        private String College_Name;
+
+    public String getConducted_By() {
+        return Conducted_By;
+    }
+
+    public void setConducted_By(String conducted_By) {
+        Conducted_By = conducted_By;
+    }
+
+    private String Conducted_By;
         private String Degree;
         private String Dept;
         private String College_Address;
@@ -48,7 +57,6 @@ public class Project_details {
             Event_Name = event_Name;
             Event_Start_Date = event_Start_Date;
             Event_End_Date = event_End_Date;
-            College_Name = college_Name;
             Degree = degree;
             Dept = dept;
             College_Address = college_Address;
@@ -110,9 +118,6 @@ public class Project_details {
             return Event_End_Date;
         }
 
-        public String getCollege_Name() {
-            return College_Name;
-        }
 
         public String getDegree() {
             return Degree;
@@ -258,10 +263,6 @@ public class Project_details {
 
         public void setEvent_End_Date(String Event_End_Date) {
             this.Event_End_Date = Event_End_Date;
-        }
-
-        public void setCollege_Name(String College_Name) {
-            this.College_Name = College_Name;
         }
 
         public void setDegree(String Degree) {

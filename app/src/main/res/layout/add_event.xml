@@ -34,24 +34,16 @@
         android:layout_marginTop="16dp"
         android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="0dp"
-        android:layout_weight="1.7"
-        android:layout_height="wrap_content"
-
-        android:fontFamily="serif"
-        android:text="Add Post *"
-        android:textColor="#000"
-        android:textStyle="bold"
-        />
-
-        <ImageView
-            android:layout_width="0dp"
-            android:id="@+id/id_img_cancel"
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.3"
-            android:src="@drawable/cancel_icon"/>
+            android:layout_weight="1.7"
+
+            android:fontFamily="serif"
+            android:text="Add Post *"
+            android:textColor="#000"
+            android:textStyle="bold" />
 
     </LinearLayout>
 
@@ -86,6 +78,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignParentBottom="true"
                 android:layout_marginRight="10dp"
+                android:visibility="gone"
                 android:layout_marginBottom="10dp"
                 android:src="@drawable/add_image_icon" />
 

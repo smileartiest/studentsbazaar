@@ -18,6 +18,10 @@
 
     </androidx.appcompat.widget.Toolbar>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipepending"
         android:layout_width="match_parent"
@@ -32,6 +36,34 @@
 
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+<LinearLayout
+    android:id="@+id/empty1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:visibility="gone"
+    android:layout_centerInParent="true">
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:background="@drawable/icon"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="No Records Found...!!!"
+        android:textColor="#000000"
+        android:gravity="center"
+        android:fontFamily="serif"
+        android:textStyle="bold"/>
 
 
+
+</LinearLayout>
+
+
+
+    </RelativeLayout>
 </LinearLayout>

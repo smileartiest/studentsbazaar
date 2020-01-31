@@ -7,6 +7,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -46,6 +48,7 @@ public class EventActivity extends AppCompatActivity implements NavigationView.O
     List<Project_details> drawerResponseList = null;
     SharedPreferences spUserDetails;
     SharedPreferences sharedPreferences;
+    LinearLayout layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +59,7 @@ public class EventActivity extends AppCompatActivity implements NavigationView.O
         navigationView = (NavigationView) findViewById(R.id.nav_view);
          sharedPreferences = getSharedPreferences("DEV_ID", MODE_PRIVATE);
         progressDialog = new SpotsDialog(this, R.style.Custom);
+        layout=(LinearLayout)findViewById(R.id.empty2);
         viewPager2 = findViewById(R.id.viewPager2);
 
         if (toolbar != null) {
@@ -108,9 +112,16 @@ public class EventActivity extends AppCompatActivity implements NavigationView.O
 
                     Log.d("RESPONSE2", drawerResponseList.toString());
                     progressDialog.dismiss();
-                    mAdapter = new ViewPagerAdapter(EventActivity.this, drawerResponseList);
-                    viewPager2.setAdapter(mAdapter);
-                    // mAdapter.notifyDataSetChanged();
+                    if (drawerResponseList.size()==0){
+                        layout.setVisibility(View.VISIBLE);
+                        viewPager2.setVisibility(View.INVISIBLE);
+                    }else {
+                        layout.setVisibility(View.INVISIBLE);
+                        viewPager2.setVisibility(View.VISIBLE);
+                        mAdapter = new ViewPagerAdapter(EventActivity.this, drawerResponseList);
+                        viewPager2.setAdapter(mAdapter);
+                        // mAdapter.notifyDataSetChanged();
+                    }
                 }
             }
             @Override
@@ -136,27 +147,29 @@ public class EventActivity extends AppCompatActivity implements NavigationView.O
 
             case R.id.nav_add_event:
 
-                if (sharedPreferences.getString("R", null).equals("registered")) {
-                    Intent intent = new Intent(this, AddEvent.class);
-                    startActivity(intent);
-                } else {
-                    addEvent();
-                }
+              if (spUserDetails.getString("REG",null).equals("reg")) {
+                  Intent intent = new Intent(this, AddEvent2.class);
+                  startActivity(intent);
+              }else{
+                  addEvent();
+              }
+
+
+
                 break;
 
             case R.id.nav_pending:
-                SharedPreferences shared = getSharedPreferences("view_details", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = shared.edit();
-                editor.putString("view","accept");
-                editor.commit();
-                Intent intent = new Intent(this, Pending_Events.class);
-                startActivity(intent);
+                SharedPreferences.Editor  editor = spUserDetails.edit();
+                editor.putString("PREFER","PREF").apply();
+                Intent intent1 = new Intent(this, Pending_Events.class);
+                startActivity(intent1);
                 break;
 
             case R.id.nav_edit:
-                Log.d("logres",sharedPreferences.getString("eid", null));
-                Intent intent1 = new Intent(this, Edit_Events.class);
-                startActivity(intent1);
+
+                Log.d("logres",sharedPreferences.getString("eid", ""));
+                Intent intent2 = new Intent(this, Edit_Events.class);
+                startActivity(intent2);
 
                 break;
             case R.id.nav_contact:

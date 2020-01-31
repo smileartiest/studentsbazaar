@@ -25,7 +25,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-
 import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.adapter.JobListAdapter;
 import com.studentsbazaar.studentsbazaarapp.model.Campus;
@@ -42,7 +41,7 @@ import retrofit2.Response;
 public class PlacementActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
-    private LinearLayout linearLayout;
+    private LinearLayout layout;
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     EditText dClgName, dCompName, dDomain, dPlaced, dPackage, dDate, dcomments;
@@ -61,7 +60,7 @@ public class PlacementActivity extends AppCompatActivity {
         setContentView(R.layout.activity_placement);
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeToRefresh);
-
+        layout = (LinearLayout) findViewById(R.id.empty3);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
 
         progressDialog = new SpotsDialog(this, R.style.Custom);
@@ -115,15 +114,16 @@ public class PlacementActivity extends AppCompatActivity {
 
                     assert response.body() != null;
                     drawerResponseList = response.body().getCampus_details();
-
-                    Log.d("RESPONSE", drawerResponseList.get(0).getCollege_Name());
-
-                    mAdapter = new JobListAdapter(drawerResponseList, PlacementActivity.this);
-
                     progressDialog.dismiss();
-                    // set the adapter object to the Recyclerview
-                    mRecyclerView.setAdapter(mAdapter);
-
+                    if (drawerResponseList.size() == 0) {
+                        layout.setVisibility(View.VISIBLE);
+                        mRecyclerView.setVisibility(View.INVISIBLE);
+                    }else {
+                        layout.setVisibility(View.INVISIBLE);
+                        mRecyclerView.setVisibility(View.VISIBLE);
+                        mAdapter = new JobListAdapter(drawerResponseList, PlacementActivity.this);
+                        mRecyclerView.setAdapter(mAdapter);
+                    }
 
                     // mAdapter.notifyDataSetChanged();
 

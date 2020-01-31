@@ -2,6 +2,7 @@ package com.studentsbazaar.studentsbazaarapp.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,24 +11,34 @@ import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.crowdfire.cfalertdialog.CFAlertDialog;
 import com.studentsbazaar.studentsbazaarapp.R;
 
+import dmax.dialog.SpotsDialog;
+
 public class WebActivity extends AppCompatActivity {
+
     private WebView wv1;
     Bundle bundle;
     private String url = null, data = null, title = null;
     // private SpotsDialog progressDialog = null;
     // private ProgressDialog progressDialog = null;
     //PublisherAdView btmAd;
+    SpotsDialog spotsDialog;
+    LinearLayout layoutweb;
+    Button reload;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        spotsDialog = new SpotsDialog(this);
       /*  Intent intent = getIntent();
         bundle = intent.getExtras();*/
 
@@ -36,7 +47,7 @@ public class WebActivity extends AppCompatActivity {
         title = getIntent().getExtras() != null ? getIntent().getExtras().getString("title") : null;
 
         if (url.isEmpty()) {
-            url = "https://www.fb.com";
+            url = "https://www.studentsbazaar.com";
         }
 
 
@@ -46,6 +57,7 @@ public class WebActivity extends AppCompatActivity {
         //  RojgarApplication.trackScreenName = "WebActivity";
 
         wv1 = findViewById(R.id.idWebview);
+
 
         //Toolbar toolbar = findViewById(R.id.toolbar);
         // btmAd = findViewById(R.id.adBtmView);
@@ -85,6 +97,7 @@ public class WebActivity extends AppCompatActivity {
             transferToNoPackageFoundActivity(url);
         }*/
 
+
     }
 
    /* private void showProgressDialog() {
@@ -110,41 +123,48 @@ public class WebActivity extends AppCompatActivity {
 
     @SuppressLint("SetJavaScriptEnabled")
     private void loadWeb() {
-
+        spotsDialog.show();
         //  url = bundle.getString("url");
         Log.d("WEB_URL", url);
-
+        wv1.setInitialScale(1);
         wv1.getSettings().setLoadsImagesAutomatically(true);
         wv1.getSettings().setJavaScriptEnabled(true);
-        wv1.setLayerType(View.LAYER_TYPE_NONE, null);
-        wv1.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
-        wv1.getSettings().setLoadWithOverviewMode(true);
-        wv1.getSettings().setUseWideViewPort(true);
-        wv1.getSettings().setBuiltInZoomControls(true);
-        wv1.getSettings().setDisplayZoomControls(false);
-
+        wv1.setInitialScale(30 * 10);
+        wv1.setPadding(0, 0, 0, 0);
         wv1.setWebChromeClient(new MyWebChromeClient(this));
         wv1.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                //getActivity().startService(new Intent(getActivity().getApplicationContext(), InterstitialService.class));
-              /*  if(url.contains(".docx")||url.contains(".pdf")){
-                    view.loadUrl("http://docs.google.com/gview?embedded=true&url=" + url);
-                }*/
+
                 return super.shouldOverrideUrlLoading(view, url);
 
             }
 
             @Override
             public void onPageFinished(WebView view, String url) {
-                // progressDialog = new SpotsDialog(this, R.style.Custom).show();
-                //  dismissProgressDialog();
+                wv1.setVisibility(View.VISIBLE);
+                spotsDialog.dismiss();
             }
 
             @Override
             public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-                Toast.makeText(getApplicationContext(), "Error:" + description, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), String.valueOf(errorCode), Toast.LENGTH_SHORT).show();
+                CFAlertDialog.Builder builder = new CFAlertDialog.Builder(WebActivity.this);
+                builder.setDialogStyle(CFAlertDialog.CFAlertStyle.NOTIFICATION);
+                builder.setTitle("Hey there !");
+                builder.setMessage("\nSorry !\n\nThere’s been a delay in our response  .\n" +
+                        "Kindly Keep Checking the reload option given below.\nThank you !\n");
+                builder.addButton("Reload", -1, -1, CFAlertDialog.CFAlertActionStyle.POSITIVE, CFAlertDialog.CFAlertActionAlignment.JUSTIFIED
+                        , new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                loadWeb();
+                                dialog.dismiss();
+                            }
+                        });
+                builder.show();
 
+                wv1.setVisibility(View.INVISIBLE);
             }
         });
         //wv1.loadUrl(url);
@@ -156,6 +176,10 @@ public class WebActivity extends AppCompatActivity {
         }
     }
 
+    void getAlert() {
+
+
+    }
 
     private class MyWebChromeClient extends WebChromeClient {
         Context context;
@@ -224,5 +248,7 @@ public class WebActivity extends AppCompatActivity {
         intent.setType("text/plain");
         startActivity(Intent.createChooser(intent, "RojgarLive Send to"));
     }
+
+
 }
 

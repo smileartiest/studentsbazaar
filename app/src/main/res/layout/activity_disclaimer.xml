@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    tools:context=".activity.DisclaimerActivity">
+
+    <ImageView
+        android:id="@+id/img"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_height="wrap_content"
+        android:src="@drawable/newlogo"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:textSize="20dp"
+        android:layout_marginTop="10dp"
+        android:id="@+id/dis"
+        android:textStyle="bold"
+        android:layout_margin="20dp"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:background="@drawable/shape"
+        android:text="DESCLAIMER"
+        android:layout_below="@id/img"
+        android:textColor="@color/colorPrimary"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/textView40"
+        android:textStyle="bold"
+        android:layout_below="@+id/dis"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:background="@drawable/shape"
+        android:layout_margin="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="    Students Bazaar is not the official/authorized application of Anna University/Madras University. Here we provide live educational updates for Anna University's Affiliated Colleges and Madras University’s Affiliated Collegs. These specific informations are gathering from official website. These informations are not completely official or final. For helping students and to avoid rumors Students Bazaar tries to provide precise updates. For official and confirming any updates contact your College Management / Respective University." />
+</LinearLayout>

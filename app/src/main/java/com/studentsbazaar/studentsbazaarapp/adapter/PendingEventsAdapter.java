@@ -60,11 +60,11 @@ public class PendingEventsAdapter extends RecyclerView.Adapter<PendingEventsAdap
         holder.setIsRecyclable(false);
 
         holder.eventname.setText(listItem.getEvent_Name());
-        holder.coordinator.setText(listItem.getEvent_Coordinator());
-        holder.College.setText(listItem.getCollege_Name());
+        holder.coordinator.setText(listItem.getContact_Person1_Name());
+        holder.College.setText(listItem.getEvent_Organiser());
         holder.phone.setText(listItem.getContact_Person1_No());
         holder.city.setText(listItem.getCollege_Address());
-        holder.department.setText(listItem.getDept());
+        holder.department.setText(listItem.getConducted_By());
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -122,7 +122,7 @@ public class PendingEventsAdapter extends RecyclerView.Adapter<PendingEventsAdap
             spotsDialog = new SpotsDialog(context);
             eventname = (TextView) itemView.findViewById(R.id.tvEventName);
             coordinator = (TextView) itemView.findViewById(R.id.id_coordinator_name);
-            College = (TextView) itemView.findViewById(R.id.id_coll_name);
+            College = (TextView) itemView.findViewById(R.id.id_organiser_name);
             department = (TextView) itemView.findViewById(R.id.id_deptartment);
             phone = (TextView) itemView.findViewById(R.id.id_phoneno);
             city = (TextView) itemView.findViewById(R.id.id_eventcity);

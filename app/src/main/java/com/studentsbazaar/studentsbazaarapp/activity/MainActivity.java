@@ -36,10 +36,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         spUserDetails = getSharedPreferences("USER_DETAILS", Context.MODE_PRIVATE);
-        if(!spUserDetails.getString("log","").isEmpty()){
-            Intent in = new Intent(MainActivity.this,HomeActivity.class);
-            startActivity(in);
-        }
+//        if(!spUserDetails.getString("log","").isEmpty()){
+//            Intent in = new Intent(MainActivity.this,HomeActivity.class);
+//            startActivity(in);
+//        }
         setContentView(R.layout.activity_main);
 
         etPhone = findViewById(R.id.input_phone);
