@@ -16,6 +16,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
 import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.model.DownloadResponse;
@@ -219,11 +220,13 @@ public class Edit_Events extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     assert response.body() != null;
                     drawerResponseList = response.body().getProject_details();
-                    Picasso.with(Edit_Events.this)
+                    Glide.with(Edit_Events.this)
                             .load(drawerResponseList.get(0).getPoster())
+                            .placeholder(R.drawable.load)
                             .into(head_poster);
-                    Picasso.with(Edit_Events.this)
+                    Glide.with(Edit_Events.this)
                             .load(drawerResponseList.get(0).getPoster())
+                            .placeholder(R.drawable.load)
                             .into(head_posteredit);
                     title.setText(drawerResponseList.get(0).getEvent_Title());
                     category.setText(drawerResponseList.get(0).getEvent_Type());

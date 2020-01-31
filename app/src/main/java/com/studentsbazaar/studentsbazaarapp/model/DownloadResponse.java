@@ -6,6 +6,16 @@ public class DownloadResponse {
     private  List<Quiz_Details> Quiz_Details;
     private List<College_Details> College_Details;
     private List<Posters_Details> Posters_Details;
+    private  List<Memes_Details> Memes_Details;
+    public List<Memes_Details> getMemes_details() {
+        return Memes_Details;
+    }
+
+    public void setMemes_details(List<Memes_Details> memes_details) {
+        this.Memes_Details = memes_details;
+    }
+
+
 
     public List<Posters_Details> getPosters_details() {
         return Posters_Details;

@@ -12,15 +12,10 @@ import android.provider.Settings;
 import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.crowdfire.cfalertdialog.CFAlertDialog;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
 import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.firebase.Config;
-import com.studentsbazaar.studentsbazaarapp.helper.PersistanceUtil;
 import com.studentsbazaar.studentsbazaarapp.model.College_Details;
 import com.studentsbazaar.studentsbazaarapp.model.DownloadResponse;
 import com.studentsbazaar.studentsbazaarapp.model.Posters_Details;
@@ -122,12 +117,14 @@ public class SplashActivty extends AppCompatActivity {
                     ApiUtil.COLLEGEARRAY.add(college_details.get(i).getCollege_Name());
                 }
                 if (getSharedPreferences("USER_DETAILS", MODE_PRIVATE).getString("REG", "").equals("0")) {
-                   Intent intent=new Intent(SplashActivty.this,MainActivity.class);
-                   startActivity(intent);
-
-                }else{
-                    Intent intent=new Intent(SplashActivty.this,HomeActivity.class);
+                    Intent intent = new Intent(SplashActivty.this, MainActivity.class);
                     startActivity(intent);
+                    finish();
+
+                } else {
+                    Intent intent = new Intent(SplashActivty.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
                 }
 
             }

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="@color/colorPrimary"
     tools:context=".activity.HomeActivity">
 
     <ScrollView
@@ -21,7 +21,7 @@
         android:text="Students's Portal"
         android:layout_marginTop="20dp"
         android:id="@+id/head_title"
-        android:textColor="#000000"
+        android:textColor="@color/white"
         android:textStyle="bold"
         android:typeface="serif"
         android:gravity="center_horizontal"
@@ -47,7 +47,7 @@
                 <LinearLayout
                     android:id="@+id/ll_dots"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="10dp"
                     android:layout_alignParentBottom="true"
                     android:layout_marginBottom="20dp"
                     android:gravity="center"
@@ -70,10 +70,10 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:paddingRight="10dp"
-                android:paddingEnd="10dp"
-                android:paddingStart="20dp"
-                android:paddingLeft="20dp"
+                android:paddingRight="5dp"
+                android:paddingEnd="5dp"
+                android:paddingStart="5dp"
+                android:paddingLeft="5dp"
                 android:id="@+id/linear1"
                 android:layout_height="wrap_content">
             <androidx.cardview.widget.CardView
@@ -96,7 +96,6 @@
                     <ImageView
                         android:id="@+id/ivImage"
                         android:layout_width="wrap_content"
-
                         android:layout_height="wrap_content"
                         android:src="@drawable/avatar_new" />
 
@@ -108,7 +107,6 @@
                         android:text="Profile"
                         android:layout_marginTop="5dp"
                         android:textColor="#000000"
-                        android:textSize="18sp"
                         android:textStyle="bold" />
                 </LinearLayout>
 
@@ -117,10 +115,10 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:paddingRight="20dp"
-                android:paddingEnd="20dp"
-                android:paddingStart="10dp"
-                android:paddingLeft="10dp"
+                android:paddingRight="5dp"
+                android:paddingEnd="5dp"
+                android:paddingStart="5dp"
+                android:paddingLeft="5dp"
                 android:id="@+id/linear2"
                 android:layout_height="wrap_content">
             <androidx.cardview.widget.CardView
@@ -153,7 +151,6 @@
                         android:layout_marginTop="5dp"
                         android:text="Event"
                         android:textColor="#000000"
-                        android:textSize="18sp"
                         android:textStyle="bold" />
                 </LinearLayout>
 
@@ -169,10 +166,10 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:paddingRight="10dp"
-                android:paddingEnd="10dp"
-                android:paddingStart="20dp"
-                android:paddingLeft="20dp"
+                android:paddingRight="5dp"
+                android:paddingEnd="5dp"
+                android:paddingStart="5dp"
+                android:paddingLeft="5dp"
 
                 android:layout_height="wrap_content">
                 <androidx.cardview.widget.CardView
@@ -206,7 +203,6 @@
                             android:text="AU Result"
                             android:layout_marginTop="5dp"
                             android:textColor="#000000"
-                            android:textSize="18sp"
                             android:textStyle="bold" />
                     </LinearLayout>
 
@@ -215,10 +211,10 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:paddingRight="20dp"
-                android:paddingEnd="20dp"
-                android:paddingStart="10dp"
-                android:paddingLeft="10dp"
+                android:paddingRight="5dp"
+                android:paddingEnd="5dp"
+                android:paddingStart="5dp"
+                android:paddingLeft="5dp"
 
                 android:layout_height="wrap_content">
                 <androidx.cardview.widget.CardView
@@ -251,7 +247,6 @@
                             android:text="MU Result"
                             android:textColor="#000000"
                             android:layout_marginTop="5dp"
-                            android:textSize="18sp"
                             android:textStyle="bold" />
                     </LinearLayout>
 
@@ -267,11 +262,11 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:paddingRight="10dp"
-                android:paddingEnd="10dp"
-                android:paddingStart="20dp"
-                android:paddingLeft="20dp"
-                android:paddingBottom="20dp"
+                android:paddingRight="5dp"
+                android:paddingEnd="5dp"
+                android:paddingStart="5dp"
+                android:paddingLeft="5dp"
+                android:paddingBottom="5dp"
                 android:layout_height="wrap_content">
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cvplaced"
@@ -305,7 +300,6 @@
                             android:text="Placement"
                             android:textColor="#000000"
                             android:layout_marginTop="5dp"
-                            android:textSize="18sp"
                             android:textStyle="bold" />
                     </LinearLayout>
 
@@ -314,11 +308,11 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:paddingRight="20dp"
-                android:paddingEnd="20dp"
-                android:paddingStart="10dp"
-                android:paddingLeft="10dp"
-                android:paddingBottom="20dp"
+                android:paddingRight="5dp"
+                android:paddingEnd="5dp"
+                android:paddingStart="5dp"
+                android:paddingLeft="5dp"
+                android:paddingBottom="5dp"
                 android:layout_height="wrap_content">
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardview6"
@@ -351,7 +345,6 @@
                             android:text="Quiz"
                             android:layout_marginTop="5dp"
                             android:textColor="#000000"
-                            android:textSize="18sp"
                             android:textStyle="bold" />
                     </LinearLayout>
 
@@ -367,11 +360,11 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:paddingRight="10dp"
-                android:paddingEnd="10dp"
-                android:paddingStart="20dp"
-                android:paddingLeft="20dp"
-                android:paddingBottom="20dp"
+                android:paddingRight="5dp"
+                android:paddingEnd="5dp"
+                android:paddingStart="5dp"
+                android:paddingLeft="5dp"
+                android:paddingBottom="5dp"
                 android:layout_height="wrap_content">
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cvdis"
@@ -404,7 +397,6 @@
                             android:text="Memes"
                             android:textColor="#000000"
                             android:layout_marginTop="5dp"
-                            android:textSize="18sp"
                             android:textStyle="bold" />
                     </LinearLayout>
 
@@ -413,11 +405,11 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:paddingRight="20dp"
-                android:paddingEnd="20dp"
-                android:paddingStart="10dp"
-                android:paddingLeft="10dp"
-                android:paddingBottom="20dp"
+                android:paddingRight="5dp"
+                android:paddingEnd="5dp"
+                android:paddingStart="5dp"
+                android:paddingLeft="5dp"
+                android:paddingBottom="5dp"
                 android:layout_height="wrap_content">
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cvabut"
@@ -447,7 +439,6 @@
                             android:text="Disclaimer"
                             android:layout_marginTop="5dp"
                             android:textColor="#000000"
-                            android:textSize="18sp"
                             android:textStyle="bold" />
                     </LinearLayout>
 

@@ -2,7 +2,7 @@
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:text="Semester"
     android:fontFamily="serif"
-    android:textColor="#F51919"
+    android:textColor="@color/colorBlack"
     android:gravity="center_vertical"
     android:paddingLeft="10dp"
     android:layout_width="match_parent"

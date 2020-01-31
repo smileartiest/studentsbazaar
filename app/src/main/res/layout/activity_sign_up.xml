@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
+    android:background="@color/colorPrimary"
    >
 
 
@@ -16,7 +16,7 @@
         android:layout_marginTop="16dp"
         android:fontFamily="serif"
         android:text="Register Your Details"
-        android:textColor="#F80606"
+        android:textColor="@color/white"
         android:textSize="25sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -31,7 +31,7 @@
         android:layout_marginTop="16dp"
         android:fontFamily="serif"
         android:text="Please Enter Your Valid Details"
-        android:textColor="#F80606"
+        android:textColor="@color/white"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3"
@@ -44,7 +44,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="30dp"
         android:layout_marginEnd="16dp"
-        android:backgroundTint="#FA7D7D"
+        android:backgroundTint="@color/white"
         android:visibility="visible"
         app:cardCornerRadius="6dp"
         app:cardElevation="6dp"
@@ -67,14 +67,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:text="Personal Details"
-                android:textColor="#fff"
+                android:textColor="@color/colorBlack"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:layout_marginLeft="3dp"
                 android:layout_marginTop="10dp"
-                android:textColor="#fff"
+                android:textColor="@color/colorBlack"
                 android:text="Name"
                 android:fontFamily="serif"
                 android:layout_width="wrap_content"
@@ -90,13 +90,13 @@
                 android:layout_height="40dp"
                 android:paddingLeft="5dp"
                 android:textColor="#000"
-                android:textColorHint="#F1A5A5"
-                android:hint="please fill your name (ex : Jhon)" />
+                android:textColorHint="@color/colorBlack"
+                android:hint="Enter Name (ex : Jhon)" />
 
             <TextView
                 android:layout_marginLeft="3dp"
                 android:layout_marginTop="10dp"
-                android:textColor="#fff"
+                android:textColor="@color/colorBlack"
                 android:text="Email"
                 android:fontFamily="serif"
                 android:layout_width="wrap_content"
@@ -111,15 +111,15 @@
                 android:textSize="15sp"
                 android:paddingLeft="5dp"
                 android:textColor="#000"
-                android:textColorHint="#F1A5A5"
+                android:textColorHint="@color/colorBlack"
                 android:fontFamily="serif"
-                android:hint="please fill your email (ex : example@gmail.com)"
+                android:hint="Enter Email (ex : example@gmail.com)"
                 android:inputType="textEmailAddress" />
 
             <TextView
                 android:layout_marginLeft="3dp"
                 android:layout_marginTop="10dp"
-                android:textColor="#fff"
+                android:textColor="@color/colorBlack"
                 android:text="Phone Number"
                 android:fontFamily="serif"
                 android:layout_width="wrap_content"
@@ -135,8 +135,8 @@
                 android:fontFamily="serif"
                 android:paddingLeft="5dp"
                 android:textColor="#000"
-                android:textColorHint="#F1A5A5"
-                android:hint="please fill your Phone number (ex :9001001100)"
+                android:textColorHint="@color/colorBlack"
+                android:hint="Enter Phone number (ex :9001001100)"
                 android:inputType="phone"/>
 
         </LinearLayout>
@@ -150,7 +150,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="30dp"
         android:layout_marginEnd="16dp"
-        android:backgroundTint="#FA7D7D"
+        android:backgroundTint="@color/white"
         android:visibility="invisible"
         app:cardCornerRadius="6dp"
         app:cardElevation="6dp"
@@ -173,14 +173,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:text="Your College Details"
-                android:textColor="#fff"
+                android:textColor="@color/colorBlack"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:layout_marginLeft="3dp"
                 android:layout_marginTop="10dp"
-                android:textColor="#fff"
+                android:textColor="@color/colorBlack"
                 android:text="College Name"
                 android:fontFamily="serif"
                 android:layout_width="wrap_content"
@@ -196,13 +196,13 @@
                 android:fontFamily="serif"
                 android:paddingLeft="5dp"
                 android:textColor="#000"
-                android:textColorHint="#F1A5A5"
-                android:hint="please fill your college name (ex : xxx college)" />
+                android:textColorHint="@color/colorBlack"
+                android:hint="Enter College name (ex : xxx college)" />
 
             <TextView
                 android:layout_marginLeft="3dp"
                 android:layout_marginTop="10dp"
-                android:textColor="#fff"
+                android:textColor="@color/colorBlack"
                 android:text="Degree"
                 android:fontFamily="serif"
                 android:layout_width="wrap_content"
@@ -213,18 +213,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:background="@drawable/edittext"
-                android:hint="please fill your degree (ex : EB,BTech)"
+                android:hint="Enter Degree (ex : EB,BTech)"
                 android:layout_marginTop="5dp"
                 android:textSize="15sp"
                 android:fontFamily="serif"
                 android:paddingLeft="5dp"
                 android:textColor="#000"
-                android:textColorHint="#F1A5A5" />
+                android:textColorHint="@color/colorBlack" />
 
             <TextView
                 android:layout_marginLeft="3dp"
                 android:layout_marginTop="10dp"
-                android:textColor="#fff"
+                android:textColor="@color/colorBlack"
                 android:text="Academic Year"
                 android:fontFamily="serif"
                 android:layout_width="wrap_content"
@@ -239,9 +239,9 @@
                 android:textSize="15sp"
                 android:fontFamily="serif"
                 android:paddingLeft="5dp"
-                android:textColor="#000"
-                android:textColorHint="#F1A5A5"
-                android:hint="please fill your academic year (ex : 2019-2023)" />
+                android:textColor="@color/colorBlack"
+                android:textColorHint="@color/colorBlack"
+                android:hint="Enter Academic year (ex : 2019-2023)" />
 
         </LinearLayout>
 
@@ -256,7 +256,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="30dp"
         android:layout_marginEnd="16dp"
-        android:backgroundTint="#FA7D7D"
+        android:backgroundTint="@color/white"
         app:cardElevation="6dp"
         app:cardCornerRadius="6dp"
         app:contentPaddingLeft="10dp"
@@ -276,7 +276,7 @@
                 android:layout_marginTop="10dp"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:textColor="#fff"
+                android:textColor="@color/colorBlack"
                 android:text="Study Details"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
@@ -284,7 +284,7 @@
             <TextView
                 android:layout_marginLeft="3dp"
                 android:layout_marginTop="10dp"
-                android:textColor="#fff"
+                android:textColor="@color/colorBlack"
                 android:text="Department"
                 android:fontFamily="serif"
                 android:layout_width="wrap_content"
@@ -294,19 +294,19 @@
                 android:id="@+id/reg_department"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:hint="department (ex : cse,mech)"
+                android:hint="Department (ex : cse,mech)"
                 android:layout_marginTop="5dp"
                 android:background="@drawable/edittext"
                 android:textSize="15sp"
                 android:fontFamily="serif"
                 android:paddingLeft="5dp"
                 android:textColor="#000"
-                android:textColorHint="#F1A5A5"/>
+                android:textColorHint="@color/colorBlack"/>
 
             <TextView
                 android:layout_marginLeft="3dp"
                 android:layout_marginTop="10dp"
-                android:textColor="#fff"
+                android:textColor="@color/colorBlack"
                 android:text="Year"
                 android:fontFamily="serif"
                 android:layout_width="wrap_content"
@@ -316,19 +316,19 @@
                 android:id="@+id/reg_year"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:hint="year (ex : 1 , 2 , 3 , 4)"
+                android:hint="Year (ex : 1 , 2 , 3 , 4)"
                 android:layout_marginTop="5dp"
                 android:background="@drawable/edittext"
                 android:textSize="15sp"
                 android:fontFamily="serif"
                 android:paddingLeft="5dp"
                 android:textColor="#000"
-                android:textColorHint="#F1A5A5"/>
+                android:textColorHint="@color/colorBlack"/>
 
             <TextView
                 android:layout_marginLeft="3dp"
                 android:layout_marginTop="10dp"
-                android:textColor="#fff"
+                android:textColor="@color/colorBlack"
                 android:text="Semester"
                 android:fontFamily="serif"
                 android:layout_width="wrap_content"
@@ -338,18 +338,18 @@
                 android:id="@+id/reg_semester"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:hint="semester (ex : 1 , 2 , 3 , 4 , 5 , 6 , 7)"
+                android:hint="Semester (ex : 1 , 2 , 3 , 4 , 5 , 6 , 7)"
                 android:layout_marginTop="5dp"
                 android:background="@drawable/edittext"
                 android:textSize="15sp"
                 android:fontFamily="serif"
                 android:paddingLeft="5dp"
                 android:textColor="#000"
-                android:textColorHint="#F1A5A5"/>
+                android:textColorHint="@color/colorBlack"/>
             <TextView
                 android:layout_marginLeft="3dp"
                 android:layout_marginTop="10dp"
-                android:textColor="#fff"
+                android:textColor="@color/colorBlack"
                 android:text="Password"
                 android:fontFamily="serif"
                 android:layout_width="wrap_content"
@@ -359,14 +359,14 @@
                 android:id="@+id/reg_password"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:hint="password"
+                android:hint="Password"
                 android:layout_marginTop="5dp"
                 android:background="@drawable/edittext"
                 android:textSize="15sp"
                 android:fontFamily="serif"
                 android:paddingLeft="5dp"
                 android:textColor="#000"
-                android:textColorHint="#F1A5A5"/>
+                android:textColorHint="@color/colorBlack"/>
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>

@@ -9,6 +9,7 @@ import android.widget.ImageView;
 
 import androidx.viewpager.widget.PagerAdapter;
 
+import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
 import com.studentsbazaar.studentsbazaarapp.R;
 
@@ -30,10 +31,9 @@ public class SliderPagerAdapter extends PagerAdapter {
 
         View view = layoutInflater.inflate(R.layout.layout_slider, container, false);
         ImageView im_slider = (ImageView) view.findViewById(R.id.im_slider);
-        Picasso.with(activity.getApplicationContext())
+        Glide.with(activity.getApplicationContext())
                 .load(image_arraylist.get(position))
-                .placeholder(R.mipmap.ic_launcher) // optional
-                .error(R.mipmap.ic_launcher)         // optional
+                .placeholder(R.drawable.load)
                 .into(im_slider);
 
 

@@ -48,9 +48,10 @@ public class AddEvent extends AppCompatActivity {
     Cursor c;
 
     String profileimg, elist, epost="0";
-    Bitmap profilePicture;
+
 
     Dialog d;
+    Bitmap profilePicture;
     private static int RESULT_LOAD_IMAGE = 1;
 
     EditText event, description;

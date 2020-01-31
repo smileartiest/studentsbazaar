@@ -19,6 +19,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
 import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.retrofit.ApiUtil;
@@ -216,8 +217,10 @@ public class View_Details extends AppCompatActivity {
             edit.setVisibility(View.VISIBLE);
             register_now.setVisibility(View.GONE);
         }
-        Picasso.with(View_Details.this)
+        Glide.with(View_Details.this)
                 .load(posterurl)
+                .placeholder(R.drawable.load)
+                .error(R.drawable.load)
                 .into(head_poster);
         title.setText(stitle);
         category.setText(sategory);

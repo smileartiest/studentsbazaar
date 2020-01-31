@@ -26,6 +26,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.crowdfire.cfalertdialog.CFAlertDialog;
 import com.squareup.picasso.Picasso;
 import com.studentsbazaar.studentsbazaarapp.R;
@@ -86,8 +87,9 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
 
         Resources resources = context.getResources();
         holder.setIsRecyclable(false);
-        Picasso.with(context)
+        Glide.with(context)
                 .load(listItem.getPoster())
+                .placeholder(R.drawable.load)
                 .into(holder.imageView);
         Log.d("IMG", listItem.getPoster() + "");
         holder.tvHead.setText(listItem.getEvent_Title());

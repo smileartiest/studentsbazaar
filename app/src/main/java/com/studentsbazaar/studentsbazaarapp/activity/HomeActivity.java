@@ -86,13 +86,13 @@ public class HomeActivity extends AppCompatActivity {
         linear1 = findViewById(R.id.linear1);
         linear2 = findViewById(R.id.linear2);
 
-        tvEvent.setTypeface(tf_regular);
-        tvHeadTitle.setTypeface(tf_regular);
-        tvMemes.setTypeface(tf_regular);
-        tvPlacement.setTypeface(tf_regular);
-        tvProfile.setTypeface(tf_regular);
-        tvQuiz.setTypeface(tf_regular);
-        tvSyllabus.setTypeface(tf_regular);
+//        tvEvent.setTypeface(tf_regular);
+//        tvHeadTitle.setTypeface(tf_regular);
+//        tvMemes.setTypeface(tf_regular);
+//        tvPlacement.setTypeface(tf_regular);
+//        tvProfile.setTypeface(tf_regular);
+//        tvQuiz.setTypeface(tf_regular);
+//        tvSyllabus.setTypeface(tf_regular);
 
         cvEvent = findViewById(R.id.cardview2new);
         cvProfile = findViewById(R.id.cardview);
@@ -175,7 +175,8 @@ public class HomeActivity extends AppCompatActivity {
         cvdis.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intEvent = new Intent(HomeActivity.this, Mems.class);
+                startActivity(intEvent);
             }
         });
         cvabout.setOnClickListener(new View.OnClickListener() {
