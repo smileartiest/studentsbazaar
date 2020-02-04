@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -68,9 +69,9 @@ public class Quiz_Events extends AppCompatActivity {
     }
 
     void loadData() {
-
+        Log.d("RESPONSE1", sharedPreferences.getString("UID", null));
         progressDialog.show();
-        Call<DownloadResponse> call = ApiUtil.getServiceClass().getQuizQuestions(ApiUtil.GET_QUIZ_QUESTIONS);
+        Call<DownloadResponse> call = ApiUtil.getServiceClass().getQuizQuestions(sharedPreferences.getString("UID", null));
         call.enqueue(new Callback<DownloadResponse>() {
             @Override
             public void onResponse(Call<DownloadResponse> call, retrofit2.Response<DownloadResponse> response) {
@@ -79,23 +80,23 @@ public class Quiz_Events extends AppCompatActivity {
 
                 if (response.isSuccessful()) {
                     assert response.body() != null;
-                    drawerResponseList = response.body().getQuiz_details();
-                    progressDialog.dismiss();
-                    if (drawerResponseList.size()==0){
-                        layout.setVisibility(View.VISIBLE);
-                        Quiz_view.setVisibility(View.INVISIBLE);
-                        submit.setVisibility(View.INVISIBLE);
-                    }else {
-                        layout.setVisibility(View.INVISIBLE);
-                        Quiz_view.setVisibility(View.VISIBLE);
-                        submit.setVisibility(View.VISIBLE);
-                        quiz_adapter = new Quiz_Adapter(Quiz_Events.this, drawerResponseList);
-                        Quiz_view.setAdapter(quiz_adapter);
+                        drawerResponseList = response.body().getQuiz_details();
+                        progressDialog.dismiss();
+                        if (drawerResponseList.size() == 0) {
+                            layout.setVisibility(View.VISIBLE);
+                            Quiz_view.setVisibility(View.INVISIBLE);
+                            submit.setVisibility(View.INVISIBLE);
+                        } else {
+                            layout.setVisibility(View.INVISIBLE);
+                            Quiz_view.setVisibility(View.VISIBLE);
+                            submit.setVisibility(View.VISIBLE);
+                            quiz_adapter = new Quiz_Adapter(Quiz_Events.this, drawerResponseList);
+                            Quiz_view.setAdapter(quiz_adapter);
+                        }
                     }
-
                     // mAdapter.notifyDataSetChanged();
 
-                }
+
 
             }
 

@@ -1,14 +1,11 @@
 package com.studentsbazaar.studentsbazaarapp.activity;
 
-import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Html;
@@ -17,6 +14,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,43 +22,50 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager.widget.ViewPager;
 
 import com.crowdfire.cfalertdialog.CFAlertDialog;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.adapter.SliderPagerAdapter;
+import com.studentsbazaar.studentsbazaarapp.firebase.Config;
+import com.studentsbazaar.studentsbazaarapp.helper.PersistanceUtil;
 import com.studentsbazaar.studentsbazaarapp.model.DownloadResponse;
 import com.studentsbazaar.studentsbazaarapp.model.Posters_Details;
 import com.studentsbazaar.studentsbazaarapp.retrofit.ApiUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import dmax.dialog.SpotsDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
-import static android.Manifest.permission.ACCESS_FINE_LOCATION;
-import static android.Manifest.permission.CALL_PHONE;
-import static android.Manifest.permission.SEND_SMS;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 public class HomeActivity extends AppCompatActivity {
 
-    TextView tvProfile, tvEvent, tvPlacement, tvSyllabus, tvMemes, tvQuiz, tvHeadTitle;
-    Typeface tf_regular;
-    CardView cvEvent, cvPlacement, cvSyllabus, cvMemes, cvQuiz, cvProfile,cvdis,cvabout;
-    LinearLayout linear1, linear2;
+    TextView tvEvent, tvPlacement, tvSyllabus, tvMemes, tvQuiz, tvHeadTitle;
+    CardView cvEvent, cvPlacement, cvSyllabus, cvMemes, cvQuiz, technews, cvdis, cvabout;
+    LinearLayout linear2;
+    RelativeLayout rlLayout;
+    static String token = "", STRTOKEN = "0";
+    Context context;
     private ViewPager vp_slider;
     private static final int PERMISSION_REQUEST_CODE = 200;
-
+    String refreshedToken;
     private LinearLayout ll_dots;
+    SpotsDialog spotsDialog;
     SliderPagerAdapter sliderPagerAdapter;
     SharedPreferences spUserDetails;
+    SharedPreferences.Editor editor;
     ArrayList<String> slider_image_list;
     List<Posters_Details> posters_details;
     private TextView[] dots;
@@ -70,44 +75,38 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+      //  requestWindowFeature(Window.FEATURE_NO_TITLE);
+        spotsDialog = new SpotsDialog(this);
+//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+//                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         setContentView(R.layout.activity_home);
-        tf_regular = Typeface.createFromAsset(getApplicationContext().getAssets(), "caviar.ttf");
         tvEvent = findViewById(R.id.tvEventNew);
         tvHeadTitle = findViewById(R.id.head_title);
         tvMemes = findViewById(R.id.tvMeme);
         tvPlacement = findViewById(R.id.tvPlacement);
-        tvProfile = findViewById(R.id.tvTitle);
         tvQuiz = findViewById(R.id.tvQuiz);
+        rlLayout = (RelativeLayout)findViewById(R.id.img_slider);
         tvSyllabus = findViewById(R.id.tvSylabus);
         //sendSMSMessage();
-        linear1 = findViewById(R.id.linear1);
         linear2 = findViewById(R.id.linear2);
-
-//        tvEvent.setTypeface(tf_regular);
-//        tvHeadTitle.setTypeface(tf_regular);
-//        tvMemes.setTypeface(tf_regular);
-//        tvPlacement.setTypeface(tf_regular);
-//        tvProfile.setTypeface(tf_regular);
-//        tvQuiz.setTypeface(tf_regular);
-//        tvSyllabus.setTypeface(tf_regular);
+        checkToken();
+        context = this;
 
         cvEvent = findViewById(R.id.cardview2new);
-        cvProfile = findViewById(R.id.cardview);
         cvPlacement = findViewById(R.id.cvplaced);
         cvSyllabus = findViewById(R.id.cardview4);
         cvMemes = findViewById(R.id.cardview5);
         cvQuiz = findViewById(R.id.cardview6);
-        cvdis=findViewById(R.id.cvdis);
-        cvabout=findViewById(R.id.cvabut);
+        cvdis = findViewById(R.id.cvdis);
+        cvabout = findViewById(R.id.cvabut);
+        technews=findViewById(R.id.cardviewtechnews);
+
+        rlLayout.setVisibility(View.GONE);
 
         spUserDetails = getSharedPreferences("USER_DETAILS", Context.MODE_PRIVATE);
+        editor = spUserDetails.edit();
 
-        if (spUserDetails.getString("log", "").equals("visitor") || spUserDetails.getString("log", "").equals("admin")) {
-            updateView();
-        }
 
 
         init();
@@ -155,26 +154,54 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intEvent);
             }
         });
+        technews.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intEvent = new Intent(HomeActivity.this, Tech_News.class);
+                startActivity(intEvent);
+            }
+        });
 
         cvQuiz.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intEvent = new Intent(HomeActivity.this, Quiz_Events.class);
+                if (spUserDetails.getString("log", "").equals("reg")) {
+                    Intent intEvent = new Intent(HomeActivity.this, Quiz_Events.class);
                     startActivity(intEvent);
-//                SharedPreferences sharedPreferences = getSharedPreferences("QUIZ_STATUS", MODE_PRIVATE);
-//                if (sharedPreferences.getString("QUIZ", "").isEmpty()) {
-//                    Intent intEvent = new Intent(HomeActivity.this, Quiz_Events.class);
-//                    startActivity(intEvent);
-//                }else {
+                }else
+                    {
+                        CFAlertDialog.Builder builder = new CFAlertDialog.Builder(HomeActivity.this);
+                        builder.setDialogStyle(CFAlertDialog.CFAlertStyle.ALERT);
+                        builder.setTitle("Hey there ! Do Register!");
+                        builder.setMessage("We will monitor your score and will give surprise for you.");
+                        builder.addButton("OKAY", -1, -1, CFAlertDialog.CFAlertActionStyle.POSITIVE, CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                Intent i = new Intent(HomeActivity.this, SignUp.class);
+                                startActivity(i);
+
+                            }
+                        });
+
+                        builder.addButton("NO", -1, -1, CFAlertDialog.CFAlertActionStyle.NEGATIVE, CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Toast.makeText(SplashActivity.this, "Upgrade tapped", Toast.LENGTH_SHORT).show();
+
+                                dialog.dismiss();
+                            }
+                        });
+                        builder.show();
+                }
+
 //
-//                    getAlertwindow("Today Competition Completed...\nplease wait for your results...");
-//
-//                }
             }
         });
         cvdis.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                editor.putString("meme","user").apply();
                 Intent intEvent = new Intent(HomeActivity.this, Mems.class);
                 startActivity(intEvent);
             }
@@ -193,54 +220,43 @@ public class HomeActivity extends AppCompatActivity {
                 Bundle b = new Bundle();
                 b.putString("url", "https://coe1.annauniv.edu/home/");
                 b.putString("title", "RESULTS");
-                b.putString("data", "RESULTS");
+                b.putString("data", "RESULTS-AU");
                 Intent intEvent = new Intent(HomeActivity.this, WebActivity.class);
                 intEvent.putExtras(b);
                 startActivity(intEvent);
-                Toast.makeText(getApplicationContext(), "Still working..", Toast.LENGTH_SHORT).show();
             }
         });
 
-        cvProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-              /*  Bundle b = new Bundle();
-                b.putString("url","");
-                b.putString("title","PLACEMENT");
-                Intent intEvent =  new Intent(HomeActivity.this,WebActivity.class);
-                intEvent.putExtras(b);
-                startActivity(intEvent);*/
-                Toast.makeText(getApplicationContext(), "Still working..", Toast.LENGTH_SHORT).show();
-            }
-        });
 
         cvSyllabus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bundle b = new Bundle();
-                b.putString("url", "https://www.unom.ac.in/");
-                b.putString("title", "RESULTS");
-                b.putString("data", "RESULTS");
-                Intent intEvent = new Intent(HomeActivity.this, WebActivity.class);
-                intEvent.putExtras(b);
-                startActivity(intEvent);
+//                Call<String> call=ApiUtil.getServiceClass().getresulturl(ApiUtil.GET_URL);
+//                call.enqueue(new Callback<String>() {
+//                    @Override
+//                    public void onResponse(Call<String> call, Response<String> response) {
+//                        Log.d("URLRESULTS",response.body().toString());
+                        Bundle b = new Bundle();
+                        b.putString("url", "http://results.unom.ac.in/nov2019/");
+                        b.putString("title", "RESULTS");
+                        b.putString("data", "RESULTS-MU");
+                        Intent intEvent = new Intent(HomeActivity.this, WebActivity.class);
+                        intEvent.putExtras(b);
+                        startActivity(intEvent);
+                 /*   }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+
+                    }
+                });*/
+
             }
         });
 
     }
 
-    private void updateView() {
 
-        linear1.setVisibility(View.GONE);
-        LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                1.0f
-        );
-        param.leftMargin = 40;
-        linear2.setLayoutParams(param);
-
-    }
 
 
     private void init() {
@@ -248,9 +264,10 @@ public class HomeActivity extends AppCompatActivity {
        /* setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         getSupportActionBar().hide();*/
 
+
         requestPermission();
 
-        getColleges();
+
         vp_slider = (ViewPager) findViewById(R.id.vp_slider);
         ll_dots = (LinearLayout) findViewById(R.id.ll_dots);
 
@@ -258,16 +275,14 @@ public class HomeActivity extends AppCompatActivity {
 
 //Add few items to slider_image_list ,this should contain url of images which should be displayed in slider
 // here i am adding few sample image links, you can add your own
-        Call<DownloadResponse> call= ApiUtil.getServiceClass().getposters(ApiUtil.GET_POSTERS);
+        Call<DownloadResponse> call = ApiUtil.getServiceClass().getposters(ApiUtil.GET_POSTERS);
         call.enqueue(new Callback<DownloadResponse>() {
             @Override
-            public void onResponse(Call<DownloadResponse> call, Response<DownloadResponse> response)
-
-            {
+            public void onResponse(Call<DownloadResponse> call, Response<DownloadResponse> response) {
                 if (response.isSuccessful()) {
                     posters_details = response.body().getPosters_details();
                     for (int i = 0; i < posters_details.size(); i++) {
-                        Log.d("posters",String.valueOf(posters_details.get(i).getPoster()));
+                        Log.d("posters", String.valueOf(posters_details.get(i).getPoster()));
                         slider_image_list.add(String.valueOf(posters_details.get(i).getPoster()));
                     }
                     sliderPagerAdapter = new SliderPagerAdapter(HomeActivity.this, slider_image_list);
@@ -281,8 +296,6 @@ public class HomeActivity extends AppCompatActivity {
 
             }
         });
-
-
 
 
         vp_slider.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -303,8 +316,70 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
-    private void getColleges() {
+    private void checkToken() {
+
+        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(HomeActivity.this, new OnSuccessListener<InstanceIdResult>() {
+            @Override
+            public void onSuccess(InstanceIdResult instanceIdResult) {
+                refreshedToken = instanceIdResult.getToken();
+                Log.i("newToken", refreshedToken);
+                PersistanceUtil.setUserID(refreshedToken);
+                // Saving reg id to shared preferences
+                storeRegIdInPref(refreshedToken);
+                Config.setPrefToken(context, refreshedToken);
+                // Notify UI that registration has completed, so the progress indicator can be hidden.
+                //token = refreshedToken;
+                Intent registrationComplete = new Intent(Config.REGISTRATION_COMPLETE);
+                registrationComplete.putExtra("token", refreshedToken);
+                LocalBroadcastManager.getInstance(context).sendBroadcast(registrationComplete);
+                STRTOKEN = Config.getPrefToken(context);
+                Log.d("Token", STRTOKEN);
+                if (!STRTOKEN.equals("0")) {
+                    if (!spUserDetails.getString("TOKEN_STAT", "").equals("sent")) {
+                        pushToken(Config.getPrefToken(context));
+                    } else {
+                        Log.d("TOKEN_STAT", "Already token sent.");
+                    }
+
+                }
+            }
+        });
+
+
+
+
     }
+
+    private void pushToken(String token) {
+
+        Log.d("UNIQTOKEN", token + "");
+        spotsDialog.show();
+        Call<String> call = ApiUtil.getServiceClass().updatetoken(token, spUserDetails.getString("UID", ""));
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                editor.putString("TOKEN_STAT", "sent");
+                editor.apply();
+                assert response.body() != null;
+                Log.d("RESPONSELOG", response.body());
+                spotsDialog.dismiss();
+
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Log.d("FAILURE_RESPONSE", Objects.requireNonNull(t.getMessage()));
+            }
+        });
+    }
+
+    private void storeRegIdInPref(String token) {
+        SharedPreferences pref = getApplicationContext().getSharedPreferences(Config.SHARED_PREF, 0);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString("regId", token);
+        editor.apply();
+    }
+
 
     private void addBottomDots(int currentPage) {
         dots = new TextView[slider_image_list.size()];
@@ -359,8 +434,6 @@ public class HomeActivity extends AppCompatActivity {
                 break;
         }
     }
-
-
 
 
     private void openDialog() {

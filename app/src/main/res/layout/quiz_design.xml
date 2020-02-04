@@ -11,7 +11,7 @@
         android:id="@+id/card_ques"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="#FFFFFF"
+        app:cardBackgroundColor="@color/white"
         android:padding="10dp"
         android:elevation="10dp"
         android:layout_margin="5dp"
@@ -29,7 +29,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Question 1:"
-                android:textColor="#000000"
+                android:textColor="@color/colorBlack"
                 android:textSize="24sp"
                />
 
@@ -37,7 +37,7 @@
                 android:id="@+id/view3"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#000000"
+                android:background="@color/colorBlack"
                 />
 
             <TextView

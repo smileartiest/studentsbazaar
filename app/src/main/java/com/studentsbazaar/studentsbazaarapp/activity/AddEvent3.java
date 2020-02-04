@@ -1,20 +1,15 @@
 package com.studentsbazaar.studentsbazaarapp.activity;
 
 import android.app.AlertDialog;
-import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.telephony.SmsManager;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -24,7 +19,6 @@ import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.retrofit.ApiUtil;
 
 import java.net.URL;
-import java.util.Calendar;
 
 import dmax.dialog.SpotsDialog;
 import retrofit2.Call;
@@ -36,11 +30,11 @@ public class AddEvent3 extends AppCompatActivity {
     EditText ecomments, fgust, fnits, eventheam, accomation, contactname1, contactno1, contactname2, contactno2, lastdate, regfees, howtoreach, sponser;
     SpotsDialog progressDialog;
     Button complete;
-    AutoCompleteTextView eventweb,collegeweb;
+    AutoCompleteTextView eventweb, collegeweb;
     String webevent, webcollege;
     private int mYear, mMonth, mDay;
     String ecommts, edis, econby, elist, epost, etitle, ecat, eorg, ecity, estae, esdate, eedate, edpt, efg, enits, etheam, eacc, conname1, conno1, conname2, conno2, eldate, eregf, ehreach, esponser;
-    SharedPreferences sharedPreferences;
+    SharedPreferences sharedPreferences, sf;
     SharedPreferences.Editor editor;
     String[] urlformat = {"http://", "https://"};
 
@@ -49,6 +43,7 @@ public class AddEvent3 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_event3);
         sharedPreferences = getSharedPreferences("USER_DETAILS", MODE_PRIVATE);
+        sf = getSharedPreferences("event", MODE_PRIVATE);
         Log.d("USER_DETAILS", "onClick: " + sharedPreferences.getString("UID", null));
         fgust = findViewById(R.id.add3_fgusest);
         fnits = findViewById(R.id.add3_fnits);
@@ -66,37 +61,37 @@ public class AddEvent3 extends AppCompatActivity {
         complete = findViewById(R.id.button2);
         eventweb = (AutoCompleteTextView) findViewById(R.id.add3_eventweb);
         collegeweb = (AutoCompleteTextView) findViewById(R.id.add3_collegeweb);
-
-        ArrayAdapter<String> arrayAdapter =new ArrayAdapter<>(AddEvent3.this,android.R.layout.simple_list_item_1,urlformat);
+        lastdate.setText(sf.getString("estate", "none"));
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(AddEvent3.this, android.R.layout.simple_list_item_1, urlformat);
         eventweb.setAdapter(arrayAdapter);
         eventweb.setThreshold(0);
         collegeweb.setAdapter(arrayAdapter);
         collegeweb.setThreshold(0);
-        lastdate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final Calendar c = Calendar.getInstance();
-                mYear = c.get(Calendar.YEAR);
-                mMonth = c.get(Calendar.MONTH);
-                mDay = c.get(Calendar.DAY_OF_MONTH);
-
-
-                DatePickerDialog datePickerDialog = new DatePickerDialog(AddEvent3.this,
-                        new DatePickerDialog.OnDateSetListener() {
-
-                            @Override
-                            public void onDateSet(DatePicker view, int year,
-                                                  int monthOfYear, int dayOfMonth) {
-
-                                eedate = dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
-
-                                lastdate.setText(eedate);
-
-                            }
-                        }, mYear, mMonth, mDay);
-                datePickerDialog.show();
-            }
-        });
+//        lastdate.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                final Calendar c = Calendar.getInstance();
+//                mYear = c.get(Calendar.YEAR);
+//                mMonth = c.get(Calendar.MONTH);
+//                mDay = c.get(Calendar.DAY_OF_MONTH);
+//
+//
+//                DatePickerDialog datePickerDialog = new DatePickerDialog(AddEvent3.this,
+//                        new DatePickerDialog.OnDateSetListener() {
+//
+//                            @Override
+//                            public void onDateSet(DatePicker view, int year,
+//                                                  int monthOfYear, int dayOfMonth) {
+//
+//                                eedate = dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
+//
+//                                lastdate.setText(eedate);
+//
+//                            }
+//                        }, mYear, mMonth, mDay);
+//                datePickerDialog.show();
+//            }
+//        });
         eventweb.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
@@ -150,7 +145,7 @@ public class AddEvent3 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 progressDialog = new SpotsDialog(AddEvent3.this);
-                SharedPreferences sf = getSharedPreferences("event", MODE_PRIVATE);
+
                 epost = sf.getString("epost", "none");
                 elist = sf.getString("elist", "none");
                 etitle = sf.getString("etitle", "none");
@@ -214,12 +209,11 @@ public class AddEvent3 extends AppCompatActivity {
                 if (Contact_Person1_Name.isEmpty() && Contact_Person1_No.isEmpty() && Contact_Person2_Name.isEmpty() && Contact_Person2_No.isEmpty() && Last_date_registration.isEmpty() && Event_Website.isEmpty() && College_Website.isEmpty() && Entry_Fees.isEmpty()) {
                     Toast.makeText(AddEvent3.this, "All Fields are mandatory...", Toast.LENGTH_SHORT).show();
 
-                }else if (contactno1.getText().toString().length()<10){
+                } else if (contactno1.getText().toString().length() < 10) {
                     contactno1.setError("Please fill valid 10 Digit");
-                }else if (contactno2.getText().toString().length()<10){
+                } else if (contactno2.getText().toString().length() < 10) {
                     contactno2.setError("Please fill valid 10 Digit");
-                }
-                else {
+                } else {
                     progressDialog.show();
                     Log.d("alldatas", "onClick: " + Event_Title + " " + Event_Type + " " + Event_Name + " " + Event_Start_Date + " " + Event_End_Date + " " + Conductedby + " " + Degree + " " + Dept + " " + College_Address + " " + College_District + " " + College_State + " " + Event_organizer + " " + Event_Details + Event_Discription + " " + Event_Website + " " + College_Website + " " + Contact_Person1_Name + " " + Contact_Person1_No + " " + Contact_Person2_Name + " " + Contact_Person2_No + " " + " " + Entry_Fees + " " + Accepted + " " + Event_Lat + " " + Event_Long + " " + Event_guest + " " + Event_pro_nites + " " + Event_accomodations + " " + Event_how_to_reach + " " + Event_sponsors + " " + Last_date_registration + " " + Event_status);
                     Call<String> call = ApiUtil.getServiceClass().insertUser(sharedPreferences.getString("UID", null), Event_Title, Event_Type, Event_Name, Event_Start_Date, Event_End_Date, Conductedby, Degree, Dept, College_Address, College_District, College_State, Event_organizer, Event_Details, Event_Discription, Event_Website, College_Website, Contact_Person1_Name, Contact_Person1_No, Contact_Person2_Name, Contact_Person2_No, Poster, Entry_Fees, Accepted, Event_Lat, Event_Long, Event_guest, Event_pro_nites, Event_accomodations, Event_how_to_reach, Event_sponsors, Last_date_registration, Event_status, Comments);

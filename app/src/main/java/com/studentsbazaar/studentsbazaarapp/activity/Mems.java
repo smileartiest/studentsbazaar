@@ -1,6 +1,7 @@
 package com.studentsbazaar.studentsbazaarapp.activity;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -15,19 +16,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.crowdfire.cfalertdialog.CFAlertDialog;
 import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.adapter.Memes_Adapter;
 import com.studentsbazaar.studentsbazaarapp.model.DownloadResponse;
@@ -45,33 +46,50 @@ import dmax.dialog.SpotsDialog;
 import id.zelory.compressor.Compressor;
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Response;
 
 public class Mems extends AppCompatActivity {
     List<Memes_Details> memes_details = null;
     SpotsDialog spotsDialog;
     RecyclerView memeview;
     Memes_Adapter mAdapter;
+    SwipeRefreshLayout swipeRefreshLayout;
     Bitmap profilePicture;
     private static int RESULT_LOAD_IMAGE = 1;
-    CardView impost;
-    String profileimg,encoded;
+    String profileimg, encoded;
     ImageView postmeme;
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
+    String UID;
+    String epost = "0";
+    Dialog dialog;
+    Uri imageUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mems);
         spotsDialog = new SpotsDialog(this);
-        memeview=findViewById(R.id.memerecyler);
+        memeview = findViewById(R.id.memerecyler);
+        swipeRefreshLayout = findViewById(R.id.memeswipe);
+        sharedPreferences = getSharedPreferences("USER_DETAILS", MODE_PRIVATE);
+        UID = sharedPreferences.getString("UID", null);
         Toolbar toolbar = (Toolbar) findViewById(R.id.memetool);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
             getSupportActionBar().setTitle("Memes");
 
         }
+        loadData();
         memeview.setHasFixedSize(true);
         memeview.setLayoutManager(new LinearLayoutManager(this));
-        loadData();
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loadData();
+            }
+        });
+
 
     }
 
@@ -79,7 +97,13 @@ public class Mems extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.add_placement_menu, menu);
-        MenuItem shareItem = menu.findItem(R.id.item1);
+        MenuItem shareItem = menu.findItem(R.id.item2);
+
+        if (sharedPreferences.getString("log", "").equals("admin")) {
+            shareItem.setVisible(true);
+        }else{
+            shareItem.setVisible(false);
+        }
 
         return true;
     }
@@ -90,7 +114,13 @@ public class Mems extends AppCompatActivity {
         switch (id) {
             case R.id.item1:
                 addJob();
-                Toast.makeText(getApplicationContext(), "Add Selected", Toast.LENGTH_LONG).show();
+
+                return true;
+            case R.id.item2:
+
+                Intent intent = new Intent(Mems.this,Pending_Post.class);
+                startActivity(intent);
+
                 return true;
 
             default:
@@ -100,28 +130,47 @@ public class Mems extends AppCompatActivity {
     }
 
     private void addJob() {
-        final Dialog dialog = new Dialog(Mems.this);
+
+        dialog = new Dialog(Mems.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(true);
         dialog.setContentView(R.layout.addpost);
-
-        EditText posted = dialog.findViewById(R.id.addposted);
-        impost = dialog.findViewById(R.id.cardView4);
-        postmeme=dialog.findViewById(R.id.addpostiv);
-        Button postbtn = dialog.findViewById(R.id.addbtn);
-        postbtn.setOnClickListener(new View.OnClickListener() {
+        TextView post = dialog.findViewById(R.id.post);
+        postmeme = dialog.findViewById(R.id.addnewsiv);
+        Button postbtn = dialog.findViewById(R.id.addnewsbtn);
+        post.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(i, RESULT_LOAD_IMAGE);
-//                convertBitmapToString(profilePicture);
-//                encoded = profileimg;
-//                Log.d("imgres",encoded.toString());
+//
             }
         });
-        impost.setOnClickListener(new View.OnClickListener() {
+        postbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                spotsDialog.show();
+                convertBitmapToString(profilePicture);
+                epost = profileimg;
+                Log.d("RESPONSE3", epost);
+                Call<String> call = ApiUtil.getServiceClass().addmemes(UID, "fine", epost);
+                call.enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        if (response.body().equals("1")) {
+                            spotsDialog.dismiss();
+                            dialog.cancel();
+                            alert();
+                        } else {
+                            Toast.makeText(Mems.this, response.body(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+
+                    }
+                });
 
             }
         });
@@ -133,7 +182,22 @@ public class Mems extends AppCompatActivity {
 
     }
 
+    void alert() {
+        CFAlertDialog.Builder builder = new CFAlertDialog.Builder(Mems.this);
+        builder.setDialogStyle(CFAlertDialog.CFAlertStyle.ALERT);
+        builder.setTitle("Hey ");
+        builder.setMessage("Thanks for your Post....");
+        builder.addButton("Done", -1, -1, CFAlertDialog.CFAlertActionStyle.POSITIVE, CFAlertDialog.CFAlertActionAlignment.JUSTIFIED
+                , new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        loadData();
 
+                    }
+                });
+        builder.show();
+    }
 
     private void loadData() {
         spotsDialog.show();
@@ -145,7 +209,7 @@ public class Mems extends AppCompatActivity {
                 Log.d("RESPONSE1", response.message().toString());
 
                 if (response.isSuccessful()) {
-
+                    swipeRefreshLayout.setRefreshing(false);
 
                     assert response.body() != null;
                     memes_details = response.body().getMemes_details();
@@ -163,6 +227,7 @@ public class Mems extends AppCompatActivity {
                         // mAdapter.notifyDataSetChanged();
                     }
                 }
+
             }
 
             @Override
@@ -174,30 +239,35 @@ public class Mems extends AppCompatActivity {
         });
 
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == RESULT_LOAD_IMAGE) {
-            try {
 
-                Uri imageUri = data.getData();
-                InputStream imageStream = getApplicationContext().getContentResolver().openInputStream(imageUri);
-                profilePicture = BitmapFactory.decodeStream(imageStream);
-                postmeme.setImageBitmap(profilePicture);
-                Bitmap compressedImgFile = new Compressor(this).compressToBitmap(new File(imageUri.getPath()));
-                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                compressedImgFile.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-                byte[] byteArray = byteArrayOutputStream.toByteArray();
-                 encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
+                try {
+                    if (data !=null){
 
+                    if (data.getData()!=null) {
+                        imageUri = data.getData();
+                        InputStream imageStream = getApplicationContext().getContentResolver().openInputStream(imageUri);
+                        profilePicture = BitmapFactory.decodeStream(imageStream);
+                        postmeme.setImageBitmap(profilePicture);
+                        Bitmap compressedImgFile = new Compressor(this).compressToBitmap(new File(imageUri.getPath()));
+                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                        compressedImgFile.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+                        byte[] byteArray = byteArrayOutputStream.toByteArray();
+                        encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
+                        epost = encoded;
 
+                    }}
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
 
     }
@@ -208,4 +278,6 @@ public class Mems extends AppCompatActivity {
         byte[] array = byteArrayOutputStream.toByteArray();
         profileimg = Base64.encodeToString(array, Base64.DEFAULT);
     }
+
+
 }

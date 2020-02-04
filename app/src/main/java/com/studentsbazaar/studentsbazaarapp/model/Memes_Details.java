@@ -2,6 +2,9 @@ package com.studentsbazaar.studentsbazaarapp.model;
 
 public class Memes_Details {
 
+
+
+    private String User_Id;
     private String User_Name;
     private String Caption;
     private String Memes;
@@ -11,7 +14,13 @@ public class Memes_Details {
 
 
     // Getter Methods
+    public String getUser_Id() {
+        return User_Id;
+    }
 
+    public void setUser_Id(String user_Id) {
+        User_Id = user_Id;
+    }
     public String getUser_Name() {
         return User_Name;
     }

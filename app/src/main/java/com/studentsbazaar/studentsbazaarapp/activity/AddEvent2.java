@@ -2,14 +2,10 @@ package com.studentsbazaar.studentsbazaarapp.activity;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.InputType;
-import android.util.Log;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -26,7 +22,6 @@ import com.studentsbazaar.studentsbazaarapp.R;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 public class AddEvent2 extends AppCompatActivity {
 
@@ -39,12 +34,12 @@ public class AddEvent2 extends AppCompatActivity {
     Button catdone, catcancel;
     Dialog d, catd;
     Button cse, ece, it, eee, civl, chemical, agri, medical, pharm, arts, biotech, mba, mca, commerce, law, biomedical, mech, aeronoutical, aerospace, design, fashion, media, bba;
-    TextView cancel, done,txtcat;
-    ArrayList<String> catlist =new ArrayList<>();
+    TextView cancel, done, txtcat;
+    ArrayList<String> catlist = new ArrayList<>();
     ArrayList<String> deptlist = new ArrayList<>();
 
     private int mYear, mMonth, mDay;
-
+    String day;
     String disevent, conby, etitle, ecat, eorg, ecity, estae, esdate, eedate, edpt;
 
     @Override
@@ -62,80 +57,90 @@ public class AddEvent2 extends AppCompatActivity {
         departmentlist = findViewById(R.id.add2_eventdepartment);
         adddepartment = findViewById(R.id.add2_departmentaddicon);
         evendiscrition = findViewById(R.id.add2_discrition);
-        txtcat=findViewById(R.id.textView9);
+        txtcat = findViewById(R.id.textView9);
         catagory.setShowSoftInputOnFocus(false);
         next = findViewById(R.id.add2_nextbtn);
 
         if (departmentlist.getText().length() == 0) {
-            departmentlist.setText("no department choose");
+            departmentlist.setText("No Department Selected");
         }
-
+        catagory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                adddepart();
+            }
+        });
 
         catagory.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
-                catd = new Dialog(AddEvent2.this);
-                catd.setContentView(R.layout.cat_degin);
-                catworkshop = (CheckBox) catd.findViewById(R.id.catworkshop);
-                cattechfest = (CheckBox) catd.findViewById(R.id.cattechfest);
-                catculfest = (CheckBox) catd.findViewById(R.id.catculfest);
-                catsympo = (CheckBox) catd.findViewById(R.id.catsympo);
-                catconference = (CheckBox) catd.findViewById(R.id.catconf);
-                catmanagefest = (CheckBox) catd.findViewById(R.id.catmanage);
-                catothers = (CheckBox) catd.findViewById(R.id.catothers);
-                catdone = catd.findViewById(R.id.catdone);
-                catcancel = catd.findViewById(R.id.catcancel);
-
-                catcancel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        catd.dismiss();
-
-                    }
-                });
-
-                catdone.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                        if (catworkshop.isChecked()) {
-                            catlist.add("Workshop ");
-                        }
-                        if (cattechfest.isChecked()) {
-                            catlist.add("Tech fest ");
-                        }
-                        if (catothers.isChecked()) {
-                            catlist.add("Others ");
-                        }
-                        if (catculfest.isChecked()) {
-                            catlist.add("Cultural fest ");
-                        }
-                        if (catsympo.isChecked()) {
-                            catlist.add("Symposium ");
-                        }
-                        if (catconference.isChecked()) {
-                            catlist.add("Conference ");
-                        }
-                        if (catmanagefest.isChecked()) {
-                            catlist.add("Management fest ");
-                        }
-                        catagory.setText(String.valueOf(catlist));
-                        catd.dismiss();
-                        conducted.requestFocus();
-
-                    }
-                });
-                catd.show();
-
+                adddepart();
             }
         });
         conducted.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
-               catd.cancel();
+                catd.cancel();
             }
         });
 
+
+
+    }
+
+    void adddepart() {
+        catd = new Dialog(AddEvent2.this);
+        catd.setContentView(R.layout.cat_degin);
+        catworkshop = (CheckBox) catd.findViewById(R.id.catworkshop);
+        cattechfest = (CheckBox) catd.findViewById(R.id.cattechfest);
+        catculfest = (CheckBox) catd.findViewById(R.id.catculfest);
+        catsympo = (CheckBox) catd.findViewById(R.id.catsympo);
+        catconference = (CheckBox) catd.findViewById(R.id.catconf);
+        catmanagefest = (CheckBox) catd.findViewById(R.id.catmanage);
+        catothers = (CheckBox) catd.findViewById(R.id.catothers);
+        catdone = catd.findViewById(R.id.catdone);
+        catcancel = catd.findViewById(R.id.catcancel);
+
+        catcancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                catd.dismiss();
+
+            }
+        });
+
+        catdone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (catworkshop.isChecked()) {
+                    catlist.add("Workshop ");
+                }
+                if (cattechfest.isChecked()) {
+                    catlist.add("Tech fest ");
+                }
+                if (catothers.isChecked()) {
+                    catlist.add("Others ");
+                }
+                if (catculfest.isChecked()) {
+                    catlist.add("Cultural fest ");
+                }
+                if (catsympo.isChecked()) {
+                    catlist.add("Symposium ");
+                }
+                if (catconference.isChecked()) {
+                    catlist.add("Conference ");
+                }
+                if (catmanagefest.isChecked()) {
+                    catlist.add("Management fest ");
+                }
+                catagory.setText(String.valueOf(catlist));
+                catd.dismiss();
+                conducted.requestFocus();
+
+            }
+        });
+        catd.show();
 
     }
 
@@ -152,15 +157,19 @@ public class AddEvent2 extends AppCompatActivity {
                 mMonth = c.get(Calendar.MONTH);
                 mDay = c.get(Calendar.DAY_OF_MONTH);
 
-
                 DatePickerDialog datePickerDialog = new DatePickerDialog(AddEvent2.this,
                         new DatePickerDialog.OnDateSetListener() {
 
                             @Override
                             public void onDateSet(DatePicker view, int year,
                                                   int monthOfYear, int dayOfMonth) {
+                                if(dayOfMonth < 10){
 
-                                esdate = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
+                                    day  = "0" + dayOfMonth ;
+                                }else{
+                                   day  = String.valueOf(dayOfMonth);
+                                }
+                                esdate = year + "-" + (monthOfYear + 1) + "-" + day;
                                 startdate.setText(esdate);
 
                             }
@@ -185,8 +194,14 @@ public class AddEvent2 extends AppCompatActivity {
                             @Override
                             public void onDateSet(DatePicker view, int year,
                                                   int monthOfYear, int dayOfMonth) {
+                                if(dayOfMonth < 10){
 
-                                eedate = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
+                                    day  = "0" + dayOfMonth ;
+                                }
+                                else{
+                                    day  = String.valueOf(dayOfMonth);
+                                }
+                                eedate = year + "-" + (monthOfYear + 1) + "-" + day;
 
                                 enddate.setText(eedate);
 
@@ -460,7 +475,6 @@ public class AddEvent2 extends AppCompatActivity {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
 
 
                 if (title.getText().length() != 0) {

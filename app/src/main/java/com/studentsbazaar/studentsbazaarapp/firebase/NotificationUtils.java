@@ -94,7 +94,7 @@ public class NotificationUtils extends ContextWrapper {
                 2525, deleteIntent, 0);
 
         // notification icon
-        final int icon = R.mipmap.ic_launcher;
+        final int icon = R.mipmap.newlogo;
 
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         final PendingIntent resultPendingIntent =
@@ -152,7 +152,7 @@ public class NotificationUtils extends ContextWrapper {
                     .setSound(alarmSound)
                     .setWhen(System.currentTimeMillis())
                     .setStyle(bigTextStyle)
-                    .setSmallIcon(R.mipmap.ic_launcher)
+                    .setSmallIcon(R.mipmap.newlogo)
                     .setDeleteIntent(mDeletePendingIntent)
                     .setGroup(NOTIFICATION_GROUP)
                     .setLargeIcon(BitmapFactory.decodeResource(mContext.getResources(), icon))
@@ -182,7 +182,7 @@ public class NotificationUtils extends ContextWrapper {
                     .setContentIntent(resultPendingIntent)
                     .setSound(alarmSound)
                     .setStyle(bigTextStyle)
-                    .setSmallIcon(R.mipmap.ic_launcher)
+                    .setSmallIcon(R.mipmap.newlogo)
 
                     .setLargeIcon(BitmapFactory.decodeResource(mContext.getResources(), icon))
                     .setContentText(message)
@@ -243,7 +243,7 @@ public class NotificationUtils extends ContextWrapper {
             String notificationContent = "";
             NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext,ANDROID_CHANNEL_ID)
                     .setAutoCancel(true)
-                    .setSmallIcon(R.mipmap.ic_launcher)
+                    .setSmallIcon(R.mipmap.newlogo)
                     .setDeleteIntent(mDeletePendingIntent)
                     .setStyle(new androidx.core.app.NotificationCompat.BigTextStyle()
                             .setSummaryText(notificationContent))
@@ -294,7 +294,7 @@ public class NotificationUtils extends ContextWrapper {
                 .setSound(alarmSound)
                 .setStyle(bigPictureStyle)
                 .setWhen(System.currentTimeMillis())
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.mipmap.newlogo)
                 .setLargeIcon(BitmapFactory.decodeResource(mContext.getResources(), icon))
                 .setContentText(message)
                 .build();

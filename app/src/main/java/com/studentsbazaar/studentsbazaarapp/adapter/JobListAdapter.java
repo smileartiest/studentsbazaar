@@ -23,7 +23,7 @@ import java.util.List;
 
 public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.ViewHolder> {
 
-    Typeface tf_regular;
+
     Context context;
     private LayoutInflater mInflater;
     List<Campus> mData;
@@ -42,7 +42,6 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.ViewHold
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.job_view, parent, false);
 
-        tf_regular = Typeface.createFromAsset(v.getContext().getAssets(), "caviar.ttf");
 
         return new ViewHolder(v);
     }
@@ -95,13 +94,7 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.ViewHold
             tvDate = (TextView) itemView.findViewById(R.id.id_date);
             cardView = (CardView) itemView.findViewById(R.id.id_cardView);
             linearLayout = (LinearLayout) itemView.findViewById(R.id.id_cardLayout);
-            tvDomain.setTypeface(tf_regular);
-            tvCompany.setTypeface(tf_regular);
-            tvcollege.setTypeface(tf_regular);
-            tvSal_package.setTypeface(tf_regular);
-            tvplaced.setTypeface(tf_regular);
-            tvDate.setTypeface(tf_regular);
-            //tvEndDate.setTypeface(tf_regular);
+
 
 
         }

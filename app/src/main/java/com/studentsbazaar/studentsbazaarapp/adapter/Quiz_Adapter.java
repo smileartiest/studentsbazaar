@@ -35,7 +35,6 @@ public class Quiz_Adapter extends RecyclerView.Adapter<Quiz_Adapter.Myviewholder
     private LayoutInflater mInflater;
     private List<Quiz_Details> mData;
     private Context context;
-    private Typeface tf_regular;
     private View view;
     private int results = 0;
 
@@ -50,7 +49,6 @@ public class Quiz_Adapter extends RecyclerView.Adapter<Quiz_Adapter.Myviewholder
     @Override
     public Myviewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         view = mInflater.inflate(R.layout.quiz_design, parent, false);
-        tf_regular = Typeface.createFromAsset(view.getContext().getAssets(), "caviar.ttf");
 
         return new Myviewholder(view);
     }

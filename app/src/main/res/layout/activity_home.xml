@@ -15,18 +15,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Students's Portal"
-        android:layout_marginTop="20dp"
-        android:id="@+id/head_title"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        android:typeface="serif"
-        android:gravity="center_horizontal"
-        android:textSize="30dp"/>
-
             <RelativeLayout
                 android:layout_below="@+id/head_title"
                 android:layout_width="match_parent"
@@ -55,7 +43,7 @@
             </RelativeLayout>
 
     <LinearLayout
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_below="@+id/img_slider"
         android:layout_height="wrap_content"
@@ -65,96 +53,83 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:weightSum="2">
+           >
+
 
             <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:paddingRight="5dp"
-                android:paddingEnd="5dp"
-                android:paddingStart="5dp"
-                android:paddingLeft="5dp"
-                android:id="@+id/linear1"
-                android:layout_height="wrap_content">
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cardview"
                 android:layout_width="match_parent"
-                android:layout_height="170dp"
-                android:layout_margin="4dp"
-                android:background="#FFFFFC"
-                app:cardCornerRadius="10dp"
-                app:cardElevation="3dp"
-                app:cardUseCompatPadding="true">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:id="@+id/ivImage"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/avatar_new" />
-
-                    <TextView
-                        android:id="@+id/tvTitle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="Profile"
-                        android:layout_marginTop="5dp"
-                        android:textColor="#000000"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:paddingRight="5dp"
-                android:paddingEnd="5dp"
-                android:paddingStart="5dp"
-                android:paddingLeft="5dp"
+                android:weightSum="2"
                 android:id="@+id/linear2"
                 android:layout_height="wrap_content">
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cardview2new"
-                android:layout_width="match_parent"
-                android:layout_height="170dp"
-                app:cardCornerRadius="10dp"
-                android:layout_margin="4dp"
-                app:cardElevation="3dp"
-                app:cardUseCompatPadding="true">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:orientation="vertical">
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardview2new"
+                    android:layout_width="0dp"
+                    android:layout_height="170dp"
+                    app:cardCornerRadius="10dp"
+                    android:layout_margin="4dp"
+                    android:layout_weight="1"
+                    app:cardElevation="3dp"
+                    app:cardUseCompatPadding="true">
 
-                    <ImageView
-                        android:id="@+id/ivImageEvent"
-                        android:layout_width="wrap_content"
-
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/event_new" />
-
-                    <TextView
-                        android:id="@+id/tvEventNew"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:gravity="center"
-                        android:layout_marginTop="5dp"
-                        android:text="Event"
-                        android:textColor="#000000"
-                        android:textStyle="bold" />
-                </LinearLayout>
+                        android:orientation="vertical">
 
-            </androidx.cardview.widget.CardView>
+                        <ImageView
+                            android:id="@+id/ivImageEvent"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/event_new" />
+
+                        <TextView
+                            android:id="@+id/tvEventNew"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:layout_marginTop="5dp"
+                            android:text="Event"
+                            android:textColor="#000000"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardviewtechnews"
+                    android:layout_width="0dp"
+                    android:layout_height="170dp"
+                    app:cardCornerRadius="10dp"
+                    android:layout_margin="4dp"
+                    android:layout_weight="1"
+                    app:cardElevation="3dp"
+                    app:cardUseCompatPadding="true">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/ivImageEvent1"
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:src="@drawable/technews" />
+
+                        <TextView
+                            android:id="@+id/tvEventNew1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:layout_marginTop="5dp"
+                            android:text="Interesting Facts"
+                            android:textColor="#000000"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
             </LinearLayout>
         </LinearLayout>
         <LinearLayout
@@ -163,19 +138,11 @@
             android:orientation="horizontal"
             android:weightSum="2">
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:paddingRight="5dp"
-                android:paddingEnd="5dp"
-                android:paddingStart="5dp"
-                android:paddingLeft="5dp"
-
-                android:layout_height="wrap_content">
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardview5"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="170dp"
+                    android:layout_weight="1"
                     android:layout_margin="4dp"
                     android:background="#FFFFFC"
                     app:cardElevation="3dp"
@@ -186,7 +153,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
-
                         android:orientation="vertical">
 
                         <ImageView
@@ -207,21 +173,14 @@
                     </LinearLayout>
 
                 </androidx.cardview.widget.CardView>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:paddingRight="5dp"
-                android:paddingEnd="5dp"
-                android:paddingStart="5dp"
-                android:paddingLeft="5dp"
 
-                android:layout_height="wrap_content">
+
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardview4"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="170dp"
                     android:layout_margin="4dp"
+                    android:layout_weight="1"
                     android:background="#FFFFFC"
                     app:cardCornerRadius="10dp"
                     app:cardElevation="3dp"
@@ -251,7 +210,7 @@
                     </LinearLayout>
 
                 </androidx.cardview.widget.CardView>
-            </LinearLayout>
+
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -259,20 +218,13 @@
             android:orientation="horizontal"
             android:weightSum="2">
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:paddingRight="5dp"
-                android:paddingEnd="5dp"
-                android:paddingStart="5dp"
-                android:paddingLeft="5dp"
-                android:paddingBottom="5dp"
-                android:layout_height="wrap_content">
+
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cvplaced"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="170dp"
                     android:layout_margin="4dp"
+                    android:layout_weight="1"
                     app:cardCornerRadius="10dp"
                     android:background="#FFFFFC"
                     app:cardElevation="3dp"
@@ -304,20 +256,13 @@
                     </LinearLayout>
 
                 </androidx.cardview.widget.CardView>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:paddingRight="5dp"
-                android:paddingEnd="5dp"
-                android:paddingStart="5dp"
-                android:paddingLeft="5dp"
-                android:paddingBottom="5dp"
-                android:layout_height="wrap_content">
+
+
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardview6"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="170dp"
+                    android:layout_weight="1"
                     android:layout_margin="4dp"
                     android:background="#FFFFFC"
                     app:cardCornerRadius="10dp"
@@ -332,10 +277,9 @@
 
                         <ImageView
                             android:id="@+id/ivQuiz"
-                            android:layout_width="wrap_content"
-
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/quiz" />
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:src="@drawable/news" />
 
                         <TextView
                             android:id="@+id/tvQuiz"
@@ -349,7 +293,7 @@
                     </LinearLayout>
 
                 </androidx.cardview.widget.CardView>
-            </LinearLayout>
+
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -357,20 +301,13 @@
             android:orientation="horizontal"
             android:weightSum="2">
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:paddingRight="5dp"
-                android:paddingEnd="5dp"
-                android:paddingStart="5dp"
-                android:paddingLeft="5dp"
-                android:paddingBottom="5dp"
-                android:layout_height="wrap_content">
+
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cvdis"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="170dp"
                     android:layout_margin="4dp"
+                    android:layout_weight="1"
                     app:cardCornerRadius="10dp"
                     android:background="#FFFFFC"
                     app:cardElevation="3dp"
@@ -401,20 +338,13 @@
                     </LinearLayout>
 
                 </androidx.cardview.widget.CardView>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:paddingRight="5dp"
-                android:paddingEnd="5dp"
-                android:paddingStart="5dp"
-                android:paddingLeft="5dp"
-                android:paddingBottom="5dp"
-                android:layout_height="wrap_content">
+
+
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cvabut"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="170dp"
+                    android:layout_weight="1"
                     android:layout_margin="4dp"
                     android:background="#FFFFFC"
                     app:cardCornerRadius="10dp"
@@ -443,7 +373,7 @@
                     </LinearLayout>
 
                 </androidx.cardview.widget.CardView>
-            </LinearLayout>
+
         </LinearLayout>
     </LinearLayout>
     </RelativeLayout>

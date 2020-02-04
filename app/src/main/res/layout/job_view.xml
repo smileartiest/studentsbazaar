@@ -14,7 +14,7 @@
     <View
         android:layout_width="15dp"
         android:layout_height="match_parent"
-        android:background="#D50000"/>
+        android:background="@color/colorPrimaryDark"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -33,7 +33,7 @@
             android:layout_alignParentTop="true"
             android:text=" NMS"
             android:layout_margin="3dp"
-            android:textColor="#D50000"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="18sp" />
 
 
@@ -44,7 +44,7 @@
                 android:layout_margin="3dp"
                 android:id="@+id/id_college_name"
                 android:drawablePadding="10dp"
-                android:textColor="#A52217"
+                android:textColor="@color/colorBlack"
                 android:drawableLeft="@drawable/college"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
@@ -57,7 +57,7 @@
         android:weightSum="2"
         android:layout_height="wrap_content">
         <TextView
-            android:text=" DOMAIN"
+            android:text=" Domain"
             android:gravity="center_vertical"
             android:layout_margin="3dp"
             android:drawablePadding="10dp"
@@ -70,7 +70,7 @@
             android:text=" IT/ECE"
             android:gravity="center_vertical"
             android:layout_margin="3dp"
-            android:textColor="#970606"
+            android:textColor="@color/colorBlack"
             android:id="@+id/id_domain"
             android:drawablePadding="10dp"
            android:layout_weight="1.3"
@@ -96,7 +96,7 @@
             android:text=" 15"
             android:gravity="center_vertical"
             android:id="@+id/id_students_placed"
-            android:textColor="#970606"
+            android:textColor="@color/colorBlack"
             android:drawablePadding="10dp"
             android:layout_margin="3dp"
             android:layout_width="0dp"
@@ -121,7 +121,7 @@
         <TextView
             android:text=" 4"
             android:gravity="center_vertical"
-            android:textColor="#970606"
+            android:textColor="@color/colorBlack"
             android:layout_margin="3dp"
             android:drawablePadding="10dp"
             android:id="@+id/id_package"
@@ -149,7 +149,7 @@
             <TextView
                 android:text=" 27-Oct-15"
                 android:gravity="center_vertical"
-                android:textColor="#970606"
+                android:textColor="@color/colorBlack"
                 android:layout_margin="3dp"
                 android:drawablePadding="10dp"
                 android:id="@+id/id_date"

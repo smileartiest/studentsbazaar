@@ -9,6 +9,7 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -37,14 +38,13 @@ public class View_Details extends AppCompatActivity {
     String posterurl, coid, webevent, webcoll,weburl;
     SharedPreferences spUserDetails;
     SpotsDialog spotsDialog;
-    Typeface tf_regular;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_view__details);
-        tf_regular = Typeface.createFromAsset(getApplicationContext().getAssets(), "caviar.ttf");
         submit = (Button) findViewById(R.id.head_btSubmit);
         edit = (Button) findViewById(R.id.head_Update);
         title = (TextView) findViewById(R.id.head_title);
@@ -73,32 +73,7 @@ public class View_Details extends AppCompatActivity {
         collegeweb = (TextView) findViewById(R.id.head_college_web);
         register_now = (Button) findViewById(R.id.register_now);
 
-        submit.setTypeface(tf_regular);
-        edit.setTypeface(tf_regular);
-        title.setTypeface(tf_regular);
-        category.setTypeface(tf_regular);
-        sdate.setTypeface(tf_regular);
-        edate.setTypeface(tf_regular);
-        organizer.setTypeface(tf_regular);
-        city.setTypeface(tf_regular);
-        state.setTypeface(tf_regular);
-        Discription.setTypeface(tf_regular);
-        eventdetails.setTypeface(tf_regular);
-        department.setTypeface(tf_regular);
-        guest.setTypeface(tf_regular);
-        pronites.setTypeface(tf_regular);
-        theme.setTypeface(tf_regular);
-        accomadtation.setTypeface(tf_regular);
-        lastdate.setTypeface(tf_regular);
-        entryfees.setTypeface(tf_regular);
-        howtoreach.setTypeface(tf_regular);
-        cpnam1.setTypeface(tf_regular);
-        cpno1.setTypeface(tf_regular);
-        cpname2.setTypeface(tf_regular);
-        cpno2.setTypeface(tf_regular);
-        eventweb.setTypeface(tf_regular);
-        collegeweb.setTypeface(tf_regular);
-        register_now.setTypeface(tf_regular);
+
 
         spotsDialog = new SpotsDialog(this);
         spUserDetails = getSharedPreferences("USER_DETAILS", Context.MODE_PRIVATE);
@@ -232,7 +207,10 @@ public class View_Details extends AppCompatActivity {
         Discription.setText(sDiscription);
         eventdetails.setText(seventdetails);
         department.setText(sdepartment);
-        guest.setText(sguest);
+
+            guest.setText(sguest);
+
+
         pronites.setText(spronites);
         theme.setText(stheme);
         accomadtation.setText(saccomadtation);

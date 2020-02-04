@@ -25,10 +25,10 @@ import com.crowdfire.cfalertdialog.CFAlertDialog;
 import com.google.android.material.navigation.NavigationView;
 import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.adapter.ViewPagerAdapter;
+import com.studentsbazaar.studentsbazaarapp.helper.DepthPageTransformer;
 import com.studentsbazaar.studentsbazaarapp.model.DownloadResponse;
 import com.studentsbazaar.studentsbazaarapp.model.Project_details;
 import com.studentsbazaar.studentsbazaarapp.retrofit.ApiUtil;
-
 
 import java.util.List;
 
@@ -48,6 +48,7 @@ public class EventActivity extends AppCompatActivity implements NavigationView.O
     List<Project_details> drawerResponseList = null;
     SharedPreferences spUserDetails;
     SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
     LinearLayout layout;
 
     @Override
@@ -57,9 +58,9 @@ public class EventActivity extends AppCompatActivity implements NavigationView.O
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
-         sharedPreferences = getSharedPreferences("DEV_ID", MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences("DEV_ID", MODE_PRIVATE);
         progressDialog = new SpotsDialog(this, R.style.Custom);
-        layout=(LinearLayout)findViewById(R.id.empty2);
+        layout = (LinearLayout) findViewById(R.id.empty2);
         viewPager2 = findViewById(R.id.viewPager2);
 
         if (toolbar != null) {
@@ -74,22 +75,19 @@ public class EventActivity extends AppCompatActivity implements NavigationView.O
         toggle.syncState();
 
         spUserDetails = getSharedPreferences("USER_DETAILS", Context.MODE_PRIVATE);
-
+        editor = spUserDetails.edit();
         navigationView.setNavigationItemSelectedListener(EventActivity.this);
-        if (spUserDetails.getString("log", "").equals("visitor") && sharedPreferences.getString("eid",null).equals("0")) {
+        if (spUserDetails.getString("log", "").equals("visitor")) {
             navigationView.getMenu().getItem(2).setVisible(false);
             navigationView.getMenu().getItem(3).setVisible(false);
 
-        }
-        else  if(spUserDetails.getString("log", "").equals("visitor")){
+        } else if (spUserDetails.getString("log", "").equals("reg")) {
             navigationView.getMenu().getItem(2).setVisible(false);
-        }else
-            {
-            navigationView.getMenu().getItem(3).setVisible(false);
-              //  navigationView.getMenu().getItem(1).setVisible(false);
+
         }
 
         viewPager2.setOrientation(ViewPager2.ORIENTATION_VERTICAL);
+        viewPager2.setPageTransformer(new DepthPageTransformer());
         loadData();
     }
 
@@ -112,10 +110,10 @@ public class EventActivity extends AppCompatActivity implements NavigationView.O
 
                     Log.d("RESPONSE2", drawerResponseList.toString());
                     progressDialog.dismiss();
-                    if (drawerResponseList.size()==0){
+                    if (drawerResponseList.size() == 0) {
                         layout.setVisibility(View.VISIBLE);
                         viewPager2.setVisibility(View.INVISIBLE);
-                    }else {
+                    } else {
                         layout.setVisibility(View.INVISIBLE);
                         viewPager2.setVisibility(View.VISIBLE);
                         mAdapter = new ViewPagerAdapter(EventActivity.this, drawerResponseList);
@@ -124,6 +122,7 @@ public class EventActivity extends AppCompatActivity implements NavigationView.O
                     }
                 }
             }
+
             @Override
             public void onFailure(Call<DownloadResponse> call, Throwable t) {
                 //showErrorMessage();
@@ -147,40 +146,40 @@ public class EventActivity extends AppCompatActivity implements NavigationView.O
 
             case R.id.nav_add_event:
 
-              if (spUserDetails.getString("REG",null).equals("reg")) {
-                  Intent intent = new Intent(this, AddEvent2.class);
-                  startActivity(intent);
-              }else{
-                  addEvent();
-              }
-
+                if (spUserDetails.getString("log", null).equals("reg") || spUserDetails.getString("log", null).equals("admin") ) {
+                    Intent intent = new Intent(this, AddEvent2.class);
+                    startActivity(intent);
+                } else {
+                    addEvent();
+                }
 
 
                 break;
 
             case R.id.nav_pending:
-                SharedPreferences.Editor  editor = spUserDetails.edit();
-                editor.putString("PREFER","PREF").apply();
+
+                editor.putString("PREFER", "PREF").apply();
                 Intent intent1 = new Intent(this, Pending_Events.class);
                 startActivity(intent1);
                 break;
 
             case R.id.nav_edit:
 
-                Log.d("logres",sharedPreferences.getString("eid", ""));
                 Intent intent2 = new Intent(this, Edit_Events.class);
                 startActivity(intent2);
 
                 break;
             case R.id.nav_contact:
-
+                Intent intent4 = new Intent(this, ContactActivity.class);
+                startActivity(intent4);
 
                 break;
+
 
             case R.id.nav_aboutus:
 
                 Bundle b = new Bundle();
-                b.putString("url", "https://www.uniqtechnologies.co.in/about-us/");
+                b.putString("url", "https://www.studentsbazaar.in/about-us/");
                 b.putString("title", "ABOUT US");
                 Intent intEvent = new Intent(EventActivity.this, WebActivity.class);
                 intEvent.putExtras(b);
@@ -231,7 +230,7 @@ public class EventActivity extends AppCompatActivity implements NavigationView.O
             });
             builder.show();
         } else {
-            startActivity(new Intent(getApplicationContext(), AddEvent.class));
+            startActivity(new Intent(getApplicationContext(), AddEvent2.class));
         }
     }
 }

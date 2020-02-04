@@ -48,7 +48,6 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
     View view;
     private LayoutInflater mInflater;
     private Context context;
-    Typeface tf_regular;
     SharedPreferences spUserDetails;
     SharedPreferences.Editor vieweditor;
     String pdfName, TAG = "FILE",urlsite;
@@ -71,7 +70,6 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         view = mInflater.inflate(R.layout.fragment_child, parent, false);
-        tf_regular = Typeface.createFromAsset(view.getContext().getAssets(), "caviar.ttf");
         tvShare = (Button) view.findViewById(R.id.share);
         read_more = (Button) view.findViewById(R.id.read_more);
         spUserDetails = context.getSharedPreferences("USER_DETAILS", Context.MODE_PRIVATE);
@@ -94,6 +92,7 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
         Log.d("IMG", listItem.getPoster() + "");
         holder.tvHead.setText(listItem.getEvent_Title());
         holder.tvCategory.setText(listItem.getEvent_Name());
+        holder.tvcon.setText(listItem.getConducted_By());
         urlsite=listItem.getEvent_Website();
         try {
             Date date1=new SimpleDateFormat("yyyy-MM-dd").parse(listItem.getEvent_Start_Date());
@@ -205,7 +204,7 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tvHead, tvCategory, tvStartDate, tvOrganizer, tvCity, tvState, tvmonth,regview;
+        TextView tvHead, tvCategory, tvStartDate, tvOrganizer, tvCity, tvState, tvmonth,regview,tvcon;
         ImageView imageView;
 
 
@@ -220,11 +219,8 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
             tvCity = itemView.findViewById(R.id.id_city);
             tvState = itemView.findViewById(R.id.id_state);
             regview=itemView.findViewById(R.id.regview);
-            tvHead.setTypeface(tf_regular);
-            tvCategory.setTypeface(tf_regular);
-            tvOrganizer.setTypeface(tf_regular);
-            tvCity.setTypeface(tf_regular);
-            tvState.setTypeface(tf_regular);
+            tvcon=itemView.findViewById(R.id.id_cond_dept);
+
 
             imageView = itemView.findViewById(R.id.tvParent);
         }
@@ -278,7 +274,7 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
         Uri uri = Uri.fromFile(imageFile);
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("image/*");
-        intent.putExtra(android.content.Intent.EXTRA_TEXT, "Students Bazaar,India's highest rated students app.\nplease follow link to participate this event\n"+urlsite);
+        intent.putExtra(android.content.Intent.EXTRA_TEXT, "Students Bazaar,India's highest rated students app.\nplease follow link to participate this event\n"+urlsite +"\nSource : Students Bazaar\nhttp://tiny.cc/3lnhjz");
         intent.putExtra(Intent.EXTRA_STREAM, uri);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);

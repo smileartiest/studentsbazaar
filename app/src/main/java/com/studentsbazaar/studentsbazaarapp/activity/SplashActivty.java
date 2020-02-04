@@ -51,38 +51,12 @@ public class SplashActivty extends AppCompatActivity {
         Log.d("DEV_ID", androidId + "");
         connectionverify();
 
-//        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(SplashActivty.this, new OnSuccessListener<InstanceIdResult>() {
-//            @Override
-//            public void onSuccess(InstanceIdResult instanceIdResult) {
-//                String refreshedToken = instanceIdResult.getToken();
-//                Log.i("newToken", refreshedToken);
 //
-//
-//                PersistanceUtil.setUserID(refreshedToken);
-//
-//                // Saving reg id to shared preferences
-//
-//                storeRegIdInPref(refreshedToken);
-//                Config.setPrefToken(context, refreshedToken);
-//
-//                // Notify UI that registration has completed, so the progress indicator can be hidden.
-//                token = refreshedToken;
-//                Intent registrationComplete = new Intent(Config.REGISTRATION_COMPLETE);
-//                registrationComplete.putExtra("token", refreshedToken);
-//                LocalBroadcastManager.getInstance(context).sendBroadcast(registrationComplete);
-//
-//            }
-//        });
 
 
     }
 
-    private void storeRegIdInPref(String token) {
-        SharedPreferences pref = getApplicationContext().getSharedPreferences(Config.SHARED_PREF, 0);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putString("regId", token);
-        editor.apply();
-    }
+
 
     private void pushDeviceId(final String androidId) {
 
@@ -92,7 +66,7 @@ public class SplashActivty extends AppCompatActivity {
             public void onResponse(Call<String> call, Response<String> response) {
                 editor.putString("UID", response.body());
                 editor.putString("DEV_ID", androidId);
-                editor.putString("REG", "0");
+                editor.putString("log", "0");
                 editor.apply();
                 Log.d("RESPONSELOG", response.body());
                 collegedetails();
@@ -116,13 +90,13 @@ public class SplashActivty extends AppCompatActivity {
                 for (int i = 0; i < college_details.size(); i++) {
                     ApiUtil.COLLEGEARRAY.add(college_details.get(i).getCollege_Name());
                 }
-                if (getSharedPreferences("USER_DETAILS", MODE_PRIVATE).getString("REG", "").equals("0")) {
+                if (getSharedPreferences("USER_DETAILS", MODE_PRIVATE).getString("log", "").equals("0") || getSharedPreferences("USER_DETAILS", MODE_PRIVATE).getString("log", "").equals("visitor")) {
                     Intent intent = new Intent(SplashActivty.this, MainActivity.class);
                     startActivity(intent);
                     finish();
 
-                } else {
-                    Intent intent = new Intent(SplashActivty.this, MainActivity.class);
+                } else if (getSharedPreferences("USER_DETAILS", MODE_PRIVATE).getString("log", "").equals("reg") || getSharedPreferences("USER_DETAILS", MODE_PRIVATE).getString("log", "").equals("admin")){
+                    Intent intent = new Intent(SplashActivty.this, HomeActivity.class);
                     startActivity(intent);
                     finish();
                 }
@@ -148,6 +122,7 @@ public class SplashActivty extends AppCompatActivity {
         if (isNetworkAvailable()) {
 
             if (getSharedPreferences("USER_DETAILS", MODE_PRIVATE).getString("DEV_ID", "").isEmpty()) {
+                Log.d("RESPONSELOG", "check");
                 pushDeviceId(androidId);
 
             } else {

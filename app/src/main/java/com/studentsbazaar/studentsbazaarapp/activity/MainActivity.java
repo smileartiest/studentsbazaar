@@ -72,8 +72,7 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(Call<String> call, retrofit2.Response<String> response) {
                             if (response.body().equals("1")) {
-                                spEdit.putString("log", "visitor").apply();
-                                editor.commit();
+                                spEdit.putString("log", "reg").apply();
                                 startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                                 finish();
                                 spotsDialog.dismiss();
@@ -122,10 +121,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 spEdit.putString("log", "visitor").apply();
-                editor.putString("eid", "0");
-                editor.commit();
                 Intent inSignUp = new Intent(MainActivity.this, HomeActivity.class);
                 startActivity(inSignUp);
+
             }
         });
 

@@ -1,7 +1,6 @@
 package com.studentsbazaar.studentsbazaarapp.activity;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,6 +15,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import com.crowdfire.cfalertdialog.CFAlertDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.retrofit.ApiUtil;
@@ -51,7 +51,7 @@ public class SignUp extends AppCompatActivity {
         setContentView(R.layout.activity_sign_up);
         spotsDialog = new SpotsDialog(this);
         sharedPreferences = getSharedPreferences("USER_DETAILS", MODE_PRIVATE);
-        editor=sharedPreferences.edit();
+        editor = sharedPreferences.edit();
         name = findViewById(R.id.reg_name);
         email = findViewById(R.id.reg_email);
         phno = findViewById(R.id.reg_phonenumber);
@@ -156,9 +156,9 @@ public class SignUp extends AppCompatActivity {
                         Log.d("Responsdate", response.body().toString());
                         spotsDialog.dismiss();
                         if (response.body().equals("1")) {
-                            editor.putString("REG", "reg");
+                            editor.putString("log", "reg");
                             editor.apply();
-                            getAlert("Congrats...Your User Account Activated...Click DONE to Continue");
+                            getAlert();
 //
 
                         } else {
@@ -220,23 +220,32 @@ public class SignUp extends AppCompatActivity {
 
     }
 
-    void getAlert(String message) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(SignUp.this);
-        builder.setTitle(message);
-        builder.setPositiveButton("DONE", new DialogInterface.OnClickListener() {
+    void getAlert() {
+        CFAlertDialog.Builder builder = new CFAlertDialog.Builder(this);
+        builder.setDialogStyle(CFAlertDialog.CFAlertStyle.ALERT);
+        builder.setTitle("Hey there ! Your Request has been Success...");
+        builder.setMessage("Want to Add Event? or Home?");
+        builder.addButton("Add event", -1, -1, CFAlertDialog.CFAlertActionStyle.POSITIVE, CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-
-                Intent intent = new Intent(SignUp.this, EventActivity.class);
-                startActivity(intent);
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                Intent i = new Intent(SignUp.this, AddEvent2.class);
+                startActivity(i);
 
             }
         });
 
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
-        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
-        finish();
+        builder.addButton("Home", -1, -1, CFAlertDialog.CFAlertActionStyle.NEGATIVE, CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Toast.makeText(SplashActivity.this, "Upgrade tapped", Toast.LENGTH_SHORT).show();
+
+                dialog.dismiss();
+                Intent i = new Intent(SignUp.this, HomeActivity.class);
+                startActivity(i);
+            }
+        });
+        builder.show();
 
     }
 

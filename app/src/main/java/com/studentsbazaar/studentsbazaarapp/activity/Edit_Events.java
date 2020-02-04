@@ -10,8 +10,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -31,7 +33,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class Edit_Events extends AppCompatActivity {
-    RelativeLayout layout;
+    RelativeLayout layout,parentlayout;
     TextView txtwebevent, txtwebcoll, title, category, sdate, edate, organizer, city, state, Discription, eventdetails, department, guest, pronites, theme, accomadtation, lastdate, entryfees, howtoreach, cpnam1, cpno1, cpname2, cpno2;
     EditText edwebevent, edwedcoll, edtitle, edcategory, edsdate, ededate, edorganizer, edcity, edstate, edDiscription, edeventdetails, eddepartment, edguest, edpronites, edtheme, edaccomadtation, edlastdate, edentryfees, edhowtoreach, edcpnam1, edcpno1, edcpname2, edcpno2;
     Button edit_btn, done_btn;
@@ -42,16 +44,21 @@ public class Edit_Events extends AppCompatActivity {
     String posterurl, coid, eweb, cweb, eventid;
     SharedPreferences spUserDetails;
     SpotsDialog spotsDialog;
+    LinearLayout layoutempty;
     SharedPreferences sharedPreferences;
-    Typeface tf_regular;
+    Toolbar myaction;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit__events);
-        sharedPreferences = getSharedPreferences("DEV_ID", MODE_PRIVATE);
-        tf_regular = Typeface.createFromAsset(getApplicationContext().getAssets(), "caviar.ttf");
-        layout = (RelativeLayout) findViewById(R.id.edit_layout);
+        sharedPreferences = getSharedPreferences("USER_DETAILS", MODE_PRIVATE);
+        layout = (RelativeLayout) findViewById(R.id.edit_window);
+        parentlayout=(RelativeLayout)findViewById(R.id.view_window);
+        layoutempty=(LinearLayout)findViewById(R.id.empty6);
         done_btn = (Button) findViewById(R.id.ed_done);
         edit_btn = (Button) findViewById(R.id.edit_btSubmit);
         title = (TextView) findViewById(R.id.edit_title);
@@ -106,32 +113,8 @@ public class Edit_Events extends AppCompatActivity {
         edcpname2 = (EditText) findViewById(R.id.ed_cpname2);
         edcpno2 = (EditText) findViewById(R.id.ed_ph2);
 
-        eventid = sharedPreferences.getString("eid",null);
-        done_btn.setTypeface(tf_regular);
-        edit_btn .setTypeface(tf_regular);
-        title .setTypeface(tf_regular);
-        category .setTypeface(tf_regular);
-        sdate .setTypeface(tf_regular);
-        edate.setTypeface(tf_regular);
-        organizer .setTypeface(tf_regular);
-        city.setTypeface(tf_regular);
-        state .setTypeface(tf_regular);
-        Discription .setTypeface(tf_regular);
-        eventdetails .setTypeface(tf_regular);
-        department .setTypeface(tf_regular);
-        guest .setTypeface(tf_regular);
-        pronites .setTypeface(tf_regular);
-        theme.setTypeface(tf_regular);
-        accomadtation .setTypeface(tf_regular);
-        lastdate.setTypeface(tf_regular);
-        entryfees.setTypeface(tf_regular);
-        howtoreach .setTypeface(tf_regular);
-        cpnam1.setTypeface(tf_regular);
-        cpno1.setTypeface(tf_regular);
-        cpname2 .setTypeface(tf_regular);
-        cpno2.setTypeface(tf_regular);
-        txtwebevent.setTypeface(tf_regular);
-        txtwebcoll.setTypeface(tf_regular);
+        eventid = sharedPreferences.getString("UID",null);
+        Log.d("Response", eventid);
 
         edit_window.setVisibility(View.GONE);
         layout.setVisibility(View.INVISIBLE);
@@ -215,69 +198,83 @@ public class Edit_Events extends AppCompatActivity {
             @Override
             public void onResponse(Call<DownloadResponse> call, Response<DownloadResponse> response) {
 
-                Log.d("RESPONSE1", response.message().toString());
+
 
                 if (response.isSuccessful()) {
                     assert response.body() != null;
+                    Log.d("RESPONSE1", response.body().toString());
                     drawerResponseList = response.body().getProject_details();
-                    Glide.with(Edit_Events.this)
-                            .load(drawerResponseList.get(0).getPoster())
-                            .placeholder(R.drawable.load)
-                            .into(head_poster);
-                    Glide.with(Edit_Events.this)
-                            .load(drawerResponseList.get(0).getPoster())
-                            .placeholder(R.drawable.load)
-                            .into(head_posteredit);
-                    title.setText(drawerResponseList.get(0).getEvent_Title());
-                    category.setText(drawerResponseList.get(0).getEvent_Type());
-                    sdate.setText(drawerResponseList.get(0).getEvent_Start_Date());
-                    edate.setText(drawerResponseList.get(0).getEvent_End_Date());
-                    organizer.setText(drawerResponseList.get(0).getEvent_Organiser());
-                    city.setText(drawerResponseList.get(0).getCollege_District());
-                    state.setText(drawerResponseList.get(0).getCollege_State());
-                    Discription.setText(drawerResponseList.get(0).getEvent_Discription());
-                    eventdetails.setText(drawerResponseList.get(0).getEvent_Details());
-                    department.setText(drawerResponseList.get(0).getDept());
-                    guest.setText(drawerResponseList.get(0).getEvent_guest());
-                    pronites.setText(drawerResponseList.get(0).getEvent_pro_nites());
-                    theme.setText(drawerResponseList.get(0).getEvent_Name());
-                    accomadtation.setText(drawerResponseList.get(0).getEvent_accomodations());
-                    lastdate.setText(drawerResponseList.get(0).getLast_date_registration());
-                    entryfees.setText(drawerResponseList.get(0).getEntry_Fees());
-                    howtoreach.setText(drawerResponseList.get(0).getEvent_how_to_reach());
-                    cpnam1.setText(drawerResponseList.get(0).getContact_Person1_Name());
-                    cpno1.setText(drawerResponseList.get(0).getContact_Person1_No());
-                    cpname2.setText(drawerResponseList.get(0).getContact_Person2_Name());
-                    cpno2.setText(drawerResponseList.get(0).getContact_Person2_No());
-                    txtwebevent.setText(drawerResponseList.get(0).getEvent_Website());
-                    txtwebcoll.setText(drawerResponseList.get(0).getCollege_Website());
+                    Log.d("RESPONSE1", String.valueOf(drawerResponseList.size()));
+                    if (drawerResponseList.size() == 0) {
+                        spotsDialog.dismiss();
+                        layoutempty.setVisibility(View.VISIBLE);
+                        layout.setVisibility(View.INVISIBLE);
+                        parentlayout.setVisibility(View.INVISIBLE);
 
-                    edtitle.setText(drawerResponseList.get(0).getEvent_Title());
-                    edcategory.setText(drawerResponseList.get(0).getEvent_Type());
-                    edsdate.setText(drawerResponseList.get(0).getEvent_Start_Date());
-                    ededate.setText(drawerResponseList.get(0).getEvent_End_Date());
-                    edorganizer.setText(drawerResponseList.get(0).getEvent_Organiser());
-                    edcity.setText(drawerResponseList.get(0).getCollege_District());
-                    edstate.setText(drawerResponseList.get(0).getCollege_State());
-                    edDiscription.setText(drawerResponseList.get(0).getEvent_Discription());
-                    edeventdetails.setText(drawerResponseList.get(0).getEvent_Details());
-                    eddepartment.setText(drawerResponseList.get(0).getDept());
-                    edguest.setText(drawerResponseList.get(0).getEvent_guest());
-                    edpronites.setText(drawerResponseList.get(0).getEvent_pro_nites());
-                    edtheme.setText(drawerResponseList.get(0).getEvent_Name());
-                    edaccomadtation.setText(drawerResponseList.get(0).getEvent_accomodations());
-                    edlastdate.setText(drawerResponseList.get(0).getLast_date_registration());
-                    edentryfees.setText(drawerResponseList.get(0).getEntry_Fees());
-                    edhowtoreach.setText(drawerResponseList.get(0).getEvent_how_to_reach());
-                    edcpnam1.setText(drawerResponseList.get(0).getContact_Person1_Name());
-                    edcpno1.setText(drawerResponseList.get(0).getContact_Person1_No());
-                    edcpname2.setText(drawerResponseList.get(0).getContact_Person2_Name());
-                    edcpno2.setText(drawerResponseList.get(0).getContact_Person2_No());
-                    edwebevent.setText(drawerResponseList.get(0).getEvent_Website());
-                    edwedcoll.setText(drawerResponseList.get(0).getCollege_Website());
+                    } else {
+                        spotsDialog.dismiss();
+                        layoutempty.setVisibility(View.INVISIBLE);
+                        layout.setVisibility(View.VISIBLE);
+                        parentlayout.setVisibility(View.VISIBLE);
+                        Glide.with(Edit_Events.this)
+                                .load(drawerResponseList.get(0).getPoster())
+                                .placeholder(R.drawable.load)
+                                .into(head_poster);
+                        Glide.with(Edit_Events.this)
+                                .load(drawerResponseList.get(0).getPoster())
+                                .placeholder(R.drawable.load)
+                                .into(head_posteredit);
+                        title.setText(drawerResponseList.get(0).getEvent_Title());
+                        category.setText(drawerResponseList.get(0).getEvent_Type());
+                        sdate.setText(drawerResponseList.get(0).getEvent_Start_Date());
+                        edate.setText(drawerResponseList.get(0).getEvent_End_Date());
+                        organizer.setText(drawerResponseList.get(0).getEvent_Organiser());
+                        city.setText(drawerResponseList.get(0).getCollege_District());
+                        state.setText(drawerResponseList.get(0).getCollege_State());
+                        Discription.setText(drawerResponseList.get(0).getEvent_Discription());
+                        eventdetails.setText(drawerResponseList.get(0).getEvent_Details());
+                        department.setText(drawerResponseList.get(0).getDept());
+                        guest.setText(drawerResponseList.get(0).getEvent_guest());
+                        pronites.setText(drawerResponseList.get(0).getEvent_pro_nites());
+                        theme.setText(drawerResponseList.get(0).getEvent_Name());
+                        accomadtation.setText(drawerResponseList.get(0).getEvent_accomodations());
+                        lastdate.setText(drawerResponseList.get(0).getLast_date_registration());
+                        entryfees.setText(drawerResponseList.get(0).getEntry_Fees());
+                        howtoreach.setText(drawerResponseList.get(0).getEvent_how_to_reach());
+                        cpnam1.setText(drawerResponseList.get(0).getContact_Person1_Name());
+                        cpno1.setText(drawerResponseList.get(0).getContact_Person1_No());
+                        cpname2.setText(drawerResponseList.get(0).getContact_Person2_Name());
+                        cpno2.setText(drawerResponseList.get(0).getContact_Person2_No());
+                        txtwebevent.setText(drawerResponseList.get(0).getEvent_Website());
+                        txtwebcoll.setText(drawerResponseList.get(0).getCollege_Website());
 
-                    layout.setVisibility(View.VISIBLE);
-                    spotsDialog.dismiss();
+                        edtitle.setText(drawerResponseList.get(0).getEvent_Title());
+                        edcategory.setText(drawerResponseList.get(0).getEvent_Type());
+                        edsdate.setText(drawerResponseList.get(0).getEvent_Start_Date());
+                        ededate.setText(drawerResponseList.get(0).getEvent_End_Date());
+                        edorganizer.setText(drawerResponseList.get(0).getEvent_Organiser());
+                        edcity.setText(drawerResponseList.get(0).getCollege_District());
+                        edstate.setText(drawerResponseList.get(0).getCollege_State());
+                        edDiscription.setText(drawerResponseList.get(0).getEvent_Discription());
+                        edeventdetails.setText(drawerResponseList.get(0).getEvent_Details());
+                        eddepartment.setText(drawerResponseList.get(0).getDept());
+                        edguest.setText(drawerResponseList.get(0).getEvent_guest());
+                        edpronites.setText(drawerResponseList.get(0).getEvent_pro_nites());
+                        edtheme.setText(drawerResponseList.get(0).getEvent_Name());
+                        edaccomadtation.setText(drawerResponseList.get(0).getEvent_accomodations());
+                        edlastdate.setText(drawerResponseList.get(0).getLast_date_registration());
+                        edentryfees.setText(drawerResponseList.get(0).getEntry_Fees());
+                        edhowtoreach.setText(drawerResponseList.get(0).getEvent_how_to_reach());
+                        edcpnam1.setText(drawerResponseList.get(0).getContact_Person1_Name());
+                        edcpno1.setText(drawerResponseList.get(0).getContact_Person1_No());
+                        edcpname2.setText(drawerResponseList.get(0).getContact_Person2_Name());
+                        edcpno2.setText(drawerResponseList.get(0).getContact_Person2_No());
+                        edwebevent.setText(drawerResponseList.get(0).getEvent_Website());
+                        edwedcoll.setText(drawerResponseList.get(0).getCollege_Website());
+
+
+
+                    }
                 }
 
             }

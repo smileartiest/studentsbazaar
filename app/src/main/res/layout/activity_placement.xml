@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/white"
     tools:context=".activity.PlacementActivity">
 
     <androidx.appcompat.widget.Toolbar
@@ -18,52 +19,7 @@
 
     </androidx.appcompat.widget.Toolbar>
 
-    <!--<FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="25dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp">
 
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-
-            android:elevation="9dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/card_edge"
-                android:gravity="center_vertical"
-                android:weightSum="2">
-
-                <TextView
-                    android:id="@+id/tedit"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center|center_vertical"
-                    android:onClick="edit_criteria"
-                    android:text="EDIT CRITERIA"
-                    android:textStyle="bold" />
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="#000000" />
-
-                <TextView
-                    android:id="@+id/tfilter"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center|center_vertical"
-                    android:onClick="filter"
-                    android:text="FILTER"
-                    android:textStyle="bold" />
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-    </FrameLayout>-->
 <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent">

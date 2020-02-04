@@ -17,7 +17,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -118,7 +117,7 @@ public class PlacementActivity extends AppCompatActivity {
                     if (drawerResponseList.size() == 0) {
                         layout.setVisibility(View.VISIBLE);
                         mRecyclerView.setVisibility(View.INVISIBLE);
-                    }else {
+                    } else {
                         layout.setVisibility(View.INVISIBLE);
                         mRecyclerView.setVisibility(View.VISIBLE);
                         mAdapter = new JobListAdapter(drawerResponseList, PlacementActivity.this);
@@ -145,8 +144,8 @@ public class PlacementActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.add_placement_menu, menu);
         MenuItem shareItem = menu.findItem(R.id.item1);
-
-        if (spUserDetails.getString("log", "").equals("visitor")) {
+        menu.findItem(R.id.item2).setVisible(false);
+        if (spUserDetails.getString("log", "").equals("reg") || spUserDetails.getString("log", "").equals("visitor")) {
             shareItem.setVisible(false);
         }
         return true;
@@ -158,7 +157,6 @@ public class PlacementActivity extends AppCompatActivity {
         switch (id) {
             case R.id.item1:
                 addJob();
-                Toast.makeText(getApplicationContext(), "Add Selected", Toast.LENGTH_LONG).show();
                 return true;
 
             default:

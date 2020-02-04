@@ -1,8 +1,6 @@
 package com.studentsbazaar.studentsbazaarapp.retrofit;
 
 
-
-
 import com.studentsbazaar.studentsbazaarapp.model.DownloadResponse;
 
 import retrofit2.Call;
@@ -17,24 +15,54 @@ public interface RetrofitInterface {
     @GET
     Call<DownloadResponse> getHomeComponentList(@Url String url);
 
+    @GET
+    Call<String> getresulturl(@Url String url);
+
     @FormUrlEncoded
     @POST("/updatedeviceid.php")
     Call<String> updatedeviceid(@Field("device") String device);
+
+
+    @FormUrlEncoded
+    @POST("/updatememepost.php")
+    Call<String> updatememepost(@Field("approved") String approved,
+                             @Field("meme") String meme,
+                             @Field("UID") String UID);
+
+
+    @FormUrlEncoded
+    @POST("/updatetoken.php")
+    Call<String> updatetoken(@Field("Token") String token,
+                             @Field("UID") String UID);
+
 
 
     @GET
     Call<String> addresultstoprofile(@Url String url);
 
     @GET
-    Call<DownloadResponse>getposters(@Url String url);
+    Call<DownloadResponse> getposters(@Url String url);
+
 
     @FormUrlEncoded
     @POST("/Login.php")
     Call<String> getLoginDetails(@Field("mobile") String mobile,
                                  @Field("password") String password);
 
+    @FormUrlEncoded
+    @POST("/addtechnews.php")
+    Call<String> addtechnews(@Field("comname") String comname,
+                                 @Field("poster") String poster);
+
+    @FormUrlEncoded
+    @POST("/addmems.php")
+    Call<String> addmemes(@Field("uid") String uid,
+                          @Field("comname") String comname,
+                          @Field("poster") String poster);
+
     @GET
     Call<String> updateEventStatus(@Url String url);
+
     @GET
     Call<DownloadResponse> getcollegedetails(@Url String url);
 
@@ -62,9 +90,9 @@ public interface RetrofitInterface {
                             @Field("acyear") String acyear,
                             @Field("mail") String mail,
                             @Field("device") String device);
-
-    @GET
-    Call<DownloadResponse> getQuizQuestions(@Url String url);
+    @FormUrlEncoded
+    @POST("/get_quiz.php")
+    Call<DownloadResponse> getQuizQuestions(@Field("uid") String uid);
 
     @FormUrlEncoded
     @POST("/addeventdetails.php")

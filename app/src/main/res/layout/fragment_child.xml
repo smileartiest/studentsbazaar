@@ -26,19 +26,18 @@
                 android:weightSum="2">
 
 
-
                 <ImageView
                     android:id="@+id/tvParent"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="0.8"
+                    android:layout_weight="0.7"
                     android:scaleType="fitXY"
                     app:elevation="16dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="1.2"
+                    android:layout_weight="1.3"
                     android:orientation="vertical">
 
 
@@ -47,7 +46,6 @@
                         android:id="@+id/id_cardView"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-
                         android:orientation="horizontal"
                         card_view:cardCornerRadius="8dp"
                         card_view:cardElevation="2dp"
@@ -71,9 +69,8 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:orientation="horizontal"
                                 android:gravity="center_vertical"
-                                >
+                                android:orientation="horizontal">
 
                                 <TextView
                                     android:id="@+id/head_title"
@@ -83,36 +80,36 @@
                                     android:layout_margin="3dp"
                                     android:layout_weight="1.3"
                                     android:text="Kashiyatra 2020, IIT BHU, Annual Socio-Cultural Festival, Varanasi, Uttar Pradesh, 17th - 20th January 2020"
-                                    android:textColor="#A52217"
-                                    android:textSize="16sp" />
+                                    android:textColor="#B42C2C"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold" />
 
                                 <LinearLayout
                                     android:layout_width="0dp"
                                     android:layout_height="120dp"
                                     android:layout_gravity="right"
-                                    android:gravity="center"
-                                    android:orientation="vertical"
+                                    android:layout_weight=".7"
                                     android:background="@drawable/circle"
-                                    android:layout_weight=".7">
+                                    android:gravity="center"
+                                    android:orientation="vertical">
 
                                     <TextView
                                         android:id="@+id/id_start_date"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:textColor="#000000"
-                                        android:textStyle="bold"
-                                        android:fontFamily="serif"
                                         android:gravity="center"
-                                        android:text="17 "/>
+                                        android:text="17 "
+                                        android:textColor="#000000"
+                                        android:textStyle="bold" />
+
                                     <TextView
                                         android:id="@+id/id_start_month"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:textColor="#000000"
-                                        android:textStyle="bold"
-                                        android:fontFamily="serif"
                                         android:gravity="center"
-                                        android:text="January"/>
+                                        android:text="January"
+                                        android:textColor="#000000"
+                                        android:textStyle="bold" />
                                 </LinearLayout>
 
                             </LinearLayout>
@@ -147,118 +144,146 @@
 
                             <LinearLayout
                                 android:layout_width="match_parent"
-                                android:weightSum="2"
+                                android:layout_height="wrap_content"
                                 android:padding="5dp"
-                                android:layout_height="wrap_content">
+                                android:weightSum="2">
+
                                 <TextView
                                     android:layout_width="0dp"
-                                    android:layout_weight="0.7"
-                                    android:typeface="monospace"
                                     android:layout_height="wrap_content"
-                                    android:textColor="#A52217"
-                                    android:text="Category"/>
+                                    android:layout_weight="0.7"
+                                    android:text="Category"
+                                    android:textColor="@color/cfdialog_button_black_text_color"
+                                    android:textStyle="bold" />
+
                                 <TextView
                                     android:id="@+id/id_category"
+
+                                    android:textColor="#943636"
                                     android:layout_width="0dp"
-                                    android:layout_weight="1.3"
                                     android:layout_height="wrap_content"
-                                    android:textColor="#000000"
-                                    android:text="Annual Socio-Cultural Festival"/>
+                                    android:layout_weight="1.3"
+                                    android:text="Annual Socio-Cultural Festival"
+                                    android:textStyle="bold" />
                             </LinearLayout>
 
 
                             <LinearLayout
                                 android:layout_width="match_parent"
-                                android:weightSum="2"
+                                android:layout_height="wrap_content"
                                 android:padding="5dp"
-                                android:layout_height="wrap_content">
+                                android:weightSum="2">
+
                                 <TextView
                                     android:layout_width="0dp"
-                                    android:typeface="monospace"
-                                    android:layout_weight="0.7"
                                     android:layout_height="wrap_content"
-                                    android:textColor="#A52217"
-                                    android:text="Organiser"/>
+                                    android:textColor="@color/cfdialog_button_black_text_color"
+
+                                    android:layout_weight="0.7"
+                                    android:text="Organiser"
+                                    android:textStyle="bold" />
+
                                 <TextView
                                     android:id="@+id/id_organiser"
                                     android:layout_width="0dp"
-                                    android:layout_weight="1.3"
+                                    android:textColor="#943636"
+
                                     android:layout_height="wrap_content"
-                                    android:textColor="#000000"
-                                    android:text="IIT BHU"/>
+                                    android:layout_weight="1.3"
+                                    android:text="IIT BHU"
+                                    android:textStyle="bold" />
                             </LinearLayout>
+
                             <LinearLayout
                                 android:layout_width="match_parent"
-                                android:weightSum="2"
+                                android:layout_height="wrap_content"
                                 android:padding="5dp"
-                                android:layout_height="wrap_content">
+                                android:weightSum="2">
+
                                 <TextView
                                     android:layout_width="0dp"
-                                    android:layout_weight="0.7"
-                                    android:typeface="monospace"
                                     android:layout_height="wrap_content"
-                                    android:textColor="#A52217"
-                                    android:text="City"/>
+                                    android:textColor="@color/cfdialog_button_black_text_color"
+
+                                    android:layout_weight="0.7"
+                                    android:text="City"
+                                    android:textStyle="bold" />
+
                                 <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_weight="1.3"
                                     android:id="@+id/id_city"
+                                    android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:textColor="#000000"
-                                    android:text="Varanasi"/>
+                                    android:textColor="#943636"
+
+                                    android:layout_weight="1.3"
+                                    android:text="Varanasi"
+                                    android:textStyle="bold" />
                             </LinearLayout>
+
                             <LinearLayout
                                 android:layout_width="match_parent"
-                                android:weightSum="2"
+                                android:layout_height="wrap_content"
                                 android:padding="5dp"
-                                android:layout_height="wrap_content">
+                                android:weightSum="2">
+
                                 <TextView
                                     android:layout_width="0dp"
-                                    android:layout_weight="0.7"
-                                    android:typeface="monospace"
+
+                                    android:textColor="@color/cfdialog_button_black_text_color"
+
                                     android:layout_height="wrap_content"
-                                    android:textColor="#A52217"
-                                    android:text="State"/>
+                                    android:layout_weight="0.7"
+                                    android:text="State"
+                                    android:textStyle="bold" />
+
                                 <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_weight="1.3"
                                     android:id="@+id/id_state"
-                                    android:layout_height="wrap_content"
-                                    android:textColor="#000000"
-                                    android:text="Uttar Pradesh"/>
+                                    android:layout_width="0dp"
+                                    android:textColor="#943636"
 
-                                </LinearLayout>
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:weightSum="2"
-                                android:padding="5dp"
-                                android:layout_height="wrap_content">
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_weight="0.7"
-                                    android:typeface="monospace"
                                     android:layout_height="wrap_content"
-                                    android:textColor="#A52217"
-                                    android:text="Conducted by"/>
-                                <TextView
-                                    android:layout_width="0dp"
                                     android:layout_weight="1.3"
-                                    android:id="@+id/id_cond_dept"
-                                    android:layout_height="wrap_content"
-                                    android:textColor="#000000"
-                                    android:text="EEE Dept"/>
+                                    android:text="Uttar Pradesh"
+                                    android:textStyle="bold" />
 
                             </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:padding="5dp"
+                                android:weightSum="2">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@color/cfdialog_button_black_text_color"
+
+                                    android:layout_weight="0.7"
+                                    android:text="Conducted by"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/id_cond_dept"
+                                    android:layout_width="0dp"
+                                    android:textColor="#943636"
+
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1.3"
+                                    android:text="EEE Dept"
+                                    android:textStyle="bold" />
+
+                            </LinearLayout>
+
                             <TextView
                                 android:id="@+id/regview"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
                                 android:gravity="center"
-                                android:textStyle="bold"
+                                android:text="Apply Now"
                                 android:textColor="@color/colorPrimary"
-                                android:fontFamily="serif"
-                                android:layout_marginTop="30dp"
-                                android:text="APPLY NOW"/>
+                                android:textStyle="bold" />
                         </LinearLayout>
                         -
                     </androidx.cardview.widget.CardView>
@@ -277,7 +302,7 @@
     <LinearLayout
         android:id="@+id/btmLayout"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="30dp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="5dp"
         android:gravity="center_horizontal">
@@ -293,7 +318,7 @@
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:text="Student Bazaar"
-            android:textColor="#A52217"
+            android:textColor="@color/colorPrimaryDark"
             android:textStyle="bold" />
     </LinearLayout>
 
@@ -304,20 +329,19 @@
         android:layout_alignParentBottom="true"
         android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
-        android:layout_marginBottom="55dp"
-        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
+        android:layout_height="50dp"
         android:id="@+id/bottombtnlayout"
         android:weightSum="2">
 
         <Button
             android:id="@+id/share"
             android:layout_width="0dp"
-            android:layout_height="30dp"
+            android:layout_height="40dp"
             android:layout_weight="1"
             android:background="@drawable/btnleft"
             android:drawableRight="@drawable/ic_share_pink_24dp"
             android:gravity="center"
-
             android:layout_marginEnd="5dp"
             android:paddingEnd="40dp"
             android:text="SHARE "
@@ -330,17 +354,13 @@
         <Button
             android:id="@+id/read_more"
             android:layout_width="0dp"
-            android:layout_height="30dp"
-            android:layout_marginStart="5dp"
+            android:layout_height="40dp"
             android:layout_weight="1"
             android:background="@drawable/btnleft"
-            android:drawableStart="@drawable/ic_infodp"
             android:gravity="center"
-            android:paddingStart="30dp"
             android:text=" MORE"
             android:textColor="#000000"
             android:textSize="15dp"
-            android:layout_marginLeft="5dp"
             android:drawableLeft="@drawable/ic_infodp"
             android:paddingLeft="30dp" />
 

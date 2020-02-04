@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     android:background="@color/colorPrimary"
    >
 
-
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="26dp"
         android:layout_marginTop="16dp"
-        android:fontFamily="serif"
         android:text="Register Your Details"
         android:textColor="@color/white"
         android:textSize="25sp"
@@ -29,7 +32,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="26dp"
         android:layout_marginTop="16dp"
-        android:fontFamily="serif"
         android:text="Please Enter Your Valid Details"
         android:textColor="@color/white"
         android:textStyle="bold"
@@ -61,7 +63,6 @@
             android:orientation="vertical">
 
             <TextView
-                android:fontFamily="serif"
                 android:layout_marginLeft="3dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -76,7 +77,6 @@
                 android:layout_marginTop="10dp"
                 android:textColor="@color/colorBlack"
                 android:text="Name"
-                android:fontFamily="serif"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
@@ -85,7 +85,7 @@
                 android:id="@+id/reg_name"
                 android:background="@drawable/edittext"
                 android:textSize="15sp"
-                android:fontFamily="serif"
+                android:inputType="text"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:paddingLeft="5dp"
@@ -98,7 +98,6 @@
                 android:layout_marginTop="10dp"
                 android:textColor="@color/colorBlack"
                 android:text="Email"
-                android:fontFamily="serif"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
@@ -112,7 +111,6 @@
                 android:paddingLeft="5dp"
                 android:textColor="#000"
                 android:textColorHint="@color/colorBlack"
-                android:fontFamily="serif"
                 android:hint="Enter Email (ex : example@gmail.com)"
                 android:inputType="textEmailAddress" />
 
@@ -121,7 +119,6 @@
                 android:layout_marginTop="10dp"
                 android:textColor="@color/colorBlack"
                 android:text="Phone Number"
-                android:fontFamily="serif"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
@@ -132,7 +129,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:textSize="15sp"
-                android:fontFamily="serif"
                 android:paddingLeft="5dp"
                 android:textColor="#000"
                 android:textColorHint="@color/colorBlack"
@@ -167,7 +163,6 @@
             android:orientation="vertical">
 
             <TextView
-                android:fontFamily="serif"
                 android:layout_marginLeft="3dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -182,7 +177,6 @@
                 android:layout_marginTop="10dp"
                 android:textColor="@color/colorBlack"
                 android:text="College Name"
-                android:fontFamily="serif"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
@@ -193,7 +187,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:textSize="15sp"
-                android:fontFamily="serif"
                 android:paddingLeft="5dp"
                 android:textColor="#000"
                 android:textColorHint="@color/colorBlack"
@@ -204,7 +197,6 @@
                 android:layout_marginTop="10dp"
                 android:textColor="@color/colorBlack"
                 android:text="Degree"
-                android:fontFamily="serif"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
@@ -216,7 +208,6 @@
                 android:hint="Enter Degree (ex : EB,BTech)"
                 android:layout_marginTop="5dp"
                 android:textSize="15sp"
-                android:fontFamily="serif"
                 android:paddingLeft="5dp"
                 android:textColor="#000"
                 android:textColorHint="@color/colorBlack" />
@@ -226,7 +217,6 @@
                 android:layout_marginTop="10dp"
                 android:textColor="@color/colorBlack"
                 android:text="Academic Year"
-                android:fontFamily="serif"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
@@ -237,7 +227,6 @@
                 android:layout_height="40dp"
                 android:layout_marginTop="5dp"
                 android:textSize="15sp"
-                android:fontFamily="serif"
                 android:paddingLeft="5dp"
                 android:textColor="@color/colorBlack"
                 android:textColorHint="@color/colorBlack"
@@ -272,7 +261,6 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:fontFamily="serif"
                 android:layout_marginTop="10dp"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -286,7 +274,6 @@
                 android:layout_marginTop="10dp"
                 android:textColor="@color/colorBlack"
                 android:text="Department"
-                android:fontFamily="serif"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
@@ -298,8 +285,8 @@
                 android:layout_marginTop="5dp"
                 android:background="@drawable/edittext"
                 android:textSize="15sp"
-                android:fontFamily="serif"
                 android:paddingLeft="5dp"
+                android:inputType="text"
                 android:textColor="#000"
                 android:textColorHint="@color/colorBlack"/>
 
@@ -308,7 +295,6 @@
                 android:layout_marginTop="10dp"
                 android:textColor="@color/colorBlack"
                 android:text="Year"
-                android:fontFamily="serif"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
@@ -320,8 +306,8 @@
                 android:layout_marginTop="5dp"
                 android:background="@drawable/edittext"
                 android:textSize="15sp"
-                android:fontFamily="serif"
                 android:paddingLeft="5dp"
+                android:inputType="text"
                 android:textColor="#000"
                 android:textColorHint="@color/colorBlack"/>
 
@@ -330,7 +316,6 @@
                 android:layout_marginTop="10dp"
                 android:textColor="@color/colorBlack"
                 android:text="Semester"
-                android:fontFamily="serif"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
@@ -342,8 +327,8 @@
                 android:layout_marginTop="5dp"
                 android:background="@drawable/edittext"
                 android:textSize="15sp"
-                android:fontFamily="serif"
                 android:paddingLeft="5dp"
+                android:inputType="text"
                 android:textColor="#000"
                 android:textColorHint="@color/colorBlack"/>
             <TextView
@@ -351,7 +336,6 @@
                 android:layout_marginTop="10dp"
                 android:textColor="@color/colorBlack"
                 android:text="Password"
-                android:fontFamily="serif"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
@@ -363,7 +347,6 @@
                 android:layout_marginTop="5dp"
                 android:background="@drawable/edittext"
                 android:textSize="15sp"
-                android:fontFamily="serif"
                 android:paddingLeft="5dp"
                 android:textColor="#000"
                 android:textColorHint="@color/colorBlack"/>
@@ -371,53 +354,59 @@
 
     </androidx.cardview.widget.CardView>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="50dp"
-        android:clickable="true"
-        android:backgroundTint="#fff"
-        app:borderWidth="0dp"
-        android:visibility="visible"
-        app:elevation="6dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/right_arrow_red"
-        tools:ignore="VectorDrawableCompat" />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floatingActionButton1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="50dp"
+            android:backgroundTint="#fff"
+            android:clickable="true"
+            android:visibility="visible"
+            app:borderWidth="0dp"
+            app:elevation="6dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardView3"
+            app:srcCompat="@drawable/right_arrow_red"
+            tools:ignore="VectorDrawableCompat" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="50dp"
-        android:clickable="true"
-        android:backgroundTint="#fff"
-        app:borderWidth="0dp"
-        android:visibility="invisible"
-        app:elevation="6dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/right_arrow_red"
-        tools:ignore="VectorDrawableCompat" />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floatingActionButton2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="50dp"
+            android:backgroundTint="#fff"
+            android:clickable="true"
+            android:visibility="invisible"
+            app:borderWidth="0dp"
+            app:elevation="6dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardView3"
+            app:srcCompat="@drawable/right_arrow_red"
+            tools:ignore="VectorDrawableCompat" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="50dp"
-        android:clickable="true"
-        android:backgroundTint="#fff"
-        app:borderWidth="0dp"
-        android:visibility="invisible"
-        app:elevation="6dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/right_arrow_red"
-        tools:ignore="VectorDrawableCompat" />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floatingActionButton3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="50dp"
+            android:backgroundTint="#fff"
+            android:clickable="true"
+            android:visibility="invisible"
+            app:borderWidth="0dp"
+            app:elevation="6dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardView3"
+            app:srcCompat="@drawable/right_arrow_red"
+            tools:ignore="VectorDrawableCompat" />
 
     <ImageView
         android:id="@+id/imageView3"
@@ -426,7 +415,9 @@
         android:layout_marginBottom="120dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/pngback1" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

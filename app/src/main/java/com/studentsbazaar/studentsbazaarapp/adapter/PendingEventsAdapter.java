@@ -30,7 +30,6 @@ public class PendingEventsAdapter extends RecyclerView.Adapter<PendingEventsAdap
     View view;
     private LayoutInflater mInflater;
     private Context context;
-    Typeface tf_regular;
     List<Project_details> mData;
     SpotsDialog spotsDialog ;
 
@@ -46,7 +45,6 @@ public class PendingEventsAdapter extends RecyclerView.Adapter<PendingEventsAdap
     @Override
     public PendingEventsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         view = mInflater.inflate(R.layout.pending_events, parent, false);
-        tf_regular = Typeface.createFromAsset(view.getContext().getAssets(), "caviar.ttf");
         /*StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());*/
         return new PendingEventsAdapter.ViewHolder(view);
@@ -128,12 +126,7 @@ public class PendingEventsAdapter extends RecyclerView.Adapter<PendingEventsAdap
             city = (TextView) itemView.findViewById(R.id.id_eventcity);
             cardView = (CardView) itemView.findViewById(R.id.id_eventcardView);
             linearLayout = (LinearLayout) itemView.findViewById(R.id.id_eventcardLayout);
-            eventname.setTypeface(tf_regular);
-            coordinator.setTypeface(tf_regular);
-            College.setTypeface(tf_regular);
-            department.setTypeface(tf_regular);
-            phone.setTypeface(tf_regular);
-            city.setTypeface(tf_regular);
+
         }
     }
 

@@ -15,6 +15,9 @@ public class ApiUtil {
     public static final String ADD_QUIZ_RESULTS=BASE_URL +"updatequizresults.php";
     public  static final String GET_POSTERS=BASE_URL+"getposter.php";
     public static final String GET_MEMES=BASE_URL+"getmems.php";
+    public static  final String GET_PENDING_MEMES=BASE_URL+"getpendingpost.php";
+    public static final String GET_URL=BASE_URL+"getresultsurl.php";
+    public static final String GET_NEWS=BASE_URL+"gettechnews.php";
     public static  final ArrayList<String> COLLEGEARRAY = new ArrayList<>();
     public static  int QUIZ_RESULT=0;
 
