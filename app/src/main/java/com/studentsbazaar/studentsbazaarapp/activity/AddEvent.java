@@ -26,7 +26,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.iceteck.silicompressorr.SiliCompressor;
 import com.studentsbazaar.studentsbazaarapp.R;
+import com.studentsbazaar.studentsbazaarapp.helper.FileUtil;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -202,11 +204,8 @@ public class AddEvent extends AppCompatActivity {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                convertBitmapToString(profilePicture);
-                epost = profileimg;
                 sf = getSharedPreferences("event", MODE_PRIVATE);
                 ed = sf.edit();
-                ed.putString("epost", epost);
                 Log.d("IMG_NAME", epost + "");
                 try {
                     ed.putString("elist", URLEncoder.encode(stringBuilder.toString(), "UTF-8"));
@@ -239,9 +238,10 @@ public class AddEvent extends AppCompatActivity {
                         InputStream imageStream = getApplicationContext().getContentResolver().openInputStream(imageUri);
                         profilePicture = BitmapFactory.decodeStream(imageStream);
                         imagepost.setImageBitmap(profilePicture);
-                        Bitmap compressedImgFile = new Compressor(this).compressToBitmap(new File(imageUri.getPath()));
+                        File actualImage = FileUtil.from(this, data.getData());
+                        Bitmap compressedImgFile = SiliCompressor.with(this).getCompressBitmap(actualImage.getAbsolutePath());
                         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                        compressedImgFile.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+                        compressedImgFile.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
                         byte[] byteArray = byteArrayOutputStream.toByteArray();
                         String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
 
@@ -257,16 +257,7 @@ public class AddEvent extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         }
-
-    }
-
-    private void convertBitmapToString(Bitmap profilePicture) {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        profilePicture.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-        byte[] array = byteArrayOutputStream.toByteArray();
-        profileimg = Base64.encodeToString(array, Base64.DEFAULT);
     }
 
     public void eventlistview() {
@@ -281,6 +272,4 @@ public class AddEvent extends AppCompatActivity {
 
         }
     }
-
-
 }
