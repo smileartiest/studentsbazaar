@@ -17,6 +17,7 @@ import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -33,6 +34,7 @@ public class WebActivity extends AppCompatActivity {
     ImageView imageView;
     Bundle bundle;
     Toolbar toolbar;
+    TextView toolbarTitle;
     private String url = null, data = null, title = null;
     // private SpotsDialog progressDialog = null;
     // private ProgressDialog progressDialog = null;
@@ -53,7 +55,7 @@ public class WebActivity extends AppCompatActivity {
         imageView = (ImageView) findViewById(R.id.shareweb);
       /*  Intent intent = getIntent();
         bundle = intent.getExtras();*/
-
+        toolbarTitle = (TextView)findViewById(R.id.id_toolbarTitle);
         url = getIntent().getExtras() != null ? getIntent().getExtras().getString("url") : null;
         data = getIntent().getExtras() != null ? getIntent().getExtras().getString("data") : null;
         title = getIntent().getExtras() != null ? getIntent().getExtras().getString("title") : null;
@@ -62,7 +64,7 @@ public class WebActivity extends AppCompatActivity {
             url = "https://www.studentsbazaar.com";
         }
 
-
+        Log.d("WEB_URL",url);
         // try {
 
 
@@ -73,8 +75,8 @@ public class WebActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         //setting the title
-        toolbar.setTitle(data);
-
+        //toolbar.setTitle(data);
+        toolbarTitle.setText(data);
         //placing toolbar in place of actionbar
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -94,7 +96,7 @@ public class WebActivity extends AppCompatActivity {
                 bitmap = ScreenShot.takescreenshotrootview(rootView);
                 Intent share = new Intent(Intent.ACTION_SEND);
                 share.setType("image/jpeg");
-                if (data.equals("RESULTS-MU")) {
+                if (title.equals("RESULTS-MU")) {
                     share.putExtra(android.content.Intent.EXTRA_TEXT, "STUDENTS BAZAAR APP -\n\nMadras University Results,\nCampus placement news,\nOff campus details,\nIntership Offers,\nNational Level QUIZ competitions & Events\nDownload STUDENTS BAZAAR App via Playstore \nhttps://play.google.com/store/apps/details?id=com.studentsbazaar.studentsbazaarapp\n\n-Thank You");
                 } else {
                     share.putExtra(android.content.Intent.EXTRA_TEXT, "STUDENTS BAZAAR APP - Anna University Results, Campus placement news, Off campus details, Intership Offers, National Level QUIZ competitions & Events download STUDENTS BAZAAR App via Playstore \nhttps://play.google.com/store/apps/details?id=com.studentsbazaar.studentsbazaarapp\n-Thank You");

@@ -253,7 +253,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(View v) {
                 Bundle b = new Bundle();
                 b.putString("url", "https://coe1.annauniv.edu/home/");
-                b.putString("title", "RESULTS");
+                b.putString("title", "RESULTS-AU");
                 b.putString("data", "RESULTS-AU");
                 Intent intEvent = new Intent(HomeActivity.this, WebActivity.class);
                 intEvent.putExtras(b);
@@ -265,25 +265,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         cvSyllabus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Call<String> call=ApiUtil.getServiceClass().getresulturl(ApiUtil.GET_URL);
-//                call.enqueue(new Callback<String>() {
-//                    @Override
-//                    public void onResponse(Call<String> call, Response<String> response) {
-//                        Log.d("URLRESULTS",response.body().toString());
-                Bundle b = new Bundle();
-                b.putString("url", "http://results.unom.ac.in/nov2019/");
-                b.putString("title", "RESULTS");
-                b.putString("data", "RESULTS-MU");
-                Intent intEvent = new Intent(HomeActivity.this, WebActivity.class);
-                intEvent.putExtras(b);
+//
+
+                Intent intEvent = new Intent(HomeActivity.this, MUActivity.class);
+
                 startActivity(intEvent);
-                 /*   }
 
-                    @Override
-                    public void onFailure(Call<String> call, Throwable t) {
-
-                    }
-                });*/
 
             }
         });

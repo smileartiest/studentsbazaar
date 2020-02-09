@@ -7,7 +7,7 @@
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.SEND_SMS"/>
+    <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission
         android:name="android.permission.GET_ACCOUNTS_PRIVILEGED"
         android:protectionLevel="signature"
@@ -27,7 +27,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".activity.Pending_Post"></activity>
+        <activity android:name=".activity.MUActivity"></activity>
+        <activity android:name=".activity.Pending_Post" />
         <activity android:name=".activity.Mems" />
         <activity android:name=".activity.DisclaimerActivity" />
         <activity android:name=".activity.Main5Activity" />
@@ -37,8 +38,9 @@
         <activity android:name=".activity.AddEvent3" />
         <activity android:name=".activity.ContactActivity" />
         <activity android:name=".activity.Tech_News" />
-        <activity android:name=".activity.Edit_Events"
-            android:theme="@style/AppTheme"/>
+        <activity
+            android:name=".activity.Edit_Events"
+            android:theme="@style/AppTheme" />
         <activity android:name=".activity.EventActivity" />
         <activity android:name=".activity.HomeActivity" />
         <activity android:name=".activity.IntroActivity" />
@@ -48,9 +50,9 @@
         <activity android:name=".activity.ProfileActivity" />
         <activity android:name=".activity.Quiz_Events" />
         <activity android:name=".activity.SignUp" />
-        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
-            android:theme="@style/Base.Theme.AppCompat"/>
-
+        <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat" />
         <activity android:name=".activity.SplashActivty">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -67,6 +69,7 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
         <receiver
             android:name=".NotificationPublisher"
             android:enabled="true"
