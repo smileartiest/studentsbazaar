@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.studentsbazaar.studentsbazaarapp.R;
+import com.studentsbazaar.studentsbazaarapp.helper.DateChecker;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -171,6 +172,7 @@ public class AddEvent2 extends AppCompatActivity {
                                 }
                                 esdate = year + "-" + (monthOfYear + 1) + "-" + day;
                                 startdate.setText(esdate);
+                                enddate.setText(esdate);
 
                             }
                         }, mYear, mMonth, mDay);
@@ -203,7 +205,14 @@ public class AddEvent2 extends AppCompatActivity {
                                 }
                                 eedate = year + "-" + (monthOfYear + 1) + "-" + day;
 
-                                enddate.setText(eedate);
+
+                                DateChecker dateChecker = new DateChecker();
+                                if(dateChecker.checkPrevDate(esdate,eedate)){
+                                    enddate.setText(eedate);
+                                }else{
+                                    Toast.makeText(getApplicationContext(),"EndDate must be after StartDate",Toast.LENGTH_SHORT).show();
+                                    enddate.setText(esdate);
+                                }
 
                             }
                         }, mYear, mMonth, mDay);

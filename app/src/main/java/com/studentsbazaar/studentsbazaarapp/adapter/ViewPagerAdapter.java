@@ -9,7 +9,6 @@ import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -20,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -28,7 +28,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.crowdfire.cfalertdialog.CFAlertDialog;
-import com.squareup.picasso.Picasso;
 import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.activity.EventActivity;
 import com.studentsbazaar.studentsbazaarapp.activity.View_Details;
@@ -38,11 +37,9 @@ import com.studentsbazaar.studentsbazaarapp.model.Project_details;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.ViewHolder> {
     View view;
@@ -50,7 +47,7 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
     private Context context;
     SharedPreferences spUserDetails;
     SharedPreferences.Editor vieweditor;
-    String pdfName, TAG = "FILE",urlsite;
+    String pdfName, TAG = "FILE", urlsite;
     String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
     List<Project_details> mData;
     DateChecker dateChecker;
@@ -93,20 +90,20 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
         holder.tvHead.setText(listItem.getEvent_Title());
         holder.tvCategory.setText(listItem.getEvent_Name());
         holder.tvcon.setText(listItem.getConducted_By());
-        urlsite=listItem.getEvent_Website();
+        urlsite = listItem.getEvent_Website();
         try {
-            Date date1=new SimpleDateFormat("yyyy-MM-dd").parse(listItem.getEvent_Start_Date());
-            String[] sdate=date1.toString().split(" ");
-            if (sdate[0].equals("Sat") || sdate[0].equals("Sun")){
+            Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(listItem.getEvent_Start_Date());
+            String[] sdate = date1.toString().split(" ");
+            if (sdate[0].equals("Sat") || sdate[0].equals("Sun")) {
                 holder.tvStartDate.setTextColor(Color.RED);
                 holder.tvmonth.setTextColor(Color.RED);
 
-            }else{
+            } else {
                 holder.tvStartDate.setTextColor(Color.parseColor("#1B4F72"));
                 holder.tvmonth.setTextColor(Color.parseColor("#1B4F72"));
             }
             holder.tvStartDate.setText(sdate[0]);
-            holder.tvmonth.setText(sdate[1]+" "+sdate[2]);
+            holder.tvmonth.setText(sdate[1] + " " + sdate[2]);
         } catch (Exception e) {
 
         }
@@ -116,16 +113,16 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
         holder.regview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (listItem.getEvent_Website().contains("http://") || listItem.getEvent_Website().contains("https://")){
+                if (listItem.getEvent_Website().contains("http://") || listItem.getEvent_Website().contains("https://")) {
 
-                     weburl =listItem.getEvent_Website();
-                }else{
-                     weburl ="http://"+listItem.getEvent_Website();
+                    weburl = listItem.getEvent_Website();
+                } else {
+                    weburl = "http://" + listItem.getEvent_Website();
                 }
                 Bundle bundle = new Bundle();
-                bundle.putString("url",weburl);
-                bundle.putString("data","reg url");
-                bundle.putString("title","reg title");
+                bundle.putString("url", weburl);
+                bundle.putString("data", "reg url");
+                bundle.putString("title", "reg title");
                 Intent in = new Intent(context, WebActivity.class);
                 in.putExtras(bundle);
                 context.startActivity(in);
@@ -144,14 +141,19 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
             }
         });
 
-
+      /*  holder.layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                holder.imageView.
+                read_more.performClick();
+            }
+        });*/
         read_more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 vieweditor.putString("PREFER", "MORE").apply();
                 Log.d("SHARED", spUserDetails.getString("PREFER", ""));
-
                 SharedPreferences sharedPreferences = context.getSharedPreferences("view_details", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putString("coid", listItem.getEvent_Coordinator());
@@ -160,7 +162,7 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
                 editor.putString("cat", listItem.getEvent_Type());
                 editor.putString("sdate", listItem.getEvent_Start_Date());
                 editor.putString("edate", listItem.getEvent_End_Date());
-                editor.putString("organiser", listItem.getEvent_sponsors());
+                editor.putString("organiser", listItem.getEvent_Organiser());
                 editor.putString("city", listItem.getCollege_District());
                 editor.putString("state", listItem.getCollege_State());
                 editor.putString("dis", listItem.getEvent_Discription());
@@ -204,8 +206,9 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tvHead, tvCategory, tvStartDate, tvOrganizer, tvCity, tvState, tvmonth,regview,tvcon;
+        TextView tvHead, tvCategory, tvStartDate, tvOrganizer, tvCity, tvState, tvmonth, regview, tvcon;
         ImageView imageView;
+        LinearLayout layout;
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -218,8 +221,9 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
             tvOrganizer = itemView.findViewById(R.id.id_organiser);
             tvCity = itemView.findViewById(R.id.id_city);
             tvState = itemView.findViewById(R.id.id_state);
-            regview=itemView.findViewById(R.id.regview);
-            tvcon=itemView.findViewById(R.id.id_cond_dept);
+            regview = itemView.findViewById(R.id.regview);
+            tvcon = itemView.findViewById(R.id.id_cond_dept);
+            layout = itemView.findViewById(R.id.layout);
 
 
             imageView = itemView.findViewById(R.id.tvParent);
@@ -274,7 +278,7 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
         Uri uri = Uri.fromFile(imageFile);
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("image/*");
-        intent.putExtra(android.content.Intent.EXTRA_TEXT, "Students Bazaar,India's highest rated students app.\nplease follow link to participate this event\n"+urlsite +"\nSource : Students Bazaar\nhttp://tiny.cc/3lnhjz");
+        intent.putExtra(android.content.Intent.EXTRA_TEXT, "Students Bazaar,India's highest rated students app.\nplease follow link to participate this event\n" + urlsite + "\nSource : Students Bazaar\nhttp://tiny.cc/3lnhjz");
         intent.putExtra(Intent.EXTRA_STREAM, uri);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
@@ -295,5 +299,9 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
                     }
                 });
         builder.show();
+    }
+
+    void vieweventsdetails() {
+
     }
 }

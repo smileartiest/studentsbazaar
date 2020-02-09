@@ -1,5 +1,7 @@
 package com.studentsbazaar.studentsbazaarapp.activity;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,8 +15,12 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import com.studentsbazaar.studentsbazaarapp.NotificationPublisher;
+import com.studentsbazaar.studentsbazaarapp.NotificationService;
 import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.retrofit.ApiUtil;
+
+import java.util.Calendar;
 
 import dmax.dialog.SpotsDialog;
 import retrofit2.Call;
@@ -116,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        tvVisitor.setOnClickListener(new View.OnClickListener() {
+     /*   tvVisitor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -125,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(inSignUp);
 
             }
-        });
+        });*/
 
     }
 

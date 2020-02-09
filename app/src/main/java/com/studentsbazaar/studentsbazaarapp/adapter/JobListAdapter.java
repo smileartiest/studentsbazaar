@@ -2,10 +2,11 @@ package com.studentsbazaar.studentsbazaarapp.adapter;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -14,25 +15,27 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-
 import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.activity.PlacementActivity;
 import com.studentsbazaar.studentsbazaarapp.model.Campus;
 
+import java.util.ArrayList;
 import java.util.List;
-
-public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.ViewHolder> {
+@SuppressWarnings("unchecked")
+public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.ViewHolder> implements Filterable {
 
 
     Context context;
     private LayoutInflater mInflater;
     List<Campus> mData;
-    public JobListAdapter(List<Campus> drawerResponseList, PlacementActivity context) {
+    List<Campus> filterdata;
+
+    public JobListAdapter(List<Campus> mData, PlacementActivity context) {
         this.mInflater = LayoutInflater.from(context);
-        this.mData = drawerResponseList;
+        this.mData = mData;
+        filterdata = new ArrayList<>(mData);
         this.context = context;
     }
-
 
 
     @NonNull
@@ -55,9 +58,14 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.ViewHold
 
         holder.tvDate.setText(listItem.getDate());
         holder.tvplaced.setText(listItem.getNo_of_Students());
-        holder.tvSal_package.setText(listItem.getPackage()+" (Lakhs/Annum)");
+        holder.tvSal_package.setText(listItem.getPackage() + " (Lakhs/Annum)");
         holder.tvcollege.setText(listItem.getCollege_Name());
-        holder.tvDomain.setText(listItem.getDomain());
+        if (listItem.getDomain().length() != 0) {
+            holder.tvDomain.setText(listItem.getDomain());
+        } else {
+            holder.ld.setVisibility(View.GONE);
+        }
+
         holder.tvCompany.setText(listItem.getCompany_Name());
 
     }
@@ -75,18 +83,55 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.ViewHold
         return position;
     }
 
+    @Override
+    public Filter getFilter() {
+        return examplefilter;
+    }
+
+    private Filter examplefilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<Campus> filteredList = new ArrayList<>();
+
+            if (constraint == null || constraint.length() == 0) {
+                filteredList.addAll(filterdata);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+
+                for (Campus item : filterdata) {
+                    if (item.getCompany_Name().toLowerCase().contains(filterPattern)) {
+                        filteredList.add(item);
+                    }
+                }
+            }
+
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+            mData.clear();
+            mData.addAll((List) filterResults.values);
+            notifyDataSetChanged();
+        }
+    };
+
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView tvCompany, tvDomain, tvcollege, tvSal_package, tvplaced, tvDate;
         ImageView imBookmar, imShare;
         CardView cardView;
-        LinearLayout linearLayout;
+        LinearLayout linearLayout, ld;
 
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             tvDomain = (TextView) itemView.findViewById(R.id.id_domain);
+            ld = (LinearLayout) itemView.findViewById(R.id.layout_domain);
             tvCompany = (TextView) itemView.findViewById(R.id.tvCompName);
             tvcollege = (TextView) itemView.findViewById(R.id.id_college_name);
             tvSal_package = (TextView) itemView.findViewById(R.id.id_package);
@@ -94,7 +139,6 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.ViewHold
             tvDate = (TextView) itemView.findViewById(R.id.id_date);
             cardView = (CardView) itemView.findViewById(R.id.id_cardView);
             linearLayout = (LinearLayout) itemView.findViewById(R.id.id_cardLayout);
-
 
 
         }

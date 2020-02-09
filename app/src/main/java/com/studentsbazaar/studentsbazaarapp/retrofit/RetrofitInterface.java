@@ -63,6 +63,8 @@ public interface RetrofitInterface {
     @GET
     Call<String> updateEventStatus(@Url String url);
 
+
+
     @GET
     Call<DownloadResponse> getcollegedetails(@Url String url);
 
@@ -82,6 +84,7 @@ public interface RetrofitInterface {
                             @Field("uid") String uid,
                             @Field("password") String password,
                             @Field("cname") String collegename,
+                            @Field("affiliation") String affiliation,
                             @Field("degree") String degree,
                             @Field("dept") String dept,
                             @Field("year") String year,

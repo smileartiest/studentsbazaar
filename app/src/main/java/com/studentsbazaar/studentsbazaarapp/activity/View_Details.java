@@ -1,13 +1,9 @@
 package com.studentsbazaar.studentsbazaarapp.activity;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.graphics.Typeface;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
@@ -18,12 +14,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-
+import androidx.cardview.widget.CardView;
 
 import com.bumptech.glide.Glide;
-import com.squareup.picasso.Picasso;
 import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.retrofit.ApiUtil;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import dmax.dialog.SpotsDialog;
 import retrofit2.Call;
@@ -34,8 +34,9 @@ public class View_Details extends AppCompatActivity {
     TextView title, category, sdate, edate, organizer, city, state, Discription, eventdetails, department, guest, pronites, theme, accomadtation, lastdate, entryfees, howtoreach, cpnam1, cpno1, cpname2, cpno2, eventweb, collegeweb;
     Button submit, edit, register_now;
     ImageView head_poster;
+    CardView cardCollegeweb,cardEventweb,cardTheme,cardPronits,cardAco,cardGuest,cardDept,cardEvent;
     String stitle, sategory, ssdate, sedate, sorganizer, scity, sstate, sDiscription, seventdetails, sdepartment, sguest, spronites, stheme, saccomadtation, slastdate, sentryfees, showtoreach, scpnam1, scpno1, scpname2, scpno2;
-    String posterurl, coid, webevent, webcoll,weburl;
+    String posterurl, coid, webevent, webcoll, weburl;
     SharedPreferences spUserDetails;
     SpotsDialog spotsDialog;
 
@@ -49,6 +50,14 @@ public class View_Details extends AppCompatActivity {
         edit = (Button) findViewById(R.id.head_Update);
         title = (TextView) findViewById(R.id.head_title);
         category = (TextView) findViewById(R.id.head_category);
+        cardAco = (CardView)findViewById(R.id.id_card_acco);
+        cardCollegeweb = (CardView)findViewById(R.id.id_college_website);
+        cardEventweb = (CardView)findViewById(R.id.id_event_website);
+        cardEvent = (CardView)findViewById(R.id.id_card_event);
+        cardTheme = (CardView)findViewById(R.id.id_card_theme);
+        cardPronits = (CardView)findViewById(R.id.id_card_pronites);
+        cardGuest = (CardView)findViewById(R.id.id_card_guest);
+        cardDept = (CardView)findViewById(R.id.id_card_dept);
         sdate = (TextView) findViewById(R.id.head_start_date);
         edate = (TextView) findViewById(R.id.head_end_date);
         organizer = (TextView) findViewById(R.id.head_organiser);
@@ -72,7 +81,6 @@ public class View_Details extends AppCompatActivity {
         eventweb = (TextView) findViewById(R.id.head_event_web);
         collegeweb = (TextView) findViewById(R.id.head_college_web);
         register_now = (Button) findViewById(R.id.register_now);
-
 
 
         spotsDialog = new SpotsDialog(this);
@@ -120,16 +128,16 @@ public class View_Details extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if (webevent.contains("http://") || webevent.contains("https://")){
+                if (webevent.contains("http://") || webevent.contains("https://")) {
 
-                    weburl =webevent;
-                }else{
-                    weburl ="http://"+webevent;
+                    weburl = webevent;
+                } else {
+                    weburl = "http://" + webevent;
                 }
                 Bundle bundle = new Bundle();
-                bundle.putString("url",weburl);
-                bundle.putString("data","reg url");
-                bundle.putString("title","reg title");
+                bundle.putString("url", weburl);
+                bundle.putString("data", "reg url");
+                bundle.putString("title", "reg title");
                 Intent in = new Intent(View_Details.this, WebActivity.class);
                 in.putExtras(bundle);
                 startActivity(in);
@@ -187,7 +195,7 @@ public class View_Details extends AppCompatActivity {
             submit.setVisibility(View.GONE);
             edit.setVisibility(View.GONE);
             register_now.setVisibility(View.VISIBLE);
-        }else if(spUserDetails.getString("PREFER", null).equals("PREF")){
+        } else if (spUserDetails.getString("PREFER", null).equals("PREF")) {
             submit.setVisibility(View.VISIBLE);
             edit.setVisibility(View.VISIBLE);
             register_now.setVisibility(View.GONE);
@@ -205,15 +213,46 @@ public class View_Details extends AppCompatActivity {
         city.setText(scity);
         state.setText(sstate);
         Discription.setText(sDiscription);
-        eventdetails.setText(seventdetails);
-        department.setText(sdepartment);
+        if(seventdetails.length()==0){
+            cardEvent.setVisibility(View.GONE);
+        }else{
+            String output=String.valueOf(seventdetails).replace("NonTechnical Events", "<font color=#000000><b><br>NonTechnical Events</b></font>").replace("Technical Events", "<font color=#000000><b>Technical Events<br></b></font>").replace("Workshop Events", "<font color=#000000><b><br>Workshop Events<br></b></font>").replace("Online Events", "<font color=#000000><b><br>Online Events<br></b></font>");
+            eventdetails.setText(Html.fromHtml(output));
+        }
 
-            guest.setText(sguest);
+        if(sdepartment.contains("No Department Selected")){
+           cardDept.setVisibility(View.GONE);
+        }else{
+            department.setText(sdepartment);
+        }
 
+if(sguest.length()!=0){
+    guest.setText(sguest);
+}else{
+    cardGuest.setVisibility(View.GONE);
+}
 
-        pronites.setText(spronites);
-        theme.setText(stheme);
-        accomadtation.setText(saccomadtation);
+        if(spronites.length()!=0){
+            pronites.setText(spronites);
+        }else{
+            cardPronits.setVisibility(View.GONE);
+        }
+
+       // pronites.setText(spronites);
+
+        if(stheme.length()!=0){
+            theme.setText(stheme);
+        }else{
+            cardTheme.setVisibility(View.GONE);
+        }
+       // theme.setText(stheme);
+        if(saccomadtation.length()!=0){
+            accomadtation.setText(saccomadtation);
+        }else{
+            cardAco.setVisibility(View.GONE);
+        }
+
+      //  accomadtation.setText(saccomadtation);
         lastdate.setText(slastdate);
         entryfees.setText(sentryfees);
         howtoreach.setText(showtoreach);
@@ -223,6 +262,30 @@ public class View_Details extends AppCompatActivity {
         cpno2.setText(scpno2);
         eventweb.setText(webevent);
         collegeweb.setText(webcoll);
+
+        cardCollegeweb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goWebActivity(webcoll);
+            }
+        });
+
+        cardEventweb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goWebActivity(webevent);            }
+        });
+
+    }
+
+    private void goWebActivity(String webcoll) {
+        Bundle b = new Bundle();
+        b.putString("url",webcoll);
+        b.putString("data","college");
+        b.putString("title","college");
+        Intent i = new Intent(View_Details.this,WebActivity.class);
+        i.putExtras(b);
+        startActivity(i);
 
     }
 
@@ -236,7 +299,7 @@ public class View_Details extends AppCompatActivity {
                 Log.d("Response", response.body().toString());
                 spotsDialog.dismiss();
                 Toast.makeText(View_Details.this, "Updated", Toast.LENGTH_SHORT).show();
-                Intent in = new Intent(View_Details.this,Pending_Events.class);
+                Intent in = new Intent(View_Details.this, Pending_Events.class);
                 startActivity(in);
                 finish();
             }

@@ -5,11 +5,9 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -19,21 +17,13 @@ import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
+import androidx.appcompat.widget.Toolbar;
 
 import com.crowdfire.cfalertdialog.CFAlertDialog;
 import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.adapter.ScreenShot;
-import com.studentsbazaar.studentsbazaarapp.helper.DateChecker;
-import com.studentsbazaar.studentsbazaarapp.model.Project_details;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.util.Date;
-import java.util.List;
 
 import dmax.dialog.SpotsDialog;
 
@@ -42,6 +32,7 @@ public class WebActivity extends AppCompatActivity {
     private WebView wv1;
     ImageView imageView;
     Bundle bundle;
+    Toolbar toolbar;
     private String url = null, data = null, title = null;
     // private SpotsDialog progressDialog = null;
     // private ProgressDialog progressDialog = null;
@@ -50,7 +41,7 @@ public class WebActivity extends AppCompatActivity {
     LinearLayout layoutweb;
     Button reload;
     Bitmap bitmap;
-    String pdfName, TAG = "FILE",urlsite;
+    String pdfName, TAG = "FILE", urlsite;
     String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
 
@@ -79,24 +70,41 @@ public class WebActivity extends AppCompatActivity {
 
         wv1 = findViewById(R.id.idWebview);
 
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        //setting the title
+        toolbar.setTitle(data);
+
+        //placing toolbar in place of actionbar
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 View rootView = getWindow().getDecorView().findViewById(android.R.id.content);
-                bitmap= ScreenShot.takescreenshotrootview(rootView);
+                bitmap = ScreenShot.takescreenshotrootview(rootView);
                 Intent share = new Intent(Intent.ACTION_SEND);
                 share.setType("image/jpeg");
-                if(data.equals("RESULTS-MU")){
+                if (data.equals("RESULTS-MU")) {
                     share.putExtra(android.content.Intent.EXTRA_TEXT, "STUDENTS BAZAAR APP -\n\nMadras University Results,\nCampus placement news,\nOff campus details,\nIntership Offers,\nNational Level QUIZ competitions & Events\nDownload STUDENTS BAZAAR App via Playstore \nhttps://play.google.com/store/apps/details?id=com.studentsbazaar.studentsbazaarapp\n\n-Thank You");
-                }else{
+                } else {
                     share.putExtra(android.content.Intent.EXTRA_TEXT, "STUDENTS BAZAAR APP - Anna University Results, Campus placement news, Off campus details, Intership Offers, National Level QUIZ competitions & Events download STUDENTS BAZAAR App via Playstore \nhttps://play.google.com/store/apps/details?id=com.studentsbazaar.studentsbazaarapp\n-Thank You");
 
                 }
 
-                String bitmapPath = MediaStore.Images.Media.insertImage(getContentResolver(), bitmap,"title", null);
+                String bitmapPath = MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, "title", null);
                 Uri bitmapUri = Uri.parse(bitmapPath);
-                share.putExtra(Intent.EXTRA_STREAM,bitmapUri);
-                startActivity(Intent.createChooser(share,"Share via"));
+                share.putExtra(Intent.EXTRA_STREAM, bitmapUri);
+                startActivity(Intent.createChooser(share, "Share via"));
             }
         });
         //Toolbar toolbar = findViewById(R.id.toolbar);
@@ -140,8 +148,20 @@ public class WebActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
 
-   /* private void showProgressDialog() {
+        if (data.equals("notification")) {
+            Intent i = new Intent(WebActivity.this, HomeActivity.class);
+            startActivity(i);
+            finish();
+        } else {
+            finish();
+        }
+    }
+
+/* private void showProgressDialog() {
         if (progressDialog == null) {
             progressDialog = new SpotsDialog(this, R.style.Custom);
         }
@@ -189,7 +209,6 @@ public class WebActivity extends AppCompatActivity {
 
             @Override
             public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-                Toast.makeText(getApplicationContext(), String.valueOf(errorCode), Toast.LENGTH_SHORT).show();
                 CFAlertDialog.Builder builder = new CFAlertDialog.Builder(WebActivity.this);
                 builder.setDialogStyle(CFAlertDialog.CFAlertStyle.NOTIFICATION);
                 builder.setTitle("Hey there !");

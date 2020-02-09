@@ -134,6 +134,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="35dp"
             android:text="SKIP"
+            android:visibility="gone"
             android:fontFamily="monospace"
             android:textColor="#FF6D00"
             android:textSize="30sp"

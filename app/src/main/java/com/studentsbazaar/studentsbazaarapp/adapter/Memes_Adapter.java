@@ -3,19 +3,29 @@ package com.studentsbazaar.studentsbazaarapp.adapter;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.Build;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.model.Memes_Details;
 import com.studentsbazaar.studentsbazaarapp.retrofit.ApiUtil;
@@ -74,19 +84,59 @@ public class Memes_Adapter extends RecyclerView.Adapter<Memes_Adapter.Myviewhold
                 }
             }
         });
-//        holder.shareimg.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//                bitmap= ScreenShot.takescreenshotrootview(holder.postermeme);
-//                Intent share = new Intent(Intent.ACTION_SEND);
-//                share.setType("image/jpeg");
-//                String bitmapPath = MediaStore.Images.Media.insertImage(context.getContentResolver(), bitmap,"title", null);
-//                Uri bitmapUri = Uri.parse(bitmapPath);
-//                share.putExtra(Intent.EXTRA_STREAM,bitmapUri);
-//                context.startActivity(Intent.createChooser(share,"Share via"));
-//            }
-//        });
+        holder.shareimg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Glide.with(context)
+                        .load(listItem.getMemes())
+                        .asBitmap().skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE)
+
+                        .into(new SimpleTarget<Bitmap>(250, 250) {
+                            @Override
+                            public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
+                                spotsDialog.dismiss();
+
+                                Intent intent = new Intent(Intent.ACTION_SEND);
+                                intent.putExtra(Intent.EXTRA_TEXT, "Students Bazaar,India's highest rated students app.\nSource : Students Bazaar\nhttp://tiny.cc/3lnhjz\"");
+                                String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), resource, "", null);
+
+
+                                Uri screenshotUri = Uri.parse(path);
+
+
+                                intent.putExtra(Intent.EXTRA_STREAM, screenshotUri);
+                                intent.setType("image/*");
+
+                                context.startActivity(Intent.createChooser(intent, "Share image via..."));
+                            }
+
+                            @Override
+                            public void onLoadFailed(Exception e, Drawable errorDrawable) {
+                                Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
+
+
+                                super.onLoadFailed(e, errorDrawable);
+                            }
+
+                            @Override
+                            public void onLoadStarted(Drawable placeholder) {
+                                spotsDialog.show();
+                                Toast.makeText(context, "Please wait", Toast.LENGTH_SHORT).show();
+
+                                super.onLoadStarted(placeholder);
+                            }
+                        });
+            }
+        });
+        holder.downimg.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onClick(View view) {
+                String IMG = listItem.getMemes();
+
+
+            }
+        });
 
 
     }
@@ -98,7 +148,7 @@ public class Memes_Adapter extends RecyclerView.Adapter<Memes_Adapter.Myviewhold
 
     public class Myviewholder extends RecyclerView.ViewHolder {
         TextView username, posttime, smile, caption;
-        ImageView postermeme, shareimg;
+        ImageView postermeme, shareimg, downimg;
         CardView cardView;
 
         public Myviewholder(@NonNull View itemView) {
@@ -109,6 +159,7 @@ public class Memes_Adapter extends RecyclerView.Adapter<Memes_Adapter.Myviewhold
             cardView = (CardView) itemView.findViewById(R.id.memecartview);
             postermeme = (ImageView) itemView.findViewById(R.id.memepost);
             shareimg = (ImageView) itemView.findViewById(R.id.shareimg);
+            downimg = (ImageView) itemView.findViewById(R.id.downimg);
 
 
         }

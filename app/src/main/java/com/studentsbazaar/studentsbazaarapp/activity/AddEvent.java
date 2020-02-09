@@ -26,20 +26,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import com.iceteck.silicompressorr.FileUtils;
 import com.iceteck.silicompressorr.SiliCompressor;
+import com.studentsbazaar.studentsbazaarapp.FileUtil;
 import com.studentsbazaar.studentsbazaarapp.R;
-import com.studentsbazaar.studentsbazaarapp.helper.FileUtil;
+
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
-
-import id.zelory.compressor.Compressor;
 
 public class AddEvent extends AppCompatActivity {
 
@@ -53,7 +52,7 @@ public class AddEvent extends AppCompatActivity {
     SQLiteDatabase sq;
     Cursor c;
 
-    String profileimg, elist, epost = "0";
+    String profileimg, elist, epost;
     CardView cardtech, cardnontech, cardworkshop, cardonline;
     EditText edtech, ednontech, edworkshop, edonline;
     Button teching, technext, nonteching, nontechnext, workshoping, workshopnext, onlineing, onlinenext;
@@ -71,7 +70,6 @@ public class AddEvent extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_event);
-        Log.d("sizeofarray", epost);
         stringBuilder = new StringBuilder();
         imagepost = findViewById(R.id.aevent_post_image);
         addpost = findViewById(R.id.aevent_post_icon);
@@ -129,7 +127,7 @@ public class AddEvent extends AppCompatActivity {
                         if (edtech.getText().toString().isEmpty()) {
                             stringBuilder.append("");
                         } else {
-                            stringBuilder.append("Technical Event's \n" + edtech.getText().toString() + "\n");
+                            stringBuilder.append("Technical Events" + edtech.getText().toString());
 
                         }
                     }
@@ -142,7 +140,7 @@ public class AddEvent extends AppCompatActivity {
                         if (ednontech.getText().toString().isEmpty()) {
                             stringBuilder.append("");
                         } else {
-                            stringBuilder.append("Non Technical Event's \n" + ednontech.getText().toString() + "\n");
+                            stringBuilder.append("NonTechnical Events\n" + ednontech.getText().toString());
 
                         }
                     }
@@ -155,7 +153,7 @@ public class AddEvent extends AppCompatActivity {
                         if (edworkshop.getText().toString().isEmpty()) {
                             stringBuilder.append("");
                         } else {
-                            stringBuilder.append("Workshop Event's \n" + edworkshop.getText().toString() + "\n");
+                            stringBuilder.append("Workshop Events\n" + edworkshop.getText().toString());
 
                         }
                     }
@@ -167,7 +165,7 @@ public class AddEvent extends AppCompatActivity {
                         if (edonline.getText().toString().isEmpty()) {
                             stringBuilder.append("");
                         } else {
-                            stringBuilder.append("Online Event's \n" + edonline.getText().toString() + "\n");
+                            stringBuilder.append("Online Events\n" + edonline.getText().toString());
 
                         }
                         evntsts.setText(stringBuilder.toString());
@@ -204,25 +202,17 @@ public class AddEvent extends AppCompatActivity {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sf = getSharedPreferences("event", MODE_PRIVATE);
-                ed = sf.edit();
-                Log.d("IMG_NAME", epost + "");
-                try {
-                    ed.putString("elist", URLEncoder.encode(stringBuilder.toString(), "UTF-8"));
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
-                Log.d("IMG_NAME",   stringBuilder.toString());
-                ed.apply();
-                if (epost.isEmpty() && elist.isEmpty()) {
+                if (epost == null) {
                     Toast.makeText(AddEvent.this, "Please add Poster Image and Event Details...", Toast.LENGTH_SHORT).show();
                 } else {
-
+                    sf = getSharedPreferences("event", MODE_PRIVATE);
+                    ed = sf.edit();
+                    ed.putString("elist", stringBuilder.toString());
+                    ed.apply();
                     startActivity(new Intent(getApplicationContext(), AddEvent3.class));
                 }
             }
         });
-
     }
 
     @Override
@@ -230,7 +220,6 @@ public class AddEvent extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == RESULT_LOAD_IMAGE) {
-
             try {
                 if (data != null) {
                     if (data.getData() != null) {
@@ -244,14 +233,13 @@ public class AddEvent extends AppCompatActivity {
                         compressedImgFile.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
                         byte[] byteArray = byteArrayOutputStream.toByteArray();
                         String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
-
                         SharedPreferences sf = getSharedPreferences("event", MODE_PRIVATE);
                         SharedPreferences.Editor ed = sf.edit();
+                        epost = encoded;
                         ed.putString("epost", encoded);
                         ed.apply();
                     }
                 }
-
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {

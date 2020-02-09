@@ -61,7 +61,7 @@ public class AddEvent3 extends AppCompatActivity {
         complete = findViewById(R.id.button2);
         eventweb = (AutoCompleteTextView) findViewById(R.id.add3_eventweb);
         collegeweb = (AutoCompleteTextView) findViewById(R.id.add3_collegeweb);
-        lastdate.setText(sf.getString("estate", "none"));
+        lastdate.setText(sf.getString("esdate", "none"));
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(AddEvent3.this, android.R.layout.simple_list_item_1, urlformat);
         eventweb.setAdapter(arrayAdapter);
         eventweb.setThreshold(0);
@@ -215,6 +215,7 @@ public class AddEvent3 extends AppCompatActivity {
                     contactno2.setError("Please fill valid 10 Digit");
                 } else {
                     progressDialog.show();
+                    Log.d("eventdetails",Event_Details);
                     Log.d("alldatas", "onClick: " + Event_Title + " " + Event_Type + " " + Event_Name + " " + Event_Start_Date + " " + Event_End_Date + " " + Conductedby + " " + Degree + " " + Dept + " " + College_Address + " " + College_District + " " + College_State + " " + Event_organizer + " " + Event_Details + Event_Discription + " " + Event_Website + " " + College_Website + " " + Contact_Person1_Name + " " + Contact_Person1_No + " " + Contact_Person2_Name + " " + Contact_Person2_No + " " + " " + Entry_Fees + " " + Accepted + " " + Event_Lat + " " + Event_Long + " " + Event_guest + " " + Event_pro_nites + " " + Event_accomodations + " " + Event_how_to_reach + " " + Event_sponsors + " " + Last_date_registration + " " + Event_status);
                     Call<String> call = ApiUtil.getServiceClass().insertUser(sharedPreferences.getString("UID", null), Event_Title, Event_Type, Event_Name, Event_Start_Date, Event_End_Date, Conductedby, Degree, Dept, College_Address, College_District, College_State, Event_organizer, Event_Details, Event_Discription, Event_Website, College_Website, Contact_Person1_Name, Contact_Person1_No, Contact_Person2_Name, Contact_Person2_No, Poster, Entry_Fees, Accepted, Event_Lat, Event_Long, Event_guest, Event_pro_nites, Event_accomodations, Event_how_to_reach, Event_sponsors, Last_date_registration, Event_status, Comments);
                     call.enqueue(new Callback<String>() {

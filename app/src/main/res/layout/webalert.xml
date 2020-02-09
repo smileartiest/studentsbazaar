@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
@@ -13,7 +13,8 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
             android:orientation="vertical">
 
             <TextView
@@ -23,17 +24,9 @@
                 android:fontFamily="serif"
                 android:gravity="center"
                 android:padding="30dp"
-                android:text="Sorry there's been a delay in our response.Kindly keep Checking the reload option given Below"
+                android:text="Thank you,you ll'l get the results on 6 PM by today,please keep check studentsbazaar"
                 android:textColor="#000000"
                 android:textStyle="bold" />
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="25dp">
-
-
 
                 <Button
                     android:id="@+id/donebtn"
@@ -43,19 +36,11 @@
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp"
                     android:text="Done"
-                    android:visibility="gone"
+                    android:layout_marginBottom="25dp"
                     android:textAllCaps="false"
                     android:textColor="#FFFFFF" />
 
-                <ProgressBar
-                    android:id="@+id/progressBar2"
-                    style="?android:attr/progressBarStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="@color/colorPrimaryDark"/>
 
-
-            </RelativeLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 

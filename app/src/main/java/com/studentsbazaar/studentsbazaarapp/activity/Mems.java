@@ -1,6 +1,7 @@
 package com.studentsbazaar.studentsbazaarapp.activity;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -29,6 +30,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.crowdfire.cfalertdialog.CFAlertDialog;
+import com.iceteck.silicompressorr.FileUtils;
+import com.iceteck.silicompressorr.SiliCompressor;
+import com.studentsbazaar.studentsbazaarapp.FileUtil;
 import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.adapter.Memes_Adapter;
 import com.studentsbazaar.studentsbazaarapp.model.DownloadResponse;
@@ -43,7 +47,7 @@ import java.io.InputStream;
 import java.util.List;
 
 import dmax.dialog.SpotsDialog;
-import id.zelory.compressor.Compressor;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -98,11 +102,13 @@ public class Mems extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.add_placement_menu, menu);
         MenuItem shareItem = menu.findItem(R.id.item2);
-
+        MenuItem search = menu.findItem(R.id.action_search);
+        search.setVisible(false);
         if (sharedPreferences.getString("log", "").equals("admin")) {
             shareItem.setVisible(true);
         }else{
             shareItem.setVisible(false);
+
         }
 
         return true;
@@ -113,7 +119,40 @@ public class Mems extends AppCompatActivity {
         int id = item.getItemId();
         switch (id) {
             case R.id.item1:
-                addJob();
+
+
+                if (sharedPreferences.getString("log", "").equals("reg") || sharedPreferences.getString("log", "").equals("admin")) {
+                    addJob();
+                } else {
+                    CFAlertDialog.Builder builder = new CFAlertDialog.Builder(Mems.this);
+                    builder.setDialogStyle(CFAlertDialog.CFAlertStyle.ALERT);
+                    builder.setTitle("Hey there ! Do Register!");
+                    builder.setMessage("Then Enjoy the Meme Box.Fun Guarantee !");
+                    builder.addButton("OKAY", -1, -1, CFAlertDialog.CFAlertActionStyle.POSITIVE, CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                          SharedPreferences smeme = getSharedPreferences("meme", Context.MODE_PRIVATE);
+                          SharedPreferences.Editor seditor = smeme.edit();
+                            seditor.putString("source","meme").apply();
+                            Intent i = new Intent(Mems.this, SignUp.class);
+                            //i.putExtras(b);
+                            startActivity(i);
+
+                        }
+                    });
+
+                    builder.addButton("NO", -1, -1, CFAlertDialog.CFAlertActionStyle.NEGATIVE, CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Toast.makeText(SplashActivity.this, "Upgrade tapped", Toast.LENGTH_SHORT).show();
+
+                            dialog.dismiss();
+                        }
+                    });
+                    builder.show();
+                }
+
 
                 return true;
             case R.id.item2:
@@ -149,29 +188,33 @@ public class Mems extends AppCompatActivity {
         postbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                spotsDialog.show();
-                convertBitmapToString(profilePicture);
-                epost = profileimg;
-                Log.d("RESPONSE3", epost);
-                Call<String> call = ApiUtil.getServiceClass().addmemes(UID, "fine", epost);
-                call.enqueue(new Callback<String>() {
-                    @Override
-                    public void onResponse(Call<String> call, Response<String> response) {
-                        if (response.body().equals("1")) {
-                            spotsDialog.dismiss();
-                            dialog.cancel();
-                            alert();
-                        } else {
-                            Toast.makeText(Mems.this, response.body(), Toast.LENGTH_SHORT).show();
+
+                if (epost != null) {
+                    Toast.makeText(Mems.this, "Please Select Memes", Toast.LENGTH_SHORT).show();
+                }else {
+                    spotsDialog.show();
+                    convertBitmapToString(profilePicture);
+                    epost = profileimg;
+                    Log.d("RESPONSE3", epost);
+                    Call<String> call = ApiUtil.getServiceClass().addmemes(UID, "fine", epost);
+                    call.enqueue(new Callback<String>() {
+                        @Override
+                        public void onResponse(Call<String> call, Response<String> response) {
+                            if (response.body().equals("1")) {
+                                spotsDialog.dismiss();
+                                dialog.cancel();
+                                alert();
+                            } else {
+                                Toast.makeText(Mems.this, response.body(), Toast.LENGTH_SHORT).show();
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onFailure(Call<String> call, Throwable t) {
+                        @Override
+                        public void onFailure(Call<String> call, Throwable t) {
 
-                    }
-                });
-
+                        }
+                    });
+                }
             }
         });
 
@@ -254,11 +297,12 @@ public class Mems extends AppCompatActivity {
                         InputStream imageStream = getApplicationContext().getContentResolver().openInputStream(imageUri);
                         profilePicture = BitmapFactory.decodeStream(imageStream);
                         postmeme.setImageBitmap(profilePicture);
-                        Bitmap compressedImgFile = new Compressor(this).compressToBitmap(new File(imageUri.getPath()));
+                        File actualImage = FileUtil.from(this, data.getData());
+                        Bitmap compressedImgFile = SiliCompressor.with(this).getCompressBitmap(actualImage.getAbsolutePath());
                         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                        compressedImgFile.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+                        compressedImgFile.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
                         byte[] byteArray = byteArrayOutputStream.toByteArray();
-                        encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
+                        String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
                         epost = encoded;
 
                     }}

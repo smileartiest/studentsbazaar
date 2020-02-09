@@ -87,13 +87,7 @@
         app:menu="@menu/activity_home_drawer"
         >
 
- <!--       <ExpandableListView
-            android:id="@+id/simple_expandable_listview"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/nav_header_height"
-            android:dividerHeight="1dp" >
-        </ExpandableListView>-->
+
 
     </com.google.android.material.navigation.NavigationView>
 </androidx.drawerlayout.widget.DrawerLayout>

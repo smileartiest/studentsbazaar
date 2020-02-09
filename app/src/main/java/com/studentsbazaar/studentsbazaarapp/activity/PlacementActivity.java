@@ -13,12 +13,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,6 +32,7 @@ import com.studentsbazaar.studentsbazaarapp.model.Campus;
 import com.studentsbazaar.studentsbazaarapp.model.DownloadResponse;
 import com.studentsbazaar.studentsbazaarapp.retrofit.ApiUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import dmax.dialog.SpotsDialog;
@@ -42,7 +45,7 @@ public class PlacementActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private LinearLayout layout;
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
+    private JobListAdapter mAdapter;
     EditText dClgName, dCompName, dDomain, dPlaced, dPackage, dDate, dcomments;
     ImageView dCancel;
     Button dSubmit;
@@ -70,6 +73,7 @@ public class PlacementActivity extends AppCompatActivity {
             getSupportActionBar().setTitle("JOBS");
 
         }
+
 
         spUserDetails = getSharedPreferences("USER_DETAILS", Context.MODE_PRIVATE);
 
@@ -144,7 +148,25 @@ public class PlacementActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.add_placement_menu, menu);
         MenuItem shareItem = menu.findItem(R.id.item1);
+        MenuItem search=menu.findItem(R.id.action_search);
         menu.findItem(R.id.item2).setVisible(false);
+        SearchView searchView=(SearchView)search.getActionView();
+        searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                mAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+
+
         if (spUserDetails.getString("log", "").equals("reg") || spUserDetails.getString("log", "").equals("visitor")) {
             shareItem.setVisible(false);
         }
@@ -158,6 +180,7 @@ public class PlacementActivity extends AppCompatActivity {
             case R.id.item1:
                 addJob();
                 return true;
+            case R.id.action_search:
 
             default:
                 return super.onOptionsItemSelected(item);
@@ -231,4 +254,5 @@ public class PlacementActivity extends AppCompatActivity {
             }
         });
     }
+
 }

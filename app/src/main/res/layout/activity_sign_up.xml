@@ -196,6 +196,26 @@
                 android:layout_marginLeft="3dp"
                 android:layout_marginTop="10dp"
                 android:textColor="@color/colorBlack"
+                android:text="University Type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <Spinner
+                android:id="@+id/reg_university"
+                android:background="@drawable/edittext"
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:textSize="15sp"
+                android:paddingLeft="5dp"
+                android:textColor="#000"
+                android:textColorHint="@color/colorBlack"
+               />
+
+            <TextView
+                android:layout_marginLeft="3dp"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/colorBlack"
                 android:text="Degree"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>

@@ -114,6 +114,28 @@ public class DateChecker {
 
         return result;
     }
+    public boolean checkPrevDate(String startDate, String endDate){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date date1 = null,date2 = null;
+        try {
+            date1 = sdf.parse(startDate);
+            date2 = sdf.parse(endDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
+
+        System.out.println("date1 : " + sdf.format(date1));
+        System.out.println("date2 : " + sdf.format(date2));
+
+        if (date2.compareTo(date1) > 0) {
+            System.out.println("Date2 is after Date1");
+            result = true;
+        }else {
+            result = false;
+        }
+
+        return result;
+    }
 
 }

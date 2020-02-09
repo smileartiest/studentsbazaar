@@ -14,6 +14,7 @@ import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.crowdfire.cfalertdialog.CFAlertDialog;
+import com.studentsbazaar.studentsbazaarapp.NotificationService;
 import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.firebase.Config;
 import com.studentsbazaar.studentsbazaarapp.model.College_Details;
@@ -50,6 +51,7 @@ public class SplashActivty extends AppCompatActivity {
                 Settings.Secure.ANDROID_ID);
         Log.d("DEV_ID", androidId + "");
         connectionverify();
+        startService(new Intent(SplashActivty.this, NotificationService.class));
 
 //
 
@@ -90,16 +92,36 @@ public class SplashActivty extends AppCompatActivity {
                 for (int i = 0; i < college_details.size(); i++) {
                     ApiUtil.COLLEGEARRAY.add(college_details.get(i).getCollege_Name());
                 }
-                if (getSharedPreferences("USER_DETAILS", MODE_PRIVATE).getString("log", "").equals("0") || getSharedPreferences("USER_DETAILS", MODE_PRIVATE).getString("log", "").equals("visitor")) {
+                SharedPreferences.Editor spEdit = sharedPreferences.edit();
+                if(sharedPreferences.getString("log","").equals("admin")){
+                    spEdit.putString("log", "admin").apply();
+                    Intent intent = new Intent(SplashActivty.this, HomeActivity.class);
+                    startActivity(intent);
+                    finish();
+                }else if(sharedPreferences.getString("log","").equals("reg")){
+                    spEdit.putString("log", "reg").apply();
+                    Intent intent = new Intent(SplashActivty.this, HomeActivity.class);
+                    startActivity(intent);
+                    finish();
+                }else{
+                    spEdit.putString("log", "visitor").apply();
+                    Intent intent = new Intent(SplashActivty.this, HomeActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+
+
+               /* if (getSharedPreferences("USER_DETAILS", MODE_PRIVATE).getString("log", "").equals("0") || getSharedPreferences("USER_DETAILS", MODE_PRIVATE).getString("log", "").equals("visitor")) {
                     Intent intent = new Intent(SplashActivty.this, MainActivity.class);
                     startActivity(intent);
                     finish();
 
                 } else if (getSharedPreferences("USER_DETAILS", MODE_PRIVATE).getString("log", "").equals("reg") || getSharedPreferences("USER_DETAILS", MODE_PRIVATE).getString("log", "").equals("admin")){
+                    spEdit.putString("log", "visitor").apply();
                     Intent intent = new Intent(SplashActivty.this, HomeActivity.class);
                     startActivity(intent);
                     finish();
-                }
+                }*/
 
             }
 
