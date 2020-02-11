@@ -74,24 +74,32 @@
                             android:id="@+id/optA"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:background="@drawable/shape"
+                            android:layout_margin="2dp"
                             android:text="RadioButton" />
 
                         <RadioButton
                             android:id="@+id/optB"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:background="@drawable/shape"
+                            android:layout_margin="2dp"
                             android:text="RadioButton" />
 
                         <RadioButton
                             android:id="@+id/optC"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:background="@drawable/shape"
+                            android:layout_margin="2dp"
                             android:text="RadioButton" />
 
                         <RadioButton
                             android:id="@+id/optD"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:background="@drawable/shape"
+                            android:layout_margin="2dp"
                             android:text="RadioButton" />
 
                     </RadioGroup>

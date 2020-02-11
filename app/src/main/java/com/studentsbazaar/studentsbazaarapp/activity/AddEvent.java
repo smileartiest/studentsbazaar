@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -40,7 +41,7 @@ public class AddEvent extends AppCompatActivity {
     CardView cardtech, cardnontech, cardworkshop, cardonline;
     EditText edtech, ednontech, edworkshop, edonline;
     Button teching, technext, nonteching, nontechnext, workshoping, workshopnext, onlineing, onlinenext;
-    StringBuilder stringBuilder;
+    StringBuilder stringBuilder,builderevent;
     TextView eventdetailstxt;
     Dialog d;
     Bitmap profilePicture;
@@ -75,7 +76,6 @@ public class AddEvent extends AppCompatActivity {
         addevent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                stringBuilder = new StringBuilder();
                 d = new Dialog(AddEvent.this);
                 d.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 d.setCancelable(false);
@@ -126,8 +126,34 @@ public class AddEvent extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         d.dismiss();
-                        String eventdetails="/*Technical Events*/" + edtech.getText().toString() +"/*NonTechnical Events*/" + ednontech.getText().toString() + "/*Workshop Events*/" + edworkshop.getText().toString() + "/*Online Events*/" + edonline.getText().toString();
-                        eventdetailstxt.setText(eventdetails);
+                        stringBuilder = new StringBuilder();
+                        if (edtech.getText().toString().isEmpty()) {
+                            stringBuilder.append("");
+                        } else {
+                            stringBuilder.append("/*Technical Events*/\n" + edtech.getText().toString() + "\n");
+
+                        }
+                        if (ednontech.getText().toString().isEmpty()) {
+                            stringBuilder.append("");
+                        } else {
+                            stringBuilder.append("/*NonTechnical Events*/\n" + ednontech.getText().toString() + "\n");
+
+                        }
+                        if (edworkshop.getText().toString().isEmpty()) {
+                            stringBuilder.append("");
+                        } else {
+                            stringBuilder.append("/*Workshop Events*/\n" + edworkshop.getText().toString() + "\n");
+
+                        }
+                        if (edonline.getText().toString().isEmpty()) {
+                            stringBuilder.append("");
+                        } else {
+                            stringBuilder.append("/*Online Events*/\n" + edonline.getText().toString() + "\n");
+
+                        }
+
+                        String output = String.valueOf(stringBuilder).replace("/*NonTechnical Events*/", "<font color=#000000><b><br>NonTechnical Events<br></b></font>").replace("/*Technical Events*/", "<font color=#000000><b>Technical Events<br></b></font>").replace("/*Workshop Events*/", "<font color=#000000><b><br>Workshop Events<br></b></font>").replace("/*Online Events*/", "<font color=#000000><b><br>Online Events<br></b></font>");
+                        eventdetailstxt.setText(Html.fromHtml(output));
 
                     }
                 });
@@ -166,31 +192,6 @@ public class AddEvent extends AppCompatActivity {
                 } else if (stringBuilder == null) {
                     Move_Show.showToast("Please add Event Details");
                 } else {
-
-                    if (edtech.getText().toString().isEmpty()) {
-                        stringBuilder.append("");
-                    } else {
-                        stringBuilder.append("/*Technical Events*/\n" + edtech.getText().toString() + "\n");
-
-                    }
-                    if (ednontech.getText().toString().isEmpty()) {
-                        stringBuilder.append("");
-                    } else {
-                        stringBuilder.append("/*NonTechnical Events*/\n" + ednontech.getText().toString() + "\n");
-
-                    }
-                    if (edworkshop.getText().toString().isEmpty()) {
-                        stringBuilder.append("");
-                    } else {
-                        stringBuilder.append("/*Workshop Events*/\n" + edworkshop.getText().toString() + "\n");
-
-                    }
-                    if (edonline.getText().toString().isEmpty()) {
-                        stringBuilder.append("");
-                    } else {
-                        stringBuilder.append("/*Online Events*/\n" + edonline.getText().toString() + "\n");
-
-                    }
                     sf = getSharedPreferences("event", MODE_PRIVATE);
                     ed = sf.edit();
                     ed.putString("elist", stringBuilder.toString());

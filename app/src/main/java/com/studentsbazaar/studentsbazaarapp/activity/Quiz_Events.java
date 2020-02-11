@@ -2,6 +2,7 @@ package com.studentsbazaar.studentsbazaarapp.activity;
 
 import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -13,25 +14,31 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.studentsbazaar.studentsbazaarapp.AlarmHelper;
-import com.studentsbazaar.studentsbazaarapp.controller.Monitor;
 import com.studentsbazaar.studentsbazaarapp.NotificationPublisher;
 import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.adapter.Quiz_Adapter;
+import com.studentsbazaar.studentsbazaarapp.controller.Monitor;
 import com.studentsbazaar.studentsbazaarapp.model.DownloadResponse;
 import com.studentsbazaar.studentsbazaarapp.model.Quiz_Details;
 import com.studentsbazaar.studentsbazaarapp.retrofit.ApiUtil;
 
 import java.util.Calendar;
 import java.util.List;
+
 import dmax.dialog.SpotsDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -60,14 +67,14 @@ public class Quiz_Events extends AppCompatActivity {
         alarmHelper = new AlarmHelper(this);
         layout = (LinearLayout) findViewById(R.id.empty4);
         sharedPreferences = getSharedPreferences("USER_DETAILS", MODE_PRIVATE);
-         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        // setnotification();
+        // displaystatus();
         if (toolbar != null) {
             setSupportActionBar(toolbar);
             getSupportActionBar().setTitle("QUIZ");
-                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-                getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
 
 
         }   // use a linear layout manager
@@ -79,8 +86,8 @@ public class Quiz_Events extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Log.d("Quizresults", String.valueOf(ApiUtil.QUIZ_RESULT));
-                 addresults(sharedPreferences.getString("UID", null), String.valueOf(ApiUtil.QUIZ_RESULT));
-
+                // addresults(sharedPreferences.getString("UID", null), String.valueOf(ApiUtil.QUIZ_RESULT));
+                displaystatus();
             }
         });
 
@@ -112,6 +119,7 @@ public class Quiz_Events extends AppCompatActivity {
                     assert response.body() != null;
                     drawerResponseList = response.body().getQuiz_details();
                     progressDialog.dismiss();
+                    ApiUtil.TOTAL_QUIZ = drawerResponseList.size();
                     if (drawerResponseList.size() == 0) {
                         layout.setVisibility(View.VISIBLE);
                         Quiz_view.setVisibility(View.INVISIBLE);
@@ -181,33 +189,32 @@ public class Quiz_Events extends AppCompatActivity {
     }
 
 
-    void  setnotification(){
+    void setnotification() {
         Calendar calendar = Calendar.getInstance();
         if (android.os.Build.VERSION.SDK_INT >= 23) {
             calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH),
-                    7, 19, 0);
+                    16, 20, 0);
         } else {
             calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH),
-                    7,19, 0);
+                    16, 20, 0);
         }
 
 
         setAlarm(calendar.getTimeInMillis());
     }
+
     private void setAlarm(long time) {
         //getting the alarm manager
         AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-
         //creating a new intent specifying the broadcast receiver
         Intent i = new Intent(this, NotificationPublisher.class);
-
         //creating a pending intent using the intent
         PendingIntent pi = PendingIntent.getBroadcast(this, 0, i, 0);
-
         //setting the repeating alarm that will be fired every day
-//        am.setRepeating(AlarmManager.RTC, time, AlarmManager.INTERVAL_DAY, pi);
-//        Toast.makeText(this, "Remainder Set", Toast.LENGTH_SHORT).show();
+        am.setRepeating(AlarmManager.RTC, time, AlarmManager.INTERVAL_DAY, pi);
+        Toast.makeText(this, "Remainder Set", Toast.LENGTH_SHORT).show();
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -215,8 +222,9 @@ public class Quiz_Events extends AppCompatActivity {
         menu.findItem(R.id.item1).setVisible(false);
         menu.findItem(R.id.item2).setVisible(false);
         menu.findItem(R.id.action_search).setVisible(false);
-        return  true;
+        return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -233,5 +241,29 @@ public class Quiz_Events extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
 
+    }
+
+    void displaystatus() {
+        Dialog d = new Dialog(Quiz_Events.this);
+        d.requestWindowFeature(Window.FEATURE_ACTION_MODE_OVERLAY);
+        d.setCancelable(false);
+        d.setContentView(R.layout.quiz_results_design);
+        d.getWindow().setLayout(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
+        TextView totalmark = (TextView) d.findViewById(R.id.uitvresults);
+        TextView totalcount = (TextView) d.findViewById(R.id.uitvcountresult);
+        TextView correctans = (TextView) d.findViewById(R.id.uitvcorrectans);
+        TextView worngans = (TextView) d.findViewById(R.id.uitvwrongans);
+        ImageView closebtn = (ImageView) d.findViewById(R.id.uiivclosebtn);
+        totalmark.setText(String.valueOf(ApiUtil.QUIZ_RESULT));
+        totalcount.setText(totalcount.getText().toString().replace("10", String.valueOf(ApiUtil.QUIZ_RESULT)));
+        correctans.setText(" " + String.valueOf(ApiUtil.QUIZ_RESULT) + " Correct");
+        worngans.setText(" " + String.valueOf(ApiUtil.TOTAL_QUIZ - ApiUtil.QUIZ_RESULT) + " Wrong");
+        closebtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                d.dismiss();
+            }
+        });
+        d.show();
     }
 }

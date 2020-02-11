@@ -21,6 +21,7 @@ public class ApiUtil {
     public static final String GET_RECENT_EVENTS=BASE_URL+"getrecentevents.php";
     public static  final ArrayList<String> COLLEGEARRAY = new ArrayList<>();
     public static  int QUIZ_RESULT=0;
+    public static  int TOTAL_QUIZ=0;
 
 
     public static RetrofitInterface getServiceClass() {
