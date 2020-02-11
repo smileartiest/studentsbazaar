@@ -80,7 +80,7 @@ public class PendingEventsAdapter extends RecyclerView.Adapter<PendingEventsAdap
                 editor.putString("cat",listItem.getEvent_Type());
                 editor.putString("sdate",listItem.getEvent_Start_Date());
                 editor.putString("edate",listItem.getEvent_End_Date());
-                editor.putString("organiser",listItem.getEvent_sponsors());
+                editor.putString("organiser",listItem.getEvent_Organiser());
                 editor.putString("city",listItem.getCollege_District());
                 editor.putString("state",listItem.getCollege_State());
                 editor.putString("dis",listItem.getEvent_Discription());

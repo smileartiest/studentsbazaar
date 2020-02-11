@@ -143,7 +143,7 @@ public class Edit_Events extends AppCompatActivity {
                 cweb = edwedcoll.getText().toString();
 
 
-                Call<String> call = ApiUtil.getServiceClass().updateevents(stitle, sategory, ssdate, sedate, sdepartment, sDiscription, sstate, sorganizer, seventdetails, sDiscription, eweb, cweb, scpnam1, scpno1, scpname2, scpno2, sentryfees, spronites, saccomadtation, showtoreach, slastdate, sguest, eventid);
+                Call<String> call = ApiUtil.getServiceClass().updateevents(stitle, sategory, ssdate, sedate, sdepartment, scity, sstate, sorganizer, seventdetails, sDiscription, eweb, cweb, scpnam1, scpno1, scpname2, scpno2, sentryfees, spronites, saccomadtation, showtoreach, slastdate, sguest, eventid);
                 call.enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
@@ -220,7 +220,7 @@ public class Edit_Events extends AppCompatActivity {
                         city.setText(drawerResponseList.get(0).getCollege_District());
                         state.setText(drawerResponseList.get(0).getCollege_State());
                         Discription.setText(drawerResponseList.get(0).getEvent_Discription());
-                        String output = String.valueOf(drawerResponseList.get(0).getEvent_Details()).replace("/*NonTechnical Events*/", "<font color=#000000><b><br>NonTechnical Events<br></b></font>").replace("/*Technical Events*/", "<font color=#000000><b>Technical Events<br></b></font>").replace("/*Workshop Events*/", "<font color=#000000><b><br>Workshop Events<br></b></font>").replace("/*Online Events*/", "<font color=#000000><b><br>Online Events<br></b></font>");
+                        String output = drawerResponseList.get(0).getEvent_Details().replace("/*NonTechnical Events*/", "<font color=#000000><b><br>NonTechnical Events<br></b></font>").replace("/*Technical Events*/", "<font color=#000000><b>Technical Events<br></b></font>").replace("/*Workshop Events*/", "<font color=#000000><b><br>Workshop Events<br></b></font>").replace("/*Online Events*/", "<font color=#000000><b><br>Online Events<br></b></font>");
                         eventdetails.setText(Html.fromHtml(output));
                         department.setText(drawerResponseList.get(0).getDept());
                         guest.setText(drawerResponseList.get(0).getEvent_guest());
@@ -245,7 +245,7 @@ public class Edit_Events extends AppCompatActivity {
                         edcity.setText(drawerResponseList.get(0).getCollege_District());
                         edstate.setText(drawerResponseList.get(0).getCollege_State());
                         edDiscription.setText(drawerResponseList.get(0).getEvent_Discription());
-                        String output1 = String.valueOf(drawerResponseList.get(0).getEvent_Details()).replace("/*NonTechnical Events*/", "<font color=#000000><b><br>NonTechnical Events<br></b></font>").replace("/*Technical Events*/", "<font color=#000000><b>Technical Events<br></b></font>").replace("/*Workshop Events*/", "<font color=#000000><b><br>Workshop Events<br></b></font>").replace("/*Online Events*/", "<font color=#000000><b><br>Online Events<br></b></font>");
+                        String output1 =drawerResponseList.get(0).getEvent_Details().replace("/*NonTechnical Events*/", "<font color=#000000><b><br>NonTechnical Events<br></b></font>").replace("/*Technical Events*/", "<font color=#000000><b>Technical Events<br></b></font>").replace("/*Workshop Events*/", "<font color=#000000><b><br>Workshop Events<br></b></font>").replace("/*Online Events*/", "<font color=#000000><b><br>Online Events<br></b></font>");
                         edeventdetails.setText(Html.fromHtml(output1));
                         eddepartment.setText(drawerResponseList.get(0).getDept());
                         edguest.setText(drawerResponseList.get(0).getEvent_guest());

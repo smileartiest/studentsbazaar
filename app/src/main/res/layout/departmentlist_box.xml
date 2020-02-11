@@ -22,7 +22,6 @@
         android:textStyle="bold"
         android:textColor="#000000"
         android:paddingRight="20dp"
-        android:drawableLeft="@drawable/cancel_icon"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="40dp"/>

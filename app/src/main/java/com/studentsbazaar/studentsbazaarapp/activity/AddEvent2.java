@@ -20,8 +20,10 @@ import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.controller.Move_Show;
 import com.studentsbazaar.studentsbazaarapp.helper.DateChecker;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 public class AddEvent2 extends AppCompatActivity {
 
@@ -169,8 +171,16 @@ public class AddEvent2 extends AppCompatActivity {
                                     day = String.valueOf(dayOfMonth);
                                 }
                                 esdate = year + "-" + (monthOfYear + 1) + "-" + day;
-                                startdate.setText(esdate);
-                                enddate.setText(esdate);
+                                Date today = new Date();
+                                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                                String dateToStr = format.format(today);
+                                DateChecker dateChecker = new DateChecker();
+                                if (dateChecker.checkPrevDate(dateToStr, esdate)) {
+                                    startdate.setText(esdate);
+                                } else {
+                                    Move_Show.showToast("StartDate must be after CurrentDate");
+                                    //startdate.setText(esdate);
+                                }
 
                             }
                         }, mYear, mMonth, mDay);
@@ -481,58 +491,49 @@ public class AddEvent2 extends AppCompatActivity {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-                if (title.getText().length() != 0) {
-                    if (catagory.getText().length() != 0) {
-                        if (orgnniser.getText().length() != 0) {
-                            if (city.getText().length() != 0) {
-                                if (state.getText().length() != 0) {
-                                    if (departmentlist.getText().length() != 0) {
-                                        etitle = title.getText().toString();
-                                        ecat = catagory.getText().toString();
-                                        eorg = orgnniser.getText().toString();
-                                        ecity = city.getText().toString();
-                                        estae = state.getText().toString();
-                                        edpt = departmentlist.getText().toString();
-                                        conby = conducted.getText().toString();
-                                        disevent = evendiscrition.getText().toString();
-                                        SharedPreferences sf = getSharedPreferences("event", MODE_PRIVATE);
-                                        SharedPreferences.Editor ed = sf.edit();
-                                        ed.putString("etitle", etitle);
-                                        ed.putString("ecat", ecat);
-                                        ed.putString("conduct", conby);
-                                        ed.putString("eorg", eorg);
-                                        ed.putString("ecity", ecity);
-                                        ed.putString("estate", estae);
-                                        ed.putString("edpt", edpt);
-                                        ed.putString("esdate", esdate);
-                                        ed.putString("eedate", eedate);
-                                        ed.putString("edis", disevent);
-                                        ed.apply();
-                                        if (etitle.isEmpty() && ecat.isEmpty() && conby.isEmpty() && eorg.isEmpty() && ecity.isEmpty() && estae.isEmpty() && edpt.isEmpty() && esdate.isEmpty() && eedate.isEmpty() && disevent.isEmpty()) {
-                                            Move_Show.showToast("All Fields are mandatory...");
-                                        } else {
-                                            new Move_Show(AddEvent2.this, AddEvent.class);
-                                            finish();
-                                        }
-                                    } else {
-                                        departmentlist.setError("please fill");
-                                    }
-                                } else {
-                                    state.setError("please fill");
-                                }
-                            } else {
-                                city.setError("please fill");
-                            }
-                        } else {
-                            orgnniser.setError("please fill");
-                        }
-                    } else {
-                        catagory.setError("please fill");
-                    }
+                etitle = title.getText().toString();
+                ecat = catagory.getText().toString();
+                eorg = orgnniser.getText().toString();
+                ecity = city.getText().toString();
+                estae = state.getText().toString();
+                edpt = departmentlist.getText().toString();
+                conby = conducted.getText().toString();
+                disevent = evendiscrition.getText().toString();
+                if (etitle.isEmpty()) {
+                    Move_Show.showToast("Enter Event Title");
+                } else if (disevent.isEmpty()) {
+                    Move_Show.showToast("Enter Event Description");
+                } else if (ecat.isEmpty()) {
+                    Move_Show.showToast("Tap to select event Category");
+                } else if (conby.isEmpty()) {
+                    Move_Show.showToast("Enter Department");
+                } else if (eorg.isEmpty()) {
+                    Move_Show.showToast("Enter Organiser Name");
+                } else if (startdate.getText().toString().equals("choose")) {
+                    Move_Show.showToast("Please set Event Start Date");
+                } else if (enddate.getText().toString().equals("choose")) {
+                    Move_Show.showToast("Please set Event end Date");
+                } else if (ecity.isEmpty()) {
+                    Move_Show.showToast("Enter City Name");
+                } else if (estae.isEmpty()) {
+                    Move_Show.showToast("Enter State Name");
+                } else if (departmentlist.getText().toString().equals("No Department Selected")) {
+                    Move_Show.showToast("Please Select a Eligible Departments");
                 } else {
-                    title.setError("please fill");
+                    SharedPreferences sf = getSharedPreferences("event", MODE_PRIVATE);
+                    SharedPreferences.Editor ed = sf.edit();
+                    ed.putString("etitle", etitle);
+                    ed.putString("ecat", ecat);
+                    ed.putString("conduct", conby);
+                    ed.putString("eorg", eorg);
+                    ed.putString("ecity", ecity);
+                    ed.putString("estate", estae);
+                    ed.putString("edpt", edpt);
+                    ed.putString("esdate", startdate.getText().toString().trim());
+                    ed.putString("eedate", enddate.getText().toString().trim());
+                    ed.putString("edis", disevent);
+                    ed.apply();
+                    new Move_Show(AddEvent2.this, AddEvent.class);
                 }
             }
         });

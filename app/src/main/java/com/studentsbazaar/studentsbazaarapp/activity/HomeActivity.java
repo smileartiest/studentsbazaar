@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -103,7 +104,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         tvMemes = findViewById(R.id.tvMeme);
         tvPlacement = findViewById(R.id.tvPlacement);
         tvQuiz = findViewById(R.id.tvQuiz);
-        new ShowConfirmDialog(HomeActivity.this,"please a wait a min");
+        //new ShowConfirmDialog(HomeActivity.this,"please a wait a min");
         //ShowConfirmDialog.textView.setVisibility();
 
         mUpdateManager = UpdateManager.Builder(this);
@@ -316,6 +317,17 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_disclaimer:
                 new Move_Show(HomeActivity.this, DisclaimerActivity.class);
                 break;
+            case R.id.nav_logout:
+                spotsDialog.show();
+               new Handler().postDelayed(new Runnable() {
+                   @Override
+                   public void run() {
+                       new Controller(HomeActivity.this).addprefer(Controller.VISITOR);
+                       spotsDialog.dismiss();
+                       new Move_Show(HomeActivity.this,HomeActivity.class);
+                   }
+               },2000);
+                break;
             case R.id.nav_aboutus:
                 Bundle b = new Bundle();
                 b.putString("url", "https://www.studentsbazaar.in/about-us/");
@@ -347,7 +359,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         getSupportActionBar().hide();*/
 
         navigationView.setNavigationItemSelectedListener(HomeActivity.this);
-        if (Controller.getprefer().equals(Controller.REG)) {
+        if (Controller.getprefer().equals(Controller.REG) || Controller.getprefer().equals(Controller.ADMIN)) {
           navigationView.getMenu().getItem(1).setVisible(false);
           navigationView.getMenu().getItem(2).setVisible(false);
         }

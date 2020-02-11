@@ -21,13 +21,16 @@
             android:gravity="center_vertical"
             android:minHeight="?attr/actionBarSize"
             android:theme="@style/Theme.Custom"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
             <TextView
+                android:id="@+id/id_toolbarTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="SIGN UP"
-                android:id="@+id/id_toolbarTitle"
                 android:textColor="@color/white"
                 android:textStyle="bold" />
         </androidx.appcompat.widget.Toolbar>
@@ -245,7 +248,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:background="@drawable/edittext"
-                android:hint="Enter Degree (ex : EB,BTech)"
+                android:hint="Enter Degree (ex : BE,BTech)"
                 android:layout_marginTop="5dp"
                 android:textSize="15sp"
                 android:paddingLeft="5dp"

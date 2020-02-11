@@ -158,7 +158,7 @@ public class View_Details extends AppCompatActivity {
                 }
                 Bundle bundle = new Bundle();
                 bundle.putString("url", weburl);
-                bundle.putString("data", "reg url");
+                bundle.putString("data", "REG FROM");
                 bundle.putString("title", "reg title");
                 Intent in = new Intent(View_Details.this, WebActivity.class);
                 in.putExtras(bundle);

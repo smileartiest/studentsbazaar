@@ -92,9 +92,9 @@
 
                         <ImageView
                             android:id="@+id/ivImageEvent"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/event_new" />
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:src="@drawable/ic_events" />
 
                         <TextView
                             android:id="@+id/tvEventNew"
@@ -169,9 +169,9 @@
 
                         <ImageView
                             android:id="@+id/ivMeme"
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
-                            android:src="@drawable/aures" />
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:src="@drawable/ic_anna_university" />
 
                         <TextView
                             android:id="@+id/tvMeme"
@@ -335,7 +335,7 @@
                             android:id="@+id/ivdis"
                             android:layout_width="60dp"
                             android:layout_height="60dp"
-                            android:src="@drawable/memes" />
+                            android:src="@drawable/ic_memes" />
 
                         <TextView
                             android:id="@+id/tvdis"

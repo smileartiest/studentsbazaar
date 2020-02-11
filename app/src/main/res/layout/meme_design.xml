@@ -72,22 +72,28 @@
 
             <TextView
                 android:id="@+id/posttime"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
                 android:text="Post time"
-                app:layout_constraintBottom_toTopOf="@+id/postcaption"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cardView5" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/shareimg"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/postcaption" />
 
             <TextView
                 android:id="@+id/postcaption"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
                 android:text="Caption"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:justificationMode="inter_word"
+                app:layout_constraintEnd_toStartOf="@+id/shareimg"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cardView5" />
 
@@ -95,12 +101,12 @@
                 android:id="@+id/shareimg"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="24dp"
-                android:layout_marginBottom="8dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/posttime"
+                app:layout_constraintStart_toEndOf="@+id/postcaption"
+                app:layout_constraintTop_toBottomOf="@+id/cardView5"
                 app:srcCompat="@drawable/shareicnew_foreground" />
 
 

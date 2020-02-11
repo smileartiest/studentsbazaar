@@ -25,10 +25,10 @@ public class ShowConfirmDialog {
         d.requestWindowFeature(Window.FEATURE_NO_TITLE);
         d.setCancelable(false);
         d.setContentView(R.layout.webalert);
-        TextView textView = d.findViewById(R.id.donetext);
-        textView.setText(donetxt);
-        button = d.findViewById(R.id.donebtn);
-        progressBar = d.findViewById(R.id.doneprogressBar);
+//        TextView textView = d.findViewById(R.id.donetext);
+//        textView.setText(donetxt);
+//        button = d.findViewById(R.id.donebtn);
+//        progressBar = d.findViewById(R.id.doneprogressBar);
         button.setVisibility(View.GONE);
         new Handler().postDelayed(new Runnable() {
             @Override

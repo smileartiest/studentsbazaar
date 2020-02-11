@@ -14,7 +14,6 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -36,33 +35,29 @@ import java.io.InputStream;
 public class AddEvent extends AppCompatActivity {
 
     ImageView imagepost, addpost, addevent;
-    ListView eventlist;
-    TextView evntsts;
     FloatingActionButton next;
     String encoded;
     CardView cardtech, cardnontech, cardworkshop, cardonline;
     EditText edtech, ednontech, edworkshop, edonline;
     Button teching, technext, nonteching, nontechnext, workshoping, workshopnext, onlineing, onlinenext;
     StringBuilder stringBuilder;
+    TextView eventdetailstxt;
     Dialog d;
     Bitmap profilePicture;
     private static int RESULT_LOAD_IMAGE = 1;
     int i = 0;
     SharedPreferences sf;
     SharedPreferences.Editor ed;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_event);
-        stringBuilder = new StringBuilder();
         imagepost = findViewById(R.id.aevent_post_image);
         addpost = findViewById(R.id.aevent_post_icon);
         addevent = findViewById(R.id.aevent_eventadd_icon);
-        eventlist = findViewById(R.id.aevent_list);
         next = findViewById(R.id.aevent_complete);
-        evntsts = findViewById(R.id.aevent_sts);
-        evntsts.setVisibility(View.INVISIBLE);
+        eventdetailstxt=findViewById(R.id.uitveventdetails);
+
     }
 
     @Override
@@ -80,7 +75,7 @@ public class AddEvent extends AppCompatActivity {
         addevent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                stringBuilder = new StringBuilder();
                 d = new Dialog(AddEvent.this);
                 d.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 d.setCancelable(false);
@@ -131,7 +126,8 @@ public class AddEvent extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         d.dismiss();
-
+                        String eventdetails="/*Technical Events*/" + edtech.getText().toString() +"/*NonTechnical Events*/" + ednontech.getText().toString() + "/*Workshop Events*/" + edworkshop.getText().toString() + "/*Online Events*/" + edonline.getText().toString();
+                        eventdetailstxt.setText(eventdetails);
 
                     }
                 });
@@ -167,6 +163,8 @@ public class AddEvent extends AppCompatActivity {
             public void onClick(View v) {
                 if (encoded == null) {
                     Move_Show.showToast("Please add Poster Image and Event Details...");
+                } else if (stringBuilder == null) {
+                    Move_Show.showToast("Please add Event Details");
                 } else {
 
                     if (edtech.getText().toString().isEmpty()) {
@@ -193,7 +191,6 @@ public class AddEvent extends AppCompatActivity {
                         stringBuilder.append("/*Online Events*/\n" + edonline.getText().toString() + "\n");
 
                     }
-                    evntsts.setText(stringBuilder.toString());
                     sf = getSharedPreferences("event", MODE_PRIVATE);
                     ed = sf.edit();
                     ed.putString("elist", stringBuilder.toString());

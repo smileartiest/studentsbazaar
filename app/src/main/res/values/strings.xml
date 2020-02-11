@@ -4,4 +4,6 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="facebook_app_id">171957140809337</string>
     <string name="fb_login_protocol_scheme">fb171957140809337</string>
+    <string name="please_paste_college_website">Enter college website ex:exampleCollege.com</string>
+    <string name="please_paste_event_website">Enter event website ex:exampleEvent.com</string>
 </resources>
