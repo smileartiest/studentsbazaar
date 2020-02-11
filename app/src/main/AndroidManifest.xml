@@ -7,7 +7,7 @@
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.SEND_SMS" />
+
     <uses-permission
         android:name="android.permission.GET_ACCOUNTS_PRIVILEGED"
         android:protectionLevel="signature"
@@ -25,6 +25,7 @@
         android:roundIcon="@drawable/newlogo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        android:name=".StudentBazaarApplication"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".activity.MUActivity"></activity>
@@ -50,9 +51,6 @@
         <activity android:name=".activity.ProfileActivity" />
         <activity android:name=".activity.Quiz_Events" />
         <activity android:name=".activity.SignUp" />
-        <activity
-            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
-            android:theme="@style/Base.Theme.AppCompat" />
         <activity android:name=".activity.SplashActivty">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -69,11 +67,20 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
         <receiver
             android:name=".NotificationPublisher"
             android:enabled="true"
             android:exported="true" />
+        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
     </application>
 
 </manifest>

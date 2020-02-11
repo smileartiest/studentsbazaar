@@ -32,7 +32,7 @@ import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.activity.EventActivity;
 import com.studentsbazaar.studentsbazaarapp.activity.View_Details;
 import com.studentsbazaar.studentsbazaarapp.activity.WebActivity;
-import com.studentsbazaar.studentsbazaarapp.helper.DateChecker;
+import com.studentsbazaar.studentsbazaarapp.controller.Controller;
 import com.studentsbazaar.studentsbazaarapp.model.Project_details;
 
 import java.io.File;
@@ -45,21 +45,19 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
     View view;
     private LayoutInflater mInflater;
     private Context context;
-    SharedPreferences spUserDetails;
-    SharedPreferences.Editor vieweditor;
     String pdfName, TAG = "FILE", urlsite;
     String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
     List<Project_details> mData;
-    DateChecker dateChecker;
     Bitmap bitmap;
     Button tvShare, read_more;
-    //ViewPager2 viewPager2;
     String weburl;
+    Controller controller;
 
     public ViewPagerAdapter(EventActivity context, List<Project_details> drawerResponseList) {
         this.mInflater = LayoutInflater.from(context);
         this.context = context;
         this.mData = drawerResponseList;
+        controller = new Controller(context);
         //this.viewPager2 = viewPager2;
     }
 
@@ -69,8 +67,6 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
         view = mInflater.inflate(R.layout.fragment_child, parent, false);
         tvShare = (Button) view.findViewById(R.id.share);
         read_more = (Button) view.findViewById(R.id.read_more);
-        spUserDetails = context.getSharedPreferences("USER_DETAILS", Context.MODE_PRIVATE);
-        vieweditor = spUserDetails.edit();
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
         return new ViewHolder(view);
@@ -152,8 +148,7 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
             @Override
             public void onClick(View view) {
 
-                vieweditor.putString("PREFER", "MORE").apply();
-                Log.d("SHARED", spUserDetails.getString("PREFER", ""));
+
                 SharedPreferences sharedPreferences = context.getSharedPreferences("view_details", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putString("coid", listItem.getEvent_Coordinator());
@@ -183,7 +178,11 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
                 editor.putString("webcoll", listItem.getCollege_Website());
                 editor.putString("view", "view");
                 editor.apply();
+                controller.adddesignprefer(Controller.MORE);
+                Bundle b = new Bundle();
+                b.putString("view", "non_view");
                 Intent intent = new Intent(context, View_Details.class);
+                intent.putExtras(b);
                 context.startActivity(intent);
 
 
@@ -278,7 +277,7 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
         Uri uri = Uri.fromFile(imageFile);
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("image/*");
-        intent.putExtra(android.content.Intent.EXTRA_TEXT, "Students Bazaar,India's highest rated students app.\nplease follow link to participate this event\n" + urlsite + "\nSource : Students Bazaar\nhttp://tiny.cc/3lnhjz");
+        intent.putExtra(Intent.EXTRA_TEXT, "Students Bazaar,India's highest rated students app.\nplease follow link to participate this event\n" + urlsite + "\nSource : Students Bazaar\nhttp://tiny.cc/3lnhjz");
         intent.putExtra(Intent.EXTRA_STREAM, uri);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
@@ -301,7 +300,5 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
         builder.show();
     }
 
-    void vieweventsdetails() {
 
-    }
 }

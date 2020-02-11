@@ -17,13 +17,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 import com.bumptech.glide.Glide;
+import com.studentsbazaar.studentsbazaarapp.controller.Monitor;
 import com.studentsbazaar.studentsbazaarapp.R;
+import com.studentsbazaar.studentsbazaarapp.controller.Controller;
 import com.studentsbazaar.studentsbazaarapp.retrofit.ApiUtil;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import dmax.dialog.SpotsDialog;
 import retrofit2.Call;
@@ -33,11 +30,10 @@ import retrofit2.Response;
 public class View_Details extends AppCompatActivity {
     TextView title, category, sdate, edate, organizer, city, state, Discription, eventdetails, department, guest, pronites, theme, accomadtation, lastdate, entryfees, howtoreach, cpnam1, cpno1, cpname2, cpno2, eventweb, collegeweb;
     Button submit, edit, register_now;
-    ImageView head_poster;
-    CardView cardCollegeweb,cardEventweb,cardTheme,cardPronits,cardAco,cardGuest,cardDept,cardEvent;
+    ImageView head_poster, w1, w2, c1, c2;
+    CardView cardCollegeweb, cardEventweb, cardTheme, cardPronits, cardAco, cardGuest, cardDept, cardEvent;
     String stitle, sategory, ssdate, sedate, sorganizer, scity, sstate, sDiscription, seventdetails, sdepartment, sguest, spronites, stheme, saccomadtation, slastdate, sentryfees, showtoreach, scpnam1, scpno1, scpname2, scpno2;
     String posterurl, coid, webevent, webcoll, weburl;
-    SharedPreferences spUserDetails;
     SpotsDialog spotsDialog;
 
 
@@ -50,14 +46,14 @@ public class View_Details extends AppCompatActivity {
         edit = (Button) findViewById(R.id.head_Update);
         title = (TextView) findViewById(R.id.head_title);
         category = (TextView) findViewById(R.id.head_category);
-        cardAco = (CardView)findViewById(R.id.id_card_acco);
-        cardCollegeweb = (CardView)findViewById(R.id.id_college_website);
-        cardEventweb = (CardView)findViewById(R.id.id_event_website);
-        cardEvent = (CardView)findViewById(R.id.id_card_event);
-        cardTheme = (CardView)findViewById(R.id.id_card_theme);
-        cardPronits = (CardView)findViewById(R.id.id_card_pronites);
-        cardGuest = (CardView)findViewById(R.id.id_card_guest);
-        cardDept = (CardView)findViewById(R.id.id_card_dept);
+        cardAco = (CardView) findViewById(R.id.id_card_acco);
+        cardCollegeweb = (CardView) findViewById(R.id.id_college_website);
+        cardEventweb = (CardView) findViewById(R.id.id_event_website);
+        cardEvent = (CardView) findViewById(R.id.id_card_event);
+        cardTheme = (CardView) findViewById(R.id.id_card_theme);
+        cardPronits = (CardView) findViewById(R.id.id_card_pronites);
+        cardGuest = (CardView) findViewById(R.id.id_card_guest);
+        cardDept = (CardView) findViewById(R.id.id_card_dept);
         sdate = (TextView) findViewById(R.id.head_start_date);
         edate = (TextView) findViewById(R.id.head_end_date);
         organizer = (TextView) findViewById(R.id.head_organiser);
@@ -73,18 +69,21 @@ public class View_Details extends AppCompatActivity {
         lastdate = (TextView) findViewById(R.id.head_lastDate_content);
         entryfees = (TextView) findViewById(R.id.head_regFee_content);
         howtoreach = (TextView) findViewById(R.id.head_reach_content);
-        cpnam1 = (TextView) findViewById(R.id.head_contact_name1);
-        cpno1 = (TextView) findViewById(R.id.head_contact_phone1);
-        cpname2 = (TextView) findViewById(R.id.head_contact_name2);
-        cpno2 = (TextView) findViewById(R.id.head_contact_phone2);
+        cpnam1 = (TextView) findViewById(R.id.uitvname1);
+        cpno1 = (TextView) findViewById(R.id.uitvphone1);
+        cpname2 = (TextView) findViewById(R.id.uitvname2);
+        cpno2 = (TextView) findViewById(R.id.uitvphone2);
+        w1 = (ImageView) findViewById(R.id.uiivwhatsapp1);
+        w2 = (ImageView) findViewById(R.id.uiivwhatsapp2);
+        c1 = (ImageView) findViewById(R.id.uiivcall1);
+        c2 = (ImageView) findViewById(R.id.uiivcall2);
         head_poster = (ImageView) findViewById(R.id.head_slider);
         eventweb = (TextView) findViewById(R.id.head_event_web);
         collegeweb = (TextView) findViewById(R.id.head_college_web);
         register_now = (Button) findViewById(R.id.register_now);
 
-
         spotsDialog = new SpotsDialog(this);
-        spUserDetails = getSharedPreferences("USER_DETAILS", Context.MODE_PRIVATE);
+        new Controller(this);
        /* if (spUserDetails.getString("PREFER", null).equals("PREF")) {
             submit.setVisibility(View.VISIBLE);
             edit.setVisibility(View.VISIBLE);
@@ -94,7 +93,30 @@ public class View_Details extends AppCompatActivity {
         }*/
         getviewDetails();
 
-
+        w1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Monitor(View_Details.this).chattowhatsapp(cpno1.getText().toString().trim());
+            }
+        });
+        w2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Monitor(View_Details.this).chattowhatsapp(cpno2.getText().toString().trim());
+            }
+        });
+        c1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                makeCall(cpno1.getText().toString());
+            }
+        });
+        c2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                makeCall(cpno2.getText().toString());
+            }
+        });
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -191,11 +213,11 @@ public class View_Details extends AppCompatActivity {
         scpno2 = sharedPreferences.getString("cpno2", null);
         webevent = sharedPreferences.getString("webevent", null);
         webcoll = sharedPreferences.getString("webcoll", null);
-        if (spUserDetails.getString("PREFER", null).equals("MORE")) {
+        if (Controller.getdesignprefer().equals(Controller.MORE)) {
             submit.setVisibility(View.GONE);
             edit.setVisibility(View.GONE);
             register_now.setVisibility(View.VISIBLE);
-        } else if (spUserDetails.getString("PREFER", null).equals("PREF")) {
+        } else if (Controller.getdesignprefer().equals(Controller.PREFER)) {
             submit.setVisibility(View.VISIBLE);
             edit.setVisibility(View.VISIBLE);
             register_now.setVisibility(View.GONE);
@@ -213,46 +235,46 @@ public class View_Details extends AppCompatActivity {
         city.setText(scity);
         state.setText(sstate);
         Discription.setText(sDiscription);
-        if(seventdetails.length()==0){
+        if (seventdetails.length() == 0) {
             cardEvent.setVisibility(View.GONE);
-        }else{
-            String output=String.valueOf(seventdetails).replace("NonTechnical Events", "<font color=#000000><b><br>NonTechnical Events</b></font>").replace("Technical Events", "<font color=#000000><b>Technical Events<br></b></font>").replace("Workshop Events", "<font color=#000000><b><br>Workshop Events<br></b></font>").replace("Online Events", "<font color=#000000><b><br>Online Events<br></b></font>");
+        } else {
+            String output = String.valueOf(seventdetails).replace("/*NonTechnical Events*/", "<font color=#000000><b><br>NonTechnical Events<br></b></font>").replace("/*Technical Events*/", "<font color=#000000><b>Technical Events<br></b></font>").replace("/*Workshop Events*/", "<font color=#000000><b><br>Workshop Events<br></b></font>").replace("/*Online Events*/", "<font color=#000000><b><br>Online Events<br></b></font>");
             eventdetails.setText(Html.fromHtml(output));
         }
 
-        if(sdepartment.contains("No Department Selected")){
-           cardDept.setVisibility(View.GONE);
-        }else{
+        if (sdepartment.contains("No Department Selected")) {
+            cardDept.setVisibility(View.GONE);
+        } else {
             department.setText(sdepartment);
         }
 
-if(sguest.length()!=0){
-    guest.setText(sguest);
-}else{
-    cardGuest.setVisibility(View.GONE);
-}
+        if (sguest.length() != 0) {
+            guest.setText(sguest);
+        } else {
+            cardGuest.setVisibility(View.GONE);
+        }
 
-        if(spronites.length()!=0){
+        if (spronites.length() != 0) {
             pronites.setText(spronites);
-        }else{
+        } else {
             cardPronits.setVisibility(View.GONE);
         }
 
-       // pronites.setText(spronites);
+        // pronites.setText(spronites);
 
-        if(stheme.length()!=0){
+        if (stheme.length() != 0) {
             theme.setText(stheme);
-        }else{
+        } else {
             cardTheme.setVisibility(View.GONE);
         }
-       // theme.setText(stheme);
-        if(saccomadtation.length()!=0){
+        // theme.setText(stheme);
+        if (saccomadtation.length() != 0) {
             accomadtation.setText(saccomadtation);
-        }else{
+        } else {
             cardAco.setVisibility(View.GONE);
         }
 
-      //  accomadtation.setText(saccomadtation);
+        //  accomadtation.setText(saccomadtation);
         lastdate.setText(slastdate);
         entryfees.setText(sentryfees);
         howtoreach.setText(showtoreach);
@@ -273,17 +295,18 @@ if(sguest.length()!=0){
         cardEventweb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                goWebActivity(webevent);            }
+                goWebActivity(webevent);
+            }
         });
 
     }
 
     private void goWebActivity(String webcoll) {
         Bundle b = new Bundle();
-        b.putString("url",webcoll);
-        b.putString("data","college");
-        b.putString("title","college");
-        Intent i = new Intent(View_Details.this,WebActivity.class);
+        b.putString("url", webcoll);
+        b.putString("data", "college");
+        b.putString("title", "college");
+        Intent i = new Intent(View_Details.this, WebActivity.class);
         i.putExtras(b);
         startActivity(i);
 
@@ -312,4 +335,23 @@ if(sguest.length()!=0){
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (Controller.getprefer().equals(Controller.ADMIN)) {
+            Intent g = getIntent();
+            Bundle b = g.getExtras();
+            assert b != null;
+            if (b.getString("view").equals("pending")) {
+                Intent i = new Intent(View_Details.this, Pending_Events.class);
+                startActivity(i);
+                finish();
+            } else {
+                finish();
+            }
+
+        } else {
+            finish();
+        }
+    }
 }

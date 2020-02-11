@@ -9,6 +9,7 @@ buildscript {
             name 'Google'
         }
 
+        maven { url 'https://jitpack.io' }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.5.3'

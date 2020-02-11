@@ -1,6 +1,5 @@
 package com.studentsbazaar.studentsbazaarapp.activity;
 
-import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
@@ -10,10 +9,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -21,6 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.studentsbazaar.studentsbazaarapp.AlarmHelper;
+import com.studentsbazaar.studentsbazaarapp.controller.Monitor;
 import com.studentsbazaar.studentsbazaarapp.NotificationPublisher;
 import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.adapter.Quiz_Adapter;
@@ -44,6 +46,7 @@ public class Quiz_Events extends AppCompatActivity {
     List<Quiz_Details> drawerResponseList = null;
     Quiz_Adapter quiz_adapter;
     LinearLayout layout;
+    private Toolbar toolbar;
     private AlarmHelper alarmHelper;
 
 
@@ -57,16 +60,20 @@ public class Quiz_Events extends AppCompatActivity {
         alarmHelper = new AlarmHelper(this);
         layout = (LinearLayout) findViewById(R.id.empty4);
         sharedPreferences = getSharedPreferences("USER_DETAILS", MODE_PRIVATE);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar3);
+         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
             getSupportActionBar().setTitle("QUIZ");
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+
+
 
         }   // use a linear layout manager
         Quiz_view.setLayoutManager(new LinearLayoutManager(this));
         progressDialog = new SpotsDialog(this);
         loadData();
-       //setnotification();
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,6 +83,19 @@ public class Quiz_Events extends AppCompatActivity {
 
             }
         });
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 
     void loadData() {
@@ -84,7 +104,7 @@ public class Quiz_Events extends AppCompatActivity {
         Call<DownloadResponse> call = ApiUtil.getServiceClass().getQuizQuestions(sharedPreferences.getString("UID", null));
         call.enqueue(new Callback<DownloadResponse>() {
             @Override
-            public void onResponse(Call<DownloadResponse> call, retrofit2.Response<DownloadResponse> response) {
+            public void onResponse(Call<DownloadResponse> call, Response<DownloadResponse> response) {
 
                 Log.d("RESPONSE1", response.raw().toString());
 
@@ -148,7 +168,7 @@ public class Quiz_Events extends AppCompatActivity {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putString("QUIZ", "attend").apply();
                 setnotification();
-                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                Intent intent = new Intent(Quiz_Events.this, HomeActivity.class);
                 startActivity(intent);
                 finish();
 
@@ -188,5 +208,30 @@ public class Quiz_Events extends AppCompatActivity {
 //        am.setRepeating(AlarmManager.RTC, time, AlarmManager.INTERVAL_DAY, pi);
 //        Toast.makeText(this, "Remainder Set", Toast.LENGTH_SHORT).show();
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.add_placement_menu, menu);
+        menu.findItem(R.id.item1).setVisible(false);
+        menu.findItem(R.id.item2).setVisible(false);
+        menu.findItem(R.id.action_search).setVisible(false);
+        return  true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.shareitem:
+                try {
+                    new Monitor(this).sharetowhatsapp();
+                } catch (Exception e) {
 
+                }
+
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+    }
 }

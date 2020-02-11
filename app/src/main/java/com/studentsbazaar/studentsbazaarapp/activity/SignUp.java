@@ -13,14 +13,16 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 
 import com.crowdfire.cfalertdialog.CFAlertDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.studentsbazaar.studentsbazaarapp.R;
+import com.studentsbazaar.studentsbazaarapp.controller.Controller;
+import com.studentsbazaar.studentsbazaarapp.controller.Move_Show;
 import com.studentsbazaar.studentsbazaarapp.retrofit.ApiUtil;
 
 import java.util.regex.Matcher;
@@ -35,10 +37,11 @@ public class SignUp extends AppCompatActivity implements
 
 
     EditText name, email, phno, acyear, year, semester, password;
-    String uname, umail, uphone, uclname, cacyear, uyear, usemester, upassword, degreestring, deptstring,sAffiliation;
+    String uname, umail, uphone, uclname, cacyear, uyear, usemester, upassword, degreestring, deptstring, sAffiliation;
     AutoCompleteTextView cgname, degree, department;
     String devid;
-    String[] affiliation = { "Deemed University", "Autonomous", "Affiliated to Anna University", "Affiliated to Madras University", "Others"};
+    Toolbar toolbar;
+    String[] affiliation = {"Deemed University", "Autonomous", "Affiliated to Anna University", "Affiliated to Madras University", "Others"};
     FloatingActionButton submit1, submit2, submit3;
     SpotsDialog spotsDialog;
     CardView c1, c2, c3;
@@ -48,16 +51,14 @@ public class SignUp extends AppCompatActivity implements
     String[] deptlist = {"CSE", "ECE", "EEE", "MECH", "CIVL", "BIO", "ARO", "AUTO", "IT", "PROD", "BCom", "ARCH", "EIE", "ICE"};
 
     int i = 0;
-    SharedPreferences sharedPreferences;
-    SharedPreferences.Editor editor;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
         spotsDialog = new SpotsDialog(this);
-        sharedPreferences = getSharedPreferences("USER_DETAILS", MODE_PRIVATE);
-        editor = sharedPreferences.edit();
+        new Controller(this);
         name = findViewById(R.id.reg_name);
         email = findViewById(R.id.reg_email);
         phno = findViewById(R.id.reg_phonenumber);
@@ -71,6 +72,17 @@ public class SignUp extends AppCompatActivity implements
         submit1 = findViewById(R.id.floatingActionButton1);
         submit2 = findViewById(R.id.floatingActionButton2);
         submit3 = findViewById(R.id.floatingActionButton3);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         ArrayAdapter<String> ad1 = new ArrayAdapter<>(getApplicationContext(), R.layout.listrow, degreelist);
         degree.setAdapter(ad1);
@@ -88,24 +100,27 @@ public class SignUp extends AppCompatActivity implements
         c2 = findViewById(R.id.cardView2);
         c3 = findViewById(R.id.cardView3);
 
-         spin = (Spinner) findViewById(R.id.reg_university);
+        spin = (Spinner) findViewById(R.id.reg_university);
         spin.setOnItemSelectedListener(this);
 
         //Creating the ArrayAdapter instance having the country list
-        ArrayAdapter aa = new ArrayAdapter(this,android.R.layout.simple_spinner_item,affiliation);
+        ArrayAdapter aa = new ArrayAdapter(this, android.R.layout.simple_spinner_item, affiliation);
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //Setting the ArrayAdapter data on the Spinner
         spin.setAdapter(aa);
     }
 
+
     @Override
     public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
-        Toast.makeText(getApplicationContext(),affiliation[position] , Toast.LENGTH_LONG).show();
+        //Toast.makeText(getApplicationContext(),affiliation[position] , Toast.LENGTH_LONG).show();
     }
+
     @Override
     public void onNothingSelected(AdapterView<?> arg0) {
         // TODO Auto-generated method stub
     }
+
 
     @Override
     protected void onResume() {
@@ -166,28 +181,28 @@ public class SignUp extends AppCompatActivity implements
                 uclname = cgname.getText().toString();
                 cacyear = acyear.getText().toString();
                 sAffiliation = spin.getSelectedItem().toString();
+                Log.d("Affiliation", sAffiliation + "<-");
                 uyear = year.getText().toString();
                 usemester = semester.getText().toString();
                 upassword = password.getText().toString();
                 degreestring = degree.getText().toString();
                 deptstring = department.getText().toString();
-                devid = sharedPreferences.getString("DEV_ID", null);
+                devid = Controller.getDIVID();
                 Log.d("Responsdate", devid);
-                Call<String> call = ApiUtil.getServiceClass().addaccount(uname, sharedPreferences.getString("UID", null), upassword, uclname,sAffiliation, degreestring, deptstring, uyear, usemester, uphone, cacyear, umail, devid);
+                Call<String> call = ApiUtil.getServiceClass().addaccount(uname, Controller.getUID(), upassword, uclname, sAffiliation, degreestring, deptstring, uyear, usemester, uphone, cacyear, umail, devid);
                 call.enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, retrofit2.Response<String> response) {
                         Log.d("Responsdate", response.raw().toString());
                         spotsDialog.dismiss();
                         if (response.body().equals("1")) {
-                            editor.putString("log", "reg");
-                            editor.apply();
+                            Controller.addprefer(Controller.REG);
                             getAlert();
 //
 
                         } else {
 
-                            Toast.makeText(SignUp.this, "Register Failed ", Toast.LENGTH_SHORT).show();
+                            Move_Show.showToast("Register Failed");
                         }
 
                     }
@@ -201,7 +216,9 @@ public class SignUp extends AppCompatActivity implements
             }
         });
 
+
     }
+
 
     public Boolean checkname(String name) {
         if (name.matches("\\d+(?:\\.\\d+)?")) {
@@ -244,15 +261,17 @@ public class SignUp extends AppCompatActivity implements
 
     }
 
+
     void getAlert() {
         SharedPreferences smeme = getSharedPreferences("meme", Context.MODE_PRIVATE);
-        if(smeme.getString("source","").equals("meme")){
-            Toast.makeText(getApplicationContext(),"Welcome to MEME Box..",Toast.LENGTH_SHORT).show();
-            Intent i = new Intent(SignUp.this,Mems.class);
-            startActivity(i);
+        if (smeme.getString("source", "").equals("meme")) {
+            Move_Show.showToast("Welcome to meme Box");
+            new Move_Show(SignUp.this, Mems.class);
             finish();
-        }else {
-
+        } else if (smeme.getString("source", "").equals("signup")) {
+            new Move_Show(SignUp.this,HomeActivity.class);
+            finish();
+        } else {
             CFAlertDialog.Builder builder = new CFAlertDialog.Builder(this);
             builder.setDialogStyle(CFAlertDialog.CFAlertStyle.ALERT);
             builder.setTitle("Hey there ! Your Request has been Success...");
@@ -261,24 +280,22 @@ public class SignUp extends AppCompatActivity implements
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
-                    Intent i = new Intent(SignUp.this, AddEvent2.class);
-                    startActivity(i);
+                   new Move_Show(SignUp.this,AddEvent2.class);
 
                 }
             });
-
             builder.addButton("Home", -1, -1, CFAlertDialog.CFAlertActionStyle.NEGATIVE, CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    // Toast.makeText(SplashActivity.this, "Upgrade tapped", Toast.LENGTH_SHORT).show();
-
                     dialog.dismiss();
-                    Intent i = new Intent(SignUp.this, HomeActivity.class);
-                    startActivity(i);
+                    new Move_Show(SignUp.this,HomeActivity.class);
                 }
             });
             builder.show();
         }
     }
-
 }
+
+
+
+

@@ -6,9 +6,13 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.studentsbazaar.studentsbazaarapp.controller.Monitor;
 import com.studentsbazaar.studentsbazaarapp.R;
 
 import static android.text.Layout.JUSTIFICATION_MODE_INTER_WORD;
@@ -40,5 +44,31 @@ public class DisclaimerActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         finish();
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.add_placement_menu, menu);
+        menu.findItem(R.id.item1).setVisible(false);
+        menu.findItem(R.id.item2).setVisible(false);
+        menu.findItem(R.id.action_search).setVisible(false);
+        return  true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.shareitem:
+                try {
+                    new Monitor(this).sharetowhatsapp();
+                } catch (Exception e) {
+
+                }
+
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
     }
 }

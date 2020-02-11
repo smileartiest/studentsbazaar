@@ -88,7 +88,6 @@
                 android:layout_height="wrap_content"
                 android:text="Caption"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/downimg"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cardView5" />
 
@@ -96,26 +95,13 @@
                 android:id="@+id/shareimg"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="24dp"
                 android:layout_marginBottom="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/downimg"
                 app:layout_constraintTop_toBottomOf="@+id/posttime"
                 app:srcCompat="@drawable/shareicnew_foreground" />
-
-            <ImageView
-                android:id="@+id/downimg"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/shareimg"
-                app:layout_constraintStart_toEndOf="@+id/postcaption"
-                app:srcCompat="@drawable/download_foreground" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

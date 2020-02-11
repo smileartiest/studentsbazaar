@@ -1,11 +1,11 @@
 package com.studentsbazaar.studentsbazaarapp.activity;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -23,8 +23,11 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.crowdfire.cfalertdialog.CFAlertDialog;
 import com.google.android.material.navigation.NavigationView;
+import com.studentsbazaar.studentsbazaarapp.controller.Monitor;
 import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.adapter.ViewPagerAdapter;
+import com.studentsbazaar.studentsbazaarapp.controller.Controller;
+import com.studentsbazaar.studentsbazaarapp.controller.Move_Show;
 import com.studentsbazaar.studentsbazaarapp.helper.DepthPageTransformer;
 import com.studentsbazaar.studentsbazaarapp.model.DownloadResponse;
 import com.studentsbazaar.studentsbazaarapp.model.Project_details;
@@ -46,9 +49,6 @@ public class EventActivity extends AppCompatActivity implements NavigationView.O
 
     SpotsDialog progressDialog;
     List<Project_details> drawerResponseList = null;
-    SharedPreferences spUserDetails;
-    SharedPreferences sharedPreferences;
-    SharedPreferences.Editor editor;
     LinearLayout layout;
 
     @Override
@@ -58,9 +58,9 @@ public class EventActivity extends AppCompatActivity implements NavigationView.O
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
-        sharedPreferences = getSharedPreferences("DEV_ID", MODE_PRIVATE);
-        progressDialog = new SpotsDialog(this, R.style.Custom);
+        progressDialog = new SpotsDialog(this);
         layout = (LinearLayout) findViewById(R.id.empty2);
+        new Controller(this);
         viewPager2 = findViewById(R.id.viewPager2);
 
         if (toolbar != null) {
@@ -74,16 +74,18 @@ public class EventActivity extends AppCompatActivity implements NavigationView.O
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        spUserDetails = getSharedPreferences("USER_DETAILS", Context.MODE_PRIVATE);
-        editor = spUserDetails.edit();
         navigationView.setNavigationItemSelectedListener(EventActivity.this);
-        if (spUserDetails.getString("log", "").equals("visitor")) {
+        if (Controller.getprefer().equals(Controller.VISITOR)) {
             navigationView.getMenu().getItem(2).setVisible(false);
             navigationView.getMenu().getItem(3).setVisible(false);
 
-        } else if (spUserDetails.getString("log", "").equals("reg")) {
+        } else if (Controller.getprefer().equals(Controller.REG)) {
             navigationView.getMenu().getItem(2).setVisible(false);
 
+        }else if (Controller.getprefer().equals(Controller.INFOZUB) || Controller.getprefer().equals(Controller.MEMEACCEPT)){
+            navigationView.getMenu().getItem(1).setVisible(false);
+            navigationView.getMenu().getItem(2).setVisible(false);
+            navigationView.getMenu().getItem(3).setVisible(false);
         }
 
         viewPager2.setOrientation(ViewPager2.ORIENTATION_VERTICAL);
@@ -134,47 +136,60 @@ public class EventActivity extends AppCompatActivity implements NavigationView.O
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.add_placement_menu, menu);
+        menu.findItem(R.id.item1).setVisible(false);
+        menu.findItem(R.id.item2).setVisible(false);
+        menu.findItem(R.id.action_search).setVisible(false);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.shareitem:
+                try {
+                    new Monitor(this).sharetowhatsapp();
+                } catch (Exception e) {
+
+                }
+
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+    }
+    @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
         Fragment fragment = null;
         switch (item.getItemId()) {
             case R.id.nav_home:
                 loadData();
-             /*   starlotActivity(new Intent(JobList.this, JobList.class));
-                finish();*/
                 break;
 
             case R.id.nav_add_event:
 
-                if (spUserDetails.getString("log", null).equals("reg") || spUserDetails.getString("log", null).equals("admin") ) {
-                    Intent intent = new Intent(this, AddEvent2.class);
-                    startActivity(intent);
+                if (Controller.getprefer().equals(Controller.REG) || Controller.getprefer().equals(Controller.ADMIN)) {
+                    new Move_Show(EventActivity.this,AddEvent2.class);
                 } else {
                     addEvent();
                 }
 
-
                 break;
 
             case R.id.nav_pending:
-
-                editor.putString("PREFER", "PREF").apply();
-                Intent intent1 = new Intent(this, Pending_Events.class);
-                startActivity(intent1);
+                new Move_Show(EventActivity.this,Pending_Events.class);
                 break;
 
             case R.id.nav_edit:
-
-                Intent intent2 = new Intent(this, Edit_Events.class);
-                startActivity(intent2);
-
+                new Move_Show(EventActivity.this,Edit_Events.class);
                 break;
             case R.id.nav_contact:
-                Intent intent4 = new Intent(this, ContactActivity.class);
-                startActivity(intent4);
-
+                new Move_Show(EventActivity.this,ContactActivity.class);
                 break;
-
 
             case R.id.nav_aboutus:
 
@@ -204,7 +219,7 @@ public class EventActivity extends AppCompatActivity implements NavigationView.O
     }
 
     private void addEvent() {
-        if (spUserDetails.getString("log", "").equals("visitor")) {
+        if (Controller.getprefer().equals(Controller.VISITOR)) {
 
             CFAlertDialog.Builder builder = new CFAlertDialog.Builder(this);
             builder.setDialogStyle(CFAlertDialog.CFAlertStyle.ALERT);
@@ -214,8 +229,7 @@ public class EventActivity extends AppCompatActivity implements NavigationView.O
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
-                    Intent i = new Intent(EventActivity.this, SignUp.class);
-                    startActivity(i);
+                   new Move_Show(EventActivity.this,SignUp.class);
 
                 }
             });
@@ -223,14 +237,12 @@ public class EventActivity extends AppCompatActivity implements NavigationView.O
             builder.addButton("NO", -1, -1, CFAlertDialog.CFAlertActionStyle.NEGATIVE, CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    // Toast.makeText(SplashActivity.this, "Upgrade tapped", Toast.LENGTH_SHORT).show();
-
                     dialog.dismiss();
                 }
             });
             builder.show();
         } else {
-            startActivity(new Intent(getApplicationContext(), AddEvent2.class));
+            new Move_Show(EventActivity.this,AddEvent2.class);
         }
     }
 }

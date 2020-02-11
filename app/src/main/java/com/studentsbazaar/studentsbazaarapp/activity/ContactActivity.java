@@ -1,18 +1,19 @@
 package com.studentsbazaar.studentsbazaarapp.activity;
 
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.studentsbazaar.studentsbazaarapp.R;
-
-import java.net.URLEncoder;
+import com.studentsbazaar.studentsbazaarapp.controller.Monitor;
+import com.studentsbazaar.studentsbazaarapp.controller.Move_Show;
 
 
 public class ContactActivity extends AppCompatActivity {
@@ -36,14 +37,7 @@ public class ContactActivity extends AppCompatActivity {
         whatsapp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                if(whatsappInstalledOrNot("com.whatsapp")){
-                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("whatsapp://send?text="+""+"&phone=919791004050"));
-                    startActivity(browserIntent);
-                }else {
-                    Toast.makeText(ContactActivity.this, "WhatsApp not Installed", Toast.LENGTH_SHORT)
-                            .show();
-                }
+                new Monitor(ContactActivity.this).chattowhatsapp("9791004050");
             }
         });
         mail.setOnClickListener(new View.OnClickListener() {
@@ -60,8 +54,7 @@ public class ContactActivity extends AppCompatActivity {
                     startActivity(Intent.createChooser(emailIntent, "Send mail..."));
 
                 } catch (android.content.ActivityNotFoundException ex) {
-                    Toast.makeText(ContactActivity.this,
-                            "There is no email client installed.", Toast.LENGTH_SHORT).show();
+                    Move_Show.showToast("There is no email client installed.");
                 }
             }
         });
@@ -69,15 +62,32 @@ public class ContactActivity extends AppCompatActivity {
 
     }
 
-    private boolean whatsappInstalledOrNot(String uri) {
-        PackageManager pm = getPackageManager();
-        boolean app_installed = false;
-        try {
-            pm.getPackageInfo(uri, PackageManager.GET_ACTIVITIES);
-            app_installed = true;
-        } catch (PackageManager.NameNotFoundException e) {
-            app_installed = false;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.add_placement_menu, menu);
+        menu.findItem(R.id.item1).setVisible(false);
+        menu.findItem(R.id.item2).setVisible(false);
+        menu.findItem(R.id.action_search).setVisible(false);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.shareitem:
+                try {
+                    new Monitor(this).sharetowhatsapp();
+                } catch (Exception e) {
+
+                }
+
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return app_installed;
+
     }
 }

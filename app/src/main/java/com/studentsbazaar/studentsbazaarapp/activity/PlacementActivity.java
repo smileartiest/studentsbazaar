@@ -2,9 +2,7 @@ package com.studentsbazaar.studentsbazaarapp.activity;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -26,13 +24,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.studentsbazaar.studentsbazaarapp.controller.Monitor;
 import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.adapter.JobListAdapter;
+import com.studentsbazaar.studentsbazaarapp.controller.Controller;
 import com.studentsbazaar.studentsbazaarapp.model.Campus;
 import com.studentsbazaar.studentsbazaarapp.model.DownloadResponse;
 import com.studentsbazaar.studentsbazaarapp.retrofit.ApiUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import dmax.dialog.SpotsDialog;
@@ -49,7 +48,6 @@ public class PlacementActivity extends AppCompatActivity {
     EditText dClgName, dCompName, dDomain, dPlaced, dPackage, dDate, dcomments;
     ImageView dCancel;
     Button dSubmit;
-    SharedPreferences spUserDetails;
     private RecyclerView.LayoutManager mLayoutManager;
     SpotsDialog progressDialog;
     List<Campus> drawerResponseList = null;
@@ -60,7 +58,7 @@ public class PlacementActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_placement);
-
+        new Controller(this);
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeToRefresh);
         layout = (LinearLayout) findViewById(R.id.empty3);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
@@ -69,13 +67,17 @@ public class PlacementActivity extends AppCompatActivity {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
+
+
+            toolbar = (Toolbar) findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);
             getSupportActionBar().setTitle("JOBS");
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+
 
         }
 
-
-        spUserDetails = getSharedPreferences("USER_DETAILS", Context.MODE_PRIVATE);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
 
@@ -99,6 +101,20 @@ public class PlacementActivity extends AppCompatActivity {
                 mSwipeRefreshLayout.setRefreshing(false);
             }
         });
+
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 
     private void loadURLData() {
@@ -148,9 +164,9 @@ public class PlacementActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.add_placement_menu, menu);
         MenuItem shareItem = menu.findItem(R.id.item1);
-        MenuItem search=menu.findItem(R.id.action_search);
+        MenuItem search = menu.findItem(R.id.action_search);
         menu.findItem(R.id.item2).setVisible(false);
-        SearchView searchView=(SearchView)search.getActionView();
+        SearchView searchView = (SearchView) search.getActionView();
         searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -167,7 +183,7 @@ public class PlacementActivity extends AppCompatActivity {
         });
 
 
-        if (spUserDetails.getString("log", "").equals("reg") || spUserDetails.getString("log", "").equals("visitor")) {
+        if (Controller.getprefer().equals(Controller.REG) || Controller.getprefer().equals(Controller.VISITOR) || Controller.getprefer().equals(Controller.INFOZUB) || Controller.getprefer().equals(Controller.MEMEACCEPT)) {
             shareItem.setVisible(false);
         }
         return true;
@@ -177,6 +193,14 @@ public class PlacementActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
+            case R.id.shareitem:
+                try {
+                    new Monitor(this).sharetowhatsapp();
+                } catch (Exception e) {
+
+                }
+
+                return true;
             case R.id.item1:
                 addJob();
                 return true;

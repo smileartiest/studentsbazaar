@@ -6,19 +6,15 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
-import android.text.Html;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -34,28 +30,26 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager.widget.ViewPager;
 
-import com.bumptech.glide.Glide;
 import com.crowdfire.cfalertdialog.CFAlertDialog;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
+import com.sanojpunchihewa.updatemanager.UpdateManager;
+import com.sanojpunchihewa.updatemanager.UpdateManagerConstant;
 import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.adapter.SliderPagerAdapter;
+import com.studentsbazaar.studentsbazaarapp.controller.Controller;
+import com.studentsbazaar.studentsbazaarapp.controller.Monitor;
+import com.studentsbazaar.studentsbazaarapp.controller.Move_Show;
 import com.studentsbazaar.studentsbazaarapp.firebase.Config;
 import com.studentsbazaar.studentsbazaarapp.helper.PersistanceUtil;
-import com.studentsbazaar.studentsbazaarapp.model.DownloadResponse;
 import com.studentsbazaar.studentsbazaarapp.model.Posters_Details;
 import com.studentsbazaar.studentsbazaarapp.model.Project_details;
 import com.studentsbazaar.studentsbazaarapp.retrofit.ApiUtil;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Objects;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import dmax.dialog.SpotsDialog;
 import retrofit2.Call;
@@ -63,13 +57,13 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+import static com.sanojpunchihewa.updatemanager.UpdateManager.*;
 
-public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     TextView tvEvent, tvPlacement, tvSyllabus, tvMemes, tvQuiz, tvHeadTitle;
     CardView cvEvent, cvPlacement, cvSyllabus, cvMemes, cvQuiz, technews, cvdis, cvabout;
     LinearLayout linear2;
-    RelativeLayout rlLayout;
     Dialog d;
     private DrawerLayout drawer;
     private Toolbar toolbar;
@@ -83,14 +77,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private LinearLayout ll_dots;
     SpotsDialog spotsDialog;
     SliderPagerAdapter sliderPagerAdapter;
-    SharedPreferences spUserDetails;
-    SharedPreferences.Editor edit;
     ArrayList<String> slider_image_list;
     List<Posters_Details> posters_details;
     List<Project_details> drawerResponseList = null;
     private TextView[] dots;
     int page_position = 0;
     private static final int MY_PERMISSIONS_REQUEST_SEND_SMS = 0;
+    UpdateManager mUpdateManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,9 +92,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         spotsDialog = new SpotsDialog(this);
 //        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 //                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
         setContentView(R.layout.activity_home);
-
+        new Controller(this);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -110,6 +102,16 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         tvMemes = findViewById(R.id.tvMeme);
         tvPlacement = findViewById(R.id.tvPlacement);
         tvQuiz = findViewById(R.id.tvQuiz);
+        mUpdateManager = UpdateManager.Builder(this);
+        mUpdateManager.mode(UpdateManagerConstant.IMMEDIATE).start();
+        // Callback from Available version code
+        mUpdateManager.getAvailableVersionCode(new onVersionCheckListener() {
+            @Override
+            public void onReceiveVersionCode(final int code) {
+                Toast.makeText(context, "String.valueOf(code)", Toast.LENGTH_SHORT).show();
+
+            }
+        });
         if (toolbar != null) {
             setSupportActionBar(toolbar);
             getSupportActionBar().setTitle("");
@@ -121,7 +123,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         tvSyllabus = findViewById(R.id.tvSylabus);
-        //sendSMSMessage();
+
         linear2 = findViewById(R.id.linear2);
         checkToken();
         context = this;
@@ -134,23 +136,20 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         cvdis = findViewById(R.id.cvdis);
         cvabout = findViewById(R.id.cvabut);
         technews = findViewById(R.id.cardviewtechnews);
-
-       // rlLayout.setVisibility(View.GONE);
-
-        spUserDetails = getSharedPreferences("USER_DETAILS", Context.MODE_PRIVATE);
-        edit = spUserDetails.edit();
-
-        if (spUserDetails.getString("recentevent", null) == null) {
-
-         //   loadData();
-        }
-
+        // rlLayout.setVisibility(View.GONE);
+//        spUserDetails = getSharedPreferences("USER_DETAILS", Context.MODE_PRIVATE);
+//        edit = spUserDetails.edit();
+//
+//        if (spUserDetails.getString("recentevent", null) == null) {
+//
+//            //   loadData();
+//        }
         init();
 
         // method for adding indicators
-      //  addBottomDots(0);
+        //  addBottomDots(0);
 
-        final Handler handler = new Handler();
+//        final Handler handler = new Handler();
 /*
         final Runnable update = new Runnable() {
             public void run() {
@@ -174,36 +173,28 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         cvEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intEvent = new Intent(HomeActivity.this, IntroActivity.class);
-                startActivity(intEvent);
+                new Move_Show(HomeActivity.this, IntroActivity.class);
             }
         });
 
         cvPlacement.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              /*  Bundle b = new Bundle();
-                b.putString("url","http://www.studentsbazaar.in/placements/");
-                b.putString("title","PLACEMENT");*/
-                Intent intEvent = new Intent(HomeActivity.this, PlacementActivity.class);
-                //intEvent.putExtras(b);
-                startActivity(intEvent);
+                new Move_Show(HomeActivity.this, PlacementActivity.class);
             }
         });
         technews.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intEvent = new Intent(HomeActivity.this, Tech_News.class);
-                startActivity(intEvent);
+                new Move_Show(HomeActivity.this, Tech_News.class);
             }
         });
 
         cvQuiz.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (spUserDetails.getString("log", "").equals("reg") || spUserDetails.getString("log", "").equals("admin")) {
-                    Intent intEvent = new Intent(HomeActivity.this, Quiz_Events.class);
-                    startActivity(intEvent);
+                if (Controller.getprefer().equals(Controller.REG) || Controller.getprefer().equals(Controller.ADMIN)) {
+                    new Move_Show(HomeActivity.this, Quiz_Events.class);
                 } else {
                     CFAlertDialog.Builder builder = new CFAlertDialog.Builder(HomeActivity.this);
                     builder.setDialogStyle(CFAlertDialog.CFAlertStyle.ALERT);
@@ -213,8 +204,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
-                            Intent i = new Intent(HomeActivity.this, SignUp.class);
-                            startActivity(i);
+                            new Move_Show(HomeActivity.this, SignUp.class);
 
                         }
                     });
@@ -222,28 +212,30 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     builder.addButton("NO", -1, -1, CFAlertDialog.CFAlertActionStyle.NEGATIVE, CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            // Toast.makeText(SplashActivity.this, "Upgrade tapped", Toast.LENGTH_SHORT).show();
                             dialog.dismiss();
                         }
                     });
                     builder.show();
                 }
 
-//
             }
         });
         cvdis.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                edit.putString("meme", "user").apply();
-                Intent intEvent = new Intent(HomeActivity.this, Mems.class);
-                startActivity(intEvent);
+                Controller.adddesignprefer(Controller.PREFER);
+                new Move_Show(HomeActivity.this, Mems.class);
             }
         });
         cvabout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intEvent = new Intent(HomeActivity.this, DisclaimerActivity.class);
+                Bundle b = new Bundle();
+                b.putString("url", "http://uniqsolutions.co.in/Admin/Files/Tech_Video.php");
+                b.putString("title", "INTERESTING VIDEOS");
+                b.putString("data", "INTERESTING VIDEOS");
+                Intent intEvent = new Intent(HomeActivity.this, WebActivity.class);
+                intEvent.putExtras(b);
                 startActivity(intEvent);
             }
         });
@@ -265,15 +257,41 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         cvSyllabus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//
-
-                Intent intEvent = new Intent(HomeActivity.this, MUActivity.class);
-
-                startActivity(intEvent);
+                new Move_Show(HomeActivity.this, MUActivity.class);
 
 
             }
         });
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.add_placement_menu, menu);
+        menu.findItem(R.id.item1).setVisible(false);
+        menu.findItem(R.id.item2).setVisible(false);
+        menu.findItem(R.id.action_search).setVisible(false);
+
+        return true;
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.shareitem:
+                try {
+                    new Monitor(this).sharetowhatsapp();
+                } catch (Exception e) {
+
+                }
+
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
 
     }
 
@@ -283,27 +301,24 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         Fragment fragment = null;
         switch (item.getItemId()) {
             case R.id.nav_home:
-
-             /*   starlotActivity(new Intent(JobList.this, JobList.class));
-                finish();*/
                 break;
-
             case R.id.nav_sigin:
-
-                startActivity(new Intent(HomeActivity.this, MainActivity.class));
-               // finish();
+                new Move_Show(HomeActivity.this, MainActivity.class);
                 break;
             case R.id.nav_signup:
-
-                startActivity(new Intent(HomeActivity.this, SignUp.class));
-               // finish();
+                new Move_Show(HomeActivity.this, SignUp.class);
                 break;
 
             case R.id.nav_disclaimer:
-
-                startActivity(new Intent(HomeActivity.this, DisclaimerActivity.class));
-               // finish();
+                new Move_Show(HomeActivity.this, DisclaimerActivity.class);
                 break;
+            case R.id.nav_aboutus:
+                Bundle b = new Bundle();
+                b.putString("url", "https://www.studentsbazaar.in/about-us/");
+                b.putString("title", "ABOUT US");
+                Intent intEvent = new Intent(HomeActivity.this, WebActivity.class);
+                intEvent.putExtras(b);
+                startActivity(intEvent);
 
         }
         if (fragment != null) {
@@ -328,11 +343,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         getSupportActionBar().hide();*/
 
         navigationView.setNavigationItemSelectedListener(HomeActivity.this);
+        if (Controller.getprefer().equals(Controller.REG)) {
+          navigationView.getMenu().getItem(1).setVisible(false);
+          navigationView.getMenu().getItem(2).setVisible(false);
+        }
         requestPermission();
-
-
-
-
 
 
 //Add few items to slider_image_list ,this should contain url of images which should be displayed in slider
@@ -379,12 +394,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void checkToken() {
-
         FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(HomeActivity.this, new OnSuccessListener<InstanceIdResult>() {
             @Override
             public void onSuccess(InstanceIdResult instanceIdResult) {
                 refreshedToken = instanceIdResult.getToken();
-                Log.i("newToken", refreshedToken);
                 PersistanceUtil.setUserID(refreshedToken);
                 // Saving reg id to shared preferences
                 storeRegIdInPref(refreshedToken);
@@ -395,12 +408,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 registrationComplete.putExtra("token", refreshedToken);
                 LocalBroadcastManager.getInstance(context).sendBroadcast(registrationComplete);
                 STRTOKEN = Config.getPrefToken(context);
-                Log.d("Token", STRTOKEN);
                 if (!STRTOKEN.equals("0")) {
-                    if (!spUserDetails.getString("TOKEN_STAT", "").equals("sent")) {
+                    if (Controller.getTokenstatus() == Controller.SENT) {
                         pushToken(Config.getPrefToken(context));
+                        Log.d("TOKEN", Controller.SENT);
                     } else {
-                        Log.d("TOKEN_STAT", "Already token sent.");
+                        Log.d("TOKEN", Controller.SENT);
                     }
 
                 }
@@ -412,23 +425,19 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     private void pushToken(String token) {
 
-        Log.d("UNIQTOKEN", token + "");
         spotsDialog.show();
-        Call<String> call = ApiUtil.getServiceClass().updatetoken(token, spUserDetails.getString("UID", ""));
+        Call<String> call = ApiUtil.getServiceClass().updatetoken(token, Controller.getUID());
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-                edit.putString("TOKEN_STAT", "sent");
-                edit.apply();
+                Controller.addTokenStatus(Controller.SENT);
                 assert response.body() != null;
-                Log.d("RESPONSELOG", response.body());
                 spotsDialog.dismiss();
 
             }
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-                Log.d("FAILURE_RESPONSE", Objects.requireNonNull(t.getMessage()));
             }
         });
     }
@@ -536,125 +545,140 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         alertDialog.show();
     }
 
-    void loadData() {
-        Call<DownloadResponse> call = ApiUtil.getServiceClass().getHomeComponentList(ApiUtil.GET_RECENT_EVENTS);
-        call.enqueue(new Callback<DownloadResponse>() {
-            @Override
-            public void onResponse(Call<DownloadResponse> call, Response<DownloadResponse> response) {
 
-                drawerResponseList = response.body().getProject_details();
+    //    void loadData() {
+//        Call<DownloadResponse> call = ApiUtil.getServiceClass().getHomeComponentList(ApiUtil.GET_RECENT_EVENTS);
+//        call.enqueue(new Callback<DownloadResponse>() {
+//            @Override
+//            public void onResponse(Call<DownloadResponse> call, Response<DownloadResponse> response) {
+//
+//                drawerResponseList = response.body().getProject_details();
+//
+//                d = new Dialog(HomeActivity.this);
+//                d.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//                d.setCancelable(false);
+//                d.setContentView(R.layout.results_design);
+//                ImageView imageView = d.findViewById(R.id.recentposter);
+//                TextView title = d.findViewById(R.id.recenttilte);
+//                TextView venue = d.findViewById(R.id.recentvenue);
+//                TextView day = d.findViewById(R.id.recent_start_date);
+//                TextView month = d.findViewById(R.id.recent_start_month);
+//                TextView apply = d.findViewById(R.id.recentapply);
+//                Button view = d.findViewById(R.id.recentview);
+//                Button later = d.findViewById(R.id.recentlater);
+//
+//                Glide.with(HomeActivity.this).load(drawerResponseList.get(0).getPoster()).into(imageView);
+//                title.setText(drawerResponseList.get(0).getEvent_Title());
+//                venue.setText(drawerResponseList.get(0).getEvent_Organiser() + "," + drawerResponseList.get(0).getCollege_Address());
+//                try {
+//                    Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(drawerResponseList.get(0).getEvent_Start_Date());
+//                    String[] sdate = date1.toString().split(" ");
+//                    if (sdate[0].equals("Sat") || sdate[0].equals("Sun")) {
+//                        day.setTextColor(Color.RED);
+//                        month.setTextColor(Color.RED);
+//
+//                    } else {
+//                        day.setTextColor(Color.parseColor("#1B4F72"));
+//                        month.setTextColor(Color.parseColor("#1B4F72"));
+//                    }
+//                    day.setText(sdate[0]);
+//                    month.setText(sdate[1] + " " + sdate[2]);
+//                } catch (Exception e) {
+//
+//                }
+//                apply.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        if (drawerResponseList.get(0).getEvent_Website().contains("http://") || drawerResponseList.get(0).getEvent_Website().contains("https://")) {
+//
+//                            weburl = drawerResponseList.get(0).getEvent_Website();
+//                        } else {
+//                            weburl = "http://" + drawerResponseList.get(0).getEvent_Website();
+//                        }
+//                        Bundle bundle = new Bundle();
+//                        bundle.putString("url", weburl);
+//                        bundle.putString("data", "reg url");
+//                        bundle.putString("title", "reg title");
+//                        Intent in = new Intent(context, WebActivity.class);
+//                        in.putExtras(bundle);
+//                        context.startActivity(in);
+//                    }
+//                });
+//                view.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        edit.putString("recentevent", "view").apply();
+//                        edit.putString("PREFER", "MORE").apply();
+//                        SharedPreferences sharedPreferences = context.getSharedPreferences("view_details", Context.MODE_PRIVATE);
+//                        SharedPreferences.Editor editor = sharedPreferences.edit();
+//                        editor.putString("coid", drawerResponseList.get(0).getEvent_Coordinator());
+//                        editor.putString("post", drawerResponseList.get(0).getPoster());
+//                        editor.putString("title", drawerResponseList.get(0).getEvent_Title());
+//                        editor.putString("cat", drawerResponseList.get(0).getEvent_Type());
+//                        editor.putString("sdate", drawerResponseList.get(0).getEvent_Start_Date());
+//                        editor.putString("edate", drawerResponseList.get(0).getEvent_End_Date());
+//                        editor.putString("organiser", drawerResponseList.get(0).getEvent_sponsors());
+//                        editor.putString("city", drawerResponseList.get(0).getCollege_District());
+//                        editor.putString("state", drawerResponseList.get(0).getCollege_State());
+//                        editor.putString("dis", drawerResponseList.get(0).getEvent_Discription());
+//                        editor.putString("Eventdetails", drawerResponseList.get(0).getEvent_Details());
+//                        editor.putString("dept", drawerResponseList.get(0).getDept());
+//                        editor.putString("guest", drawerResponseList.get(0).getEvent_guest());
+//                        editor.putString("pronites", drawerResponseList.get(0).getEvent_pro_nites());
+//                        editor.putString("etheme", drawerResponseList.get(0).getEvent_Name());
+//                        editor.putString("accom", drawerResponseList.get(0).getEvent_accomodations());
+//                        editor.putString("lastdate", drawerResponseList.get(0).getLast_date_registration());
+//                        editor.putString("fees", drawerResponseList.get(0).getEntry_Fees());
+//                        editor.putString("htr", drawerResponseList.get(0).getEvent_how_to_reach());
+//                        editor.putString("cpname1", drawerResponseList.get(0).getContact_Person1_Name());
+//                        editor.putString("cpno1", drawerResponseList.get(0).getContact_Person1_No());
+//                        editor.putString("cpname2", drawerResponseList.get(0).getContact_Person2_Name());
+//                        editor.putString("cpno2", drawerResponseList.get(0).getContact_Person2_No());
+//                        editor.putString("webevent", drawerResponseList.get(0).getEvent_Website());
+//                        editor.putString("webcoll", drawerResponseList.get(0).getCollege_Website());
+//                        editor.putString("view", "view");
+//                        editor.apply();
+//                        Intent intent = new Intent(HomeActivity.this, View_Details.class);
+//                        startActivity(intent);
+//                        d.dismiss();
+//                    }
+//                });
+//                later.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        edit.putString("recentevent", "later").apply();
+//                        d.dismiss();
+//                    }
+//                });
+//
+//
+//                d.show();
+//
+//
+//            }
+//
+//            @Override
+//            public void onFailure(Call<DownloadResponse> call, Throwable t) {
+//
+//            }
+//        });
+//
+//    }
 
-                d = new Dialog(HomeActivity.this);
-                d.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                d.setCancelable(false);
-                d.setContentView(R.layout.results_design);
-                ImageView imageView = d.findViewById(R.id.recentposter);
-                TextView title = d.findViewById(R.id.recenttilte);
-                TextView venue = d.findViewById(R.id.recentvenue);
-                TextView day = d.findViewById(R.id.recent_start_date);
-                TextView month = d.findViewById(R.id.recent_start_month);
-                TextView apply = d.findViewById(R.id.recentapply);
-                Button view = d.findViewById(R.id.recentview);
-                Button later = d.findViewById(R.id.recentlater);
-
-                Glide.with(HomeActivity.this).load(drawerResponseList.get(0).getPoster()).into(imageView);
-                title.setText(drawerResponseList.get(0).getEvent_Title());
-                venue.setText(drawerResponseList.get(0).getEvent_Organiser() + "," + drawerResponseList.get(0).getCollege_Address());
-                try {
-                    Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(drawerResponseList.get(0).getEvent_Start_Date());
-                    String[] sdate = date1.toString().split(" ");
-                    if (sdate[0].equals("Sat") || sdate[0].equals("Sun")) {
-                        day.setTextColor(Color.RED);
-                        month.setTextColor(Color.RED);
-
-                    } else {
-                        day.setTextColor(Color.parseColor("#1B4F72"));
-                        month.setTextColor(Color.parseColor("#1B4F72"));
-                    }
-                    day.setText(sdate[0]);
-                    month.setText(sdate[1] + " " + sdate[2]);
-                } catch (Exception e) {
-
-                }
-                apply.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (drawerResponseList.get(0).getEvent_Website().contains("http://") || drawerResponseList.get(0).getEvent_Website().contains("https://")){
-
-                            weburl =drawerResponseList.get(0).getEvent_Website();
-                        }else{
-                            weburl ="http://"+drawerResponseList.get(0).getEvent_Website();
-                        }
-                        Bundle bundle = new Bundle();
-                        bundle.putString("url",weburl);
-                        bundle.putString("data","reg url");
-                        bundle.putString("title","reg title");
-                        Intent in = new Intent(context, WebActivity.class);
-                        in.putExtras(bundle);
-                        context.startActivity(in);
-                    }
-                });
-                view.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        edit.putString("recentevent", "view").apply();
-                        edit.putString("PREFER", "MORE").apply();
-                        SharedPreferences sharedPreferences = context.getSharedPreferences("view_details", Context.MODE_PRIVATE);
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putString("coid", drawerResponseList.get(0).getEvent_Coordinator());
-                        editor.putString("post", drawerResponseList.get(0).getPoster());
-                        editor.putString("title", drawerResponseList.get(0).getEvent_Title());
-                        editor.putString("cat", drawerResponseList.get(0).getEvent_Type());
-                        editor.putString("sdate", drawerResponseList.get(0).getEvent_Start_Date());
-                        editor.putString("edate", drawerResponseList.get(0).getEvent_End_Date());
-                        editor.putString("organiser", drawerResponseList.get(0).getEvent_sponsors());
-                        editor.putString("city", drawerResponseList.get(0).getCollege_District());
-                        editor.putString("state", drawerResponseList.get(0).getCollege_State());
-                        editor.putString("dis", drawerResponseList.get(0).getEvent_Discription());
-                        editor.putString("Eventdetails", drawerResponseList.get(0).getEvent_Details());
-                        editor.putString("dept", drawerResponseList.get(0).getDept());
-                        editor.putString("guest", drawerResponseList.get(0).getEvent_guest());
-                        editor.putString("pronites", drawerResponseList.get(0).getEvent_pro_nites());
-                        editor.putString("etheme", drawerResponseList.get(0).getEvent_Name());
-                        editor.putString("accom", drawerResponseList.get(0).getEvent_accomodations());
-                        editor.putString("lastdate", drawerResponseList.get(0).getLast_date_registration());
-                        editor.putString("fees", drawerResponseList.get(0).getEntry_Fees());
-                        editor.putString("htr", drawerResponseList.get(0).getEvent_how_to_reach());
-                        editor.putString("cpname1", drawerResponseList.get(0).getContact_Person1_Name());
-                        editor.putString("cpno1", drawerResponseList.get(0).getContact_Person1_No());
-                        editor.putString("cpname2", drawerResponseList.get(0).getContact_Person2_Name());
-                        editor.putString("cpno2", drawerResponseList.get(0).getContact_Person2_No());
-                        editor.putString("webevent", drawerResponseList.get(0).getEvent_Website());
-                        editor.putString("webcoll", drawerResponseList.get(0).getCollege_Website());
-                        editor.putString("view", "view");
-                        editor.apply();
-                        Intent intent = new Intent(HomeActivity.this, View_Details.class);
-                        startActivity(intent);
-                        d.dismiss();
-                    }
-                });
-                later.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        edit.putString("recentevent", "later").apply();
-                        d.dismiss();
-                    }
-                });
-
-
-                d.show();
-
-
-            }
-
-            @Override
-            public void onFailure(Call<DownloadResponse> call, Throwable t) {
-
-            }
-        });
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Continue updates when resumed
+        mUpdateManager.continueUpdate();
     }
 
+    public void callFlexibleUpdate(View view) {
+        // Start a Flexible Update
+        mUpdateManager.mode(UpdateManagerConstant.FLEXIBLE).start();
+    }
 
-
+    public void callImmediateUpdate(View view) {
+        // Start a Immediate Update
+        mUpdateManager.mode(UpdateManagerConstant.IMMEDIATE).start();
+    }
 }

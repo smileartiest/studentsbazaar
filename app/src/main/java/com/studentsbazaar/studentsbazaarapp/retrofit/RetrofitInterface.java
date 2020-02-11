@@ -8,6 +8,7 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 import retrofit2.http.Url;
 
 public interface RetrofitInterface {
@@ -26,15 +27,14 @@ public interface RetrofitInterface {
     @FormUrlEncoded
     @POST("/updatememepost.php")
     Call<String> updatememepost(@Field("approved") String approved,
-                             @Field("meme") String meme,
-                             @Field("UID") String UID);
+                                @Field("meme") String meme,
+                                @Field("UID") String UID);
 
 
     @FormUrlEncoded
     @POST("/updatetoken.php")
     Call<String> updatetoken(@Field("Token") String token,
                              @Field("UID") String UID);
-
 
 
     @GET
@@ -52,7 +52,7 @@ public interface RetrofitInterface {
     @FormUrlEncoded
     @POST("/addtechnews.php")
     Call<String> addtechnews(@Field("comname") String comname,
-                                 @Field("poster") String poster);
+                             @Field("poster") String poster);
 
     @FormUrlEncoded
     @POST("/addmems.php")
@@ -62,7 +62,6 @@ public interface RetrofitInterface {
 
     @GET
     Call<String> updateEventStatus(@Url String url);
-
 
 
     @GET
@@ -78,21 +77,22 @@ public interface RetrofitInterface {
                                @Field("comments") String comments,
                                @Field("domain") String domain);
 
-    @FormUrlEncoded
-    @POST("/Register.php")
-    Call<String> addaccount(@Field("name") String name,
-                            @Field("uid") String uid,
-                            @Field("password") String password,
-                            @Field("cname") String collegename,
-                            @Field("affiliation") String affiliation,
-                            @Field("degree") String degree,
-                            @Field("dept") String dept,
-                            @Field("year") String year,
-                            @Field("sem") String sem,
-                            @Field("mobile") String mobile,
-                            @Field("acyear") String acyear,
-                            @Field("mail") String mail,
-                            @Field("device") String device);
+
+    @GET("/Register.php")
+    Call<String> addaccount(@Query("name") String name,
+                            @Query("uid") String uid,
+                            @Query("password") String password,
+                            @Query("cname") String collegename,
+                            @Query("affiliation") String affiliation,
+                            @Query("degree") String degree,
+                            @Query("dept") String dept,
+                            @Query("year") String year,
+                            @Query("sem") String sem,
+                            @Query("mobile") String mobile,
+                            @Query("acyear") String acyear,
+                            @Query("mail") String mail,
+                            @Query("device") String device);
+
     @FormUrlEncoded
     @POST("/get_quiz.php")
     Call<DownloadResponse> getQuizQuestions(@Field("uid") String uid);

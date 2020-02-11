@@ -21,6 +21,7 @@ import com.studentsbazaar.studentsbazaarapp.model.Campus;
 
 import java.util.ArrayList;
 import java.util.List;
+
 @SuppressWarnings("unchecked")
 public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.ViewHolder> implements Filterable {
 
@@ -99,7 +100,7 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.ViewHold
                 String filterPattern = constraint.toString().toLowerCase().trim();
 
                 for (Campus item : filterdata) {
-                    if (item.getCompany_Name().toLowerCase().contains(filterPattern)) {
+                    if (item.getCompany_Name().toLowerCase().contains(filterPattern) || item.getCollege_Name().toLowerCase().contains(filterPattern)) {
                         filteredList.add(item);
                     }
                 }

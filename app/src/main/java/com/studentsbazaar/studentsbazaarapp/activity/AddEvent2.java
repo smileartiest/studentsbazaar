@@ -2,7 +2,6 @@ package com.studentsbazaar.studentsbazaarapp.activity;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -13,12 +12,12 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.studentsbazaar.studentsbazaarapp.R;
+import com.studentsbazaar.studentsbazaarapp.controller.Move_Show;
 import com.studentsbazaar.studentsbazaarapp.helper.DateChecker;
 
 import java.util.ArrayList;
@@ -84,7 +83,6 @@ public class AddEvent2 extends AppCompatActivity {
                 catd.cancel();
             }
         });
-
 
 
     }
@@ -164,11 +162,11 @@ public class AddEvent2 extends AppCompatActivity {
                             @Override
                             public void onDateSet(DatePicker view, int year,
                                                   int monthOfYear, int dayOfMonth) {
-                                if(dayOfMonth < 10){
+                                if (dayOfMonth < 10) {
 
-                                    day  = "0" + dayOfMonth ;
-                                }else{
-                                   day  = String.valueOf(dayOfMonth);
+                                    day = "0" + dayOfMonth;
+                                } else {
+                                    day = String.valueOf(dayOfMonth);
                                 }
                                 esdate = year + "-" + (monthOfYear + 1) + "-" + day;
                                 startdate.setText(esdate);
@@ -196,21 +194,20 @@ public class AddEvent2 extends AppCompatActivity {
                             @Override
                             public void onDateSet(DatePicker view, int year,
                                                   int monthOfYear, int dayOfMonth) {
-                                if(dayOfMonth < 10){
+                                if (dayOfMonth < 10) {
 
-                                    day  = "0" + dayOfMonth ;
-                                }
-                                else{
-                                    day  = String.valueOf(dayOfMonth);
+                                    day = "0" + dayOfMonth;
+                                } else {
+                                    day = String.valueOf(dayOfMonth);
                                 }
                                 eedate = year + "-" + (monthOfYear + 1) + "-" + day;
 
 
                                 DateChecker dateChecker = new DateChecker();
-                                if(dateChecker.checkPrevDate(esdate,eedate)){
+                                if (dateChecker.checkPrevDate(esdate, eedate)) {
                                     enddate.setText(eedate);
-                                }else{
-                                    Toast.makeText(getApplicationContext(),"EndDate must be after StartDate",Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Move_Show.showToast("EndDate must be after StartDate");
                                     enddate.setText(esdate);
                                 }
 
@@ -514,9 +511,9 @@ public class AddEvent2 extends AppCompatActivity {
                                         ed.putString("edis", disevent);
                                         ed.apply();
                                         if (etitle.isEmpty() && ecat.isEmpty() && conby.isEmpty() && eorg.isEmpty() && ecity.isEmpty() && estae.isEmpty() && edpt.isEmpty() && esdate.isEmpty() && eedate.isEmpty() && disevent.isEmpty()) {
-                                            Toast.makeText(AddEvent2.this, "All Fields are mandatory...", Toast.LENGTH_SHORT).show();
+                                            Move_Show.showToast("All Fields are mandatory...");
                                         } else {
-                                            startActivity(new Intent(getApplicationContext(), AddEvent.class));
+                                            new Move_Show(AddEvent2.this, AddEvent.class);
                                             finish();
                                         }
                                     } else {

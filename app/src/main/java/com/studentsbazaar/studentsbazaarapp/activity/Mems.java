@@ -30,11 +30,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.crowdfire.cfalertdialog.CFAlertDialog;
-import com.iceteck.silicompressorr.FileUtils;
 import com.iceteck.silicompressorr.SiliCompressor;
-import com.studentsbazaar.studentsbazaarapp.FileUtil;
 import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.adapter.Memes_Adapter;
+import com.studentsbazaar.studentsbazaarapp.controller.Controller;
+import com.studentsbazaar.studentsbazaarapp.controller.Monitor;
+import com.studentsbazaar.studentsbazaarapp.controller.Move_Show;
+import com.studentsbazaar.studentsbazaarapp.helper.FileUtil;
 import com.studentsbazaar.studentsbazaarapp.model.DownloadResponse;
 import com.studentsbazaar.studentsbazaarapp.model.Memes_Details;
 import com.studentsbazaar.studentsbazaarapp.retrofit.ApiUtil;
@@ -47,7 +49,6 @@ import java.io.InputStream;
 import java.util.List;
 
 import dmax.dialog.SpotsDialog;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -62,9 +63,8 @@ public class Mems extends AppCompatActivity {
     private static int RESULT_LOAD_IMAGE = 1;
     String profileimg, encoded;
     ImageView postmeme;
-    SharedPreferences sharedPreferences;
-    SharedPreferences.Editor editor;
     String UID;
+    Toolbar toolbar;
     String epost = "0";
     Dialog dialog;
     Uri imageUri;
@@ -76,14 +76,17 @@ public class Mems extends AppCompatActivity {
         spotsDialog = new SpotsDialog(this);
         memeview = findViewById(R.id.memerecyler);
         swipeRefreshLayout = findViewById(R.id.memeswipe);
-        sharedPreferences = getSharedPreferences("USER_DETAILS", MODE_PRIVATE);
-        UID = sharedPreferences.getString("UID", null);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.memetool);
+        new Controller(this);
+        Controller.addupdateview(Controller.MEMEVIEW);
+        UID = Controller.getUID();
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
-            getSupportActionBar().setTitle("Memes");
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         }
+
         loadData();
         memeview.setHasFixedSize(true);
         memeview.setLayoutManager(new LinearLayoutManager(this));
@@ -93,8 +96,19 @@ public class Mems extends AppCompatActivity {
                 loadData();
             }
         });
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
+    }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 
     @Override
@@ -104,9 +118,9 @@ public class Mems extends AppCompatActivity {
         MenuItem shareItem = menu.findItem(R.id.item2);
         MenuItem search = menu.findItem(R.id.action_search);
         search.setVisible(false);
-        if (sharedPreferences.getString("log", "").equals("admin")) {
+        if (Controller.getprefer().equals(Controller.ADMIN) || Controller.getprefer().equals(Controller.MEMEACCEPT)) {
             shareItem.setVisible(true);
-        }else{
+        } else {
             shareItem.setVisible(false);
 
         }
@@ -118,10 +132,18 @@ public class Mems extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
+            case R.id.shareitem:
+                try {
+                    new Monitor(this).sharetowhatsapp();
+                } catch (Exception e) {
+
+                }
+
+                return true;
             case R.id.item1:
 
 
-                if (sharedPreferences.getString("log", "").equals("reg") || sharedPreferences.getString("log", "").equals("admin")) {
+                if (Controller.getprefer().equals(Controller.REG) || Controller.getprefer().equals(Controller.ADMIN)) {
                     addJob();
                 } else {
                     CFAlertDialog.Builder builder = new CFAlertDialog.Builder(Mems.this);
@@ -132,12 +154,10 @@ public class Mems extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
-                          SharedPreferences smeme = getSharedPreferences("meme", Context.MODE_PRIVATE);
-                          SharedPreferences.Editor seditor = smeme.edit();
-                            seditor.putString("source","meme").apply();
-                            Intent i = new Intent(Mems.this, SignUp.class);
-                            //i.putExtras(b);
-                            startActivity(i);
+                            SharedPreferences smeme = getSharedPreferences("meme", Context.MODE_PRIVATE);
+                            SharedPreferences.Editor seditor = smeme.edit();
+                            seditor.putString("source", "meme").apply();
+                            new Move_Show(Mems.this, SignUp.class);
 
                         }
                     });
@@ -145,7 +165,6 @@ public class Mems extends AppCompatActivity {
                     builder.addButton("NO", -1, -1, CFAlertDialog.CFAlertActionStyle.NEGATIVE, CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            // Toast.makeText(SplashActivity.this, "Upgrade tapped", Toast.LENGTH_SHORT).show();
 
                             dialog.dismiss();
                         }
@@ -157,8 +176,7 @@ public class Mems extends AppCompatActivity {
                 return true;
             case R.id.item2:
 
-                Intent intent = new Intent(Mems.this,Pending_Post.class);
-                startActivity(intent);
+                new Move_Show(Mems.this, Pending_Post.class);
 
                 return true;
 
@@ -182,21 +200,17 @@ public class Mems extends AppCompatActivity {
             public void onClick(View view) {
                 Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(i, RESULT_LOAD_IMAGE);
-//
             }
         });
         postbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                if (epost != null) {
-                    Toast.makeText(Mems.this, "Please Select Memes", Toast.LENGTH_SHORT).show();
-                }else {
+                if (encoded == null) {
+                    Move_Show.showToast("Please Select memes");
+                } else {
                     spotsDialog.show();
-                    convertBitmapToString(profilePicture);
-                    epost = profileimg;
-                    Log.d("RESPONSE3", epost);
-                    Call<String> call = ApiUtil.getServiceClass().addmemes(UID, "fine", epost);
+                    // convertBitmapToString(profilePicture);
+                    Call<String> call = ApiUtil.getServiceClass().addmemes(UID, "fine", encoded);
                     call.enqueue(new Callback<String>() {
                         @Override
                         public void onResponse(Call<String> call, Response<String> response) {
@@ -205,8 +219,7 @@ public class Mems extends AppCompatActivity {
                                 dialog.cancel();
                                 alert();
                             } else {
-                                Toast.makeText(Mems.this, response.body(), Toast.LENGTH_SHORT).show();
-                            }
+                                Move_Show.showToast(response.body());                            }
                         }
 
                         @Override
@@ -247,7 +260,7 @@ public class Mems extends AppCompatActivity {
         Call<DownloadResponse> call = ApiUtil.getServiceClass().getHomeComponentList(ApiUtil.GET_MEMES);
         call.enqueue(new Callback<DownloadResponse>() {
             @Override
-            public void onResponse(Call<DownloadResponse> call, retrofit2.Response<DownloadResponse> response) {
+            public void onResponse(Call<DownloadResponse> call, Response<DownloadResponse> response) {
 
                 Log.d("RESPONSE1", response.message().toString());
 
@@ -260,14 +273,11 @@ public class Mems extends AppCompatActivity {
                     Log.d("RESPONSE2", memes_details.toString());
                     spotsDialog.dismiss();
                     if (memes_details.size() == 0) {
-//                        layout.setVisibility(View.VISIBLE);
-//                        viewPager2.setVisibility(View.INVISIBLE);
+
                     } else {
-//                        layout.setVisibility(View.INVISIBLE);
-//                        viewPager2.setVisibility(View.VISIBLE);
                         mAdapter = new Memes_Adapter(Mems.this, memes_details);
                         memeview.setAdapter(mAdapter);
-                        // mAdapter.notifyDataSetChanged();
+                        mAdapter.notifyDataSetChanged();
                     }
                 }
 
@@ -275,8 +285,6 @@ public class Mems extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<DownloadResponse> call, Throwable t) {
-                //showErrorMessage();
-
                 Log.d("RESPONSE3", "err" + t.getMessage());
             }
         });
@@ -287,13 +295,12 @@ public class Mems extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+
         if (requestCode == RESULT_LOAD_IMAGE) {
-
-                try {
-                    if (data !=null){
-
-                    if (data.getData()!=null) {
-                        imageUri = data.getData();
+            try {
+                if (data != null) {
+                    if (data.getData() != null) {
+                        Uri imageUri = data.getData();
                         InputStream imageStream = getApplicationContext().getContentResolver().openInputStream(imageUri);
                         profilePicture = BitmapFactory.decodeStream(imageStream);
                         postmeme.setImageBitmap(profilePicture);
@@ -302,26 +309,17 @@ public class Mems extends AppCompatActivity {
                         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                         compressedImgFile.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
                         byte[] byteArray = byteArrayOutputStream.toByteArray();
-                        String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
-                        epost = encoded;
+                        encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
+                        Log.d("ENCODE", encoded);
 
-                    }}
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    }
                 }
-
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
     }
-
-    private void convertBitmapToString(Bitmap profilePicture) {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        profilePicture.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-        byte[] array = byteArrayOutputStream.toByteArray();
-        profileimg = Base64.encodeToString(array, Base64.DEFAULT);
-    }
-
-
 }

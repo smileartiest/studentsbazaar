@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 
 import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.adapter.Memes_Adapter;
+import com.studentsbazaar.studentsbazaarapp.controller.Controller;
 import com.studentsbazaar.studentsbazaarapp.model.DownloadResponse;
 import com.studentsbazaar.studentsbazaarapp.model.Memes_Details;
 import com.studentsbazaar.studentsbazaarapp.retrofit.ApiUtil;
@@ -39,6 +40,8 @@ public class Pending_Post extends AppCompatActivity {
         layout=findViewById(R.id.empty7);
         memeview=findViewById(R.id.postview);
         spotsDialog=new SpotsDialog(this);
+        new Controller(this);
+        Controller.addupdateview(Controller.INITIAL);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarpost);
         if (toolbar != null) {
             setSupportActionBar(toolbar);

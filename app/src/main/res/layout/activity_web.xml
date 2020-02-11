@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+
     <LinearLayout
         android:id="@+id/toolbarlayout"
         android:layout_width="match_parent"
@@ -14,7 +15,7 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="50dp"
             android:background="@color/colorPrimaryDark"
             android:gravity="center_vertical"
             android:minHeight="?attr/actionBarSize"
@@ -28,19 +29,33 @@
                 android:id="@+id/id_toolbarTitle"
                 android:textColor="@color/white"
                 android:textStyle="bold" />
+
+
+
+
         </androidx.appcompat.widget.Toolbar>
     </LinearLayout>
+
+   <RelativeLayout
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:layout_below="@+id/toolbarlayout"
+       android:layout_marginTop="5dp"
+       >
+
 
     <WebView
         android:id="@+id/idWebview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/toolbarlayout" />
+        />
 
+
+   </RelativeLayout>
     <ImageView
         android:id="@+id/shareweb"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:layout_marginRight="25dp"

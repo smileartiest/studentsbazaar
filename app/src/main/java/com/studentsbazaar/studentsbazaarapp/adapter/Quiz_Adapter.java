@@ -54,7 +54,7 @@ public class Quiz_Adapter extends RecyclerView.Adapter<Quiz_Adapter.Myviewholder
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final Quiz_Adapter.Myviewholder holder, int position) {
+    public void onBindViewHolder(@NonNull final Myviewholder holder, int position) {
         final Quiz_Details listItem = mData.get(position);
         Resources resources = context.getResources();
         holder.setIsRecyclable(false);

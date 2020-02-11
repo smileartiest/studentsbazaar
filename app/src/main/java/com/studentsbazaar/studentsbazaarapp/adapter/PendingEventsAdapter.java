@@ -1,10 +1,12 @@
 package com.studentsbazaar.studentsbazaarapp.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Typeface;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.activity.Pending_Events;
 import com.studentsbazaar.studentsbazaarapp.activity.View_Details;
+import com.studentsbazaar.studentsbazaarapp.controller.Controller;
 import com.studentsbazaar.studentsbazaarapp.model.Project_details;
 
 import java.util.List;
@@ -32,26 +35,28 @@ public class PendingEventsAdapter extends RecyclerView.Adapter<PendingEventsAdap
     private Context context;
     List<Project_details> mData;
     SpotsDialog spotsDialog ;
+    Controller controller;
 
     public PendingEventsAdapter(Pending_Events context, List<Project_details> drawerResponseList) {
         this.context = context;
         this.mData = drawerResponseList;
         this.mInflater = LayoutInflater.from(context);
+        controller = new Controller(context);
     }
 
 
 
     @NonNull
     @Override
-    public PendingEventsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         view = mInflater.inflate(R.layout.pending_events, parent, false);
         /*StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());*/
-        return new PendingEventsAdapter.ViewHolder(view);
+        return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PendingEventsAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final Project_details listItem = mData.get(position);
 
         Resources resources = context.getResources();
@@ -94,9 +99,14 @@ public class PendingEventsAdapter extends RecyclerView.Adapter<PendingEventsAdap
                 editor.putString("cpno2",listItem.getContact_Person2_No());
                 editor.putString("webevent",listItem.getEvent_Website());
                 editor.putString("webcoll",listItem.getCollege_Website());
-                editor.commit();
+                editor.apply();
+                Bundle b = new Bundle();
+                b.putString("view","pending");
+                Controller.adddesignprefer(Controller.PREFER);
                 Intent intent=new Intent(context, View_Details.class);
+                intent.putExtras(b);
                 context.startActivity(intent);
+                ((Activity)context).finish();
 
             }
         });

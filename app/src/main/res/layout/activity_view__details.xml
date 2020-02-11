@@ -738,7 +738,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingLeft="10dp">
+                   >
 
                     <TextView
                         android:id="@+id/id_contact_title"
@@ -746,6 +746,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"
                         android:text="Contact Details"
+                        android:paddingLeft="10dp"
                         android:textColor="@color/colorPrimaryDark"
                         android:textStyle="bold"
                         android:textSize="16sp" />
@@ -753,122 +754,170 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:weightSum="2">
+                        android:orientation="horizontal"
+                        android:padding="5dp"
+                        android:weightSum="4"
+                        >
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="5dp"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textStyle="bold"
+                                android:text="Name"
+                                />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="5dp"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textStyle="bold"
+                                android:text="Contact"
+                                />
 
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="3dp"
-                            android:layout_marginEnd="3dp"
-                            android:layout_weight="0.7"
-                            android:text="Name "
-                            android:textColor="@color/colorPrimaryDark"
-                            android:textStyle="bold"/>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+                            <TextView
+                                android:id="@+id/uitvname1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="5dp"
+                                android:textStyle="bold"
+                                android:text="Name"
+                                />
+                            <TextView
+                                android:id="@+id/uitvphone1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="5dp"
+                                android:textStyle="bold"
+                                android:text="Name"
+                                />
 
-                        <TextView
-                            android:id="@+id/head_contact_name1"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="3dp"
-                            android:layout_marginEnd="3dp"
-                            android:layout_weight="0.7"
-                            android:text="Patric Singh"
-                            android:textStyle="bold" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:id="@+id/uiivwhatsapp1"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:src="@drawable/whatsapic"/>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:id="@+id/uiivcall1"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:src="@drawable/ic_call_black_24dp"/>
+                        </LinearLayout>
+
                     </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="3dp"
-                        android:weightSum="2">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="3dp"
-                            android:layout_marginEnd="3dp"
-                            android:layout_weight="0.7"
-                            android:text="Contact No"
-                            android:textColor="@color/colorPrimaryDark"
-                            android:textStyle="bold"/>
-
-                        <TextView
-                            android:id="@+id/head_contact_phone1"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="3dp"
-                            android:layout_marginEnd="3dp"
-                            android:paddingEnd="10dp"
-                            android:paddingRight="10dp"
-                            android:drawableEnd="@drawable/ic_call_black_24dp"
-                            android:drawableTint="@color/colorPrimaryDark"
-                            android:layout_weight="1.3"
-                            android:text="918317865866"
-                            android:textStyle="bold"
-                            tools:targetApi="m" />
-                    </LinearLayout>
-
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_margin="3dp"
-                        android:background="#000000" />
-
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:background="@color/colorPrimaryDark"/>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:weightSum="2">
+                        android:orientation="horizontal"
+                        android:padding="5dp"
+                        android:weightSum="4"
+                        >
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="5dp"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textStyle="bold"
+                                android:text="Name"
+                                />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="5dp"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textStyle="bold"
+                                android:text="Contact"
+                                />
 
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="3dp"
-                            android:layout_marginEnd="3dp"
-                            android:layout_weight="0.7"
-                            android:text="Name"
-                            android:textColor="@color/colorPrimaryDark"
-                            android:textStyle="bold"/>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+                            <TextView
+                                android:id="@+id/uitvname2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="5dp"
+                                android:textStyle="bold"
+                                android:text="Name"
+                                />
+                            <TextView
+                                android:id="@+id/uitvphone2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="5dp"
+                                android:textStyle="bold"
+                                android:text="Name"
+                                />
 
-                        <TextView
-                            android:id="@+id/head_contact_name2"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="3dp"
-                            android:layout_marginEnd="3dp"
-                            android:layout_weight="0.7"
-                            android:text="Patric Singh"
-                            android:textStyle="bold" />
-                    </LinearLayout>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="3dp"
-                        android:weightSum="2">
+                            <ImageView
+                                android:id="@+id/uiivwhatsapp2"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:src="@drawable/whatsapic"/>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
 
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="3dp"
-                            android:layout_marginEnd="3dp"
-                            android:layout_weight="0.7"
-                            android:text="Contact"
-                            android:textColor="@color/colorPrimaryDark"
-                            android:textStyle="bold"/>
+                            <ImageView
+                                android:id="@+id/uiivcall2"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:src="@drawable/ic_call_black_24dp"/>
+                        </LinearLayout>
 
-                        <TextView
-                            android:id="@+id/head_contact_phone2"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="3dp"
-                            android:layout_marginEnd="3dp"
-                            android:layout_weight="1.3"
-                            android:paddingEnd="10dp"
-                            android:paddingRight="10dp"
-                            android:drawableEnd="@drawable/ic_call_black_24dp"
-                            android:drawableTint="@color/colorPrimaryDark"
-                            android:text="918317865866"
-                            android:textStyle="bold" />
                     </LinearLayout>
 
 
@@ -896,9 +945,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
                 android:layout_weight="1"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginRight="30dp"
-                android:layout_marginBottom="50dp"
+                android:layout_marginBottom="10dp"
                 android:background="@color/colorPrimaryDark"
                 android:text="Accept"
                 android:textColor="@color/white"
@@ -909,9 +958,9 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginLeft="30dp"
-                    android:layout_marginTop="30dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginRight="30dp"
-                    android:layout_marginBottom="50dp"
+                    android:layout_marginBottom="10dp"
                     android:background="@color/colorPrimaryDark"
                     android:text="Decline"
                     android:textColor="@color/white"

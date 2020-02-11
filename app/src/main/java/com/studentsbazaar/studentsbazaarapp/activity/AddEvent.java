@@ -3,8 +3,6 @@ package com.studentsbazaar.studentsbazaarapp.activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -13,55 +11,42 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import com.iceteck.silicompressorr.FileUtils;
 import com.iceteck.silicompressorr.SiliCompressor;
-import com.studentsbazaar.studentsbazaarapp.FileUtil;
 import com.studentsbazaar.studentsbazaarapp.R;
-
+import com.studentsbazaar.studentsbazaarapp.controller.Move_Show;
+import com.studentsbazaar.studentsbazaarapp.helper.FileUtil;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 
 public class AddEvent extends AppCompatActivity {
 
-    ImageView imagepost, addpost, addevent, cancelbtn;
+    ImageView imagepost, addpost, addevent;
     ListView eventlist;
     TextView evntsts;
     FloatingActionButton next;
-    Button addeventbtn;
-
-    ArrayList<String> eventlistadapter = new ArrayList<>();
-    SQLiteDatabase sq;
-    Cursor c;
-
-    String profileimg, elist, epost;
+    String encoded;
     CardView cardtech, cardnontech, cardworkshop, cardonline;
     EditText edtech, ednontech, edworkshop, edonline;
     Button teching, technext, nonteching, nontechnext, workshoping, workshopnext, onlineing, onlinenext;
     StringBuilder stringBuilder;
-
     Dialog d;
     Bitmap profilePicture;
     private static int RESULT_LOAD_IMAGE = 1;
-    EditText event, description;
     int i = 0;
     SharedPreferences sf;
     SharedPreferences.Editor ed;
@@ -78,7 +63,6 @@ public class AddEvent extends AppCompatActivity {
         next = findViewById(R.id.aevent_complete);
         evntsts = findViewById(R.id.aevent_sts);
         evntsts.setVisibility(View.INVISIBLE);
-        eventlistview();
     }
 
     @Override
@@ -124,12 +108,7 @@ public class AddEvent extends AppCompatActivity {
                     public void onClick(View view) {
                         cardtech.setVisibility(View.GONE);
                         cardnontech.setVisibility(View.VISIBLE);
-                        if (edtech.getText().toString().isEmpty()) {
-                            stringBuilder.append("");
-                        } else {
-                            stringBuilder.append("Technical Events" + edtech.getText().toString());
 
-                        }
                     }
                 });
                 nontechnext.setOnClickListener(new View.OnClickListener() {
@@ -137,12 +116,7 @@ public class AddEvent extends AppCompatActivity {
                     public void onClick(View view) {
                         cardnontech.setVisibility(View.GONE);
                         cardworkshop.setVisibility(View.VISIBLE);
-                        if (ednontech.getText().toString().isEmpty()) {
-                            stringBuilder.append("");
-                        } else {
-                            stringBuilder.append("NonTechnical Events\n" + ednontech.getText().toString());
 
-                        }
                     }
                 });
                 workshopnext.setOnClickListener(new View.OnClickListener() {
@@ -150,25 +124,14 @@ public class AddEvent extends AppCompatActivity {
                     public void onClick(View view) {
                         cardworkshop.setVisibility(View.GONE);
                         cardonline.setVisibility(View.VISIBLE);
-                        if (edworkshop.getText().toString().isEmpty()) {
-                            stringBuilder.append("");
-                        } else {
-                            stringBuilder.append("Workshop Events\n" + edworkshop.getText().toString());
 
-                        }
                     }
                 });
                 onlinenext.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         d.dismiss();
-                        if (edonline.getText().toString().isEmpty()) {
-                            stringBuilder.append("");
-                        } else {
-                            stringBuilder.append("Online Events\n" + edonline.getText().toString());
 
-                        }
-                        evntsts.setText(stringBuilder.toString());
 
                     }
                 });
@@ -202,14 +165,41 @@ public class AddEvent extends AppCompatActivity {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (epost == null) {
-                    Toast.makeText(AddEvent.this, "Please add Poster Image and Event Details...", Toast.LENGTH_SHORT).show();
+                if (encoded == null) {
+                    Move_Show.showToast("Please add Poster Image and Event Details...");
                 } else {
+
+                    if (edtech.getText().toString().isEmpty()) {
+                        stringBuilder.append("");
+                    } else {
+                        stringBuilder.append("/*Technical Events*/\n" + edtech.getText().toString() + "\n");
+
+                    }
+                    if (ednontech.getText().toString().isEmpty()) {
+                        stringBuilder.append("");
+                    } else {
+                        stringBuilder.append("/*NonTechnical Events*/\n" + ednontech.getText().toString() + "\n");
+
+                    }
+                    if (edworkshop.getText().toString().isEmpty()) {
+                        stringBuilder.append("");
+                    } else {
+                        stringBuilder.append("/*Workshop Events*/\n" + edworkshop.getText().toString() + "\n");
+
+                    }
+                    if (edonline.getText().toString().isEmpty()) {
+                        stringBuilder.append("");
+                    } else {
+                        stringBuilder.append("/*Online Events*/\n" + edonline.getText().toString() + "\n");
+
+                    }
+                    evntsts.setText(stringBuilder.toString());
                     sf = getSharedPreferences("event", MODE_PRIVATE);
                     ed = sf.edit();
                     ed.putString("elist", stringBuilder.toString());
                     ed.apply();
-                    startActivity(new Intent(getApplicationContext(), AddEvent3.class));
+                    Log.d("getstringbuilderdata", stringBuilder.toString());
+                    new Move_Show(AddEvent.this, AddEvent3.class);
                 }
             }
         });
@@ -224,7 +214,7 @@ public class AddEvent extends AppCompatActivity {
                 if (data != null) {
                     if (data.getData() != null) {
                         Uri imageUri = data.getData();
-                        InputStream imageStream = getApplicationContext().getContentResolver().openInputStream(imageUri);
+                        InputStream imageStream = AddEvent.this.getContentResolver().openInputStream(imageUri);
                         profilePicture = BitmapFactory.decodeStream(imageStream);
                         imagepost.setImageBitmap(profilePicture);
                         File actualImage = FileUtil.from(this, data.getData());
@@ -232,10 +222,9 @@ public class AddEvent extends AppCompatActivity {
                         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                         compressedImgFile.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
                         byte[] byteArray = byteArrayOutputStream.toByteArray();
-                        String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
+                        encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
                         SharedPreferences sf = getSharedPreferences("event", MODE_PRIVATE);
                         SharedPreferences.Editor ed = sf.edit();
-                        epost = encoded;
                         ed.putString("epost", encoded);
                         ed.apply();
                     }
@@ -245,19 +234,6 @@ public class AddEvent extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
-    }
-
-    public void eventlistview() {
-        if (eventlistadapter.size() == 0) {
-            evntsts.setVisibility(View.VISIBLE);
-
-        } else {
-            d.dismiss();
-            evntsts.setVisibility(View.INVISIBLE);
-            ArrayAdapter<String> ad = new ArrayAdapter<>(getApplicationContext(), R.layout.event_row, eventlistadapter);
-            eventlist.setAdapter(ad);
-
         }
     }
 }

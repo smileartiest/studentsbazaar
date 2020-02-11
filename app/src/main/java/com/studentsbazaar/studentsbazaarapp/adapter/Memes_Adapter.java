@@ -3,19 +3,13 @@ package com.studentsbazaar.studentsbazaarapp.adapter;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Build;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -23,10 +17,9 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
+import com.studentsbazaar.studentsbazaarapp.controller.Monitor;
 import com.studentsbazaar.studentsbazaarapp.R;
+import com.studentsbazaar.studentsbazaarapp.controller.Controller;
 import com.studentsbazaar.studentsbazaarapp.model.Memes_Details;
 import com.studentsbazaar.studentsbazaarapp.retrofit.ApiUtil;
 
@@ -47,24 +40,26 @@ public class Memes_Adapter extends RecyclerView.Adapter<Memes_Adapter.Myviewhold
     SpotsDialog spotsDialog;
     int index;
     Bitmap bitmap;
+    Controller controller;
 
     public Memes_Adapter(Context context, List<Memes_Details> mData) {
         this.mInflater = LayoutInflater.from(context);
         this.context = context;
         this.mData = mData;
         spotsDialog = new SpotsDialog(context);
+        controller = new Controller(context);
     }
 
     @NonNull
     @Override
-    public Memes_Adapter.Myviewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public Myviewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.meme_design, parent, false);
-        return new Memes_Adapter.Myviewholder(v);
+        return new Myviewholder(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final Memes_Adapter.Myviewholder holder, final int position) {
+    public void onBindViewHolder(@NonNull final Myviewholder holder, final int position) {
         final Memes_Details listItem = mData.get(position);
         holder.setIsRecyclable(false);
         Glide.with(context).load(listItem.getMemes()).into(holder.postermeme);
@@ -74,70 +69,25 @@ public class Memes_Adapter extends RecyclerView.Adapter<Memes_Adapter.Myviewhold
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SharedPreferences sharedPreferences = context.getSharedPreferences("USER_DETAILS", context.MODE_PRIVATE);
-                if (sharedPreferences.getString("meme", "").equals("admin")) {
-                    memepost = listItem.getMemes();
-                    userid = listItem.getUser_Id();
-                    index = position;
-                    alertmeme();
+                if (Controller.getmemeview().equals(Controller.MEMEVIEW)) {
 
+                } else {
+                    if (controller.getprefer().equals(Controller.ADMIN) || controller.getprefer().equals(Controller.MEMEACCEPT)) {
+                        memepost = listItem.getMemes();
+                        userid = listItem.getUser_Id();
+                        index = position;
+                        alertmeme();
+                    }
                 }
             }
         });
         holder.shareimg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Glide.with(context)
-                        .load(listItem.getMemes())
-                        .asBitmap().skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE)
-
-                        .into(new SimpleTarget<Bitmap>(250, 250) {
-                            @Override
-                            public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
-                                spotsDialog.dismiss();
-
-                                Intent intent = new Intent(Intent.ACTION_SEND);
-                                intent.putExtra(Intent.EXTRA_TEXT, "Students Bazaar,India's highest rated students app.\nSource : Students Bazaar\nhttp://tiny.cc/3lnhjz\"");
-                                String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), resource, "", null);
-
-
-                                Uri screenshotUri = Uri.parse(path);
-
-
-                                intent.putExtra(Intent.EXTRA_STREAM, screenshotUri);
-                                intent.setType("image/*");
-
-                                context.startActivity(Intent.createChooser(intent, "Share image via..."));
-                            }
-
-                            @Override
-                            public void onLoadFailed(Exception e, Drawable errorDrawable) {
-                                Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
-
-
-                                super.onLoadFailed(e, errorDrawable);
-                            }
-
-                            @Override
-                            public void onLoadStarted(Drawable placeholder) {
-                                spotsDialog.show();
-                                Toast.makeText(context, "Please wait", Toast.LENGTH_SHORT).show();
-
-                                super.onLoadStarted(placeholder);
-                            }
-                        });
-            }
-        });
-        holder.downimg.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void onClick(View view) {
-                String IMG = listItem.getMemes();
-
+              new Monitor(context).shareImage(listItem.getMemes());
 
             }
         });
-
 
     }
 
@@ -148,7 +98,7 @@ public class Memes_Adapter extends RecyclerView.Adapter<Memes_Adapter.Myviewhold
 
     public class Myviewholder extends RecyclerView.ViewHolder {
         TextView username, posttime, smile, caption;
-        ImageView postermeme, shareimg, downimg;
+        ImageView postermeme, shareimg;
         CardView cardView;
 
         public Myviewholder(@NonNull View itemView) {
@@ -159,7 +109,7 @@ public class Memes_Adapter extends RecyclerView.Adapter<Memes_Adapter.Myviewhold
             cardView = (CardView) itemView.findViewById(R.id.memecartview);
             postermeme = (ImageView) itemView.findViewById(R.id.memepost);
             shareimg = (ImageView) itemView.findViewById(R.id.shareimg);
-            downimg = (ImageView) itemView.findViewById(R.id.downimg);
+
 
 
         }
@@ -200,7 +150,7 @@ public class Memes_Adapter extends RecyclerView.Adapter<Memes_Adapter.Myviewhold
         builder.setNegativeButton("Decline", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                updatememe("1", memepost, userid);
+                updatememe("2", memepost, userid);
             }
         });
 

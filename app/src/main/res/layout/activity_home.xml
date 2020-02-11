@@ -29,6 +29,13 @@
 
                 android:textColor="@color/white"
                 android:textStyle="bold"/>
+
+            <ImageView
+                android:id="@+id/uiivhome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_share_pink_24dp"
+                />
         </androidx.appcompat.widget.Toolbar>
 <RelativeLayout
     android:layout_width="match_parent"
@@ -208,7 +215,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="MU Result"
+                            android:text="Madras University"
                             android:textColor="#000000"
                             android:layout_marginTop="5dp"
                             android:textStyle="bold" />
@@ -244,10 +251,9 @@
 
                         <ImageView
                             android:id="@+id/ivImagePlacement"
-                            android:layout_width="wrap_content"
-
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/recruitment" />
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:src="@drawable/ic_campus" />
 
                         <TextView
                             android:id="@+id/tvPlacement"
@@ -365,13 +371,14 @@
                             android:id="@+id/ivabout"
                             android:layout_width="60dp"
                             android:layout_height="60dp"
-                            android:src="@drawable/dis" />
+                            android:src="@drawable/ic_music_player"
+                             />
                         <TextView
                             android:id="@+id/tvabout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="Disclaimer"
+                            android:text="Interesting Videos"
                             android:layout_marginTop="5dp"
                             android:textColor="#000000"
                             android:textStyle="bold" />

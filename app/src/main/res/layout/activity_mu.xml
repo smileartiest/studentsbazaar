@@ -6,6 +6,25 @@
     android:layout_height="match_parent"
     tools:context=".activity.MUActivity">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/colorPrimaryDark"
+        android:gravity="center_vertical"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="@style/Theme.Custom"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="MADRAS UNIVERSITY"
+            android:id="@+id/id_toolbarTitle"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+    </androidx.appcompat.widget.Toolbar>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -15,7 +34,7 @@
         android:textSize="25dp"
         android:textStyle="bold"
         android:textColor="#D50000"
-        android:text="This Zone All About Madras University !"></TextView>
+        android:text="This Zone is All About Madras University !"></TextView>
 
     <LinearLayout
         android:layout_width="match_parent"

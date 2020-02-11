@@ -132,13 +132,13 @@ public class NotificationUtils extends ContextWrapper {
     }
 
 
-    private void showSmallNotification(androidx.core.app.NotificationCompat.Builder mBuilder, int icon, String title, String message, PendingIntent resultPendingIntent, Uri alarmSound) {
+    private void showSmallNotification(NotificationCompat.Builder mBuilder, int icon, String title, String message, PendingIntent resultPendingIntent, Uri alarmSound) {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
             /*android.support.v4.app.NotificationCompat.InboxStyle inboxStyle = new android.support.v4.app.NotificationCompat.InboxStyle();*/
 
-            androidx.core.app.NotificationCompat.BigTextStyle bigTextStyle = new androidx.core.app.NotificationCompat.BigTextStyle();
+            NotificationCompat.BigTextStyle bigTextStyle = new NotificationCompat.BigTextStyle();
 
             bigTextStyle.bigText(message);
 
@@ -168,7 +168,7 @@ public class NotificationUtils extends ContextWrapper {
 
             /*android.support.v4.app.NotificationCompat.InboxStyle inboxStyle = new android.support.v4.app.NotificationCompat.InboxStyle();*/
 
-            androidx.core.app.NotificationCompat.BigTextStyle bigTextStyle = new androidx.core.app.NotificationCompat.BigTextStyle();
+            NotificationCompat.BigTextStyle bigTextStyle = new NotificationCompat.BigTextStyle();
 
             bigTextStyle.bigText(message);
 
@@ -245,7 +245,7 @@ public class NotificationUtils extends ContextWrapper {
                     .setAutoCancel(true)
                     .setSmallIcon(R.mipmap.newlogo)
                     .setDeleteIntent(mDeletePendingIntent)
-                    .setStyle(new androidx.core.app.NotificationCompat.BigTextStyle()
+                    .setStyle(new NotificationCompat.BigTextStyle()
                             .setSummaryText(notificationContent))
                     .setGroup(NOTIFICATION_GROUP)
                     .setGroupSummary(true);
@@ -281,8 +281,8 @@ public class NotificationUtils extends ContextWrapper {
 
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    private void showBigNotification(Bitmap bitmap, androidx.core.app.NotificationCompat.Builder mBuilder, int icon, String title, String message, PendingIntent resultPendingIntent, Uri alarmSound) {
-        androidx.core.app.NotificationCompat.BigPictureStyle bigPictureStyle = new androidx.core.app.NotificationCompat.BigPictureStyle();
+    private void showBigNotification(Bitmap bitmap, NotificationCompat.Builder mBuilder, int icon, String title, String message, PendingIntent resultPendingIntent, Uri alarmSound) {
+        NotificationCompat.BigPictureStyle bigPictureStyle = new NotificationCompat.BigPictureStyle();
         bigPictureStyle.setBigContentTitle(title);
         bigPictureStyle.setSummaryText(Html.fromHtml(message).toString());
         bigPictureStyle.bigPicture(bitmap);
@@ -355,9 +355,9 @@ public class NotificationUtils extends ContextWrapper {
         } else {
             List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
             ComponentName componentInfo = null;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 componentInfo = taskInfo.get(0).topActivity;
-            }
+           // }
             if (componentInfo.getPackageName().equals(context.getPackageName())) {
                 isInBackground = false;
             }

@@ -1,4 +1,4 @@
-package com.studentsbazaar.studentsbazaarapp.adapter;
+package com.studentsbazaar.studentsbazaarapp.controller;
 
 import android.graphics.Bitmap;
 import android.view.View;

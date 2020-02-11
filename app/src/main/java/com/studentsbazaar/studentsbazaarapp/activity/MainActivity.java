@@ -1,26 +1,18 @@
 package com.studentsbazaar.studentsbazaarapp.activity;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
-
-import com.studentsbazaar.studentsbazaarapp.NotificationPublisher;
-import com.studentsbazaar.studentsbazaarapp.NotificationService;
 import com.studentsbazaar.studentsbazaarapp.R;
+import com.studentsbazaar.studentsbazaarapp.controller.Controller;
+import com.studentsbazaar.studentsbazaarapp.controller.Move_Show;
 import com.studentsbazaar.studentsbazaarapp.retrofit.ApiUtil;
-
-import java.util.Calendar;
 
 import dmax.dialog.SpotsDialog;
 import retrofit2.Call;
@@ -32,62 +24,71 @@ public class MainActivity extends AppCompatActivity {
     Button btSubmit;
     TextView tvRegister, tvVisitor;
     String stPhone, stPassword;
-    SharedPreferences spUserDetails,sharedPreferences;
-    SharedPreferences.Editor editor;
-    SharedPreferences.Editor spEdit;
-    SpotsDialog spotsDialog ;
+    SpotsDialog spotsDialog;
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        spUserDetails = getSharedPreferences("USER_DETAILS", Context.MODE_PRIVATE);
-//        if(!spUserDetails.getString("log","").isEmpty()){
-//            Intent in = new Intent(MainActivity.this,HomeActivity.class);
-//            startActivity(in);
-//        }
         setContentView(R.layout.activity_main);
-
+        new Controller(this);
         etPhone = findViewById(R.id.input_phone);
         etPassword = findViewById(R.id.input_password);
         btSubmit = findViewById(R.id.id_Submit);
         tvRegister = findViewById(R.id.id_Register);
         tvVisitor = findViewById(R.id.id_Visitor);
         spotsDialog = new SpotsDialog(this);
-        sharedPreferences = getSharedPreferences("DEV_ID", MODE_PRIVATE);
-        editor = sharedPreferences.edit();
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        spEdit = spUserDetails.edit();
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         btSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                spotsDialog.show();
+
                 stPhone = etPhone.getText().toString();
                 stPassword = etPassword.getText().toString();
 
                 if (stPhone.equals("9791004050") && stPassword.equals("uniqadmin")) {
-                    spEdit.putString("log", "admin").apply();
+                    Controller.addprefer(Controller.ADMIN);
                     spotsDialog.dismiss();
-                    Intent inSignUp = new Intent(MainActivity.this, HomeActivity.class);
+                    new Move_Show(MainActivity.this, HomeActivity.class);
                     finish();
-                    startActivity(inSignUp);
+                } else if (stPhone.equals("9360478319") && stPassword.equals("infozub")) {
+                    spotsDialog.dismiss();
+                    Controller.addprefer(Controller.INFOZUB);
+                    new Move_Show(MainActivity.this, HomeActivity.class);
+                    finish();
+                } else if (stPhone.equals("7094120481") && stPassword.equals("memeuniqadmin")) {
+                    spotsDialog.dismiss();
+                    Controller.addprefer(Controller.MEMEACCEPT);
+                    new Move_Show(MainActivity.this, HomeActivity.class);
+                    finish();
+                } else if (etPhone.getText().length() == 0 && etPassword.getText().length() == 0) {
+                    Move_Show.showToast("All fields are Mandatory");
                 } else {
-                    Call<String> call = ApiUtil.getServiceClass().getLoginDetails(stPhone,stPassword);
+                    spotsDialog.show();
+                    Call<String> call = ApiUtil.getServiceClass().getLoginDetails(stPhone, stPassword);
                     call.enqueue(new Callback<String>() {
                         @Override
                         public void onResponse(Call<String> call, retrofit2.Response<String> response) {
                             if (response.body().equals("1")) {
-                                spEdit.putString("log", "reg").apply();
-                                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
-                                finish();
                                 spotsDialog.dismiss();
-                                Toast.makeText(MainActivity.this, "Login success", Toast.LENGTH_SHORT).show();
-
+                                Controller.addprefer(Controller.REG);
+                                new Move_Show(MainActivity.this, HomeActivity.class);
+                                finish();
+                                Move_Show.showToast("Login Success");
                             } else {
                                 spotsDialog.dismiss();
-                                Toast.makeText(MainActivity.this, "Login Failed", Toast.LENGTH_SHORT).show();
-
+                                Move_Show.showToast("Login Failed");
                             }
 
                         }
@@ -100,40 +101,29 @@ public class MainActivity extends AppCompatActivity {
                 }
 
 
-               /* if(etPhone.getText().length()!=0 && etPassword.getText().length()!=0){
-
-                    stPhone = etPhone.getText().toString();
-                    stPassword = etPassword.getText().toString();
-
-                    getValidation(stPhone,stPassword);
-                }else{
-                    Toast.makeText(getApplicationContext(),"All Fields Mandatory",Toast.LENGTH_SHORT).show();
-                }*/
-
             }
+
         });
 
         tvRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                Intent inSignUp = new Intent(MainActivity.this, SignUp.class);
-                startActivity(inSignUp);
+                new Move_Show(MainActivity.this, SignUp.class);
             }
         });
 
-     /*   tvVisitor.setOnClickListener(new View.OnClickListener() {
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-
-                spEdit.putString("log", "visitor").apply();
-                Intent inSignUp = new Intent(MainActivity.this, HomeActivity.class);
-                startActivity(inSignUp);
-
+            public void onClick(View v) {
+                onBackPressed();
             }
-        });*/
+        });
 
     }
 
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 }

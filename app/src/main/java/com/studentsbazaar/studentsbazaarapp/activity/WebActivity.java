@@ -2,14 +2,21 @@ package com.studentsbazaar.studentsbazaarapp.activity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
@@ -24,7 +31,16 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.crowdfire.cfalertdialog.CFAlertDialog;
 import com.studentsbazaar.studentsbazaarapp.R;
-import com.studentsbazaar.studentsbazaarapp.adapter.ScreenShot;
+import com.studentsbazaar.studentsbazaarapp.controller.ScreenShot;
+import com.studentsbazaar.studentsbazaarapp.controller.Monitor;
+
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
+import java.net.URLConnection;
 
 import dmax.dialog.SpotsDialog;
 
@@ -36,6 +52,10 @@ public class WebActivity extends AppCompatActivity {
     Toolbar toolbar;
     TextView toolbarTitle;
     private String url = null, data = null, title = null;
+    private ProgressDialog pDialog;
+
+    // Progress dialog type (0 - for Horizontal progress bar)
+    public static final int progress_bar_type = 0;
     // private SpotsDialog progressDialog = null;
     // private ProgressDialog progressDialog = null;
     //PublisherAdView btmAd;
@@ -55,7 +75,7 @@ public class WebActivity extends AppCompatActivity {
         imageView = (ImageView) findViewById(R.id.shareweb);
       /*  Intent intent = getIntent();
         bundle = intent.getExtras();*/
-        toolbarTitle = (TextView)findViewById(R.id.id_toolbarTitle);
+        toolbarTitle = (TextView) findViewById(R.id.id_toolbarTitle);
         url = getIntent().getExtras() != null ? getIntent().getExtras().getString("url") : null;
         data = getIntent().getExtras() != null ? getIntent().getExtras().getString("data") : null;
         title = getIntent().getExtras() != null ? getIntent().getExtras().getString("title") : null;
@@ -64,7 +84,7 @@ public class WebActivity extends AppCompatActivity {
             url = "https://www.studentsbazaar.com";
         }
 
-        Log.d("WEB_URL",url);
+        Log.d("WEB_URL", url);
         // try {
 
 
@@ -154,7 +174,7 @@ public class WebActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
 
-        if (data.equals("notification")) {
+        if (data == null) {
             Intent i = new Intent(WebActivity.this, HomeActivity.class);
             startActivity(i);
             finish();
@@ -193,18 +213,31 @@ public class WebActivity extends AppCompatActivity {
         wv1.getSettings().setLoadsImagesAutomatically(true);
         wv1.getSettings().setJavaScriptEnabled(true);
         wv1.setInitialScale(25 * 10);
-        wv1.setPadding(0, 0, 0, 0);
         wv1.setWebChromeClient(new MyWebChromeClient(this));
         wv1.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-
+                // spotsDialog.show();
+                if (url.contains(".pdf") || url.contains(".PDF") || url.contains(".docx")) {
+                    new Monitor(WebActivity.this).downloadpdf(url);
+                    urlsite = url;
+                }else if(url.contains("action=share")){
+                    view.stopLoading();
+                    new Monitor(WebActivity.this).sharevideourl(url);
+                }
                 return super.shouldOverrideUrlLoading(view, url);
 
             }
 
             @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                spotsDialog.show();
+                super.onPageStarted(view, url, favicon);
+            }
+
+            @Override
             public void onPageFinished(WebView view, String url) {
+
                 wv1.setVisibility(View.VISIBLE);
                 spotsDialog.dismiss();
             }
@@ -311,6 +344,136 @@ public class WebActivity extends AppCompatActivity {
         startActivity(Intent.createChooser(intent, "RojgarLive Send to"));
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.add_placement_menu, menu);
+        menu.findItem(R.id.item1).setVisible(false);
+        menu.findItem(R.id.item2).setVisible(false);
+        menu.findItem(R.id.action_search).setVisible(false);
+        return true;
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.shareitem:
+                try {
+                    new Monitor(this).sharetowhatsapp();
+                } catch (Exception e) {
+
+                }
+
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+    }
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        switch (id) {
+            case progress_bar_type:
+                pDialog = new ProgressDialog(this);
+                pDialog.setMessage("Downloading file. Please wait...");
+                pDialog.setIndeterminate(false);
+                pDialog.setMax(100);
+                pDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                pDialog.setCancelable(true);
+                pDialog.show();
+                return pDialog;
+            default:
+                return null;
+        }
+    }
+
+
+    class DownloadFileFromURL extends AsyncTask<String, String, String> {
+
+        /**
+         * Before starting background thread
+         * Show Progress Bar Dialog
+         */
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            showDialog(progress_bar_type);
+        }
+
+        /**
+         * Downloading file in background thread
+         */
+        @Override
+        protected String doInBackground(String... f_url) {
+            int count;
+            try {
+                URL url = new URL(f_url[0]);
+                URLConnection conection = url.openConnection();
+                conection.connect();
+                // getting file length
+                int lenghtOfFile = conection.getContentLength();
+
+                // input stream to read file - with 8k buffer
+                InputStream input = new BufferedInputStream(url.openStream(), 8192);
+
+                // Output stream to write file
+                OutputStream output = new FileOutputStream("/sdcard/downloadedfile.pdf");
+
+                byte data[] = new byte[1024];
+
+                long total = 0;
+
+                while ((count = input.read(data)) != -1) {
+                    total += count;
+                    // publishing the progress....
+                    // After this onProgressUpdate will be called
+                    publishProgress("" + (int) ((total * 100) / lenghtOfFile));
+
+                    // writing data to file
+                    output.write(data, 0, count);
+                }
+
+                // flushing output
+                output.flush();
+
+                // closing streams
+                output.close();
+                input.close();
+
+            } catch (Exception e) {
+                Log.e("Error: ", e.getMessage());
+            }
+
+            return null;
+        }
+
+        /**
+         * Updating progress bar
+         */
+        protected void onProgressUpdate(String... progress) {
+            // setting progress percentage
+            pDialog.setProgress(Integer.parseInt(progress[0]));
+
+        }
+
+        /**
+         * After completing background task
+         * Dismiss the progress dialog
+         **/
+        @Override
+        protected void onPostExecute(String file_url) {
+            // dismiss the dialog after the file was downloaded
+            dismissDialog(progress_bar_type);
+            File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/example.pdf");
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setDataAndType(Uri.fromFile(file), "application/pdf");
+            intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            startActivity(intent);
+
+
+        }
+    }
 }
 
