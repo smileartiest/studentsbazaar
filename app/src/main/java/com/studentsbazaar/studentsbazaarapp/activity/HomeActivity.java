@@ -42,6 +42,7 @@ import com.studentsbazaar.studentsbazaarapp.adapter.SliderPagerAdapter;
 import com.studentsbazaar.studentsbazaarapp.controller.Controller;
 import com.studentsbazaar.studentsbazaarapp.controller.Monitor;
 import com.studentsbazaar.studentsbazaarapp.controller.Move_Show;
+import com.studentsbazaar.studentsbazaarapp.controller.ShowConfirmDialog;
 import com.studentsbazaar.studentsbazaarapp.firebase.Config;
 import com.studentsbazaar.studentsbazaarapp.helper.PersistanceUtil;
 import com.studentsbazaar.studentsbazaarapp.model.Posters_Details;
@@ -102,6 +103,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         tvMemes = findViewById(R.id.tvMeme);
         tvPlacement = findViewById(R.id.tvPlacement);
         tvQuiz = findViewById(R.id.tvQuiz);
+        new ShowConfirmDialog(HomeActivity.this,"please a wait a min");
+        //ShowConfirmDialog.textView.setVisibility();
+
         mUpdateManager = UpdateManager.Builder(this);
         mUpdateManager.mode(UpdateManagerConstant.IMMEDIATE).start();
         // Callback from Available version code
