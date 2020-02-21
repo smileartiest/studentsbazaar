@@ -32,6 +32,7 @@ import com.studentsbazaar.studentsbazaarapp.NotificationPublisher;
 import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.adapter.Quiz_Adapter;
 import com.studentsbazaar.studentsbazaarapp.controller.Monitor;
+import com.studentsbazaar.studentsbazaarapp.controller.Quiz_Control;
 import com.studentsbazaar.studentsbazaarapp.model.DownloadResponse;
 import com.studentsbazaar.studentsbazaarapp.model.Quiz_Details;
 import com.studentsbazaar.studentsbazaarapp.retrofit.ApiUtil;
@@ -64,6 +65,7 @@ public class Quiz_Events extends AppCompatActivity {
         Quiz_view = (RecyclerView) findViewById(R.id.quiz_view);
         submit = (Button) findViewById(R.id.submit_quiz);
         Quiz_view.setHasFixedSize(true);
+        new Quiz_Control(Quiz_Events.this);
         alarmHelper = new AlarmHelper(this);
         layout = (LinearLayout) findViewById(R.id.empty4);
         sharedPreferences = getSharedPreferences("USER_DETAILS", MODE_PRIVATE);
@@ -86,6 +88,7 @@ public class Quiz_Events extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Log.d("Quizresults", String.valueOf(ApiUtil.QUIZ_RESULT));
+                updateresults();
                 // addresults(sharedPreferences.getString("UID", null), String.valueOf(ApiUtil.QUIZ_RESULT));
                 displaystatus();
             }
@@ -254,10 +257,10 @@ public class Quiz_Events extends AppCompatActivity {
         TextView correctans = (TextView) d.findViewById(R.id.uitvcorrectans);
         TextView worngans = (TextView) d.findViewById(R.id.uitvwrongans);
         ImageView closebtn = (ImageView) d.findViewById(R.id.uiivclosebtn);
-        totalmark.setText(String.valueOf(ApiUtil.QUIZ_RESULT));
-        totalcount.setText(totalcount.getText().toString().replace("10", String.valueOf(ApiUtil.QUIZ_RESULT)));
-        correctans.setText(" " + String.valueOf(ApiUtil.QUIZ_RESULT) + " Correct");
-        worngans.setText(" " + String.valueOf(ApiUtil.TOTAL_QUIZ - ApiUtil.QUIZ_RESULT) + " Wrong");
+        totalmark.setText(Quiz_Control.getCorrectans());
+        totalcount.setText(totalcount.getText().toString().replace("10", Quiz_Control.getCorrectans()));
+        correctans.setText(" "+Quiz_Control.getCorrectans()+" Correct");
+        worngans.setText(" "+Quiz_Control.getwrongans()+" Wrong");
         closebtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -265,5 +268,10 @@ public class Quiz_Events extends AppCompatActivity {
             }
         });
         d.show();
+    }
+    private void updateresults(){
+        Quiz_Control.addTotalPoint(String.valueOf(ApiUtil.TOTAL_QUIZ));
+        Quiz_Control.addCorrectans(String.valueOf(ApiUtil.QUIZ_RESULT));
+        Quiz_Control.addworngans(String.valueOf(ApiUtil.TOTAL_QUIZ-ApiUtil.QUIZ_RESULT));
     }
 }
