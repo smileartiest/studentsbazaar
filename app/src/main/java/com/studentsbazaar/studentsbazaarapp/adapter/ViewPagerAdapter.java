@@ -176,6 +176,7 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
                 editor.putString("cpno2", listItem.getContact_Person2_No());
                 editor.putString("webevent", listItem.getEvent_Website());
                 editor.putString("webcoll", listItem.getCollege_Website());
+                editor.putString("insta",listItem.getEvent_Instagram());
                 editor.putString("view", "view");
                 editor.apply();
                 controller.adddesignprefer(Controller.MORE);

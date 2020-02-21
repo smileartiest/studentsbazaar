@@ -99,7 +99,7 @@ public interface RetrofitInterface {
 
     @GET("/accountverify.php")
     Call<String> getaccountverification(@Query("uid") String uid,
-                                        @Query("device")String device);
+                                        @Query("device") String device);
 
     @GET("/get_quiz.php")
     Call<DownloadResponse> getQuizQuestions(@Query("uid") String uid);
@@ -137,6 +137,8 @@ public interface RetrofitInterface {
                     String eventweb,
             @Field("collegeweb")
                     String collegeweb,
+            @Field("insta")
+                    String insta,
             @Field("cpname1")
                     String cpname1,
             @Field("cpno1")
@@ -186,6 +188,7 @@ public interface RetrofitInterface {
                               @Field("eventdis") String eventdis,
                               @Field("eventweb") String eventweb,
                               @Field("collegeweb") String collegeweb,
+                              @Field("insta")String insta,
                               @Field("cpname1") String cpname1,
                               @Field("cpno1") String cpno1,
                               @Field("cpname2") String cpname2,

@@ -27,12 +27,12 @@ import retrofit2.Response;
 
 public class AddEvent3 extends AppCompatActivity {
 
-    EditText ecomments, fgust, fnits, eventheam, accomation, contactname1, contactno1, contactname2, contactno2, lastdate, howtoreach, sponser;
+    EditText einstagram,ecomments, fgust, fnits, eventheam, accomation, contactname1, contactno1, contactname2, contactno2, lastdate, howtoreach, sponser;
     SpotsDialog progressDialog;
     Button complete;
     AutoCompleteTextView eventweb, collegeweb,regfees;
     String webevent, webcollege;
-    String ecommts, edis, econby, elist, epost, etitle, ecat, eorg, ecity, estae, esdate, eedate, edpt, efg, enits, etheam, eacc, conname1, conno1, conname2, conno2, eldate, eregf, ehreach, esponser;
+    String einsta,ecommts, edis, econby, elist, epost, etitle, ecat, eorg, ecity, estae, esdate, eedate, edpt, efg, enits, etheam, eacc, conname1, conno1, conname2, conno2, eldate, eregf, ehreach, esponser;
     SharedPreferences sf;
     SharedPreferences.Editor editor;
     WebView webView;
@@ -59,6 +59,7 @@ public class AddEvent3 extends AppCompatActivity {
         howtoreach = findViewById(R.id.add3_howtoreach);
         sponser = findViewById(R.id.add3_sponser);
         complete = findViewById(R.id.button2);
+        einstagram = findViewById(R.id.add3_instagram);
         eventweb = (AutoCompleteTextView) findViewById(R.id.add3_eventweb);
         collegeweb = (AutoCompleteTextView) findViewById(R.id.add3_collegeweb);
         lastdate.setText(sf.getString("esdate", "none"));
@@ -132,6 +133,7 @@ public class AddEvent3 extends AppCompatActivity {
                 webevent = eventweb.getText().toString();
                 webcollege = collegeweb.getText().toString();
                 ecommts = ecomments.getText().toString();
+                einsta = einstagram.getText().toString();
                 String Event_Title = etitle;
                 String Event_Type = ecat;
                 String Event_Name = etitle;
@@ -148,6 +150,7 @@ public class AddEvent3 extends AppCompatActivity {
                 String Event_Discription = edis;
                 String Event_Website = webevent;
                 String College_Website = webcollege;
+                String Event_Instagram = einsta ;
                 String Contact_Person1_Name = conname1;
                 String Contact_Person1_No = conno1;
                 String Contact_Person2_Name = conname2;
@@ -193,7 +196,7 @@ public class AddEvent3 extends AppCompatActivity {
                     progressDialog.show();
                     Log.d("eventdetails", Event_Details);
                     Log.d("alldatas", "onClick: " + Event_Title + " " + Event_Type + " " + Event_Name + " " + Event_Start_Date + " " + Event_End_Date + " " + Conductedby + " " + Degree + " " + Dept + " " + College_Address + " " + College_District + " " + College_State + " " + Event_organizer + " " + Event_Details + Event_Discription + " " + Event_Website + " " + College_Website + " " + Contact_Person1_Name + " " + Contact_Person1_No + " " + Contact_Person2_Name + " " + Contact_Person2_No + " " + " " + Entry_Fees + " " + Accepted + " " + Event_Lat + " " + Event_Long + " " + Event_guest + " " + Event_pro_nites + " " + Event_accomodations + " " + Event_how_to_reach + " " + Event_sponsors + " " + Last_date_registration + " " + Event_status);
-                    Call<String> call = ApiUtil.getServiceClass().insertUser(Controller.getUID(), Event_Title, Event_Type, Event_Name, Event_Start_Date, Event_End_Date, Conductedby, Degree, Dept, College_Address, College_District, College_State, Event_organizer, Event_Details, Event_Discription, Event_Website, College_Website, Contact_Person1_Name, Contact_Person1_No, Contact_Person2_Name, Contact_Person2_No, Poster, Entry_Fees, Accepted, Event_Lat, Event_Long, Event_guest, Event_pro_nites, Event_accomodations, Event_how_to_reach, Event_sponsors, Last_date_registration, Event_status, Comments);
+                    Call<String> call = ApiUtil.getServiceClass().insertUser(Controller.getUID(), Event_Title, Event_Type, Event_Name, Event_Start_Date, Event_End_Date, Conductedby, Degree, Dept, College_Address, College_District, College_State, Event_organizer, Event_Details, Event_Discription, Event_Website, College_Website,Event_Instagram, Contact_Person1_Name, Contact_Person1_No, Contact_Person2_Name, Contact_Person2_No, Poster, Entry_Fees, Accepted, Event_Lat, Event_Long, Event_guest, Event_pro_nites, Event_accomodations, Event_how_to_reach, Event_sponsors, Last_date_registration, Event_status, Comments);
                     call.enqueue(new Callback<String>() {
                         @Override
                         public void onResponse(Call<String> call, Response<String> response) {

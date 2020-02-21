@@ -1,13 +1,11 @@
 package com.studentsbazaar.studentsbazaarapp.activity;
 
 import android.app.AlarmManager;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.PendingIntent;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -21,13 +19,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.gson.JsonArray;
 import com.studentsbazaar.studentsbazaarapp.AlarmHelper;
 import com.studentsbazaar.studentsbazaarapp.NotificationPublisher;
 import com.studentsbazaar.studentsbazaarapp.R;
@@ -40,8 +38,7 @@ import com.studentsbazaar.studentsbazaarapp.model.DownloadResponse;
 import com.studentsbazaar.studentsbazaarapp.model.Quiz_Details;
 import com.studentsbazaar.studentsbazaarapp.retrofit.ApiUtil;
 
-import org.json.JSONObject;
-
+import java.time.OffsetTime;
 import java.util.Calendar;
 import java.util.List;
 
@@ -55,14 +52,17 @@ public class Quiz_Events extends AppCompatActivity {
     RecyclerView Quiz_view;
     SpotsDialog progressDialog;
     Button submit;
-    SharedPreferences sharedPreferences;
     List<Quiz_Details> drawerResponseList = null;
     Quiz_Adapter quiz_adapter;
     LinearLayout layout;
     private Toolbar toolbar;
     private AlarmHelper alarmHelper;
+    int CURRENT_TIME;
+    int LOCAL_TIME = 18;
+    int LIMIT_TIME=23;
 
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,8 +73,8 @@ public class Quiz_Events extends AppCompatActivity {
         new Quiz_Control(Quiz_Events.this);
         alarmHelper = new AlarmHelper(this);
         layout = (LinearLayout) findViewById(R.id.empty4);
-        sharedPreferences = getSharedPreferences("USER_DETAILS", MODE_PRIVATE);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+
         // setnotification();
         // displaystatus();
         if (toolbar != null) {
@@ -94,7 +94,7 @@ public class Quiz_Events extends AppCompatActivity {
             public void onClick(View view) {
                 Log.d("Quizresults", String.valueOf(ApiUtil.QUIZ_RESULT));
                 updateresults();
-                addresults(Controller.getUID(),Quiz_Control.getCorrectans());
+                addresults(Controller.getUID(), Quiz_Control.getCorrectans());
 
             }
         });
@@ -114,33 +114,39 @@ public class Quiz_Events extends AppCompatActivity {
     }
 
     void loadData() {
-        Log.d("RESPONSE1", Controller.getUID());
+
+
         progressDialog.show();
         Call<DownloadResponse> call = ApiUtil.getServiceClass().getQuizQuestions(Controller.getUID());
         call.enqueue(new Callback<DownloadResponse>() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onResponse(Call<DownloadResponse> call, Response<DownloadResponse> response) {
-                Log.d("RESPONSE2",response.body().toString());
-
+                Log.d("RESPONSE2", response.body().toString());
                 if (response.isSuccessful()) {
                     assert response.body() != null;
                     drawerResponseList = response.body().getQuiz_details();
+                    if (drawerResponseList.get(0).getId() != null) {
+                        Log.d("RESPONSE2", drawerResponseList.get(0).getId());
+                        progressDialog.dismiss();
+                        getAlertwindow(drawerResponseList.get(0).getId());
+                    } else {
 
-                    progressDialog.dismiss();
-                    ApiUtil.TOTAL_QUIZ = drawerResponseList.size();
-                    if (drawerResponseList.size() == 0) {
-                        layout.setVisibility(View.VISIBLE);
-                        Quiz_view.setVisibility(View.INVISIBLE);
-                        submit.setVisibility(View.INVISIBLE);
-                    }
-                    else{
-                        layout.setVisibility(View.INVISIBLE);
-                        Quiz_view.setVisibility(View.VISIBLE);
-                        submit.setVisibility(View.VISIBLE);
-                        quiz_adapter = new Quiz_Adapter(Quiz_Events.this, drawerResponseList);
-                        Quiz_view.setAdapter(quiz_adapter);
-                    }
+                        progressDialog.dismiss();
+                        ApiUtil.TOTAL_QUIZ = drawerResponseList.size();
+                        if (drawerResponseList.size() == 0) {
+                            layout.setVisibility(View.VISIBLE);
+                            Quiz_view.setVisibility(View.INVISIBLE);
+                            submit.setVisibility(View.INVISIBLE);
+                        } else {
+                            layout.setVisibility(View.INVISIBLE);
+                            Quiz_view.setVisibility(View.VISIBLE);
+                            submit.setVisibility(View.VISIBLE);
+                            quiz_adapter = new Quiz_Adapter(Quiz_Events.this, drawerResponseList);
+                            Quiz_view.setAdapter(quiz_adapter);
+                        }
 
+                    }
                 }
                 // mAdapter.notifyDataSetChanged();
 
@@ -153,18 +159,27 @@ public class Quiz_Events extends AppCompatActivity {
                 Log.d("RESPONSE3", "err" + t.getMessage());
             }
         });
+
+
     }
 
     void addresults(String uid, String results) {
         progressDialog.show();
         Call<String> call = ApiUtil.getServiceClass().addresultstoprofile(ApiUtil.ADD_QUIZ_RESULTS + "?uid=" + uid + "&result=" + results);
         call.enqueue(new Callback<String>() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 progressDialog.dismiss();
                 if (response.body().equals("1")) {
-                    displaystatus();
-                   // getAlertwindow("Thanks\nyou will get the result by 6 PM,stay tuned... ");
+                    if (CURRENT_TIME > LOCAL_TIME) {
+                        displaystatus();
+                    } else {
+                        getAlertwindow("Good..\nyou will get the result by today 6 PM,stay tuned... ");
+
+
+                    }
+
                 }
             }
 
@@ -176,27 +191,53 @@ public class Quiz_Events extends AppCompatActivity {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     void getAlertwindow(String message) {
+        Dialog d = new Dialog(Quiz_Events.this);
+        d.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        d.setCancelable(false);
+        d.setContentView(R.layout.quiz_alert);
+        d.getWindow().setLayout(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
+        TextView quizalert = (TextView) d.findViewById(R.id.uitvalertquiztext);
+        ImageView alertimg = (ImageView) d.findViewById(R.id.uiivalertquizimg);
+        Button alertbtn = (Button) d.findViewById(R.id.uibtnquizalert);
 
-        final AlertDialog.Builder builder = new AlertDialog.Builder(Quiz_Events.this);
-        builder.setTitle(message);
-        builder.setPositiveButton("DONE", new DialogInterface.OnClickListener() {
+        if (message.equals("Attended")) {
+            OffsetTime offset = OffsetTime.now();
+            CURRENT_TIME = offset.getHour();
+            if (LOCAL_TIME <= CURRENT_TIME && CURRENT_TIME<=LIMIT_TIME){
+                if (Quiz_Control.getQuizstatus()== Quiz_Control.ATTEND && Quiz_Control.getseenquiz()==Quiz_Control.LATER){
+                    displaystatus();
+                }
+            }else{
+                alertimg.setBackgroundResource(R.drawable.ic_attended);
+                quizalert.setText("You have Already attend Quiz Today...");
+                submit.setVisibility(View.GONE);
+            }
+
+        } else if (message.equals("notupdated")) {
+            alertimg.setBackgroundResource(R.drawable.ic_noques);
+            quizalert.setText("Sorry...\nNo Question Today...");
+            submit.setVisibility(View.GONE);
+        } else {
+            alertimg.setBackgroundResource(R.drawable.ic_attended);
+            quizalert.setText(message);
+            submit.setVisibility(View.GONE);
+            setnotification();
+            Quiz_Control.addseenquiz(Quiz_Control.LATER);
+            Quiz_Control.addQuizStatus(Quiz_Control.ATTEND);
+        }
+
+        alertbtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                SharedPreferences sharedPreferences = getSharedPreferences("QUIZ_STATUS", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("QUIZ", "attend").apply();
-                setnotification();
-                Intent intent = new Intent(Quiz_Events.this, HomeActivity.class);
-                startActivity(intent);
+            public void onClick(View v) {
+                new Move_Show(Quiz_Events.this, HomeActivity.class);
+                d.dismiss();
                 finish();
-
-
             }
         });
 
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
+        d.show();
     }
 
 
@@ -267,8 +308,9 @@ public class Quiz_Events extends AppCompatActivity {
         ImageView closebtn = (ImageView) d.findViewById(R.id.uiivclosebtn);
         totalmark.setText(Quiz_Control.getCorrectans());
         totalcount.setText(totalcount.getText().toString().replace("10", Quiz_Control.getCorrectans()));
-        correctans.setText(" "+Quiz_Control.getCorrectans()+" Correct");
-        worngans.setText(" "+Quiz_Control.getwrongans()+" Wrong");
+        correctans.setText(" " + Quiz_Control.getCorrectans() + " Correct");
+        worngans.setText(" " + Quiz_Control.getwrongans() + " Wrong");
+        Quiz_Control.addseenquiz(Quiz_Control.SEEN);
         closebtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -277,9 +319,10 @@ public class Quiz_Events extends AppCompatActivity {
         });
         d.show();
     }
-    private void updateresults(){
+
+    private void updateresults() {
         Quiz_Control.addTotalPoint(String.valueOf(ApiUtil.TOTAL_QUIZ));
         Quiz_Control.addCorrectans(String.valueOf(ApiUtil.QUIZ_RESULT));
-        Quiz_Control.addworngans(String.valueOf(ApiUtil.TOTAL_QUIZ-ApiUtil.QUIZ_RESULT));
+        Quiz_Control.addworngans(String.valueOf(ApiUtil.TOTAL_QUIZ - ApiUtil.QUIZ_RESULT));
     }
 }

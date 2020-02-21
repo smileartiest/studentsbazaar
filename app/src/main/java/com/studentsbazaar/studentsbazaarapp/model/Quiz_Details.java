@@ -10,6 +10,24 @@ public class Quiz_Details {
     private String Option4;
     private String Crct_Ans;
     private String Created_Date;
+    private String responsedata;
+    private String id;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getResponsedata() {
+        return responsedata;
+    }
+
+    public void setResponsedata(String responsedata) {
+        this.responsedata = responsedata;
+    }
 
     public Quiz_Details(String quiz_Id, String quiz_ques, String option1, String option2, String option3, String option4, String crct_Ans, String created_Date) {
         Quiz_Id = quiz_Id;
@@ -23,6 +41,8 @@ public class Quiz_Details {
     }
 
 // Getter Methods
+
+
 
     public String getQuiz_Id() {
         return Quiz_Id;
@@ -57,7 +77,6 @@ public class Quiz_Details {
     }
 
     // Setter Methods
-
     public void setQuiz_Id(String Quiz_Id) {
         this.Quiz_Id = Quiz_Id;
     }

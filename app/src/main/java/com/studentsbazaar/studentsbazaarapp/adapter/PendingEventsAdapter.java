@@ -99,6 +99,7 @@ public class PendingEventsAdapter extends RecyclerView.Adapter<PendingEventsAdap
                 editor.putString("cpno2",listItem.getContact_Person2_No());
                 editor.putString("webevent",listItem.getEvent_Website());
                 editor.putString("webcoll",listItem.getCollege_Website());
+                editor.putString("insta",listItem.getEvent_Instagram());
                 editor.apply();
                 Bundle b = new Bundle();
                 b.putString("view","pending");

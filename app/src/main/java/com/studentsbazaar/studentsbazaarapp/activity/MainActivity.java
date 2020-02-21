@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     SpotsDialog spotsDialog;
     Toolbar toolbar;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
                                 Move_Show.showToast("Login Success");
                             } else {
                                 spotsDialog.dismiss();
-                                Move_Show.showToast("Login Failed");
+                                Move_Show.showToast("Incorrect Username or password");
                             }
 
                         }

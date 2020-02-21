@@ -651,6 +651,43 @@
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="3dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="2dp"
+                    app:cardUseCompatPadding="true">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingLeft="10dp">
+
+                        <TextView
+
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="3dp"
+                            android:text="Instagram"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/edit_text_insta"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            android:layout_marginLeft="4dp"
+                            android:layout_marginEnd="3dp"
+                            android:layout_marginRight="3dp"
+                            android:layout_marginBottom="5dp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
                     android:id="@+id/id_card_fee"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -951,6 +988,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentTop="true"
                                 android:layout_margin="3dp"
+                                android:background="@drawable/shape"
                                 android:text="Kashiyatra 2020, IIT BHU, Annual Socio-Cultural Festival, Varanasi, Uttar Pradesh, 17th - 20th January 2020"
                                 android:textColor="@color/colorPrimaryDark"
                                 android:textSize="16sp"
@@ -1012,6 +1050,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1.3"
+                                android:background="@drawable/shape"
                                 android:text="Annual Socio-Cultural Festival"
                                 />
                         </LinearLayout>
@@ -1036,6 +1075,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1.3"
+                                android:background="@drawable/shape"
                                 android:text="17th January 2020"
                                 />
                         </LinearLayout>
@@ -1061,6 +1101,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1.3"
+                                android:background="@drawable/shape"
                                 android:text="20th January 2020"
                                 />
                         </LinearLayout>
@@ -1084,6 +1125,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1.3"
+                                android:background="@drawable/shape"
                                 android:text="IIT BHU"
                                />
                         </LinearLayout>
@@ -1107,6 +1149,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1.3"
+                                android:background="@drawable/shape"
                                 android:text="Varanasi"
                                  />
                         </LinearLayout>
@@ -1130,6 +1173,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1.3"
+                                android:background="@drawable/shape"
                                 android:text="Uttar Pradesh"
                                 />
                         </LinearLayout>
@@ -1166,6 +1210,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="4dp"
                             android:layout_marginLeft="4dp"
+                            android:background="@drawable/shape"
                             android:layout_marginEnd="3dp"
                             android:layout_marginRight="3dp"
                             android:layout_marginBottom="5dp"
@@ -1204,6 +1249,7 @@
                             android:layout_marginStart="4dp"
                             android:layout_marginLeft="4dp"
                             android:layout_marginEnd="3dp"
+                            android:background="@drawable/shape"
                             android:layout_marginRight="3dp"
                             android:layout_marginBottom="5dp"
                             android:text="Dance , music , literary , filmfest , fashion fest , food fest , YouTube fest , Drama , humour fest and many more"
@@ -1242,6 +1288,7 @@
                             android:layout_marginStart="4dp"
                             android:layout_marginLeft="4dp"
                             android:layout_marginEnd="3dp"
+                            android:background="@drawable/shape"
                             android:layout_marginRight="3dp"
                             android:layout_marginBottom="5dp"
                             android:text="CSE/IT"
@@ -1282,6 +1329,7 @@
                             android:layout_marginLeft="4dp"
                             android:layout_marginEnd="3dp"
                             android:layout_marginRight="3dp"
+                            android:background="@drawable/shape"
                             android:layout_marginBottom="5dp"
                             android:text="Ritviz and many more not officially released yet."
                             />
@@ -1322,6 +1370,7 @@
                             android:layout_marginEnd="3dp"
                             android:layout_marginRight="3dp"
                             android:layout_marginBottom="5dp"
+                            android:background="@drawable/shape"
                             android:text="Numerous international carnivals and guest lectures"
                           />
                     </LinearLayout>
@@ -1357,6 +1406,7 @@
                             android:layout_marginStart="4dp"
                             android:layout_marginLeft="4dp"
                             android:layout_marginEnd="3dp"
+                            android:background="@drawable/shape"
                             android:layout_marginRight="3dp"
                             android:layout_marginBottom="5dp"
                             android:text="Seashore symphony - sailing into the melody"
@@ -1394,6 +1444,7 @@
                             android:layout_marginStart="4dp"
                             android:layout_marginLeft="4dp"
                             android:layout_marginEnd="3dp"
+                            android:background="@drawable/shape"
                             android:layout_marginRight="3dp"
                             android:layout_marginBottom="5dp"
                             android:text="Common rooms are provided for participants to stay."
@@ -1432,6 +1483,7 @@
                             android:layout_marginLeft="4dp"
                             android:layout_marginEnd="3dp"
                             android:layout_marginRight="3dp"
+                            android:background="@drawable/shape"
                             android:layout_marginBottom="5dp"
                             android:text="Register at springfest.in before 21/01/2020"
                             />
@@ -1468,6 +1520,7 @@
                             android:layout_marginStart="4dp"
                             android:layout_marginLeft="4dp"
                             android:layout_marginEnd="3dp"
+                            android:background="@drawable/shape"
                             android:layout_marginRight="3dp"
                             android:layout_marginBottom="5dp"
                             />
@@ -1505,10 +1558,50 @@
                             android:layout_marginStart="4dp"
                             android:layout_marginLeft="4dp"
                             android:layout_marginEnd="3dp"
+                            android:background="@drawable/shape"
                             android:layout_marginRight="3dp"
                             android:layout_marginBottom="5dp"
                             android:text="Register at springfest.in before 21/01/2020"
                              />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="3dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="2dp"
+                    app:cardUseCompatPadding="true">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingLeft="10dp">
+
+                        <TextView
+
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="3dp"
+                            android:text="Instagram"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/edit_ed_insta"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            android:layout_marginLeft="4dp"
+                            android:layout_marginEnd="3dp"
+                            android:layout_marginRight="3dp"
+                            android:layout_marginBottom="5dp"
+                            android:background="@drawable/shape"
+                            android:text="Register at springfest.in before 21/01/2020"
+                            />
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
@@ -1545,6 +1638,7 @@
                             android:layout_marginLeft="4dp"
                             android:layout_marginEnd="3dp"
                             android:layout_marginRight="3dp"
+                            android:background="@drawable/shape"
                             android:layout_marginBottom="5dp"
                             android:text="1400"
                              />
@@ -1580,6 +1674,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="4dp"
+                            android:background="@drawable/shape"
                             android:layout_marginLeft="4dp"
                             android:layout_marginEnd="3dp"
                             android:layout_marginRight="3dp"
@@ -1616,7 +1711,8 @@
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp">
 
                             <TextView
                                 android:layout_width="0dp"
@@ -1635,6 +1731,7 @@
                                 android:layout_marginStart="3dp"
                                 android:layout_marginEnd="3dp"
                                 android:layout_weight="1"
+                                android:background="@drawable/shape"
                                 android:text="Patric Singh"
                                 />
                         </LinearLayout>
@@ -1642,7 +1739,7 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="3dp">
+                            android:layout_margin="5dp">
 
                             <TextView
                                 android:layout_width="0dp"
@@ -1662,6 +1759,7 @@
                                 android:layout_marginStart="3dp"
                                 android:layout_marginEnd="3dp"
                                 android:layout_weight="1"
+                                android:background="@drawable/shape"
                                 android:text="918317865866"
                                 />
 
@@ -1675,7 +1773,8 @@
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp">
 
                             <TextView
                                 android:layout_width="0dp"
@@ -1695,6 +1794,7 @@
                                 android:layout_marginStart="3dp"
                                 android:layout_marginEnd="3dp"
                                 android:layout_weight="1"
+                                android:background="@drawable/shape"
                                 android:text="Patric Singh"
                                 />
 
@@ -1703,7 +1803,7 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="3dp">
+                            android:layout_margin="5dp">
 
                             <TextView
                                 android:layout_width="0dp"
@@ -1722,6 +1822,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="3dp"
                                 android:layout_marginEnd="3dp"
+                                android:background="@drawable/shape"
                                 android:layout_weight="1"
                                 android:text="918317865866"
                                  />

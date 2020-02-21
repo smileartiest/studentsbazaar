@@ -28,12 +28,12 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class View_Details extends AppCompatActivity {
-    TextView title, category, sdate, edate, organizer, city, state, Discription, eventdetails, department, guest, pronites, theme, accomadtation, lastdate, entryfees, howtoreach, cpnam1, cpno1, cpname2, cpno2, eventweb, collegeweb;
+    TextView instagram,title, category, sdate, edate, organizer, city, state, Discription, eventdetails, department, guest, pronites, theme, accomadtation, lastdate, entryfees, howtoreach, cpnam1, cpno1, cpname2, cpno2, eventweb, collegeweb;
     Button submit, edit, register_now;
     ImageView head_poster, w1, w2, c1, c2;
     CardView cardCollegeweb, cardEventweb, cardTheme, cardPronits, cardAco, cardGuest, cardDept, cardEvent;
     String stitle, sategory, ssdate, sedate, sorganizer, scity, sstate, sDiscription, seventdetails, sdepartment, sguest, spronites, stheme, saccomadtation, slastdate, sentryfees, showtoreach, scpnam1, scpno1, scpname2, scpno2;
-    String posterurl, coid, webevent, webcoll, weburl;
+    String posterurl, coid, webevent, webcoll, weburl,insta;
     SpotsDialog spotsDialog;
 
 
@@ -80,6 +80,7 @@ public class View_Details extends AppCompatActivity {
         head_poster = (ImageView) findViewById(R.id.head_slider);
         eventweb = (TextView) findViewById(R.id.head_event_web);
         collegeweb = (TextView) findViewById(R.id.head_college_web);
+        instagram = (TextView)findViewById(R.id.head_event_instagram);
         register_now = (Button) findViewById(R.id.register_now);
 
         spotsDialog = new SpotsDialog(this);
@@ -213,7 +214,8 @@ public class View_Details extends AppCompatActivity {
         scpno2 = sharedPreferences.getString("cpno2", null);
         webevent = sharedPreferences.getString("webevent", null);
         webcoll = sharedPreferences.getString("webcoll", null);
-        if (Controller.getdesignprefer().equals(Controller.MORE)) {
+        insta =sharedPreferences.getString("insta",null);
+        if (Controller.getdesignprefer().equals(Controller.MORE) ) {
             submit.setVisibility(View.GONE);
             edit.setVisibility(View.GONE);
             register_now.setVisibility(View.VISIBLE);
@@ -235,6 +237,7 @@ public class View_Details extends AppCompatActivity {
         city.setText(scity);
         state.setText(sstate);
         Discription.setText(sDiscription);
+        instagram.setText(insta);
         if (seventdetails.length() == 0) {
             cardEvent.setVisibility(View.GONE);
         } else {

@@ -43,12 +43,14 @@ import com.studentsbazaar.studentsbazaarapp.adapter.SliderPagerAdapter;
 import com.studentsbazaar.studentsbazaarapp.controller.Controller;
 import com.studentsbazaar.studentsbazaarapp.controller.Monitor;
 import com.studentsbazaar.studentsbazaarapp.controller.Move_Show;
+import com.studentsbazaar.studentsbazaarapp.controller.Quiz_Control;
 import com.studentsbazaar.studentsbazaarapp.firebase.Config;
 import com.studentsbazaar.studentsbazaarapp.helper.PersistanceUtil;
 import com.studentsbazaar.studentsbazaarapp.model.Posters_Details;
 import com.studentsbazaar.studentsbazaarapp.model.Project_details;
 import com.studentsbazaar.studentsbazaarapp.retrofit.ApiUtil;
 
+import java.time.OffsetTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -84,6 +86,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private TextView[] dots;
     int page_position = 0;
     private static final int MY_PERMISSIONS_REQUEST_SEND_SMS = 0;
+    int CURRENT_TIME;
+    int LOCAL_TIME=18;
+    int LIMIT_TIME=23;
 
 
     @Override
@@ -103,6 +108,17 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         tvMemes = findViewById(R.id.tvMeme);
         tvPlacement = findViewById(R.id.tvPlacement);
         tvQuiz = findViewById(R.id.tvQuiz);
+        OffsetTime offset = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            offset = OffsetTime.now();
+            CURRENT_TIME = offset.getHour();
+            if (LOCAL_TIME <= CURRENT_TIME && CURRENT_TIME<=LIMIT_TIME) {
+                if (Quiz_Control.getQuizstatus()==null && Quiz_Control.getseenquiz()==null) {
+
+                }
+            }
+        }
+
         //new ShowConfirmDialog(HomeActivity.this,"please a wait a min");
         //ShowConfirmDialog.textView.setVisibility();
         if (Controller.getprefer().equals(Controller.VISITOR)) {
@@ -419,9 +435,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 if (!STRTOKEN.equals("0")) {
                     if (Controller.getTokenstatus() == Controller.SENT) {
                         pushToken(Config.getPrefToken(context));
-                        Log.d("TOKEN", Controller.SENT);
+                        Log.d("TOKEN", refreshedToken);
                     } else {
-                        Log.d("TOKEN", Controller.SENT);
+                        Log.d("TOKEN", refreshedToken);
                     }
 
                 }

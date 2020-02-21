@@ -2,6 +2,7 @@ package com.studentsbazaar.studentsbazaarapp.adapter;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -71,42 +72,37 @@ public class Quiz_Adapter extends RecyclerView.Adapter<Quiz_Adapter.Myviewholder
 
                         if (btn.getText().toString().equals(listItem.getCrct_Ans())) {
                             ApiUtil.QUIZ_RESULT = ApiUtil.QUIZ_RESULT + 1;
-                            Move_Show.showToast("Good\nYou Scored  1 Point....");
-                                if (holder.option1.getText().toString().equalsIgnoreCase(listItem.getCrct_Ans())) {
-                                    holder.option1.setBackgroundResource(R.drawable.button2);
-                                } else if (holder.option2.getText().toString().equalsIgnoreCase(listItem.getCrct_Ans())) {
-                                    holder.option2.setBackgroundResource(R.drawable.button2);
-                                } else if (holder.option3.getText().toString().equalsIgnoreCase(listItem.getCrct_Ans())) {
-                                    holder.option3.setBackgroundResource(R.drawable.button2);
-                                } else if (holder.option4.getText().toString().equalsIgnoreCase(listItem.getCrct_Ans())) {
-                                    holder.option4.setBackgroundResource(R.drawable.button2);
-                                }
+                            if (holder.option1.getText().toString().equalsIgnoreCase(btn.getText().toString())) {
+                                holder.option1.setBackgroundResource(R.drawable.button);
+                                holder.option1.setTextColor(Color.parseColor("#FFFFFF"));
+                                // holder.option1.setBackgroundResource(R.drawable.button);
+                            } else if (holder.option2.getText().toString().equalsIgnoreCase(btn.getText().toString())) {
+                                holder.option2.setBackgroundResource(R.drawable.button);
+                                holder.option2.setTextColor(Color.parseColor("#FFFFFF"));
+                            } else if (holder.option3.getText().toString().equalsIgnoreCase(btn.getText().toString())) {
+                                holder.option3.setBackgroundResource(R.drawable.button);
+                                holder.option3.setTextColor(Color.parseColor("#FFFFFF"));
+                            } else if (holder.option4.getText().toString().equalsIgnoreCase(btn.getText().toString())) {
+                                holder.option4.setBackgroundResource(R.drawable.button);
+                                holder.option4.setTextColor(Color.parseColor("#FFFFFF"));
+                            }
 
 
                         } else {
-                            Move_Show.showToast("Sorry\nWrong Answer");
                             if (holder.option1.getText().toString().equalsIgnoreCase(btn.getText().toString())) {
-                                holder.option1.setBackgroundResource(R.drawable.button3);
-                                // holder.option1.setBackgroundResource(R.drawable.button);
+                                holder.option1.setBackgroundResource(R.drawable.button);
+                                holder.option1.setTextColor(Color.parseColor("#FFFFFF"));
                             } else if (holder.option2.getText().toString().equalsIgnoreCase(btn.getText().toString())) {
-                                holder.option2.setBackgroundResource(R.drawable.button3);
-                                // holder.option2.setBackgroundResource(R.drawable.button);
+                                holder.option2.setBackgroundResource(R.drawable.button);
+                                holder.option2.setTextColor(Color.parseColor("#FFFFFF"));
                             } else if (holder.option3.getText().toString().equalsIgnoreCase(btn.getText().toString())) {
-                                holder.option3.setBackgroundResource(R.drawable.button3);
-                                // holder.option3.setBackgroundResource(R.drawable.button);
+                                holder.option3.setBackgroundResource(R.drawable.button);
+                                holder.option3.setTextColor(Color.parseColor("#FFFFFF"));
                             } else if (holder.option4.getText().toString().equalsIgnoreCase(btn.getText().toString())) {
-                                holder.option4.setBackgroundResource(R.drawable.button3);
-                                // holder.option4.setBackgroundResource(R.drawable.button);
+                                holder.option4.setBackgroundResource(R.drawable.button);
+                                holder.option4.setTextColor(Color.parseColor("#FFFFFF"));
                             }
-                            if (holder.option1.getText().toString().equalsIgnoreCase(listItem.getCrct_Ans())) {
-                                holder.option1.setBackgroundResource(R.drawable.button2);
-                            } else if (holder.option2.getText().toString().equalsIgnoreCase(listItem.getCrct_Ans())) {
-                                holder.option2.setBackgroundResource(R.drawable.button2);
-                            } else if (holder.option3.getText().toString().equalsIgnoreCase(listItem.getCrct_Ans())) {
-                                holder.option3.setBackgroundResource(R.drawable.button2);
-                            } else if (holder.option4.getText().toString().equalsIgnoreCase(listItem.getCrct_Ans())) {
-                                holder.option4.setBackgroundResource(R.drawable.button2);
-                            }
+
                             ApiUtil.QUIZ_RESULT = ApiUtil.QUIZ_RESULT + 0;
                         }
                     }

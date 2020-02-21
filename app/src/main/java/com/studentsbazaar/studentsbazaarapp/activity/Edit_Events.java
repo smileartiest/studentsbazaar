@@ -31,13 +31,13 @@ import retrofit2.Response;
 
 public class Edit_Events extends AppCompatActivity {
     RelativeLayout layout, parentlayout;
-    TextView txtwebevent, txtwebcoll, title, category, sdate, edate, organizer, city, state, Discription, eventdetails, department, guest, pronites, theme, accomadtation, lastdate, entryfees, howtoreach, cpnam1, cpno1, cpname2, cpno2;
-    EditText edwebevent, edwedcoll, edtitle, edcategory, edsdate, ededate, edorganizer, edcity, edstate, edDiscription, edeventdetails, eddepartment, edguest, edpronites, edtheme, edaccomadtation, edlastdate, edentryfees, edhowtoreach, edcpnam1, edcpno1, edcpname2, edcpno2;
+    TextView txtinsta,txtwebevent, txtwebcoll, title, category, sdate, edate, organizer, city, state, Discription, eventdetails, department, guest, pronites, theme, accomadtation, lastdate, entryfees, howtoreach, cpnam1, cpno1, cpname2, cpno2;
+    EditText edinsta,edwebevent, edwedcoll, edtitle, edcategory, edsdate, ededate, edorganizer, edcity, edstate, edDiscription, edeventdetails, eddepartment, edguest, edpronites, edtheme, edaccomadtation, edlastdate, edentryfees, edhowtoreach, edcpnam1, edcpno1, edcpname2, edcpno2;
     Button edit_btn, done_btn;
     ImageView head_poster, head_posteredit;
     RelativeLayout view_window, edit_window;
     List<Project_details> drawerResponseList = null;
-    String stitle, sategory, ssdate, sedate, sorganizer, scity, sstate, sDiscription, seventdetails, sdepartment, sguest, spronites, stheme, saccomadtation, slastdate, sentryfees, showtoreach, scpnam1, scpno1, scpname2, scpno2;
+    String sinsta,stitle, sategory, ssdate, sedate, sorganizer, scity, sstate, sDiscription, seventdetails, sdepartment, sguest, spronites, stheme, saccomadtation, slastdate, sentryfees, showtoreach, scpnam1, scpno1, scpname2, scpno2;
     String eweb, cweb, eventid;
     SpotsDialog spotsDialog;
     LinearLayout layoutempty;
@@ -104,6 +104,8 @@ public class Edit_Events extends AppCompatActivity {
         edcpno1 = (EditText) findViewById(R.id.ed_ph1);
         edcpname2 = (EditText) findViewById(R.id.ed_cpname2);
         edcpno2 = (EditText) findViewById(R.id.ed_ph2);
+        txtinsta=(TextView)findViewById(R.id.edit_text_insta);
+        edinsta=(EditText)findViewById(R.id.edit_ed_insta);
         eventid = Controller.getUID();
         edit_window.setVisibility(View.GONE);
         layout.setVisibility(View.INVISIBLE);
@@ -141,9 +143,11 @@ public class Edit_Events extends AppCompatActivity {
                 scpno2 = edcpno2.getText().toString();
                 eweb = edwebevent.getText().toString();
                 cweb = edwedcoll.getText().toString();
+                sinsta = edinsta.getText().toString();
 
 
-                Call<String> call = ApiUtil.getServiceClass().updateevents(stitle, sategory, ssdate, sedate, sdepartment, scity, sstate, sorganizer, seventdetails, sDiscription, eweb, cweb, scpnam1, scpno1, scpname2, scpno2, sentryfees, spronites, saccomadtation, showtoreach, slastdate, sguest, eventid);
+
+                Call<String> call = ApiUtil.getServiceClass().updateevents(stitle, sategory, ssdate, sedate, sdepartment, scity, sstate, sorganizer, seventdetails, sDiscription, eweb, cweb,sinsta, scpnam1, scpno1, scpname2, scpno2, sentryfees, spronites, saccomadtation, showtoreach, slastdate, sguest, eventid);
                 call.enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
@@ -236,6 +240,7 @@ public class Edit_Events extends AppCompatActivity {
                         cpno2.setText(drawerResponseList.get(0).getContact_Person2_No());
                         txtwebevent.setText(drawerResponseList.get(0).getEvent_Website());
                         txtwebcoll.setText(drawerResponseList.get(0).getCollege_Website());
+                        txtinsta.setText(drawerResponseList.get(0).getEvent_Instagram());
 
                         edtitle.setText(drawerResponseList.get(0).getEvent_Title());
                         edcategory.setText(drawerResponseList.get(0).getEvent_Type());
@@ -261,6 +266,7 @@ public class Edit_Events extends AppCompatActivity {
                         edcpno2.setText(drawerResponseList.get(0).getContact_Person2_No());
                         edwebevent.setText(drawerResponseList.get(0).getEvent_Website());
                         edwedcoll.setText(drawerResponseList.get(0).getCollege_Website());
+                        edinsta.setText(drawerResponseList.get(0).getEvent_Instagram());
 
 
                     }

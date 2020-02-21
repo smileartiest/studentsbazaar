@@ -27,7 +27,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".activity.Quiz_Results"></activity>
+        <activity android:name=".activity.Update_Quiz_Questions"></activity>
+        <activity android:name=".activity.Quiz_Results" />
         <activity android:name=".activity.MUActivity" />
         <activity android:name=".activity.Pending_Post" />
         <activity android:name=".activity.Mems" />
