@@ -38,6 +38,13 @@ public class Quiz_Control {
         editor.putString("seen", seen).apply();
     }
 
+    public static void addquizquestion(String seen) {
+        editor.putString("QUIZ", seen).apply();
+    }
+
+    public static void addcrctans(String seen) {
+        editor.putString("crctans", seen).apply();
+    }
 
     public static String getTotalPoint() {
         return sharedPreferences.getString("total", null);
@@ -58,5 +65,10 @@ public class Quiz_Control {
     public static String getseenquiz() {
         return sharedPreferences.getString("seen", null);
     }
-
+    public static String getQuizquestion() {
+        return sharedPreferences.getString("QUIZ", null);
+    }
+    public static String getcrctans() {
+        return sharedPreferences.getString("crctans", null);
+    }
 }

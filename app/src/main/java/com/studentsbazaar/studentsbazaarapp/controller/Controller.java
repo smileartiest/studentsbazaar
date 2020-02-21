@@ -17,6 +17,7 @@ public class Controller {
     public static String INFOZUB = "infozub";
     public static String MEMEACCEPT = "meme";
     public static String MEMEVIEW = "memeview";
+    public static String USERVERIFY = "later";
 
     public Controller(Context context) {
         this.context = context;
@@ -39,6 +40,10 @@ public class Controller {
 
     public static void addTokenStatus(String token) {
         editor.putString("TOKEN_STAT", token).apply();
+    }
+
+    public static void adduservierify(String later) {
+        editor.putString("LATER", later).apply();
     }
 
     public static void adddesignprefer(String status) {
@@ -79,5 +84,8 @@ public class Controller {
 
     public static String getevent() {
         return sharedPreferences.getString("EVENT", null);
+    }
+    public static String getuservierify(){
+        return sharedPreferences.getString("LATER", null);
     }
 }

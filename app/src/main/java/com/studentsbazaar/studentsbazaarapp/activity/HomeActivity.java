@@ -89,6 +89,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     int CURRENT_TIME;
     int LOCAL_TIME=18;
     int LIMIT_TIME=23;
+    OffsetTime offset;
 
 
     @Override
@@ -100,6 +101,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 //                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_home);
         new Controller(this);
+        new Quiz_Control(this);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -108,13 +110,16 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         tvMemes = findViewById(R.id.tvMeme);
         tvPlacement = findViewById(R.id.tvPlacement);
         tvQuiz = findViewById(R.id.tvQuiz);
-        OffsetTime offset = null;
+
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             offset = OffsetTime.now();
             CURRENT_TIME = offset.getHour();
-            if (LOCAL_TIME <= CURRENT_TIME && CURRENT_TIME<=LIMIT_TIME) {
+            if (LOCAL_TIME < CURRENT_TIME && CURRENT_TIME<LIMIT_TIME) {
                 if (Quiz_Control.getQuizstatus()==null && Quiz_Control.getseenquiz()==null) {
 
+                }
+                else if (Quiz_Control.getQuizstatus().equals(Quiz_Control.ATTEND) && Quiz_Control.getseenquiz().equals(Quiz_Control.LATER)){
+                    new Move_Show(HomeActivity.this,Quiz_Events.class);
                 }
             }
         }
@@ -122,7 +127,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         //new ShowConfirmDialog(HomeActivity.this,"please a wait a min");
         //ShowConfirmDialog.textView.setVisibility();
         if (Controller.getprefer().equals(Controller.VISITOR)) {
-            verifyaccount();
+            if (Controller.getuservierify() ==null){
+                verifyaccount();
+            }
+
         }
 
         if (toolbar != null) {
@@ -206,7 +214,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         cvQuiz.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Controller.getprefer().equals(Controller.REG) || Controller.getprefer().equals(Controller.ADMIN)) {
+                if (Controller.getprefer().equals(Controller.REG) || Controller.getprefer().equals(Controller.ADMIN) || Controller.getprefer().equals(Controller.INFOZUB)) {
                     new Move_Show(HomeActivity.this, Quiz_Events.class);
                 } else {
                     CFAlertDialog.Builder builder = new CFAlertDialog.Builder(HomeActivity.this);
@@ -433,11 +441,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 LocalBroadcastManager.getInstance(context).sendBroadcast(registrationComplete);
                 STRTOKEN = Config.getPrefToken(context);
                 if (!STRTOKEN.equals("0")) {
-                    if (Controller.getTokenstatus() == Controller.SENT) {
+                    if (Controller.getTokenstatus() == null) {
                         pushToken(Config.getPrefToken(context));
-                        Log.d("TOKEN", refreshedToken);
-                    } else {
-                        Log.d("TOKEN", refreshedToken);
+                        Log.d("TOKEN", Config.getPrefToken(context));
+                    } else if (Controller.getTokenstatus().equals(Controller.SENT)){
+                        Log.d("TOKEN", Config.getPrefToken(context));
                     }
 
                 }
@@ -448,7 +456,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void pushToken(String token) {
-
+        Log.d("TOKEN", "check");
         spotsDialog.show();
         Call<String> call = ApiUtil.getServiceClass().updatetoken(token, Controller.getUID());
         call.enqueue(new Callback<String>() {
@@ -606,7 +614,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         laterbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Controller.adduservierify(Controller.USERVERIFY);
                 d.dismiss();
+
+
             }
         });
     }

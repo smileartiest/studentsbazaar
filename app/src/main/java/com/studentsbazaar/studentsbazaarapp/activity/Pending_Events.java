@@ -13,6 +13,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.adapter.PendingEventsAdapter;
+import com.studentsbazaar.studentsbazaarapp.controller.Move_Show;
 import com.studentsbazaar.studentsbazaarapp.model.DownloadResponse;
 import com.studentsbazaar.studentsbazaarapp.model.Project_details;
 import com.studentsbazaar.studentsbazaarapp.retrofit.ApiUtil;
@@ -42,12 +43,21 @@ public class Pending_Events extends AppCompatActivity {
         progressDialog = new SpotsDialog(this, R.style.Custom);
         layout = (LinearLayout) findViewById(R.id.empty1);
         progressDialog.show();
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar1);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarpending);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
             getSupportActionBar().setTitle("Pending Events");
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+
 
         }
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
         loadData();
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -105,5 +115,9 @@ public class Pending_Events extends AppCompatActivity {
 
     }
 
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        new Move_Show(Pending_Events.this,EventActivity.class);
+    }
 }

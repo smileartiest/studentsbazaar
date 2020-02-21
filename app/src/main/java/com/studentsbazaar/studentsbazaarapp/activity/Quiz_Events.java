@@ -18,14 +18,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.studentsbazaar.studentsbazaarapp.AlarmHelper;
 import com.studentsbazaar.studentsbazaarapp.NotificationPublisher;
 import com.studentsbazaar.studentsbazaarapp.R;
@@ -60,6 +59,8 @@ public class Quiz_Events extends AppCompatActivity {
     int CURRENT_TIME;
     int LOCAL_TIME = 18;
     int LIMIT_TIME=23;
+    OffsetTime offset;
+
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -75,8 +76,9 @@ public class Quiz_Events extends AppCompatActivity {
         layout = (LinearLayout) findViewById(R.id.empty4);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
-        // setnotification();
-        // displaystatus();
+         offset = OffsetTime.now();
+        CURRENT_TIME = offset.getHour();
+
         if (toolbar != null) {
             setSupportActionBar(toolbar);
             getSupportActionBar().setTitle("QUIZ");
@@ -110,7 +112,7 @@ public class Quiz_Events extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        finish();
+       new Move_Show(Quiz_Events.this,HomeActivity.class);
     }
 
     void loadData() {
@@ -129,7 +131,9 @@ public class Quiz_Events extends AppCompatActivity {
                     if (drawerResponseList.get(0).getId() != null) {
                         Log.d("RESPONSE2", drawerResponseList.get(0).getId());
                         progressDialog.dismiss();
-                        getAlertwindow(drawerResponseList.get(0).getId());
+
+                            getAlertwindow(drawerResponseList.get(0).getId());
+
                     } else {
 
                         progressDialog.dismiss();
@@ -142,6 +146,8 @@ public class Quiz_Events extends AppCompatActivity {
                             layout.setVisibility(View.INVISIBLE);
                             Quiz_view.setVisibility(View.VISIBLE);
                             submit.setVisibility(View.VISIBLE);
+                            Quiz_Control.addquizquestion(drawerResponseList.get(0).getQuiz_ques());
+                            Quiz_Control.addcrctans(drawerResponseList.get(0).getCrct_Ans());
                             quiz_adapter = new Quiz_Adapter(Quiz_Events.this, drawerResponseList);
                             Quiz_view.setAdapter(quiz_adapter);
                         }
@@ -172,10 +178,10 @@ public class Quiz_Events extends AppCompatActivity {
             public void onResponse(Call<String> call, Response<String> response) {
                 progressDialog.dismiss();
                 if (response.body().equals("1")) {
-                    if (CURRENT_TIME > LOCAL_TIME) {
+                    if (LOCAL_TIME < CURRENT_TIME && CURRENT_TIME <LIMIT_TIME) {
                         displaystatus();
                     } else {
-                        getAlertwindow("Good..\nyou will get the result by today 6 PM,stay tuned... ");
+                        getAlertwindow("Good..\nyou will get the result \nby today 6 PM,stay tuned... ");
 
 
                     }
@@ -201,21 +207,36 @@ public class Quiz_Events extends AppCompatActivity {
         TextView quizalert = (TextView) d.findViewById(R.id.uitvalertquiztext);
         ImageView alertimg = (ImageView) d.findViewById(R.id.uiivalertquizimg);
         Button alertbtn = (Button) d.findViewById(R.id.uibtnquizalert);
-
+        d.show();
         if (message.equals("Attended")) {
-            OffsetTime offset = OffsetTime.now();
-            CURRENT_TIME = offset.getHour();
-            if (LOCAL_TIME <= CURRENT_TIME && CURRENT_TIME<=LIMIT_TIME){
-                if (Quiz_Control.getQuizstatus()== Quiz_Control.ATTEND && Quiz_Control.getseenquiz()==Quiz_Control.LATER){
+            if (LOCAL_TIME < CURRENT_TIME && CURRENT_TIME<LIMIT_TIME){
+                layout.setVisibility(View.VISIBLE);
+                Quiz_view.setVisibility(View.INVISIBLE);
+                submit.setVisibility(View.INVISIBLE);
+                alertimg.setBackgroundResource(R.drawable.ic_attended);
+                quizalert.setText("You have Already attend Quiz Today...");
+                if (Quiz_Control.getQuizstatus()==null && Quiz_Control.getseenquiz()==null){
+
+                }
+                else if (Quiz_Control.getQuizstatus().equals(Quiz_Control.ATTEND) && Quiz_Control.getseenquiz().equals(Quiz_Control.LATER)){
+                    submit.setVisibility(View.GONE);
+                    d.dismiss();
                     displaystatus();
                 }
             }else{
+                layout.setVisibility(View.VISIBLE);
+                Quiz_view.setVisibility(View.INVISIBLE);
+                submit.setVisibility(View.INVISIBLE);
                 alertimg.setBackgroundResource(R.drawable.ic_attended);
                 quizalert.setText("You have Already attend Quiz Today...");
-                submit.setVisibility(View.GONE);
+
             }
+            Log.d("LOGTIME",String.valueOf(Quiz_Control.getQuizstatus()+Quiz_Control.getseenquiz()));
 
         } else if (message.equals("notupdated")) {
+            layout.setVisibility(View.VISIBLE);
+            Quiz_view.setVisibility(View.INVISIBLE);
+            submit.setVisibility(View.INVISIBLE);
             alertimg.setBackgroundResource(R.drawable.ic_noques);
             quizalert.setText("Sorry...\nNo Question Today...");
             submit.setVisibility(View.GONE);
@@ -223,21 +244,30 @@ public class Quiz_Events extends AppCompatActivity {
             alertimg.setBackgroundResource(R.drawable.ic_attended);
             quizalert.setText(message);
             submit.setVisibility(View.GONE);
-            setnotification();
-            Quiz_Control.addseenquiz(Quiz_Control.LATER);
-            Quiz_Control.addQuizStatus(Quiz_Control.ATTEND);
+                layout.setVisibility(View.VISIBLE);
+                Quiz_view.setVisibility(View.INVISIBLE);
+                submit.setVisibility(View.INVISIBLE);
+                setnotification();
+                Quiz_Control.addseenquiz(Quiz_Control.LATER);
+                Quiz_Control.addQuizStatus(Quiz_Control.ATTEND);
+
         }
 
         alertbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new Move_Show(Quiz_Events.this, HomeActivity.class);
-                d.dismiss();
-                finish();
+                if (Controller.getprefer().equals(Controller.ADMIN) || Controller.getprefer().equals(Controller.INFOZUB)) {
+                    d.dismiss();
+                }else{
+                    new Move_Show(Quiz_Events.this, HomeActivity.class);
+                    d.dismiss();
+                    finish();
+                }
+
             }
         });
 
-        d.show();
+
     }
 
 
@@ -271,9 +301,12 @@ public class Quiz_Events extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.add_placement_menu, menu);
-        menu.findItem(R.id.item1).setVisible(false);
         menu.findItem(R.id.item2).setVisible(false);
         menu.findItem(R.id.action_search).setVisible(false);
+        menu.findItem(R.id.item1).setVisible(false);
+        if (Controller.getprefer().equals(Controller.INFOZUB) || Controller.getprefer().equals(Controller.ADMIN)){
+            menu.findItem(R.id.item1).setVisible(true);
+        }
         return true;
     }
 
@@ -289,6 +322,10 @@ public class Quiz_Events extends AppCompatActivity {
                 }
 
                 return true;
+
+            case R.id.item1:
+                new Move_Show(Quiz_Events.this,Update_Quiz_Questions.class);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -296,28 +333,41 @@ public class Quiz_Events extends AppCompatActivity {
     }
 
     void displaystatus() {
-        Dialog d = new Dialog(Quiz_Events.this);
-        d.requestWindowFeature(Window.FEATURE_ACTION_MODE_OVERLAY);
-        d.setCancelable(false);
-        d.setContentView(R.layout.quiz_results_design);
-        d.getWindow().setLayout(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
-        TextView totalmark = (TextView) d.findViewById(R.id.uitvresults);
-        TextView totalcount = (TextView) d.findViewById(R.id.uitvcountresult);
-        TextView correctans = (TextView) d.findViewById(R.id.uitvcorrectans);
-        TextView worngans = (TextView) d.findViewById(R.id.uitvwrongans);
-        ImageView closebtn = (ImageView) d.findViewById(R.id.uiivclosebtn);
+        Dialog d1 = new Dialog(Quiz_Events.this);
+        d1.requestWindowFeature(Window.FEATURE_ACTION_MODE_OVERLAY);
+        d1.setCancelable(false);
+        d1.setContentView(R.layout.quiz_results_design);
+        d1.getWindow().setLayout(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
+        TextView totalmark = (TextView) d1.findViewById(R.id.uitvresults);
+        TextView totalcount = (TextView) d1.findViewById(R.id.uitvcountresult);
+        TextView correctans = (TextView) d1.findViewById(R.id.uitvcorrectans);
+        TextView worngans = (TextView) d1.findViewById(R.id.uitvwrongans);
+        ImageView closebtn = (ImageView) d1.findViewById(R.id.uiivclosebtn);
+        ImageView fbshare =(ImageView)d1.findViewById(R.id.uiivfbshare);
+        ImageView instashare=(ImageView)d1.findViewById(R.id.uiivinstagram);
+        ImageView whatsapp =(ImageView)d1.findViewById(R.id.uiivwhatsappshare);
+        CardView resultshare=(CardView)d1.findViewById(R.id.cardView9);
         totalmark.setText(Quiz_Control.getCorrectans());
         totalcount.setText(totalcount.getText().toString().replace("10", Quiz_Control.getCorrectans()));
         correctans.setText(" " + Quiz_Control.getCorrectans() + " Correct");
         worngans.setText(" " + Quiz_Control.getwrongans() + " Wrong");
         Quiz_Control.addseenquiz(Quiz_Control.SEEN);
+        Quiz_Control.addQuizStatus(Quiz_Control.ATTEND);
         closebtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                d.dismiss();
+                d1.dismiss();
+                new Move_Show(Quiz_Events.this,HomeActivity.class);
+                finish();
             }
         });
-        d.show();
+        resultshare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Monitor(Quiz_Events.this).shareResults(Quiz_Control.getCorrectans(),Quiz_Control.getQuizquestion(),Quiz_Control.getcrctans());
+            }
+        });
+        d1.show();
     }
 
     private void updateresults() {

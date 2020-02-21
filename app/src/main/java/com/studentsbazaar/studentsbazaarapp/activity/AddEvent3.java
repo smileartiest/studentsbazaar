@@ -182,16 +182,10 @@ public class AddEvent3 extends AppCompatActivity {
                     Move_Show.showToast("Please enter Valid 10 Digit Number");
                 }else if (Last_date_registration.isEmpty()) {
                     Move_Show.showToast("Enter Last date for registration");
-                }else if (Event_Website.isEmpty()) {
-                    Move_Show.showToast("Please enter correct Event website url");
-                } else if (College_Website.isEmpty()) {
-                    Move_Show.showToast("Please enter correct College website url");
                 } else if (Entry_Fees.isEmpty()) {
                     Move_Show.showToast("Enter Entry Fees");
                 } else if (Event_how_to_reach.isEmpty()) {
                     Move_Show.showToast("Please Enter Landmark/Route");
-                } else if (Event_sponsors.isEmpty()) {
-                    Move_Show.showToast("Please Enter Event Sponsor's");
                 } else {
                     progressDialog.show();
                     Log.d("eventdetails", Event_Details);

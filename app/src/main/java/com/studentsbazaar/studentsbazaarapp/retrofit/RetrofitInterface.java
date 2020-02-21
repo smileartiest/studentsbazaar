@@ -81,6 +81,15 @@ public interface RetrofitInterface {
                                @Field("comments") String comments,
                                @Field("domain") String domain);
 
+    @FormUrlEncoded
+    @POST("/update_quizquestion.php")
+    Call<String> addquizquestions(@Field("question") String question,
+                               @Field("optA") String optA,
+                               @Field("optB") String optB,
+                               @Field("optC") String optC,
+                               @Field("optD") String optD,
+                               @Field("crct") String crct);
+
 
     @GET("/Register.php")
     Call<String> addaccount(@Query("name") String name,

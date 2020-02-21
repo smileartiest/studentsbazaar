@@ -9,15 +9,16 @@
     tools:context=".activity.Pending_Events">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar1"
+        android:id="@+id/toolbarpending"
         android:layout_width="match_parent"
         android:layout_height="40dp"
+        android:layout_marginBottom="5dp"
         android:background="?attr/colorPrimaryDark"
         android:minHeight="?attr/actionBarSize"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
-
-    </androidx.appcompat.widget.Toolbar>
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:titleTextColor="@color/white"
+         />
 
     <RelativeLayout
         android:layout_width="match_parent"
