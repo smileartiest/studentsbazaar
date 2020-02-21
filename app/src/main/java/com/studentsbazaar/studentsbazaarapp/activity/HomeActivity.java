@@ -13,15 +13,17 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -36,14 +38,11 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
-import com.sanojpunchihewa.updatemanager.UpdateManager;
-import com.sanojpunchihewa.updatemanager.UpdateManagerConstant;
 import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.adapter.SliderPagerAdapter;
 import com.studentsbazaar.studentsbazaarapp.controller.Controller;
 import com.studentsbazaar.studentsbazaarapp.controller.Monitor;
 import com.studentsbazaar.studentsbazaarapp.controller.Move_Show;
-import com.studentsbazaar.studentsbazaarapp.controller.ShowConfirmDialog;
 import com.studentsbazaar.studentsbazaarapp.firebase.Config;
 import com.studentsbazaar.studentsbazaarapp.helper.PersistanceUtil;
 import com.studentsbazaar.studentsbazaarapp.model.Posters_Details;
@@ -59,7 +58,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
-import static com.sanojpunchihewa.updatemanager.UpdateManager.*;
+
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -85,7 +84,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private TextView[] dots;
     int page_position = 0;
     private static final int MY_PERMISSIONS_REQUEST_SEND_SMS = 0;
-    UpdateManager mUpdateManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,17 +105,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         tvQuiz = findViewById(R.id.tvQuiz);
         //new ShowConfirmDialog(HomeActivity.this,"please a wait a min");
         //ShowConfirmDialog.textView.setVisibility();
+        if (Controller.getprefer().equals(Controller.VISITOR)) {
+            verifyaccount();
+        }
 
-        mUpdateManager = UpdateManager.Builder(this);
-        mUpdateManager.mode(UpdateManagerConstant.IMMEDIATE).start();
-        // Callback from Available version code
-        mUpdateManager.getAvailableVersionCode(new onVersionCheckListener() {
-            @Override
-            public void onReceiveVersionCode(final int code) {
-                Toast.makeText(context, "String.valueOf(code)", Toast.LENGTH_SHORT).show();
-
-            }
-        });
         if (toolbar != null) {
             setSupportActionBar(toolbar);
             getSupportActionBar().setTitle("");
@@ -319,14 +311,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.nav_logout:
                 spotsDialog.show();
-               new Handler().postDelayed(new Runnable() {
-                   @Override
-                   public void run() {
-                       new Controller(HomeActivity.this).addprefer(Controller.VISITOR);
-                       spotsDialog.dismiss();
-                       new Move_Show(HomeActivity.this,HomeActivity.class);
-                   }
-               },2000);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        new Controller(HomeActivity.this).addprefer(Controller.VISITOR);
+                        spotsDialog.dismiss();
+                        new Move_Show(HomeActivity.this, HomeActivity.class);
+                    }
+                }, 2000);
                 break;
             case R.id.nav_aboutus:
                 Bundle b = new Bundle();
@@ -360,8 +352,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         navigationView.setNavigationItemSelectedListener(HomeActivity.this);
         if (Controller.getprefer().equals(Controller.REG) || Controller.getprefer().equals(Controller.ADMIN)) {
-          navigationView.getMenu().getItem(1).setVisible(false);
-          navigationView.getMenu().getItem(2).setVisible(false);
+            navigationView.getMenu().getItem(1).setVisible(false);
+            navigationView.getMenu().getItem(2).setVisible(false);
         }
         requestPermission();
 
@@ -561,140 +553,47 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         alertDialog.show();
     }
 
+    private void verifyaccount() {
+        Call call = ApiUtil.getServiceClass().getaccountverification(Controller.getUID(), Controller.getDIVID());
+        call.enqueue(new Callback() {
+            @Override
+            public void onResponse(Call call, Response response) {
+               if (!response.body().equals("0")){
+                   displayaccountstatus(response.body().toString());
+               }
+            }
 
-    //    void loadData() {
-//        Call<DownloadResponse> call = ApiUtil.getServiceClass().getHomeComponentList(ApiUtil.GET_RECENT_EVENTS);
-//        call.enqueue(new Callback<DownloadResponse>() {
-//            @Override
-//            public void onResponse(Call<DownloadResponse> call, Response<DownloadResponse> response) {
-//
-//                drawerResponseList = response.body().getProject_details();
-//
-//                d = new Dialog(HomeActivity.this);
-//                d.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//                d.setCancelable(false);
-//                d.setContentView(R.layout.results_design);
-//                ImageView imageView = d.findViewById(R.id.recentposter);
-//                TextView title = d.findViewById(R.id.recenttilte);
-//                TextView venue = d.findViewById(R.id.recentvenue);
-//                TextView day = d.findViewById(R.id.recent_start_date);
-//                TextView month = d.findViewById(R.id.recent_start_month);
-//                TextView apply = d.findViewById(R.id.recentapply);
-//                Button view = d.findViewById(R.id.recentview);
-//                Button later = d.findViewById(R.id.recentlater);
-//
-//                Glide.with(HomeActivity.this).load(drawerResponseList.get(0).getPoster()).into(imageView);
-//                title.setText(drawerResponseList.get(0).getEvent_Title());
-//                venue.setText(drawerResponseList.get(0).getEvent_Organiser() + "," + drawerResponseList.get(0).getCollege_Address());
-//                try {
-//                    Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(drawerResponseList.get(0).getEvent_Start_Date());
-//                    String[] sdate = date1.toString().split(" ");
-//                    if (sdate[0].equals("Sat") || sdate[0].equals("Sun")) {
-//                        day.setTextColor(Color.RED);
-//                        month.setTextColor(Color.RED);
-//
-//                    } else {
-//                        day.setTextColor(Color.parseColor("#1B4F72"));
-//                        month.setTextColor(Color.parseColor("#1B4F72"));
-//                    }
-//                    day.setText(sdate[0]);
-//                    month.setText(sdate[1] + " " + sdate[2]);
-//                } catch (Exception e) {
-//
-//                }
-//                apply.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        if (drawerResponseList.get(0).getEvent_Website().contains("http://") || drawerResponseList.get(0).getEvent_Website().contains("https://")) {
-//
-//                            weburl = drawerResponseList.get(0).getEvent_Website();
-//                        } else {
-//                            weburl = "http://" + drawerResponseList.get(0).getEvent_Website();
-//                        }
-//                        Bundle bundle = new Bundle();
-//                        bundle.putString("url", weburl);
-//                        bundle.putString("data", "reg url");
-//                        bundle.putString("title", "reg title");
-//                        Intent in = new Intent(context, WebActivity.class);
-//                        in.putExtras(bundle);
-//                        context.startActivity(in);
-//                    }
-//                });
-//                view.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        edit.putString("recentevent", "view").apply();
-//                        edit.putString("PREFER", "MORE").apply();
-//                        SharedPreferences sharedPreferences = context.getSharedPreferences("view_details", Context.MODE_PRIVATE);
-//                        SharedPreferences.Editor editor = sharedPreferences.edit();
-//                        editor.putString("coid", drawerResponseList.get(0).getEvent_Coordinator());
-//                        editor.putString("post", drawerResponseList.get(0).getPoster());
-//                        editor.putString("title", drawerResponseList.get(0).getEvent_Title());
-//                        editor.putString("cat", drawerResponseList.get(0).getEvent_Type());
-//                        editor.putString("sdate", drawerResponseList.get(0).getEvent_Start_Date());
-//                        editor.putString("edate", drawerResponseList.get(0).getEvent_End_Date());
-//                        editor.putString("organiser", drawerResponseList.get(0).getEvent_sponsors());
-//                        editor.putString("city", drawerResponseList.get(0).getCollege_District());
-//                        editor.putString("state", drawerResponseList.get(0).getCollege_State());
-//                        editor.putString("dis", drawerResponseList.get(0).getEvent_Discription());
-//                        editor.putString("Eventdetails", drawerResponseList.get(0).getEvent_Details());
-//                        editor.putString("dept", drawerResponseList.get(0).getDept());
-//                        editor.putString("guest", drawerResponseList.get(0).getEvent_guest());
-//                        editor.putString("pronites", drawerResponseList.get(0).getEvent_pro_nites());
-//                        editor.putString("etheme", drawerResponseList.get(0).getEvent_Name());
-//                        editor.putString("accom", drawerResponseList.get(0).getEvent_accomodations());
-//                        editor.putString("lastdate", drawerResponseList.get(0).getLast_date_registration());
-//                        editor.putString("fees", drawerResponseList.get(0).getEntry_Fees());
-//                        editor.putString("htr", drawerResponseList.get(0).getEvent_how_to_reach());
-//                        editor.putString("cpname1", drawerResponseList.get(0).getContact_Person1_Name());
-//                        editor.putString("cpno1", drawerResponseList.get(0).getContact_Person1_No());
-//                        editor.putString("cpname2", drawerResponseList.get(0).getContact_Person2_Name());
-//                        editor.putString("cpno2", drawerResponseList.get(0).getContact_Person2_No());
-//                        editor.putString("webevent", drawerResponseList.get(0).getEvent_Website());
-//                        editor.putString("webcoll", drawerResponseList.get(0).getCollege_Website());
-//                        editor.putString("view", "view");
-//                        editor.apply();
-//                        Intent intent = new Intent(HomeActivity.this, View_Details.class);
-//                        startActivity(intent);
-//                        d.dismiss();
-//                    }
-//                });
-//                later.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        edit.putString("recentevent", "later").apply();
-//                        d.dismiss();
-//                    }
-//                });
-//
-//
-//                d.show();
-//
-//
-//            }
-//
-//            @Override
-//            public void onFailure(Call<DownloadResponse> call, Throwable t) {
-//
-//            }
-//        });
-//
-//    }
+            @Override
+            public void onFailure(Call call, Throwable t) {
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        // Continue updates when resumed
-        mUpdateManager.continueUpdate();
+            }
+        });
     }
 
-    public void callFlexibleUpdate(View view) {
-        // Start a Flexible Update
-        mUpdateManager.mode(UpdateManagerConstant.FLEXIBLE).start();
+    private void displayaccountstatus(String name) {
+        Dialog d = new Dialog(HomeActivity.this);
+        d.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        d.setCancelable(false);
+        d.setContentView(R.layout.account_verification);
+        d.getWindow().setLayout(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
+        d.show();
+        TextView accountholdername=(TextView)d.findViewById(R.id.uitvaccountholdername);
+        Button okbtn=(Button)d.findViewById(R.id.uibtnaccountlogin);
+        Button laterbtn=(Button)d.findViewById(R.id.uibtnaccountlater);
+        accountholdername.setText("Welcome Back , "+name);
+        okbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Move_Show(HomeActivity.this, MainActivity.class);
+            }
+        });
+        laterbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                d.dismiss();
+            }
+        });
     }
 
-    public void callImmediateUpdate(View view) {
-        // Start a Immediate Update
-        mUpdateManager.mode(UpdateManagerConstant.IMMEDIATE).start();
-    }
+
 }

@@ -27,15 +27,20 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.JsonArray;
 import com.studentsbazaar.studentsbazaarapp.AlarmHelper;
 import com.studentsbazaar.studentsbazaarapp.NotificationPublisher;
 import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.adapter.Quiz_Adapter;
+import com.studentsbazaar.studentsbazaarapp.controller.Controller;
 import com.studentsbazaar.studentsbazaarapp.controller.Monitor;
+import com.studentsbazaar.studentsbazaarapp.controller.Move_Show;
 import com.studentsbazaar.studentsbazaarapp.controller.Quiz_Control;
 import com.studentsbazaar.studentsbazaarapp.model.DownloadResponse;
 import com.studentsbazaar.studentsbazaarapp.model.Quiz_Details;
 import com.studentsbazaar.studentsbazaarapp.retrofit.ApiUtil;
+
+import org.json.JSONObject;
 
 import java.util.Calendar;
 import java.util.List;
@@ -89,8 +94,8 @@ public class Quiz_Events extends AppCompatActivity {
             public void onClick(View view) {
                 Log.d("Quizresults", String.valueOf(ApiUtil.QUIZ_RESULT));
                 updateresults();
-                // addresults(sharedPreferences.getString("UID", null), String.valueOf(ApiUtil.QUIZ_RESULT));
-                displaystatus();
+                addresults(Controller.getUID(),Quiz_Control.getCorrectans());
+
             }
         });
 
@@ -109,31 +114,33 @@ public class Quiz_Events extends AppCompatActivity {
     }
 
     void loadData() {
-        Log.d("RESPONSE1", sharedPreferences.getString("UID", null));
+        Log.d("RESPONSE1", Controller.getUID());
         progressDialog.show();
-        Call<DownloadResponse> call = ApiUtil.getServiceClass().getQuizQuestions(sharedPreferences.getString("UID", null));
+        Call<DownloadResponse> call = ApiUtil.getServiceClass().getQuizQuestions(Controller.getUID());
         call.enqueue(new Callback<DownloadResponse>() {
             @Override
             public void onResponse(Call<DownloadResponse> call, Response<DownloadResponse> response) {
-
-                Log.d("RESPONSE1", response.raw().toString());
+                Log.d("RESPONSE2",response.body().toString());
 
                 if (response.isSuccessful()) {
                     assert response.body() != null;
                     drawerResponseList = response.body().getQuiz_details();
+
                     progressDialog.dismiss();
                     ApiUtil.TOTAL_QUIZ = drawerResponseList.size();
                     if (drawerResponseList.size() == 0) {
                         layout.setVisibility(View.VISIBLE);
                         Quiz_view.setVisibility(View.INVISIBLE);
                         submit.setVisibility(View.INVISIBLE);
-                    } else {
+                    }
+                    else{
                         layout.setVisibility(View.INVISIBLE);
                         Quiz_view.setVisibility(View.VISIBLE);
                         submit.setVisibility(View.VISIBLE);
                         quiz_adapter = new Quiz_Adapter(Quiz_Events.this, drawerResponseList);
                         Quiz_view.setAdapter(quiz_adapter);
                     }
+
                 }
                 // mAdapter.notifyDataSetChanged();
 
@@ -156,7 +163,8 @@ public class Quiz_Events extends AppCompatActivity {
             public void onResponse(Call<String> call, Response<String> response) {
                 progressDialog.dismiss();
                 if (response.body().equals("1")) {
-                    getAlertwindow("Thanks\nyou will get the result by 6 PM,stay tuned... ");
+                    displaystatus();
+                   // getAlertwindow("Thanks\nyou will get the result by 6 PM,stay tuned... ");
                 }
             }
 

@@ -1,13 +1,16 @@
 package com.studentsbazaar.studentsbazaarapp.activity;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.controller.Controller;
@@ -22,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
     EditText etPhone, etPassword;
     Button btSubmit;
-    TextView tvRegister, tvVisitor;
+    TextView tvRegister, tvVisitor, tvforgot;
     String stPhone, stPassword;
     SpotsDialog spotsDialog;
     Toolbar toolbar;
@@ -37,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         btSubmit = findViewById(R.id.id_Submit);
         tvRegister = findViewById(R.id.id_Register);
         tvVisitor = findViewById(R.id.id_Visitor);
+        tvforgot = findViewById(R.id.uitvforgot);
         spotsDialog = new SpotsDialog(this);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -49,7 +53,12 @@ public class MainActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+        tvforgot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+            }
+        });
         btSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -125,5 +134,25 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         finish();
+    }
+    private  void displayforgotdialog(){
+        Dialog d = new Dialog(MainActivity.this);
+        d.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        d.setCancelable(false);
+        d.setContentView(R.layout.forgot_password);
+        d.getWindow().setLayout(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
+        d.show();
+        EditText emailphone=(EditText)d.findViewById(R.id.uiedforgotmailphone);
+        EditText password=(EditText)d.findViewById(R.id.uiedforgotpass);
+        EditText confirmpass=(EditText)d.findViewById(R.id.uiedconfirmpass);
+        Button changebtn=(Button)d.findViewById(R.id.uibtnconfrim);
+        changebtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+
     }
 }

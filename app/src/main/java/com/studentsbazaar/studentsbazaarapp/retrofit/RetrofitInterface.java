@@ -16,8 +16,6 @@ public interface RetrofitInterface {
     @GET
     Call<DownloadResponse> getHomeComponentList(@Url String url);
 
-    @GET
-    Call<String> getresulturl(@Url String url);
 
     @FormUrlEncoded
     @POST("/updatedeviceid.php")
@@ -93,9 +91,12 @@ public interface RetrofitInterface {
                             @Query("mail") String mail,
                             @Query("device") String device);
 
-    @FormUrlEncoded
-    @POST("/get_quiz.php")
-    Call<DownloadResponse> getQuizQuestions(@Field("uid") String uid);
+    @GET("/accountverify.php")
+    Call<String> getaccountverification(@Query("uid") String uid,
+                                        @Query("device")String device);
+
+    @GET("/get_quiz.php")
+    Call<DownloadResponse> getQuizQuestions(@Query("uid") String uid);
 
     @FormUrlEncoded
     @POST("/addeventdetails.php")

@@ -198,11 +198,9 @@ public class SignUp extends AppCompatActivity implements
                         if (response.body().equals("1")) {
                             Controller.addprefer(Controller.REG);
                             getAlert();
-//
-
                         } else {
 
-                            Move_Show.showToast("Register Failed");
+                            Move_Show.showToast(response.body().toString());
                         }
 
                     }
