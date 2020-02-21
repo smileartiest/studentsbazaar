@@ -59,7 +59,7 @@ public class Quiz_Events extends AppCompatActivity {
     int CURRENT_TIME;
     int LOCAL_TIME = 18;
     int LIMIT_TIME=23;
-    OffsetTime offset;
+     OffsetTime offset;
 
 
 
