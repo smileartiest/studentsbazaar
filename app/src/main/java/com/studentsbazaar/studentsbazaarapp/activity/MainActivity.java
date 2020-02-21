@@ -2,6 +2,7 @@ package com.studentsbazaar.studentsbazaarapp.activity;
 
 import android.app.Dialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -20,6 +21,7 @@ import com.studentsbazaar.studentsbazaarapp.retrofit.ApiUtil;
 import dmax.dialog.SpotsDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         new Controller(this);
         etPhone = findViewById(R.id.input_phone);
-        etPassword = findViewById(R.id.input_password);
+        etPassword = findViewById(R.id.uiedonpass);
         btSubmit = findViewById(R.id.id_Submit);
         tvRegister = findViewById(R.id.id_Register);
         tvVisitor = findViewById(R.id.id_Visitor);
@@ -56,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         tvforgot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                displayforgotdialog();
             }
         });
         btSubmit.setOnClickListener(new View.OnClickListener() {
@@ -135,24 +137,63 @@ public class MainActivity extends AppCompatActivity {
         super.onBackPressed();
         finish();
     }
-    private  void displayforgotdialog(){
+
+    private void displayforgotdialog() {
         Dialog d = new Dialog(MainActivity.this);
         d.requestWindowFeature(Window.FEATURE_NO_TITLE);
         d.setCancelable(false);
         d.setContentView(R.layout.forgot_password);
         d.getWindow().setLayout(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
-        d.show();
-        EditText emailphone=(EditText)d.findViewById(R.id.uiedforgotmailphone);
-        EditText password=(EditText)d.findViewById(R.id.uiedforgotpass);
-        EditText confirmpass=(EditText)d.findViewById(R.id.uiedconfirmpass);
-        Button changebtn=(Button)d.findViewById(R.id.uibtnconfrim);
+
+        EditText emailphone = (EditText) d.findViewById(R.id.uiedforgotmailphone);
+        EditText password = (EditText) d.findViewById(R.id.uiedpassword);
+        EditText confirmpass = (EditText) d.findViewById(R.id.uiedonpass);
+        Button changebtn = (Button) d.findViewById(R.id.uibtnconfrim);
+        Button cancelbtn =(Button)d.findViewById(R.id.uibtnupdatecancel);
+        cancelbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                d.dismiss();
+            }
+        });
         changebtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (password.getText().toString().equals(confirmpass.getText().toString())) {
+                    spotsDialog.show();
+                    Call<String> call = ApiUtil.getServiceClass().updatepassword(Controller.getUID(), emailphone.getText().toString().trim(), confirmpass.getText().toString().trim());
+                   call.enqueue(new Callback<String>() {
+                       @Override
+                       public void onResponse(Call<String> call, Response<String> response) {
+                           Log.d("Logres",Controller.getUID());
+                           spotsDialog.dismiss();
+                           if (response.body().equals("1")) {
+                               Move_Show.showToast("Password Updated Success");
+                               d.dismiss();
+                               new Move_Show(MainActivity.this, HomeActivity.class);
+                               Controller.addprefer(Controller.REG);
+                               finish();
+                           } else if (response.body().equals("2")){
+                               Move_Show.showToast("Incorrect Mobile no or mail id");
+                           }else {
+                               Move_Show.showToast("Invalid user details");
+                           }
 
+
+                       }
+
+                       @Override
+                       public void onFailure(Call<String> call, Throwable t) {
+
+                       }
+                   });
+                } else {
+                    Move_Show.showToast("Please check your password");
+                }
             }
         });
-
+        d.show();
 
     }
+
 }

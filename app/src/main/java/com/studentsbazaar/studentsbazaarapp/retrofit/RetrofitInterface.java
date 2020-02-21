@@ -18,6 +18,12 @@ public interface RetrofitInterface {
 
 
     @FormUrlEncoded
+    @POST("/forgotpassword.php")
+    Call<String> updatepassword(@Field("uid") String uid,
+                                @Field("data") String data,
+                                @Field("password") String password);
+
+    @FormUrlEncoded
     @POST("/updatedeviceid.php")
     Call<String> updatedeviceid(@Field("device") String device);
 

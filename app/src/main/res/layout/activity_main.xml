@@ -84,7 +84,7 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/input_layout_password"
+                    android:id="@+id/fpinput_layout_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="25dp"
@@ -98,7 +98,7 @@
                     app:passwordToggleTint="@color/colorBlack">
 
                     <EditText
-                        android:id="@+id/input_password"
+                        android:id="@+id/uiedonpass"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/shape"
