@@ -18,6 +18,9 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.studentsbazaar.studentsbazaarapp.controller.Monitor;
 import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.controller.Controller;
@@ -25,6 +28,7 @@ import com.studentsbazaar.studentsbazaarapp.controller.Move_Show;
 import com.studentsbazaar.studentsbazaarapp.retrofit.ApiUtil;
 
 import dmax.dialog.SpotsDialog;
+import pl.droidsonroids.gif.GifImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -33,6 +37,7 @@ public class View_Details extends AppCompatActivity {
     TextView instagram,title, category, sdate, edate, organizer, city, state, Discription, eventdetails, department, guest, pronites, theme, accomadtation, lastdate, entryfees, howtoreach, cpnam1, cpno1, cpname2, cpno2, eventweb, collegeweb;
     Button submit, edit, register_now;
     ImageView head_poster, w1, w2, c1, c2;
+    GifImageView gifImageView;
     CardView cardinsta,cardCollegeweb, cardEventweb, cardTheme, cardPronits, cardAco, cardGuest, cardDept, cardEvent;
     String stitle, sategory, ssdate, sedate, sorganizer, scity, sstate, sDiscription, seventdetails, sdepartment, sguest, spronites, stheme, saccomadtation, slastdate, sentryfees, showtoreach, scpnam1, scpno1, scpname2, scpno2;
     String posterurl, coid, webevent, webcoll, weburl,insta;
@@ -58,6 +63,7 @@ public class View_Details extends AppCompatActivity {
         cardGuest = (CardView) findViewById(R.id.id_card_guest);
         cardDept = (CardView) findViewById(R.id.id_card_dept);
         sdate = (TextView) findViewById(R.id.head_start_date);
+        gifImageView=(GifImageView)findViewById(R.id.gifview);
         edate = (TextView) findViewById(R.id.head_end_date);
         organizer = (TextView) findViewById(R.id.head_organiser);
         city = (TextView) findViewById(R.id.head_city);
@@ -241,11 +247,19 @@ public class View_Details extends AppCompatActivity {
             register_now.setVisibility(View.GONE);
         }
         Glide.with(View_Details.this)
-                .load(posterurl)
-                .asGif()
-                .placeholder(R.drawable.please)
-                .error(R.drawable.load)
-                .into(head_poster);
+                .load(posterurl).listener(new RequestListener<String, GlideDrawable>() {
+            @Override
+            public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+               gifImageView.setVisibility(View.VISIBLE);
+                return false;
+            }
+
+            @Override
+            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+               gifImageView.setVisibility(View.GONE);
+                return false;
+            }
+        }).into(head_poster);
         title.setText(stitle);
         category.setText(sategory);
         sdate.setText(ssdate);

@@ -33,13 +33,25 @@
                 android:layout_margin="2dp"
                 app:cardCornerRadius="8dp"
                 app:cardElevation="7dp">
-
-                <ImageView
-                    android:id="@+id/head_slider"
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/avatar" />
+                   >
+
+                    <pl.droidsonroids.gif.GifImageView
+                        android:id="@+id/gifview"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/loadgif" />
+                    <ImageView
+                        android:id="@+id/head_slider"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/avatar" />
+
+                </RelativeLayout>
+
             </androidx.cardview.widget.CardView>
 
 

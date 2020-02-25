@@ -27,6 +27,8 @@ public class Move_Show {
         toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL, 0, 0);
         TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
         toast.getView().setBackgroundResource(R.drawable.button);
+        toast.getView().setElevation(10);
+        toast.getView().setSoundEffectsEnabled(true);
         toast.getView().setPadding(10, 10, 10, 10);
         v.setTextColor(Color.parseColor("#FFFFFF"));
         v.setTextSize(16);

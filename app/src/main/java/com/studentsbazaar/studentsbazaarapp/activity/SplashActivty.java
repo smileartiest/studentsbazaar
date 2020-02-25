@@ -8,6 +8,8 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.Window;
+import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -38,6 +40,8 @@ public class SplashActivty extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_activty);
         new Controller(SplashActivty.this);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         androidId = Settings.Secure.getString(getContentResolver(),
                 Settings.Secure.ANDROID_ID);
         connectionverify();

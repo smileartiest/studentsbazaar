@@ -72,7 +72,7 @@ public class PlacementActivity extends AppCompatActivity {
 
             toolbar = (Toolbar) findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);
-            getSupportActionBar().setTitle("Placements");
+            getSupportActionBar().setTitle("Placement's");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
 

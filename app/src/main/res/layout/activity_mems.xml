@@ -20,7 +20,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Meme Zone"
+            android:text="Meme"
             android:id="@+id/id_toolbarTitle"
             android:textColor="@color/white"
             android:textAllCaps="false"
