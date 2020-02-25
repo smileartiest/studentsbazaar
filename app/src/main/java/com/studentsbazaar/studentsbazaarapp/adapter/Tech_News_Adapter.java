@@ -47,10 +47,9 @@ public class Tech_News_Adapter extends RecyclerView.Adapter<Tech_News_Adapter.My
     public void onBindViewHolder(@NonNull final MyviewHolder holder, int position) {
         final Tech_News_model listItem = mData.get(position);
         holder.setIsRecyclable(false);
-        Glide.with(context).load(listItem.getNews_Poster()).into(holder.postermeme);
+        Glide.with(context).load(listItem.getNews_Poster()) .placeholder(R.drawable.please).into(holder.postermeme);
         holder.username.setText("Students Bazaar");
         holder.caption.setText(listItem.getNews_Dis());
-        holder.posttime.setText("Date: " + listItem.getCreated_Date());
         holder.share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -65,14 +64,13 @@ public class Tech_News_Adapter extends RecyclerView.Adapter<Tech_News_Adapter.My
     }
 
     public class MyviewHolder extends RecyclerView.ViewHolder {
-        TextView username, posttime, smile, caption;
+        TextView username, smile, caption;
         ImageView postermeme, share;
         CardView cardView;
 
         public MyviewHolder(@NonNull View itemView) {
             super(itemView);
             username = (TextView) itemView.findViewById(R.id.username);
-            posttime = (TextView) itemView.findViewById(R.id.posttime);
             caption = (TextView) itemView.findViewById(R.id.postcaption);
             cardView = (CardView) itemView.findViewById(R.id.memecartview);
             postermeme = (ImageView) itemView.findViewById(R.id.memepost);

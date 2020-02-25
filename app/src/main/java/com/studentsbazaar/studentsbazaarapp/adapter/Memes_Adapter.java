@@ -29,6 +29,7 @@ import dmax.dialog.SpotsDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.http.Url;
 
 public class Memes_Adapter extends RecyclerView.Adapter<Memes_Adapter.Myviewholder> {
 
@@ -62,10 +63,9 @@ public class Memes_Adapter extends RecyclerView.Adapter<Memes_Adapter.Myviewhold
     public void onBindViewHolder(@NonNull final Myviewholder holder, final int position) {
         final Memes_Details listItem = mData.get(position);
         holder.setIsRecyclable(false);
-        Glide.with(context).load(listItem.getMemes()).into(holder.postermeme);
+        Glide.with(context).load(listItem.getMemes()).placeholder(R.drawable.please).crossFade().dontAnimate().into(holder.postermeme);
         holder.username.setText(listItem.getUser_Name());
         holder.caption.setText("");
-        holder.posttime.setText("Date: " + listItem.getCreated_Date());
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -97,14 +97,13 @@ public class Memes_Adapter extends RecyclerView.Adapter<Memes_Adapter.Myviewhold
     }
 
     public class Myviewholder extends RecyclerView.ViewHolder {
-        TextView username, posttime, smile, caption;
+        TextView username, smile, caption;
         ImageView postermeme, shareimg;
         CardView cardView;
 
         public Myviewholder(@NonNull View itemView) {
             super(itemView);
             username = (TextView) itemView.findViewById(R.id.username);
-            posttime = (TextView) itemView.findViewById(R.id.posttime);
             caption = (TextView) itemView.findViewById(R.id.postcaption);
             cardView = (CardView) itemView.findViewById(R.id.memecartview);
             postermeme = (ImageView) itemView.findViewById(R.id.memepost);

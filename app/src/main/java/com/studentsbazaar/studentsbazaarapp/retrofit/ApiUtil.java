@@ -22,6 +22,7 @@ public class ApiUtil {
     public static  final ArrayList<String> COLLEGEARRAY = new ArrayList<>();
     public static  int QUIZ_RESULT=0;
     public static  int TOTAL_QUIZ=0;
+    public static int QUIZ_ATTENT=0;
 
 
     public static RetrofitInterface getServiceClass() {

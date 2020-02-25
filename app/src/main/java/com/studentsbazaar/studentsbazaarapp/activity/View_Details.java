@@ -14,12 +14,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 
 import com.bumptech.glide.Glide;
 import com.studentsbazaar.studentsbazaarapp.controller.Monitor;
 import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.controller.Controller;
+import com.studentsbazaar.studentsbazaarapp.controller.Move_Show;
 import com.studentsbazaar.studentsbazaarapp.retrofit.ApiUtil;
 
 import dmax.dialog.SpotsDialog;
@@ -31,7 +33,7 @@ public class View_Details extends AppCompatActivity {
     TextView instagram,title, category, sdate, edate, organizer, city, state, Discription, eventdetails, department, guest, pronites, theme, accomadtation, lastdate, entryfees, howtoreach, cpnam1, cpno1, cpname2, cpno2, eventweb, collegeweb;
     Button submit, edit, register_now;
     ImageView head_poster, w1, w2, c1, c2;
-    CardView cardCollegeweb, cardEventweb, cardTheme, cardPronits, cardAco, cardGuest, cardDept, cardEvent;
+    CardView cardinsta,cardCollegeweb, cardEventweb, cardTheme, cardPronits, cardAco, cardGuest, cardDept, cardEvent;
     String stitle, sategory, ssdate, sedate, sorganizer, scity, sstate, sDiscription, seventdetails, sdepartment, sguest, spronites, stheme, saccomadtation, slastdate, sentryfees, showtoreach, scpnam1, scpno1, scpname2, scpno2;
     String posterurl, coid, webevent, webcoll, weburl,insta;
     SpotsDialog spotsDialog;
@@ -48,6 +50,7 @@ public class View_Details extends AppCompatActivity {
         category = (TextView) findViewById(R.id.head_category);
         cardAco = (CardView) findViewById(R.id.id_card_acco);
         cardCollegeweb = (CardView) findViewById(R.id.id_college_website);
+        cardinsta=(CardView)findViewById(R.id.id_event_instagram);
         cardEventweb = (CardView) findViewById(R.id.id_event_website);
         cardEvent = (CardView) findViewById(R.id.id_card_event);
         cardTheme = (CardView) findViewById(R.id.id_card_theme);
@@ -82,7 +85,20 @@ public class View_Details extends AppCompatActivity {
         collegeweb = (TextView) findViewById(R.id.head_college_web);
         instagram = (TextView)findViewById(R.id.head_event_instagram);
         register_now = (Button) findViewById(R.id.register_now);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.viewtoolb);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setTitle("View Details");
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        }
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
         spotsDialog = new SpotsDialog(this);
         new Controller(this);
        /* if (spUserDetails.getString("PREFER", null).equals("PREF")) {
@@ -192,7 +208,7 @@ public class View_Details extends AppCompatActivity {
         coid = sharedPreferences.getString("coid", null);
         posterurl = sharedPreferences.getString("post", null);
         stitle = sharedPreferences.getString("title", null);
-        sategory = sharedPreferences.getString("cat", null);
+        sategory = sharedPreferences.getString("cat", null).replaceAll("\\[", "").replaceAll("\\]","");
         ssdate = sharedPreferences.getString("sdate", null);
         sedate = sharedPreferences.getString("edate", null);
         sorganizer = sharedPreferences.getString("organiser", null);
@@ -200,7 +216,7 @@ public class View_Details extends AppCompatActivity {
         sstate = sharedPreferences.getString("state", null);
         sDiscription = sharedPreferences.getString("dis", null);
         seventdetails = sharedPreferences.getString("Eventdetails", null);
-        sdepartment = sharedPreferences.getString("dept", null);
+        sdepartment = sharedPreferences.getString("dept", null).replaceAll("\\[", "").replaceAll("\\]","");
         sguest = sharedPreferences.getString("guest", null);
         spronites = sharedPreferences.getString("pronites", null);
         stheme = sharedPreferences.getString("etheme", null);
@@ -226,7 +242,8 @@ public class View_Details extends AppCompatActivity {
         }
         Glide.with(View_Details.this)
                 .load(posterurl)
-                .placeholder(R.drawable.load)
+                .asGif()
+                .placeholder(R.drawable.please)
                 .error(R.drawable.load)
                 .into(head_poster);
         title.setText(stitle);
@@ -244,12 +261,8 @@ public class View_Details extends AppCompatActivity {
             String output = String.valueOf(seventdetails).replace("/*NonTechnical Events*/", "<font color=#000000><b><br>NonTechnical Events<br></b></font>").replace("/*Technical Events*/", "<font color=#000000><b>Technical Events<br></b></font>").replace("/*Workshop Events*/", "<font color=#000000><b><br>Workshop Events<br></b></font>").replace("/*Online Events*/", "<font color=#000000><b><br>Online Events<br></b></font>");
             eventdetails.setText(Html.fromHtml(output));
         }
-
-        if (sdepartment.contains("No Department Selected")) {
-            cardDept.setVisibility(View.GONE);
-        } else {
             department.setText(sdepartment);
-        }
+
 
         if (sguest.length() != 0) {
             guest.setText(sguest);
@@ -257,11 +270,24 @@ public class View_Details extends AppCompatActivity {
             cardGuest.setVisibility(View.GONE);
         }
 
-        if (spronites.length() != 0) {
-            pronites.setText(spronites);
-        } else {
-            cardPronits.setVisibility(View.GONE);
-        }
+       if (spronites == null || spronites.equalsIgnoreCase("No")){
+           cardPronits.setVisibility(View.GONE);
+       }
+       if (stheme==null || stheme.equalsIgnoreCase("No")){
+           cardTheme.setVisibility(View.GONE);
+       }
+       if (saccomadtation==null || saccomadtation.equalsIgnoreCase("No")){
+           cardAco.setVisibility(View.GONE);
+       }
+       if (webevent.length()<=0){
+           cardEventweb.setVisibility(View.GONE);
+       }
+       if (webcoll.length()<=0){
+           cardCollegeweb.setVisibility(View.GONE);
+       }
+       if (insta.length()<=0){
+           cardinsta.setVisibility(View.GONE);
+       }
 
         // pronites.setText(spronites);
 
@@ -357,4 +383,7 @@ public class View_Details extends AppCompatActivity {
             finish();
         }
     }
+
+
+
 }

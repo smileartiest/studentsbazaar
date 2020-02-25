@@ -80,7 +80,7 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
         holder.setIsRecyclable(false);
         Glide.with(context)
                 .load(listItem.getPoster())
-                .placeholder(R.drawable.load)
+                .placeholder(R.drawable.please)
                 .into(holder.imageView);
         Log.d("IMG", listItem.getPoster() + "");
         holder.tvHead.setText(listItem.getEvent_Title());

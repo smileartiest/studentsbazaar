@@ -37,6 +37,10 @@ public class Quiz_Control {
     public static void addseenquiz(String seen) {
         editor.putString("seen", seen).apply();
     }
+    public static void clearquizControl(){
+        editor.clear();
+        editor.apply();
+    }
 
     public static void addquizquestion(String seen) {
         editor.putString("QUIZ", seen).apply();

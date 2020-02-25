@@ -203,6 +203,7 @@ public class EventActivity extends AppCompatActivity implements NavigationView.O
                 Bundle b = new Bundle();
                 b.putString("url", "https://www.studentsbazaar.in/about-us/");
                 b.putString("title", "ABOUT US");
+                b.putString("data","ABOUT US");
                 Intent intEvent = new Intent(EventActivity.this, WebActivity.class);
                 intEvent.putExtras(b);
                 startActivity(intEvent);
@@ -257,5 +258,6 @@ public class EventActivity extends AppCompatActivity implements NavigationView.O
     public void onBackPressed() {
         super.onBackPressed();
         new Move_Show(EventActivity.this,HomeActivity.class);
+        finish();
     }
 }

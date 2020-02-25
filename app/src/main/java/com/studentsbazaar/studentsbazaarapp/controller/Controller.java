@@ -41,6 +41,10 @@ public class Controller {
     public static void addTokenStatus(String token) {
         editor.putString("TOKEN_STAT", token).apply();
     }
+    public static  void clearuserdetails(){
+        editor.clear();
+        editor.apply();
+    }
 
     public static void adduservierify(String later) {
         editor.putString("LATER", later).apply();

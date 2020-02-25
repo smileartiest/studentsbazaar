@@ -108,7 +108,8 @@ public class Mems extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        finish();
+        new Move_Show(Mems.this,HomeActivity.class);
+
     }
 
     @Override

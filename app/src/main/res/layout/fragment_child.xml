@@ -17,6 +17,7 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_margin="2dp"
             app:cardCornerRadius="7dp">
 
             <LinearLayout
@@ -66,6 +67,13 @@
                             android:layout_marginLeft="5dp"
                             android:orientation="vertical">
 
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:elevation="10dp"
+                                card_view:cardCornerRadius="10dp"
+                                android:layout_margin="2dp"
+                                >
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -113,7 +121,7 @@
                                 </LinearLayout>
 
                             </LinearLayout>
-
+                            </androidx.cardview.widget.CardView>
 
                             <View
                                 android:layout_width="match_parent"
@@ -141,6 +149,7 @@
                                 android:text="SECL 2019 में Online / Offline मोड में आवेदकों से आवेदन प्राप्त करने का प्रस्ताव है। योग्य उम्मीदवार, 24/12/2019 से पहले SECL, के लिए अपना आवेदन प्रस्तुत कर सकते हैं। आवेदन करने के लिए इच्छुक उमीदवार सभी पात्रता मानदंड, वेतन, कुल रिक्तियां, चयन प्रक्रिया, नौकरी विवरण, अंतिम तिथि, और आवेदन प्रक्रिया जैसे अन्य महत्वपूर्ण जानकारी नीचे दी गई पद के लिए देख सकते हैं। अपना आवेदन ऑनलाइन जमा करने से पहले, कृपया नीचे सभी विवरण देखें। हम सभी उम्मीदवारों को Rojgarlive के माध्यम से शुभकामनाएं देना चाहते हैं।"
                                 android:textColor="#000000"
                                 android:textSize="14sp" />-->
+
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -308,16 +317,17 @@
         android:gravity="center_horizontal">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:src="@drawable/gp40" />
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/iconnew" />
 
         <TextView
             android:id="@+id/bottomtext"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
-            android:text="Student Bazaar"
+            android:text="Students Bazaar"
+            android:layout_marginLeft="15sp"
             android:textColor="@color/colorPrimaryDark"
             android:textStyle="bold" />
     </LinearLayout>

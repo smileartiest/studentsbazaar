@@ -63,6 +63,7 @@ public class AddEvent2 extends AppCompatActivity {
         txtcat = findViewById(R.id.textView9);
         catagory.setShowSoftInputOnFocus(false);
         next = findViewById(R.id.add2_nextbtn);
+        title.requestFocus();
 
         if (departmentlist.getText().length() == 0) {
             departmentlist.setText("No Department Selected");
@@ -178,6 +179,7 @@ public class AddEvent2 extends AppCompatActivity {
                                 DateChecker dateChecker = new DateChecker();
                                 if (dateChecker.checkPrevDate(dateToStr, esdate)) {
                                     startdate.setText(esdate);
+                                    enddate.setText(esdate);
                                 } else {
                                     Move_Show.showToast("StartDate must be after CurrentDate");
                                     //startdate.setText(esdate);
@@ -634,7 +636,7 @@ public class AddEvent2 extends AppCompatActivity {
                 } else if (estae.isEmpty()) {
                     Move_Show.showToast("Enter State Name");
                 } else if (departmentlist.getText().toString().equals("No Department Selected")) {
-                    Move_Show.showToast("Please Select a Eligible Departments");
+                    Move_Show.showToast("Please Select  Eligible Departments");
                 } else {
                     SharedPreferences sf = getSharedPreferences("event", MODE_PRIVATE);
                     SharedPreferences.Editor ed = sf.edit();

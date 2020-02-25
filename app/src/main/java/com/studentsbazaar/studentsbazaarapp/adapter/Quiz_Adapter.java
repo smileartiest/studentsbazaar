@@ -63,6 +63,7 @@ public class Quiz_Adapter extends RecyclerView.Adapter<Quiz_Adapter.Myviewholder
                 holder.option2.setEnabled(false);
                 holder.option3.setEnabled(false);
                 holder.option4.setEnabled(false);
+                ApiUtil.QUIZ_ATTENT=1;
                 int childCount = radioGroup.getChildCount();
                 for (int x = 0; x < childCount; x++) {
                     RadioButton btn = (RadioButton) radioGroup.getChildAt(x);

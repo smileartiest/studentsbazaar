@@ -25,6 +25,8 @@ import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.gms.common.api.Api;
 import com.studentsbazaar.studentsbazaarapp.AlarmHelper;
 import com.studentsbazaar.studentsbazaarapp.NotificationPublisher;
 import com.studentsbazaar.studentsbazaarapp.R;
@@ -98,10 +100,13 @@ public class Quiz_Events extends AppCompatActivity {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("Quizresults", String.valueOf(ApiUtil.QUIZ_RESULT));
-                updateresults();
-                addresults(Controller.getUID(), Quiz_Control.getCorrectans());
-
+                if (ApiUtil.QUIZ_ATTENT==0){
+                    Move_Show.showToast("Please answer the question");
+                }else {
+                    Log.d("Quizresults", String.valueOf(ApiUtil.QUIZ_RESULT));
+                    updateresults();
+                    addresults(Controller.getUID(), Quiz_Control.getCorrectans());
+                }
             }
         });
 
@@ -232,7 +237,7 @@ public class Quiz_Events extends AppCompatActivity {
                 Quiz_view.setVisibility(View.INVISIBLE);
                 submit.setVisibility(View.INVISIBLE);
                 alertimg.setBackgroundResource(R.drawable.ic_attended);
-                quizalert.setText("You have Already attend Quiz Today...");
+                quizalert.setText("You have Already attended Quiz Today");
 
             }
             Log.d("LOGTIME",String.valueOf(Quiz_Control.getQuizstatus()+Quiz_Control.getseenquiz()));

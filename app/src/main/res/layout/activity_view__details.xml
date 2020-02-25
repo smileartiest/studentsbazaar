@@ -5,8 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.View_Details">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/viewtoolb"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="?attr/colorPrimaryDark"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
+    </androidx.appcompat.widget.Toolbar>
     <ScrollView
+        android:layout_below="@+id/viewtoolb"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -969,7 +979,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/colorPrimary"
                 android:textColor="#FFFFFF"
-                android:text="Register_Now"
+                android:text="Register Now"
                 />
 
             <LinearLayout

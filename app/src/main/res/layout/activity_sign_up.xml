@@ -112,8 +112,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:paddingLeft="5dp"
-                android:textColor="#000"
-                android:textColorHint="@color/colorBlack"
+                android:textColor="@color/colorPrimaryDark"
                 android:hint="Enter Name (ex : Jhon)" />
 
             <TextView
@@ -132,8 +131,7 @@
                 android:layout_height="40dp"
                 android:textSize="15sp"
                 android:paddingLeft="5dp"
-                android:textColor="#000"
-                android:textColorHint="@color/colorBlack"
+                android:textColor="@color/colorPrimaryDark"
                 android:hint="Enter Email (ex : example@gmail.com)"
                 android:inputType="textEmailAddress" />
 
@@ -153,8 +151,7 @@
                 android:layout_height="40dp"
                 android:textSize="15sp"
                 android:paddingLeft="5dp"
-                android:textColor="#000"
-                android:textColorHint="@color/colorBlack"
+                android:textColor="@color/colorPrimaryDark"
                 android:hint="Enter Phone number (ex :9001001100)"
                 android:inputType="phone"/>
 
@@ -211,8 +208,7 @@
                 android:layout_height="40dp"
                 android:textSize="15sp"
                 android:paddingLeft="5dp"
-                android:textColor="#000"
-                android:textColorHint="@color/colorBlack"
+                android:textColor="@color/colorPrimaryDark"
                 android:hint="Enter College name (ex : xxx college)" />
 
             <TextView
@@ -231,8 +227,7 @@
                 android:layout_height="30dp"
                 android:textSize="15sp"
                 android:paddingLeft="5dp"
-                android:textColor="#000"
-                android:textColorHint="@color/colorBlack"
+                android:textColor="@color/colorPrimaryDark"
                />
 
             <TextView
@@ -252,8 +247,7 @@
                 android:layout_marginTop="5dp"
                 android:textSize="15sp"
                 android:paddingLeft="5dp"
-                android:textColor="#000"
-                android:textColorHint="@color/colorBlack" />
+                android:textColor="@color/colorPrimaryDark" />
 
             <TextView
                 android:layout_marginLeft="3dp"
@@ -269,10 +263,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="5dp"
+                android:maxLength="9"
                 android:textSize="15sp"
                 android:paddingLeft="5dp"
                 android:textColor="@color/colorBlack"
-                android:textColorHint="@color/colorBlack"
                 android:hint="Enter Academic year (ex : 2019-2023)" />
 
         </LinearLayout>
@@ -330,8 +324,8 @@
                 android:textSize="15sp"
                 android:paddingLeft="5dp"
                 android:inputType="text"
-                android:textColor="#000"
-                android:textColorHint="@color/colorBlack"/>
+                android:textColor="@color/colorPrimaryDark"
+           />
 
             <TextView
                 android:layout_marginLeft="3dp"
@@ -351,8 +345,8 @@
                 android:textSize="15sp"
                 android:paddingLeft="5dp"
                 android:inputType="text"
-                android:textColor="#000"
-                android:textColorHint="@color/colorBlack"/>
+                android:textColor="@color/colorPrimaryDark"
+           />
 
             <TextView
                 android:layout_marginLeft="3dp"
@@ -372,8 +366,8 @@
                 android:textSize="15sp"
                 android:paddingLeft="5dp"
                 android:inputType="text"
-                android:textColor="#000"
-                android:textColorHint="@color/colorBlack"/>
+                android:textColor="@color/colorPrimaryDark"
+           />
             <TextView
                 android:layout_marginLeft="3dp"
                 android:layout_marginTop="10dp"
@@ -389,10 +383,31 @@
                 android:hint="Password"
                 android:layout_marginTop="5dp"
                 android:background="@drawable/edittext"
+                android:inputType="textPassword"
                 android:textSize="15sp"
                 android:paddingLeft="5dp"
-                android:textColor="#000"
-                android:textColorHint="@color/colorBlack"/>
+                android:textColor="@color/colorPrimaryDark"
+            />
+            <TextView
+                android:layout_marginLeft="3dp"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/colorBlack"
+                android:text="Confirm Password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <EditText
+                android:id="@+id/reg_conpassword"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:hint="Confirm Password"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/edittext"
+                android:inputType="textPassword"
+                android:textSize="15sp"
+                android:paddingLeft="5dp"
+                android:textColor="@color/colorPrimaryDark"
+                />
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>

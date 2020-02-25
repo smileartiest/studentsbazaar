@@ -97,12 +97,13 @@ public class AddEvent extends AppCompatActivity {
                 onlineing = d.findViewById(R.id.addonlineing);
                 onlinenext = d.findViewById(R.id.addeventnxt5);
                 cardtech.setVisibility(View.VISIBLE);
-
+                edtech.requestFocus();
                 technext.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         cardtech.setVisibility(View.GONE);
                         cardnontech.setVisibility(View.VISIBLE);
+                        ednontech.requestFocus();
 
                     }
                 });
@@ -111,6 +112,7 @@ public class AddEvent extends AppCompatActivity {
                     public void onClick(View view) {
                         cardnontech.setVisibility(View.GONE);
                         cardworkshop.setVisibility(View.VISIBLE);
+                        edworkshop.requestFocus();
 
                     }
                 });
@@ -119,6 +121,7 @@ public class AddEvent extends AppCompatActivity {
                     public void onClick(View view) {
                         cardworkshop.setVisibility(View.GONE);
                         cardonline.setVisibility(View.VISIBLE);
+                       edonline.requestFocus();
 
                     }
                 });

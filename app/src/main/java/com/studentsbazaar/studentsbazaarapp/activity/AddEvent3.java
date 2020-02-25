@@ -63,6 +63,7 @@ public class AddEvent3 extends AppCompatActivity {
         eventweb = (AutoCompleteTextView) findViewById(R.id.add3_eventweb);
         collegeweb = (AutoCompleteTextView) findViewById(R.id.add3_collegeweb);
         lastdate.setText(sf.getString("esdate", "none"));
+        fgust.requestFocus();
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(AddEvent3.this, android.R.layout.simple_list_item_1, urlformat);
         eventweb.setAdapter(arrayAdapter);
         eventweb.setThreshold(0);
@@ -199,11 +200,11 @@ public class AddEvent3 extends AppCompatActivity {
 
                             if (response.body().equals("1")) {
 
-                                getAlertwindow("Thank you...\nYour Request has been Sent...\nAdmin will reach you soon...", response.body());
+                                getAlertwindow("Thank you...\nYour Request has been Sent...\nAdmin will reach you soon..!!", response.body());
                                 progressDialog.dismiss();
 
                             } else {
-                                getAlertwindow("Sorry\n,Your Request Couldn't Send...Please try again...", response.body());
+                                getAlertwindow("Sorry\n,Your Request Couldn't Send...Please try again..!!", response.body());
                             }
 
 

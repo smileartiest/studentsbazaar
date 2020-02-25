@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.studentsbazaar.studentsbazaarapp.controller.Monitor;
 import com.studentsbazaar.studentsbazaarapp.R;
+import com.studentsbazaar.studentsbazaarapp.controller.Move_Show;
 
 public class MUActivity extends AppCompatActivity {
 
@@ -81,6 +82,7 @@ public class MUActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        new Move_Show(MUActivity.this,HomeActivity.class);
         finish();
     }
     @Override

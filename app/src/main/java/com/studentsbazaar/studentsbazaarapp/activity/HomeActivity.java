@@ -199,7 +199,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         cvEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new Move_Show(HomeActivity.this, IntroActivity.class);
+                new Move_Show(HomeActivity.this, EventActivity.class);
+
+
             }
         });
 
@@ -207,12 +209,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View v) {
                 new Move_Show(HomeActivity.this, PlacementActivity.class);
+
             }
         });
         technews.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 new Move_Show(HomeActivity.this, Tech_News.class);
+
             }
         });
 
@@ -231,6 +235,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
                             new Move_Show(HomeActivity.this, SignUp.class);
+
 
                         }
                     });
@@ -251,6 +256,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(View view) {
                 Controller.adddesignprefer(Controller.PREFER);
                 new Move_Show(HomeActivity.this, Mems.class);
+
             }
         });
         cvabout.setOnClickListener(new View.OnClickListener() {
@@ -263,6 +269,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 Intent intEvent = new Intent(HomeActivity.this, WebActivity.class);
                 intEvent.putExtras(b);
                 startActivity(intEvent);
+
             }
         });
 
@@ -276,6 +283,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 Intent intEvent = new Intent(HomeActivity.this, WebActivity.class);
                 intEvent.putExtras(b);
                 startActivity(intEvent);
+
             }
         });
 
@@ -327,25 +335,31 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         Fragment fragment = null;
         switch (item.getItemId()) {
             case R.id.nav_home:
+                new Move_Show(HomeActivity.this, HomeActivity.class);
+
                 break;
             case R.id.nav_sigin:
                 new Move_Show(HomeActivity.this, MainActivity.class);
+
                 break;
             case R.id.nav_signup:
                 new Move_Show(HomeActivity.this, SignUp.class);
+
                 break;
 
             case R.id.nav_disclaimer:
                 new Move_Show(HomeActivity.this, DisclaimerActivity.class);
+
                 break;
             case R.id.nav_logout:
                 spotsDialog.show();
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        new Controller(HomeActivity.this).addprefer(Controller.VISITOR);
                         spotsDialog.dismiss();
-                        new Move_Show(HomeActivity.this, HomeActivity.class);
+                        Controller.clearuserdetails();
+                        Quiz_Control.clearquizControl();
+                        finishAffinity();
                     }
                 }, 2000);
                 break;
@@ -353,6 +367,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 Bundle b = new Bundle();
                 b.putString("url", "https://www.studentsbazaar.in/about-us/");
                 b.putString("title", "ABOUT US");
+                b.putString("data","ABOUT US");
                 Intent intEvent = new Intent(HomeActivity.this, WebActivity.class);
                 intEvent.putExtras(b);
                 startActivity(intEvent);
@@ -627,5 +642,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finishAffinity();
+    }
 }

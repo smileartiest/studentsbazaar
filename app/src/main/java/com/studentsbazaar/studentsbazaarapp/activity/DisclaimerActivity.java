@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.studentsbazaar.studentsbazaarapp.controller.Monitor;
 import com.studentsbazaar.studentsbazaarapp.R;
+import com.studentsbazaar.studentsbazaarapp.controller.Move_Show;
 
 import static android.text.Layout.JUSTIFICATION_MODE_INTER_WORD;
 
@@ -43,6 +44,7 @@ public class DisclaimerActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        new Move_Show(DisclaimerActivity.this,HomeActivity.class);
         finish();
     }
     @Override
