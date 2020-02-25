@@ -50,8 +50,10 @@ import com.studentsbazaar.studentsbazaarapp.model.Posters_Details;
 import com.studentsbazaar.studentsbazaarapp.model.Project_details;
 import com.studentsbazaar.studentsbazaarapp.retrofit.ApiUtil;
 
+import java.text.SimpleDateFormat;
 import java.time.OffsetTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import dmax.dialog.SpotsDialog;
@@ -89,7 +91,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     int CURRENT_TIME;
     int LOCAL_TIME=18;
     int LIMIT_TIME=23;
-    OffsetTime offset;
 
 
     @Override
@@ -112,8 +113,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         tvQuiz = findViewById(R.id.tvQuiz);
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            offset = OffsetTime.now();
-            CURRENT_TIME = offset.getHour();
+
+            Calendar calander = Calendar.getInstance();
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH");
+            String time = simpleDateFormat.format(calander.getTime());
+            Log.d("Time",time);
+            CURRENT_TIME = Integer.valueOf(time);
             if (LOCAL_TIME < CURRENT_TIME && CURRENT_TIME<LIMIT_TIME) {
                 if (Quiz_Control.getQuizstatus()==null && Quiz_Control.getseenquiz()==null) {
 

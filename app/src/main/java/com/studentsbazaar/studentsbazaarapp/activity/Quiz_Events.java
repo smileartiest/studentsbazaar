@@ -37,6 +37,7 @@ import com.studentsbazaar.studentsbazaarapp.model.DownloadResponse;
 import com.studentsbazaar.studentsbazaarapp.model.Quiz_Details;
 import com.studentsbazaar.studentsbazaarapp.retrofit.ApiUtil;
 
+import java.text.SimpleDateFormat;
 import java.time.OffsetTime;
 import java.util.Calendar;
 import java.util.List;
@@ -59,7 +60,7 @@ public class Quiz_Events extends AppCompatActivity {
     int CURRENT_TIME;
     int LOCAL_TIME = 18;
     int LIMIT_TIME=23;
-     OffsetTime offset;
+
 
 
 
@@ -76,8 +77,11 @@ public class Quiz_Events extends AppCompatActivity {
         layout = (LinearLayout) findViewById(R.id.empty4);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
-         offset = OffsetTime.now();
-        CURRENT_TIME = offset.getHour();
+        Calendar calander = Calendar.getInstance();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH");
+        String time = simpleDateFormat.format(calander.getTime());
+        Log.d("Time",time);
+        CURRENT_TIME = Integer.valueOf(time);
 
         if (toolbar != null) {
             setSupportActionBar(toolbar);
