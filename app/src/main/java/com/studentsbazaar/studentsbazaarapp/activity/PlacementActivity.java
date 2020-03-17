@@ -168,6 +168,7 @@ public class PlacementActivity extends AppCompatActivity {
         MenuItem shareItem = menu.findItem(R.id.item1);
         MenuItem search = menu.findItem(R.id.action_search);
         menu.findItem(R.id.item2).setVisible(false);
+        menu.findItem(R.id.profile).setVisible(false);
         SearchView searchView = (SearchView) search.getActionView();
         searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {

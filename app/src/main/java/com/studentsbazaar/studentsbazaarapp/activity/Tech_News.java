@@ -156,6 +156,7 @@ public class Tech_News extends AppCompatActivity {
         MenuItem shareItem = menu.findItem(R.id.item1);
         menu.findItem(R.id.item2).setVisible(false);
         menu.findItem(R.id.action_search).setVisible(false);
+        menu.findItem(R.id.profile).setVisible(false);
         if (Controller.getprefer().equals(Controller.REG) || Controller.getprefer().equals(Controller.VISITOR)) {
             shareItem.setVisible(false);
         }

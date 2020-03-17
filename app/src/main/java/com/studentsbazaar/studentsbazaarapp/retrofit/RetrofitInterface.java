@@ -12,7 +12,6 @@ import retrofit2.http.Query;
 import retrofit2.http.Url;
 
 public interface RetrofitInterface {
-
     @GET
     Call<DownloadResponse> getHomeComponentList(@Url String url);
 

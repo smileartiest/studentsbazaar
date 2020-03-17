@@ -1,5 +1,4 @@
 package com.studentsbazaar.studentsbazaarapp.activity;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -17,7 +16,6 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,7 +30,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager.widget.ViewPager;
-
 import com.crowdfire.cfalertdialog.CFAlertDialog;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
@@ -49,19 +46,15 @@ import com.studentsbazaar.studentsbazaarapp.helper.PersistanceUtil;
 import com.studentsbazaar.studentsbazaarapp.model.Posters_Details;
 import com.studentsbazaar.studentsbazaarapp.model.Project_details;
 import com.studentsbazaar.studentsbazaarapp.retrofit.ApiUtil;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-
 import dmax.dialog.SpotsDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
-
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -291,7 +284,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(View v) {
                 new Move_Show(HomeActivity.this, MUActivity.class);
 
-
             }
         });
 
@@ -319,7 +311,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 } catch (Exception e) {
 
                 }
+                return true;
 
+            case R.id.profile:
+              new Move_Show(HomeActivity.this,ProfileActivity.class);
+              finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -607,7 +603,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onResponse(Call call, Response response) {
                 if (!response.body().equals("0")) {
-                    displayaccountstatus(response.body().toString());
+                   displayaccountstatus(response.body().toString());
+                    Log.d("DEtails",response.body().toString());
                 }
             }
 
@@ -628,7 +625,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         TextView accountholdername = (TextView) d.findViewById(R.id.uitvaccountholdername);
         Button okbtn = (Button) d.findViewById(R.id.uibtnaccountlogin);
         Button laterbtn = (Button) d.findViewById(R.id.uibtnaccountlater);
-        accountholdername.setText("Welcome Back , " + name);
+        String[] userdata=name.split("split");
+        Controller.addusername(userdata[0]);
+        Controller.addusermail(userdata[1]);
+        accountholdername.setText("Welcome Back , " + Controller.getusername());
         okbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

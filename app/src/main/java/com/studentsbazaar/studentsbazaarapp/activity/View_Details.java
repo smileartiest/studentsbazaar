@@ -237,13 +237,17 @@ public class View_Details extends AppCompatActivity {
         webevent = sharedPreferences.getString("webevent", null);
         webcoll = sharedPreferences.getString("webcoll", null);
         insta =sharedPreferences.getString("insta",null);
-        if (Controller.getdesignprefer().equals(Controller.MORE) ) {
+        if (Controller.getdesignprefer().equals(Controller.MORE)) {
             submit.setVisibility(View.GONE);
             edit.setVisibility(View.GONE);
             register_now.setVisibility(View.VISIBLE);
-        } else if (Controller.getdesignprefer().equals(Controller.PREFER)) {
+        } else if (Controller.getdesignprefer().equals(Controller.PREFER) && Controller.getprefer().equals(Controller.ADMIN)) {
             submit.setVisibility(View.VISIBLE);
             edit.setVisibility(View.VISIBLE);
+            register_now.setVisibility(View.GONE);
+        } else if (Controller.getdesignprefer().equals(Controller.PREFER) && Controller.getprefer().equals(Controller.REG) || Controller.getprefer().equals(Controller.VISITOR)) {
+            submit.setVisibility(View.GONE);
+            edit.setVisibility(View.GONE);
             register_now.setVisibility(View.GONE);
         }
         Glide.with(View_Details.this)

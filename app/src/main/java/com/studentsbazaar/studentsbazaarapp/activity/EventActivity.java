@@ -147,6 +147,7 @@ public class EventActivity extends AppCompatActivity implements NavigationView.O
         menu.findItem(R.id.item1).setVisible(false);
         menu.findItem(R.id.item2).setVisible(false);
         menu.findItem(R.id.action_search).setVisible(false);
+        menu.findItem(R.id.profile).setVisible(false);
         return true;
     }
 

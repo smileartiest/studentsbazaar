@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    >
+    android:background="@color/white">
 
 
     <LinearLayout
@@ -167,7 +166,8 @@
         android:id="@+id/imageView2"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="100dp"
+        app:layout_constraintBottom_toTopOf="@+id/splashgif"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -177,18 +177,16 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="32dp"
         android:fontFamily="serif"
-        android:visibility="visible"
-        android:text="Ultimate Student Zone"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="18sp"
+        android:text="Students Bazaar"
+        android:textSize="25sp"
         android:textStyle="bold"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginRight="8dp" />
+        app:layout_constraintTop_toBottomOf="@+id/splashgif" />
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -206,16 +204,25 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView2"
         app:layout_constraintVertical_bias="0.252" />
 
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/splashgif"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/loadgif"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
     <ImageView
         android:id="@+id/imageView4"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginEnd="30dp"
+        android:layout_marginRight="30dp"
         android:layout_marginBottom="10dp"
-        app:layout_constraintBottom_toTopOf="@+id/textView"
         android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/waterdrops"
-        android:layout_marginRight="30dp" />
+        app:srcCompat="@drawable/waterdrops" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

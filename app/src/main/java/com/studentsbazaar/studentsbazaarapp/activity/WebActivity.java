@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -217,7 +218,8 @@ public class WebActivity extends AppCompatActivity {
         wv1.setInitialScale(1);
         wv1.getSettings().setLoadsImagesAutomatically(true);
         wv1.getSettings().setJavaScriptEnabled(true);
-        wv1.setInitialScale(25 * 10);
+        wv1.setInitialScale(200);
+       wv1.setBackgroundColor(Color.parseColor("#002139"));
         wv1.setWebChromeClient(new MyWebChromeClient(this));
         wv1.setWebViewClient(new WebViewClient() {
             @Override
@@ -356,6 +358,7 @@ public class WebActivity extends AppCompatActivity {
         menu.findItem(R.id.item1).setVisible(false);
         menu.findItem(R.id.item2).setVisible(false);
         menu.findItem(R.id.action_search).setVisible(false);
+        menu.findItem(R.id.profile).setVisible(false);
         return true;
     }
 

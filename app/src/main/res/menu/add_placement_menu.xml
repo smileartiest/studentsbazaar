@@ -2,6 +2,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <item  android:id="@+id/profile"
+        android:title="profile"
+        app:showAsAction="always"
+        android:iconTint="#FFFFFF"
+        android:icon="@drawable/ic_person_black_24dp"/>
+
     <item  android:id="@+id/shareitem"
         android:title="shareapp"
         app:showAsAction="always"
@@ -26,7 +32,6 @@
         app:showAsAction="always"
         android:iconTint="#FFFFFF"
         android:icon="@drawable/ic_add_white"/>
-
 
 
 </menu>

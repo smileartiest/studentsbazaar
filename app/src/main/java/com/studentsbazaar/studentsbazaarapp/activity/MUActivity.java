@@ -62,7 +62,7 @@ public class MUActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Bundle b = new Bundle();
-                b.putString("url", "http://egovernance.unom.ac.in/qpregular/question_main.asp");
+                b.putString("url", "https://egovernance.unom.ac.in/questionbank/question_main.asp");
                 b.putString("title", "RESULTS-MU");
                 b.putString("data", "QUESTION PAPERS");
                 Intent i = new Intent(MUActivity.this,WebActivity.class);
@@ -92,6 +92,7 @@ public class MUActivity extends AppCompatActivity {
         menu.findItem(R.id.item1).setVisible(false);
         menu.findItem(R.id.item2).setVisible(false);
         menu.findItem(R.id.action_search).setVisible(false);
+        menu.findItem(R.id.profile).setVisible(false);
         return  true;
     }
     @Override

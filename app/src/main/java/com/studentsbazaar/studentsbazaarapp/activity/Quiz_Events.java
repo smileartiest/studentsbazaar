@@ -75,7 +75,7 @@ public class Quiz_Events extends AppCompatActivity {
         alarmHelper = new AlarmHelper(this);
         layout = (LinearLayout) findViewById(R.id.empty4);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-
+        setnotification();
         Calendar calander = Calendar.getInstance();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH");
         String time = simpleDateFormat.format(calander.getTime());
@@ -280,10 +280,10 @@ public class Quiz_Events extends AppCompatActivity {
         Calendar calendar = Calendar.getInstance();
         if (android.os.Build.VERSION.SDK_INT >= 23) {
             calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH),
-                    16, 20, 0);
+                    16, 53, 0);
         } else {
             calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH),
-                    16, 20, 0);
+                    16, 53, 0);
         }
 
 
@@ -309,6 +309,7 @@ public class Quiz_Events extends AppCompatActivity {
         menu.findItem(R.id.item2).setVisible(false);
         menu.findItem(R.id.action_search).setVisible(false);
         menu.findItem(R.id.item1).setVisible(false);
+        menu.findItem(R.id.profile).setVisible(false);
         if (Controller.getprefer().equals(Controller.INFOZUB) || Controller.getprefer().equals(Controller.ADMIN)) {
             menu.findItem(R.id.item1).setVisible(true);
         }
