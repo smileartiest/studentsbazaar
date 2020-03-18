@@ -54,7 +54,7 @@
       <TextView
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:text="No Question Today...!!! \n Already you attend the Quiz"
+          android:text="No Data found"
           android:textColor="@color/white"
           android:gravity="center"
           android:fontFamily="serif"

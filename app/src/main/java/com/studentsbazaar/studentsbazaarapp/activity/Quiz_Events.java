@@ -210,7 +210,7 @@ public class Quiz_Events extends AppCompatActivity {
         d.show();
         if (message.equals("Attended")) {
             if (LOCAL_TIME < CURRENT_TIME && CURRENT_TIME<LIMIT_TIME){
-                layout.setVisibility(View.VISIBLE);
+                layout.setVisibility(View.GONE);
                 Quiz_view.setVisibility(View.INVISIBLE);
                 submit.setVisibility(View.INVISIBLE);
                 alertimg.setBackgroundResource(R.drawable.ic_attended);
@@ -224,7 +224,7 @@ public class Quiz_Events extends AppCompatActivity {
                     displaystatus();
                 }
             }else{
-                layout.setVisibility(View.VISIBLE);
+                layout.setVisibility(View.GONE);
                 Quiz_view.setVisibility(View.INVISIBLE);
                 submit.setVisibility(View.INVISIBLE);
                 alertimg.setBackgroundResource(R.drawable.ic_attended);
@@ -234,7 +234,7 @@ public class Quiz_Events extends AppCompatActivity {
             Log.d("LOGTIME",String.valueOf(Quiz_Control.getQuizstatus()+Quiz_Control.getseenquiz()));
 
         } else if (message.equals("notupdated")) {
-            layout.setVisibility(View.VISIBLE);
+            layout.setVisibility(View.GONE);
             Quiz_view.setVisibility(View.INVISIBLE);
             submit.setVisibility(View.INVISIBLE);
             alertimg.setBackgroundResource(R.drawable.ic_noques);
@@ -244,7 +244,7 @@ public class Quiz_Events extends AppCompatActivity {
             alertimg.setBackgroundResource(R.drawable.ic_attended);
             quizalert.setText(message);
             submit.setVisibility(View.GONE);
-                layout.setVisibility(View.VISIBLE);
+                layout.setVisibility(View.GONE);
                 Quiz_view.setVisibility(View.INVISIBLE);
                 submit.setVisibility(View.INVISIBLE);
                 setnotification();
