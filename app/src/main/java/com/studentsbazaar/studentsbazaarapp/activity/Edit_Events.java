@@ -14,10 +14,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.controller.Controller;
+import com.studentsbazaar.studentsbazaarapp.controller.Move_Show;
 import com.studentsbazaar.studentsbazaarapp.model.DownloadResponse;
 import com.studentsbazaar.studentsbazaarapp.model.Project_details;
 import com.studentsbazaar.studentsbazaarapp.retrofit.ApiUtil;
@@ -109,12 +111,27 @@ public class Edit_Events extends AppCompatActivity {
         eventid = Controller.getUID();
         edit_window.setVisibility(View.GONE);
         layout.setVisibility(View.INVISIBLE);
+       Toolbar toolbar = (Toolbar) findViewById(R.id.edittoolbar);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setTitle("Edit Event");
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        }
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
         loadevents();
         edit_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 edit_window.setVisibility(View.VISIBLE);
                 view_window.setVisibility(View.INVISIBLE);
+                edtitle.requestFocus();
             }
         });
         done_btn.setOnClickListener(new View.OnClickListener() {
@@ -210,14 +227,14 @@ public class Edit_Events extends AppCompatActivity {
                         parentlayout.setVisibility(View.VISIBLE);
                         Glide.with(Edit_Events.this)
                                 .load(drawerResponseList.get(0).getPoster())
-                                .placeholder(R.drawable.load)
+                                .placeholder(R.drawable.please)
                                 .into(head_poster);
                         Glide.with(Edit_Events.this)
                                 .load(drawerResponseList.get(0).getPoster())
-                                .placeholder(R.drawable.load)
+                                .placeholder(R.drawable.please)
                                 .into(head_posteredit);
                         title.setText(drawerResponseList.get(0).getEvent_Title());
-                        category.setText(drawerResponseList.get(0).getEvent_Type());
+                        category.setText(drawerResponseList.get(0).getEvent_Type().replaceAll("\\[", "").replaceAll("\\]",""));
                         sdate.setText(drawerResponseList.get(0).getEvent_Start_Date());
                         edate.setText(drawerResponseList.get(0).getEvent_End_Date());
                         organizer.setText(drawerResponseList.get(0).getEvent_Organiser());
@@ -226,7 +243,7 @@ public class Edit_Events extends AppCompatActivity {
                         Discription.setText(drawerResponseList.get(0).getEvent_Discription());
                         String output = drawerResponseList.get(0).getEvent_Details().replace("/*NonTechnical Events*/", "<font color=#000000><b><br>NonTechnical Events<br></b></font>").replace("/*Technical Events*/", "<font color=#000000><b>Technical Events<br></b></font>").replace("/*Workshop Events*/", "<font color=#000000><b><br>Workshop Events<br></b></font>").replace("/*Online Events*/", "<font color=#000000><b><br>Online Events<br></b></font>");
                         eventdetails.setText(Html.fromHtml(output));
-                        department.setText(drawerResponseList.get(0).getDept());
+                        department.setText(drawerResponseList.get(0).getDept().replaceAll("\\[", "").replaceAll("\\]",""));
                         guest.setText(drawerResponseList.get(0).getEvent_guest());
                         pronites.setText(drawerResponseList.get(0).getEvent_pro_nites());
                         theme.setText(drawerResponseList.get(0).getEvent_Name());
@@ -243,7 +260,7 @@ public class Edit_Events extends AppCompatActivity {
                         txtinsta.setText(drawerResponseList.get(0).getEvent_Instagram());
 
                         edtitle.setText(drawerResponseList.get(0).getEvent_Title());
-                        edcategory.setText(drawerResponseList.get(0).getEvent_Type());
+                        edcategory.setText(drawerResponseList.get(0).getEvent_Type().replaceAll("\\[", "").replaceAll("\\]",""));
                         edsdate.setText(drawerResponseList.get(0).getEvent_Start_Date());
                         ededate.setText(drawerResponseList.get(0).getEvent_End_Date());
                         edorganizer.setText(drawerResponseList.get(0).getEvent_Organiser());
@@ -252,7 +269,7 @@ public class Edit_Events extends AppCompatActivity {
                         edDiscription.setText(drawerResponseList.get(0).getEvent_Discription());
                         String output1 =drawerResponseList.get(0).getEvent_Details().replace("/*NonTechnical Events*/", "<font color=#000000><b><br>NonTechnical Events<br></b></font>").replace("/*Technical Events*/", "<font color=#000000><b>Technical Events<br></b></font>").replace("/*Workshop Events*/", "<font color=#000000><b><br>Workshop Events<br></b></font>").replace("/*Online Events*/", "<font color=#000000><b><br>Online Events<br></b></font>");
                         edeventdetails.setText(Html.fromHtml(output1));
-                        eddepartment.setText(drawerResponseList.get(0).getDept());
+                        eddepartment.setText(drawerResponseList.get(0).getDept().replaceAll("\\[", "").replaceAll("\\]",""));
                         edguest.setText(drawerResponseList.get(0).getEvent_guest());
                         edpronites.setText(drawerResponseList.get(0).getEvent_pro_nites());
                         edtheme.setText(drawerResponseList.get(0).getEvent_Name());
@@ -285,4 +302,10 @@ public class Edit_Events extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        new Move_Show(Edit_Events.this,HomeActivity.class);
+        finish();
+    }
 }

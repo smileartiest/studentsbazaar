@@ -41,7 +41,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1.7"
-            android:text="Add Post *"
+            android:text="Add Event Poster *"
             android:textColor="#000"
             android:textStyle="bold" />
 
@@ -104,7 +104,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:text="Add Events *"
+            android:text="Add Events Details *"
             android:textColor="#000"
             android:textStyle="bold" />
 

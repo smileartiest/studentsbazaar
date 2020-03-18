@@ -28,6 +28,7 @@ import com.studentsbazaar.studentsbazaarapp.controller.Monitor;
 import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.adapter.JobListAdapter;
 import com.studentsbazaar.studentsbazaarapp.controller.Controller;
+import com.studentsbazaar.studentsbazaarapp.controller.Move_Show;
 import com.studentsbazaar.studentsbazaarapp.model.Campus;
 import com.studentsbazaar.studentsbazaarapp.model.DownloadResponse;
 import com.studentsbazaar.studentsbazaarapp.retrofit.ApiUtil;
@@ -71,7 +72,7 @@ public class PlacementActivity extends AppCompatActivity {
 
             toolbar = (Toolbar) findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);
-            getSupportActionBar().setTitle("JOBS");
+            getSupportActionBar().setTitle("Placement's");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
 
@@ -114,6 +115,7 @@ public class PlacementActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        new Move_Show(PlacementActivity.this,HomeActivity.class);
         finish();
     }
 
@@ -166,6 +168,7 @@ public class PlacementActivity extends AppCompatActivity {
         MenuItem shareItem = menu.findItem(R.id.item1);
         MenuItem search = menu.findItem(R.id.action_search);
         menu.findItem(R.id.item2).setVisible(false);
+        menu.findItem(R.id.profile).setVisible(false);
         SearchView searchView = (SearchView) search.getActionView();
         searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -227,6 +230,7 @@ public class PlacementActivity extends AppCompatActivity {
         dSubmit = (Button) dialog.findViewById(R.id.complete);
         dcomments = (EditText) dialog.findViewById(R.id.ed_comment);
         dCancel = (ImageView) dialog.findViewById(R.id.add_placement_cancel);
+        dClgName.requestFocus();
         dialog.show();
         Window window = dialog.getWindow();
         window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);

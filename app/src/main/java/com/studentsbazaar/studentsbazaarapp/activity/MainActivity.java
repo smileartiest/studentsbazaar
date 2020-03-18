@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
         tvforgot = findViewById(R.id.uitvforgot);
         spotsDialog = new SpotsDialog(this);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        etPhone.requestFocus();
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -141,6 +142,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        new Move_Show(MainActivity.this,HomeActivity.class);
         finish();
     }
 

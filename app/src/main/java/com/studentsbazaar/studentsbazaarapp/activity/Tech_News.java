@@ -34,6 +34,7 @@ import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.adapter.Tech_News_Adapter;
 import com.studentsbazaar.studentsbazaarapp.controller.Controller;
 import com.studentsbazaar.studentsbazaarapp.controller.Monitor;
+import com.studentsbazaar.studentsbazaarapp.controller.Move_Show;
 import com.studentsbazaar.studentsbazaarapp.helper.FileUtil;
 import com.studentsbazaar.studentsbazaarapp.model.DownloadResponse;
 import com.studentsbazaar.studentsbazaarapp.model.Tech_News_model;
@@ -81,7 +82,7 @@ public class Tech_News extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbarnews);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
-            getSupportActionBar().setTitle("Tech News");
+            getSupportActionBar().setTitle("Interesting Facts");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
 
@@ -108,6 +109,7 @@ public class Tech_News extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        new Move_Show(Tech_News.this,HomeActivity.class);
         finish();
     }
 
@@ -154,6 +156,7 @@ public class Tech_News extends AppCompatActivity {
         MenuItem shareItem = menu.findItem(R.id.item1);
         menu.findItem(R.id.item2).setVisible(false);
         menu.findItem(R.id.action_search).setVisible(false);
+        menu.findItem(R.id.profile).setVisible(false);
         if (Controller.getprefer().equals(Controller.REG) || Controller.getprefer().equals(Controller.VISITOR)) {
             shareItem.setVisible(false);
         }

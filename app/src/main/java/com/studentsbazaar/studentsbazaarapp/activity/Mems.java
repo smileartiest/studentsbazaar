@@ -68,6 +68,7 @@ public class Mems extends AppCompatActivity {
     String epost = "0";
     Dialog dialog;
     Uri imageUri;
+    String str;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,10 +81,19 @@ public class Mems extends AppCompatActivity {
         Controller.addupdateview(Controller.MEMEVIEW);
         UID = Controller.getUID();
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Intent intent = getIntent();
+        str = intent.getStringExtra("apitype");
         if (toolbar != null) {
             setSupportActionBar(toolbar);
+            if (str==null){
+                getSupportActionBar().setTitle("Memes");
+            }
+            else if (str.equals("uid")){
+                getSupportActionBar().setTitle("My Memes");
+            }
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
+
 
         }
 
@@ -108,7 +118,14 @@ public class Mems extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        finish();
+        if (str==null){
+            new Move_Show(Mems.this,HomeActivity.class);
+        }
+        else if (str.equals("uid")){
+            new Move_Show(Mems.this,ProfileActivity.class);
+        }
+
+
     }
 
     @Override
@@ -117,6 +134,7 @@ public class Mems extends AppCompatActivity {
         inflater.inflate(R.menu.add_placement_menu, menu);
         MenuItem shareItem = menu.findItem(R.id.item2);
         MenuItem search = menu.findItem(R.id.action_search);
+        menu.findItem(R.id.profile).setVisible(false);
         search.setVisible(false);
         if (Controller.getprefer().equals(Controller.ADMIN) || Controller.getprefer().equals(Controller.MEMEACCEPT)) {
             shareItem.setVisible(true);
@@ -257,7 +275,12 @@ public class Mems extends AppCompatActivity {
 
     private void loadData() {
         spotsDialog.show();
-        Call<DownloadResponse> call = ApiUtil.getServiceClass().getHomeComponentList(ApiUtil.GET_MEMES);
+        Call<DownloadResponse> call = null;
+        if (str==null){
+            call = ApiUtil.getServiceClass().getHomeComponentList(ApiUtil.GET_MEME);
+        }else if (str.equals("uid")){
+            call = ApiUtil.getServiceClass().getHomeComponentList(ApiUtil.GET_USER_MEMES+"?uid=313");
+        }
         call.enqueue(new Callback<DownloadResponse>() {
             @Override
             public void onResponse(Call<DownloadResponse> call, Response<DownloadResponse> response) {

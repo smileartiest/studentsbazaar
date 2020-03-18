@@ -42,6 +42,25 @@ public class Controller {
         editor.putString("TOKEN_STAT", token).apply();
     }
 
+    public static void addusername(String name) {
+        editor.putString("USERNAME", name).apply();
+    }
+
+    public static void addusermail(String mail) {
+        editor.putString("MAIL", mail).apply();
+    }
+    public static String getusername() {
+        return sharedPreferences.getString("USERNAME", null);
+    }
+
+    public static String getusermail() {
+        return sharedPreferences.getString("MAIL", null);
+    }
+    public static  void clearuserdetails(){
+        editor.clear();
+        editor.apply();
+    }
+
     public static void adduservierify(String later) {
         editor.putString("LATER", later).apply();
     }

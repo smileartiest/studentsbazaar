@@ -1,5 +1,4 @@
 package com.studentsbazaar.studentsbazaarapp.activity;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -17,7 +16,6 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,7 +30,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager.widget.ViewPager;
-
 import com.crowdfire.cfalertdialog.CFAlertDialog;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
@@ -49,18 +46,15 @@ import com.studentsbazaar.studentsbazaarapp.helper.PersistanceUtil;
 import com.studentsbazaar.studentsbazaarapp.model.Posters_Details;
 import com.studentsbazaar.studentsbazaarapp.model.Project_details;
 import com.studentsbazaar.studentsbazaarapp.retrofit.ApiUtil;
-
-import java.time.OffsetTime;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
-
 import dmax.dialog.SpotsDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
-
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -87,9 +81,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     int page_position = 0;
     private static final int MY_PERMISSIONS_REQUEST_SEND_SMS = 0;
     int CURRENT_TIME;
-    int LOCAL_TIME=18;
-    int LIMIT_TIME=23;
-    OffsetTime offset;
+    int LOCAL_TIME = 18;
+    int LIMIT_TIME = 23;
 
 
     @Override
@@ -110,24 +103,27 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         tvMemes = findViewById(R.id.tvMeme);
         tvPlacement = findViewById(R.id.tvPlacement);
         tvQuiz = findViewById(R.id.tvQuiz);
-
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            offset = OffsetTime.now();
-            CURRENT_TIME = offset.getHour();
-            if (LOCAL_TIME < CURRENT_TIME && CURRENT_TIME<LIMIT_TIME) {
-                if (Quiz_Control.getQuizstatus()==null && Quiz_Control.getseenquiz()==null) {
 
-                }
-                else if (Quiz_Control.getQuizstatus().equals(Quiz_Control.ATTEND) && Quiz_Control.getseenquiz().equals(Quiz_Control.LATER)){
-                    new Move_Show(HomeActivity.this,Quiz_Events.class);
+            Calendar calander = Calendar.getInstance();
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH");
+            String time = simpleDateFormat.format(calander.getTime());
+            Log.d("Time", time);
+            CURRENT_TIME = Integer.valueOf(time);
+            if (LOCAL_TIME <= CURRENT_TIME && CURRENT_TIME <= LIMIT_TIME) {
+                if (Quiz_Control.getQuizstatus() == null && Quiz_Control.getseenquiz() == null) {
+                    Log.d("Time", time);
+                } else if (Quiz_Control.getQuizstatus().equals(Quiz_Control.ATTEND) && Quiz_Control.getseenquiz().equals(Quiz_Control.LATER)) {
+                    openDialog();
                 }
             }
+
         }
 
         //new ShowConfirmDialog(HomeActivity.this,"please a wait a min");
         //ShowConfirmDialog.textView.setVisibility();
         if (Controller.getprefer().equals(Controller.VISITOR)) {
-            if (Controller.getuservierify() ==null){
+            if (Controller.getuservierify() == null) {
                 verifyaccount();
             }
 
@@ -195,7 +191,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         cvEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new Move_Show(HomeActivity.this, IntroActivity.class);
+                new Move_Show(HomeActivity.this, EventActivity.class);
+
+
             }
         });
 
@@ -203,12 +201,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View v) {
                 new Move_Show(HomeActivity.this, PlacementActivity.class);
+
             }
         });
         technews.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 new Move_Show(HomeActivity.this, Tech_News.class);
+
             }
         });
 
@@ -227,6 +227,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
                             new Move_Show(HomeActivity.this, SignUp.class);
+
 
                         }
                     });
@@ -247,6 +248,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(View view) {
                 Controller.adddesignprefer(Controller.PREFER);
                 new Move_Show(HomeActivity.this, Mems.class);
+
             }
         });
         cvabout.setOnClickListener(new View.OnClickListener() {
@@ -254,11 +256,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(View view) {
                 Bundle b = new Bundle();
                 b.putString("url", "http://uniqsolutions.co.in/Admin/Files/Tech_Video.php");
-                b.putString("title", "INTERESTING VIDEOS");
-                b.putString("data", "INTERESTING VIDEOS");
+                b.putString("title", "Interesting Videos");
+                b.putString("data", "Interesting Videos");
                 Intent intEvent = new Intent(HomeActivity.this, WebActivity.class);
                 intEvent.putExtras(b);
                 startActivity(intEvent);
+
             }
         });
 
@@ -267,11 +270,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(View v) {
                 Bundle b = new Bundle();
                 b.putString("url", "https://coe1.annauniv.edu/home/");
-                b.putString("title", "RESULTS-AU");
-                b.putString("data", "RESULTS-AU");
+                b.putString("title", "AU Results");
+                b.putString("data", "AU Results");
                 Intent intEvent = new Intent(HomeActivity.this, WebActivity.class);
                 intEvent.putExtras(b);
                 startActivity(intEvent);
+
             }
         });
 
@@ -280,7 +284,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View v) {
                 new Move_Show(HomeActivity.this, MUActivity.class);
-
 
             }
         });
@@ -315,7 +318,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 } catch (Exception e) {
 
                 }
+                return true;
 
+            case R.id.profile:
+              new Move_Show(HomeActivity.this,ProfileActivity.class);
+              finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -329,25 +336,31 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         Fragment fragment = null;
         switch (item.getItemId()) {
             case R.id.nav_home:
+                new Move_Show(HomeActivity.this, HomeActivity.class);
+
                 break;
             case R.id.nav_sigin:
                 new Move_Show(HomeActivity.this, MainActivity.class);
+
                 break;
             case R.id.nav_signup:
                 new Move_Show(HomeActivity.this, SignUp.class);
+
                 break;
 
             case R.id.nav_disclaimer:
                 new Move_Show(HomeActivity.this, DisclaimerActivity.class);
+
                 break;
             case R.id.nav_logout:
                 spotsDialog.show();
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        new Controller(HomeActivity.this).addprefer(Controller.VISITOR);
                         spotsDialog.dismiss();
-                        new Move_Show(HomeActivity.this, HomeActivity.class);
+                        Controller.clearuserdetails();
+                        Quiz_Control.clearquizControl();
+                        finishAffinity();
                     }
                 }, 2000);
                 break;
@@ -355,6 +368,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 Bundle b = new Bundle();
                 b.putString("url", "https://www.studentsbazaar.in/about-us/");
                 b.putString("title", "ABOUT US");
+                b.putString("data", "ABOUT US");
                 Intent intEvent = new Intent(HomeActivity.this, WebActivity.class);
                 intEvent.putExtras(b);
                 startActivity(intEvent);
@@ -451,7 +465,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     if (Controller.getTokenstatus() == null) {
                         pushToken(Config.getPrefToken(context));
                         Log.d("TOKEN", Config.getPrefToken(context));
-                    } else if (Controller.getTokenstatus().equals(Controller.SENT)){
+                    } else if (Controller.getTokenstatus().equals(Controller.SENT)) {
                         Log.d("TOKEN", Config.getPrefToken(context));
                     }
 
@@ -547,35 +561,41 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private void openDialog() {
         CFAlertDialog.Builder builder = new CFAlertDialog.Builder(this);
         builder.setDialogStyle(CFAlertDialog.CFAlertStyle.ALERT);
-        builder.setTitle("Hey there ! Permission Denied!");
-        builder.setMessage("Without this permission the app is unable to share the content to your friends,unable to give accurate results by using location.");
-        builder.addButton("RE-TRY", -1, -1, CFAlertDialog.CFAlertActionStyle.POSITIVE, CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, new DialogInterface.OnClickListener() {
+        builder.setTitle("Quiz Results published...");
+        builder.setMessage("Click view to see your Quiz Results...");
+        builder.addButton("View", -1, -1, CFAlertDialog.CFAlertActionStyle.POSITIVE, CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                requestPermission();
-                dialog.dismiss();
+                Quiz_Control.addseenquiz(Quiz_Control.LATER);
+                new Move_Show(HomeActivity.this, Quiz_Events.class);
             }
         });
 
-        builder.addButton("I'M SURE", -1, -1, CFAlertDialog.CFAlertActionStyle.NEGATIVE, CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, new DialogInterface.OnClickListener() {
+        builder.addButton("Later", -1, -1, CFAlertDialog.CFAlertActionStyle.NEGATIVE, CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // Toast.makeText(SplashActivity.this, "Upgrade tapped", Toast.LENGTH_SHORT).show();
-
                 dialog.dismiss();
             }
         });
         builder.show();
     }
 
-    void getAlertwindow(String message) {
+    void getAlertwindow() {
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
-        builder.setTitle(message);
-        builder.setPositiveButton("DONE", new DialogInterface.OnClickListener() {
+        builder.setMessage("Are you sure, you want to exit now...");
+        builder.setCancelable(false);
+        builder.setIcon(R.drawable.iconnew);
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
+                finishAffinity();
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
 
             }
         });
@@ -589,9 +609,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         call.enqueue(new Callback() {
             @Override
             public void onResponse(Call call, Response response) {
-               if (!response.body().equals("0")){
+                if (!response.body().equals("0")) {
                    displayaccountstatus(response.body().toString());
-               }
+                    Log.d("DEtails",response.body().toString());
+                }
             }
 
             @Override
@@ -608,10 +629,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         d.setContentView(R.layout.account_verification);
         d.getWindow().setLayout(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
         d.show();
-        TextView accountholdername=(TextView)d.findViewById(R.id.uitvaccountholdername);
-        Button okbtn=(Button)d.findViewById(R.id.uibtnaccountlogin);
-        Button laterbtn=(Button)d.findViewById(R.id.uibtnaccountlater);
-        accountholdername.setText("Welcome Back , "+name);
+        TextView accountholdername = (TextView) d.findViewById(R.id.uitvaccountholdername);
+        Button okbtn = (Button) d.findViewById(R.id.uibtnaccountlogin);
+        Button laterbtn = (Button) d.findViewById(R.id.uibtnaccountlater);
+        String[] userdata=name.split("split");
+        Controller.addusername(userdata[0]);
+        Controller.addusermail(userdata[1]);
+        accountholdername.setText("Welcome Back , " + Controller.getusername());
         okbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -629,5 +653,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
+    @Override
+    public void onBackPressed() {
+       getAlertwindow();
+      //  super.onBackPressed();
 
+    }
 }
