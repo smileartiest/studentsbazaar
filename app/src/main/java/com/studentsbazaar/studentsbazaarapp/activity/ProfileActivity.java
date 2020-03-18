@@ -1,9 +1,7 @@
 package com.studentsbazaar.studentsbazaarapp.activity;
 
 import android.os.Bundle;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.studentsbazaar.studentsbazaarapp.R;
 
 
