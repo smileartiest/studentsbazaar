@@ -3,9 +3,10 @@ package com.studentsbazaar.studentsbazaarapp.activity;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -34,14 +35,12 @@ import retrofit2.Callback;
 
 public class SignUp extends AppCompatActivity implements
         AdapterView.OnItemSelectedListener {
-
-
-    EditText name, email, phno, acyear, year, semester, password;
-    String uname, umail, uphone, uclname, cacyear, uyear, usemester, upassword, degreestring, deptstring, sAffiliation;
+    EditText name, email, phno, acyear, year, semester, password,conpass;
+    String uname, umail, uphone, uclname, cacyear, uyear, usemester,uconpass, upassword, degreestring, deptstring, sAffiliation;
     AutoCompleteTextView cgname, degree, department;
     String devid;
     Toolbar toolbar;
-    String[] affiliation = {"Deemed University", "Autonomous", "Affiliated to Anna University", "Affiliated to Madras University", "Others"};
+    String[] affiliation = {"-Select-", "Deemed University", "Autonomous", "Affiliated to Anna University", "Affiliated to Madras University", "Others"};
     FloatingActionButton submit1, submit2, submit3;
     SpotsDialog spotsDialog;
     CardView c1, c2, c3;
@@ -68,11 +67,13 @@ public class SignUp extends AppCompatActivity implements
         semester = findViewById(R.id.reg_semester);
         degree = findViewById(R.id.reg_degree);
         department = findViewById(R.id.reg_department);
+        conpass=findViewById(R.id.reg_conpassword);
         password = (EditText) findViewById(R.id.reg_password);
         submit1 = findViewById(R.id.floatingActionButton1);
         submit2 = findViewById(R.id.floatingActionButton2);
         submit3 = findViewById(R.id.floatingActionButton3);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        name.requestFocus();
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -80,7 +81,7 @@ public class SignUp extends AppCompatActivity implements
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                onBackPressed();
             }
         });
 
@@ -130,10 +131,10 @@ public class SignUp extends AppCompatActivity implements
             @SuppressLint("RestrictedApi")
             @Override
             public void onClick(View v) {
-
                 i = 1;
 
-                if (checkname(name.getText().toString())) {
+                if (!name.getText().toString().isEmpty()) {
+
                     if (emailvalid(email.getText().toString())) {
                         if (phno.getText().toString().length() == 10) {
                             c1.setVisibility(View.INVISIBLE);
@@ -143,13 +144,16 @@ public class SignUp extends AppCompatActivity implements
                             submit2.setVisibility(View.VISIBLE);
                             submit3.setVisibility(View.INVISIBLE);
                         } else {
-                            phno.setError("invalid phone number");
+                            Move_Show.showToast("Enter Valid mobile no");
+                            phno.requestFocus();
                         }
                     } else {
-                        email.setError("please enter valid email id");
+                        Move_Show.showToast("Enter Valid Email id");
+                        email.requestFocus();
                     }
                 } else {
-                    name.setError("Please enter valid name");
+                    Move_Show.showToast("Enter Username");
+                    name.requestFocus();
                 }
             }
         });
@@ -159,22 +163,51 @@ public class SignUp extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 i = 2;
+                if (cgname.getText().toString().isEmpty()) {
+                    Move_Show.showToast("Enter your College name");
+                    cgname.requestFocus();
+                } else if (spin.getSelectedItem().equals("-Select-")) {
+                    Move_Show.showToast("Select your University Type");
+                    spin.requestFocus();
+                } else if (degree.getText().toString().isEmpty()) {
+                    Move_Show.showToast("Enter Degree");
+                    degree.requestFocus();
+                } else if (acyear.getText().toString().isEmpty() || acyear.getText().toString().length() < 9) {
+                    Move_Show.showToast("Enter Academic Year");
+                    acyear.requestFocus();
+                } else {
+                    c1.setVisibility(View.INVISIBLE);
+                    c2.setVisibility(View.INVISIBLE);
+                    c3.setVisibility(View.VISIBLE);
+                    submit1.setVisibility(View.INVISIBLE);
+                    submit2.setVisibility(View.INVISIBLE);
+                    submit3.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+        acyear.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-                c1.setVisibility(View.INVISIBLE);
-                c2.setVisibility(View.INVISIBLE);
-                c3.setVisibility(View.VISIBLE);
-                submit1.setVisibility(View.INVISIBLE);
-                submit2.setVisibility(View.INVISIBLE);
-                submit3.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (acyear.getText().toString().length()==4){
+                    acyear.setText(acyear.getText().toString()+"-");
+
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
 
             }
         });
-
         submit3.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("RestrictedApi")
             @Override
             public void onClick(View v) {
-                spotsDialog.show();
                 uname = name.getText().toString();
                 umail = email.getText().toString();
                 uphone = phno.getText().toString();
@@ -187,8 +220,22 @@ public class SignUp extends AppCompatActivity implements
                 upassword = password.getText().toString();
                 degreestring = degree.getText().toString();
                 deptstring = department.getText().toString();
+                uconpass=conpass.getText().toString();
                 devid = Controller.getDIVID();
                 Log.d("Responsdate", devid);
+
+
+                    if (deptstring.isEmpty()) {
+                        Move_Show.showToast("Enter Department");
+                    } else if (uyear.isEmpty()) {
+                        Move_Show.showToast("Enter Year of Studying");
+                    } else if (usemester.isEmpty()) {
+                        Move_Show.showToast("Enter semester");
+                    }else if (upassword.isEmpty() || uconpass.isEmpty()){
+                        Move_Show.showToast("Enter password");
+                    }else{
+                        if (upassword.equals(uconpass)){
+                            spotsDialog.show();
                 Call<String> call = ApiUtil.getServiceClass().addaccount(uname, Controller.getUID(), upassword, uclname, sAffiliation, degreestring, deptstring, uyear, usemester, uphone, cacyear, umail, devid);
                 call.enqueue(new Callback<String>() {
                     @Override
@@ -198,11 +245,9 @@ public class SignUp extends AppCompatActivity implements
                         if (response.body().equals("1")) {
                             Controller.addprefer(Controller.REG);
                             getAlert();
-//
-
                         } else {
 
-                            Move_Show.showToast("Register Failed");
+                            Move_Show.showToast(response.body().toString());
                         }
 
                     }
@@ -212,7 +257,11 @@ public class SignUp extends AppCompatActivity implements
 
                     }
                 });
-
+                        }else
+                        {
+                            Move_Show.showToast("Password mismatch");
+                        }
+                    }
             }
         });
 
@@ -240,6 +289,7 @@ public class SignUp extends AppCompatActivity implements
     public void onBackPressed() {
 
         if (i == 0) {
+            new Move_Show(SignUp.this, HomeActivity.class);
             finish();
         } else if (i == 1) {
             i = 0;
@@ -269,7 +319,7 @@ public class SignUp extends AppCompatActivity implements
             new Move_Show(SignUp.this, Mems.class);
             finish();
         } else if (smeme.getString("source", "").equals("signup")) {
-            new Move_Show(SignUp.this,HomeActivity.class);
+            new Move_Show(SignUp.this, HomeActivity.class);
             finish();
         } else {
             CFAlertDialog.Builder builder = new CFAlertDialog.Builder(this);
@@ -280,7 +330,8 @@ public class SignUp extends AppCompatActivity implements
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
-                   new Move_Show(SignUp.this,AddEvent2.class);
+                    new Move_Show(SignUp.this, AddEvent2.class);
+                    finish();
 
                 }
             });
@@ -288,12 +339,14 @@ public class SignUp extends AppCompatActivity implements
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
-                    new Move_Show(SignUp.this,HomeActivity.class);
+                    new Move_Show(SignUp.this, HomeActivity.class);
+                    finish();
                 }
             });
             builder.show();
         }
     }
+
 }
 
 

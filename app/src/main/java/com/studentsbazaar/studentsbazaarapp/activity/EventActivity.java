@@ -23,10 +23,10 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.crowdfire.cfalertdialog.CFAlertDialog;
 import com.google.android.material.navigation.NavigationView;
-import com.studentsbazaar.studentsbazaarapp.controller.Monitor;
 import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.adapter.ViewPagerAdapter;
 import com.studentsbazaar.studentsbazaarapp.controller.Controller;
+import com.studentsbazaar.studentsbazaarapp.controller.Monitor;
 import com.studentsbazaar.studentsbazaarapp.controller.Move_Show;
 import com.studentsbazaar.studentsbazaarapp.helper.DepthPageTransformer;
 import com.studentsbazaar.studentsbazaarapp.model.DownloadResponse;
@@ -68,7 +68,12 @@ public class EventActivity extends AppCompatActivity implements NavigationView.O
             getSupportActionBar().setTitle("");
 
         }
-
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+        onBackPressed();
+            }
+        });
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -82,7 +87,7 @@ public class EventActivity extends AppCompatActivity implements NavigationView.O
         } else if (Controller.getprefer().equals(Controller.REG)) {
             navigationView.getMenu().getItem(2).setVisible(false);
 
-        }else if (Controller.getprefer().equals(Controller.INFOZUB) || Controller.getprefer().equals(Controller.MEMEACCEPT)){
+        } else if (Controller.getprefer().equals(Controller.INFOZUB) || Controller.getprefer().equals(Controller.MEMEACCEPT)) {
             navigationView.getMenu().getItem(1).setVisible(false);
             navigationView.getMenu().getItem(2).setVisible(false);
             navigationView.getMenu().getItem(3).setVisible(false);
@@ -142,8 +147,10 @@ public class EventActivity extends AppCompatActivity implements NavigationView.O
         menu.findItem(R.id.item1).setVisible(false);
         menu.findItem(R.id.item2).setVisible(false);
         menu.findItem(R.id.action_search).setVisible(false);
+        menu.findItem(R.id.profile).setVisible(false);
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -161,6 +168,7 @@ public class EventActivity extends AppCompatActivity implements NavigationView.O
         }
 
     }
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
@@ -173,7 +181,7 @@ public class EventActivity extends AppCompatActivity implements NavigationView.O
             case R.id.nav_add_event:
 
                 if (Controller.getprefer().equals(Controller.REG) || Controller.getprefer().equals(Controller.ADMIN)) {
-                    new Move_Show(EventActivity.this,AddEvent2.class);
+                    new Move_Show(EventActivity.this, AddEvent2.class);
                 } else {
                     addEvent();
                 }
@@ -181,14 +189,14 @@ public class EventActivity extends AppCompatActivity implements NavigationView.O
                 break;
 
             case R.id.nav_pending:
-                new Move_Show(EventActivity.this,Pending_Events.class);
+                new Move_Show(EventActivity.this, Pending_Events.class);
                 break;
 
             case R.id.nav_edit:
-                new Move_Show(EventActivity.this,Edit_Events.class);
+                new Move_Show(EventActivity.this, Edit_Events.class);
                 break;
             case R.id.nav_contact:
-                new Move_Show(EventActivity.this,ContactActivity.class);
+                new Move_Show(EventActivity.this, ContactActivity.class);
                 break;
 
             case R.id.nav_aboutus:
@@ -196,6 +204,7 @@ public class EventActivity extends AppCompatActivity implements NavigationView.O
                 Bundle b = new Bundle();
                 b.putString("url", "https://www.studentsbazaar.in/about-us/");
                 b.putString("title", "ABOUT US");
+                b.putString("data","ABOUT US");
                 Intent intEvent = new Intent(EventActivity.this, WebActivity.class);
                 intEvent.putExtras(b);
                 startActivity(intEvent);
@@ -229,7 +238,7 @@ public class EventActivity extends AppCompatActivity implements NavigationView.O
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
-                   new Move_Show(EventActivity.this,SignUp.class);
+                    new Move_Show(EventActivity.this, SignUp.class);
 
                 }
             });
@@ -242,7 +251,14 @@ public class EventActivity extends AppCompatActivity implements NavigationView.O
             });
             builder.show();
         } else {
-            new Move_Show(EventActivity.this,AddEvent2.class);
+            new Move_Show(EventActivity.this, AddEvent2.class);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        new Move_Show(EventActivity.this,HomeActivity.class);
+        finish();
     }
 }

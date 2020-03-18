@@ -11,7 +11,6 @@ public class DownloadResponse {
     private List<Posters_Details> Posters_Details;
     private List<Memes_Details> Memes_Details;
     private List<Tech_News_model> Tech_News_model;
-
     public List<Tech_News_model> getTech_News_model() {
         return Tech_News_model;
     }
@@ -82,6 +81,5 @@ public class DownloadResponse {
     public void setProject_details(List<Project_details> project_details) {
         this.Events_Details = project_details;
     }
-
 
 }

@@ -27,6 +27,9 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.crowdfire.cfalertdialog.CFAlertDialog;
 import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.activity.EventActivity;
@@ -40,6 +43,8 @@ import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+
+import pl.droidsonroids.gif.GifImageView;
 
 public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.ViewHolder> {
     View view;
@@ -79,9 +84,20 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
         Resources resources = context.getResources();
         holder.setIsRecyclable(false);
         Glide.with(context)
-                .load(listItem.getPoster())
-                .placeholder(R.drawable.load)
-                .into(holder.imageView);
+                .load(listItem.getPoster()).listener(new RequestListener<String, GlideDrawable>() {
+            @Override
+            public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                holder.gifviewevent.setVisibility(View.VISIBLE);
+                return false;
+
+            }
+
+            @Override
+            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                holder.gifviewevent.setVisibility(View.GONE);
+                return false;
+            }
+        }).into(holder.imageView);
         Log.d("IMG", listItem.getPoster() + "");
         holder.tvHead.setText(listItem.getEvent_Title());
         holder.tvCategory.setText(listItem.getEvent_Name());
@@ -176,6 +192,7 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
                 editor.putString("cpno2", listItem.getContact_Person2_No());
                 editor.putString("webevent", listItem.getEvent_Website());
                 editor.putString("webcoll", listItem.getCollege_Website());
+                editor.putString("insta",listItem.getEvent_Instagram());
                 editor.putString("view", "view");
                 editor.apply();
                 controller.adddesignprefer(Controller.MORE);
@@ -208,6 +225,7 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
         TextView tvHead, tvCategory, tvStartDate, tvOrganizer, tvCity, tvState, tvmonth, regview, tvcon;
         ImageView imageView;
         LinearLayout layout;
+        GifImageView gifviewevent;
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -223,6 +241,7 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
             regview = itemView.findViewById(R.id.regview);
             tvcon = itemView.findViewById(R.id.id_cond_dept);
             layout = itemView.findViewById(R.id.layout);
+            gifviewevent = itemView.findViewById(R.id.gifviewevent);
 
 
             imageView = itemView.findViewById(R.id.tvParent);

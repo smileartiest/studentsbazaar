@@ -13,6 +13,9 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.studentsbazaar.studentsbazaarapp.controller.Monitor;
 import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.model.Tech_News_model;
@@ -20,6 +23,7 @@ import com.studentsbazaar.studentsbazaarapp.model.Tech_News_model;
 import java.util.List;
 
 import dmax.dialog.SpotsDialog;
+import pl.droidsonroids.gif.GifImageView;
 
 public class Tech_News_Adapter extends RecyclerView.Adapter<Tech_News_Adapter.MyviewHolder> {
     private LayoutInflater mInflater;
@@ -47,10 +51,21 @@ public class Tech_News_Adapter extends RecyclerView.Adapter<Tech_News_Adapter.My
     public void onBindViewHolder(@NonNull final MyviewHolder holder, int position) {
         final Tech_News_model listItem = mData.get(position);
         holder.setIsRecyclable(false);
-        Glide.with(context).load(listItem.getNews_Poster()).into(holder.postermeme);
+        Glide.with(context).load(listItem.getNews_Poster()).listener(new RequestListener<String, GlideDrawable>() {
+            @Override
+            public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+               holder.gifImageView.setVisibility(View.VISIBLE);
+                return false;
+            }
+
+            @Override
+            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                holder.gifImageView.setVisibility(View.GONE);
+                return false;
+            }
+        }).into(holder.postermeme);
         holder.username.setText("Students Bazaar");
         holder.caption.setText(listItem.getNews_Dis());
-        holder.posttime.setText("Date: " + listItem.getCreated_Date());
         holder.share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -65,18 +80,19 @@ public class Tech_News_Adapter extends RecyclerView.Adapter<Tech_News_Adapter.My
     }
 
     public class MyviewHolder extends RecyclerView.ViewHolder {
-        TextView username, posttime, smile, caption;
+        TextView username, smile, caption;
         ImageView postermeme, share;
         CardView cardView;
+        GifImageView  gifImageView;
 
         public MyviewHolder(@NonNull View itemView) {
             super(itemView);
             username = (TextView) itemView.findViewById(R.id.username);
-            posttime = (TextView) itemView.findViewById(R.id.posttime);
             caption = (TextView) itemView.findViewById(R.id.postcaption);
             cardView = (CardView) itemView.findViewById(R.id.memecartview);
             postermeme = (ImageView) itemView.findViewById(R.id.memepost);
             share = (ImageView) itemView.findViewById(R.id.shareimg);
+            gifImageView=(GifImageView)itemView.findViewById(R.id.gifmeme);
 
         }
     }

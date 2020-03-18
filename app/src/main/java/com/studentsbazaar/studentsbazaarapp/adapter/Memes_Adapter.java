@@ -17,6 +17,9 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.studentsbazaar.studentsbazaarapp.controller.Monitor;
 import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.controller.Controller;
@@ -26,9 +29,11 @@ import com.studentsbazaar.studentsbazaarapp.retrofit.ApiUtil;
 import java.util.List;
 
 import dmax.dialog.SpotsDialog;
+import pl.droidsonroids.gif.GifImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.http.Url;
 
 public class Memes_Adapter extends RecyclerView.Adapter<Memes_Adapter.Myviewholder> {
 
@@ -62,10 +67,22 @@ public class Memes_Adapter extends RecyclerView.Adapter<Memes_Adapter.Myviewhold
     public void onBindViewHolder(@NonNull final Myviewholder holder, final int position) {
         final Memes_Details listItem = mData.get(position);
         holder.setIsRecyclable(false);
-        Glide.with(context).load(listItem.getMemes()).into(holder.postermeme);
+        String img ="https://lh3.googleusercontent.com/proxy/b9ZPTyW6h_CYZaMFJEetCCDJICacupceugq9aCEmWfPBVzKZSssv8DM2J_bq6zhQjok3CXTHzyoOF8Q0ytbPXC9kjwiK-LZcwrQPR2H2inoOQnVhjZraCSkPdjAQh3U";
+        Glide.with(context).load(listItem.getMemes()).listener(new RequestListener<String, GlideDrawable>() {
+            @Override
+            public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+               holder.gifImageView.setVisibility(View.VISIBLE);
+                return false;
+            }
+
+            @Override
+            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+               holder.gifImageView.setVisibility(View.GONE);
+                return false;
+            }
+        }).into(holder.postermeme);
         holder.username.setText(listItem.getUser_Name());
         holder.caption.setText("");
-        holder.posttime.setText("Date: " + listItem.getCreated_Date());
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -97,18 +114,19 @@ public class Memes_Adapter extends RecyclerView.Adapter<Memes_Adapter.Myviewhold
     }
 
     public class Myviewholder extends RecyclerView.ViewHolder {
-        TextView username, posttime, smile, caption;
+        TextView username, smile, caption;
         ImageView postermeme, shareimg;
         CardView cardView;
+        GifImageView gifImageView;
 
         public Myviewholder(@NonNull View itemView) {
             super(itemView);
             username = (TextView) itemView.findViewById(R.id.username);
-            posttime = (TextView) itemView.findViewById(R.id.posttime);
             caption = (TextView) itemView.findViewById(R.id.postcaption);
             cardView = (CardView) itemView.findViewById(R.id.memecartview);
             postermeme = (ImageView) itemView.findViewById(R.id.memepost);
             shareimg = (ImageView) itemView.findViewById(R.id.shareimg);
+            gifImageView=(GifImageView)itemView.findViewById(R.id.gifmeme);
 
 
 

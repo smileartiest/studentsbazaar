@@ -12,12 +12,15 @@ import retrofit2.http.Query;
 import retrofit2.http.Url;
 
 public interface RetrofitInterface {
-
     @GET
     Call<DownloadResponse> getHomeComponentList(@Url String url);
 
-    @GET
-    Call<String> getresulturl(@Url String url);
+
+    @FormUrlEncoded
+    @POST("/forgotpassword.php")
+    Call<String> updatepassword(@Field("uid") String uid,
+                                @Field("data") String data,
+                                @Field("password") String password);
 
     @FormUrlEncoded
     @POST("/updatedeviceid.php")
@@ -77,6 +80,15 @@ public interface RetrofitInterface {
                                @Field("comments") String comments,
                                @Field("domain") String domain);
 
+    @FormUrlEncoded
+    @POST("/update_quizquestion.php")
+    Call<String> addquizquestions(@Field("question") String question,
+                               @Field("optA") String optA,
+                               @Field("optB") String optB,
+                               @Field("optC") String optC,
+                               @Field("optD") String optD,
+                               @Field("crct") String crct);
+
 
     @GET("/Register.php")
     Call<String> addaccount(@Query("name") String name,
@@ -93,9 +105,12 @@ public interface RetrofitInterface {
                             @Query("mail") String mail,
                             @Query("device") String device);
 
-    @FormUrlEncoded
-    @POST("/get_quiz.php")
-    Call<DownloadResponse> getQuizQuestions(@Field("uid") String uid);
+    @GET("/accountverify.php")
+    Call<String> getaccountverification(@Query("uid") String uid,
+                                        @Query("device") String device);
+
+    @GET("/get_quiz.php")
+    Call<DownloadResponse> getQuizQuestions(@Query("uid") String uid);
 
     @FormUrlEncoded
     @POST("/addeventdetails.php")
@@ -130,6 +145,8 @@ public interface RetrofitInterface {
                     String eventweb,
             @Field("collegeweb")
                     String collegeweb,
+            @Field("insta")
+                    String insta,
             @Field("cpname1")
                     String cpname1,
             @Field("cpno1")
@@ -179,6 +196,7 @@ public interface RetrofitInterface {
                               @Field("eventdis") String eventdis,
                               @Field("eventweb") String eventweb,
                               @Field("collegeweb") String collegeweb,
+                              @Field("insta")String insta,
                               @Field("cpname1") String cpname1,
                               @Field("cpno1") String cpno1,
                               @Field("cpname2") String cpname2,

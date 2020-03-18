@@ -17,13 +17,7 @@
         android:theme="@style/Theme.Custom"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="MEME ZONE"
-            android:id="@+id/id_toolbarTitle"
-            android:textColor="@color/white"
-            android:textStyle="bold" />
+
     </androidx.appcompat.widget.Toolbar>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout

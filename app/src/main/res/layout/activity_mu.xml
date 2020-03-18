@@ -19,7 +19,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="MADRAS UNIVERSITY"
+            android:text="Madras University"
             android:id="@+id/id_toolbarTitle"
             android:textColor="@color/white"
             android:textStyle="bold" />
@@ -33,7 +33,7 @@
         android:id="@+id/tvTitle"
         android:textSize="25dp"
         android:textStyle="bold"
-        android:textColor="#D50000"
+        android:textColor="@color/colorPrimaryDark"
         android:text="This Zone is All About Madras University !"></TextView>
 
     <LinearLayout
@@ -72,7 +72,7 @@
                     android:gravity="center"
                     android:layout_marginTop="5dp"
                     android:text="RESULTS"
-                    android:textColor="#000000"
+                    android:textColor="@color/colorPrimaryDark"
                     android:textStyle="bold" />
             </LinearLayout>
 
@@ -106,7 +106,7 @@
                     android:gravity="center"
                     android:layout_marginTop="5dp"
                     android:text="QUESTION PAPERS"
-                    android:textColor="#000000"
+                    android:textColor="@color/colorPrimaryDark"
                     android:textStyle="bold" />
             </LinearLayout>
 

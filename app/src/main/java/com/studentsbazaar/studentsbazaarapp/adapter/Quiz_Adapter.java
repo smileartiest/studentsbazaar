@@ -1,12 +1,8 @@
 package com.studentsbazaar.studentsbazaarapp.adapter;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.graphics.Typeface;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,13 +15,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.common.api.Api;
 import com.studentsbazaar.studentsbazaarapp.R;
-import com.studentsbazaar.studentsbazaarapp.activity.AddEvent2;
-import com.studentsbazaar.studentsbazaarapp.activity.AddEvent3;
-import com.studentsbazaar.studentsbazaarapp.activity.EventActivity;
-import com.studentsbazaar.studentsbazaarapp.activity.HomeActivity;
 import com.studentsbazaar.studentsbazaarapp.activity.Quiz_Events;
+import com.studentsbazaar.studentsbazaarapp.controller.Move_Show;
 import com.studentsbazaar.studentsbazaarapp.model.Quiz_Details;
 import com.studentsbazaar.studentsbazaarapp.retrofit.ApiUtil;
 
@@ -67,28 +59,60 @@ public class Quiz_Adapter extends RecyclerView.Adapter<Quiz_Adapter.Myviewholder
         holder.group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
-
+                holder.option1.setEnabled(false);
+                holder.option2.setEnabled(false);
+                holder.option3.setEnabled(false);
+                holder.option4.setEnabled(false);
+                ApiUtil.QUIZ_ATTENT=1;
                 int childCount = radioGroup.getChildCount();
                 for (int x = 0; x < childCount; x++) {
                     RadioButton btn = (RadioButton) radioGroup.getChildAt(x);
 
                     if (btn.getId() == i) {
 
-                        Toast.makeText(context, btn.getText().toString(), Toast.LENGTH_SHORT).show();
+
                         if (btn.getText().toString().equals(listItem.getCrct_Ans())) {
-                            ApiUtil.QUIZ_RESULT = ApiUtil.QUIZ_RESULT +1;
+                            ApiUtil.QUIZ_RESULT = ApiUtil.QUIZ_RESULT + 1;
+                            if (holder.option1.getText().toString().equalsIgnoreCase(btn.getText().toString())) {
+                                holder.option1.setBackgroundResource(R.drawable.button);
+                                holder.option1.setTextColor(Color.parseColor("#FFFFFF"));
+                                // holder.option1.setBackgroundResource(R.drawable.button);
+                            } else if (holder.option2.getText().toString().equalsIgnoreCase(btn.getText().toString())) {
+                                holder.option2.setBackgroundResource(R.drawable.button);
+                                holder.option2.setTextColor(Color.parseColor("#FFFFFF"));
+                            } else if (holder.option3.getText().toString().equalsIgnoreCase(btn.getText().toString())) {
+                                holder.option3.setBackgroundResource(R.drawable.button);
+                                holder.option3.setTextColor(Color.parseColor("#FFFFFF"));
+                            } else if (holder.option4.getText().toString().equalsIgnoreCase(btn.getText().toString())) {
+                                holder.option4.setBackgroundResource(R.drawable.button);
+                                holder.option4.setTextColor(Color.parseColor("#FFFFFF"));
+                            }
 
-                        }else{
 
-                            ApiUtil.QUIZ_RESULT = ApiUtil.QUIZ_RESULT + 0 ;
+                        } else {
+                            if (holder.option1.getText().toString().equalsIgnoreCase(btn.getText().toString())) {
+                                holder.option1.setBackgroundResource(R.drawable.button);
+                                holder.option1.setTextColor(Color.parseColor("#FFFFFF"));
+                            } else if (holder.option2.getText().toString().equalsIgnoreCase(btn.getText().toString())) {
+                                holder.option2.setBackgroundResource(R.drawable.button);
+                                holder.option2.setTextColor(Color.parseColor("#FFFFFF"));
+                            } else if (holder.option3.getText().toString().equalsIgnoreCase(btn.getText().toString())) {
+                                holder.option3.setBackgroundResource(R.drawable.button);
+                                holder.option3.setTextColor(Color.parseColor("#FFFFFF"));
+                            } else if (holder.option4.getText().toString().equalsIgnoreCase(btn.getText().toString())) {
+                                holder.option4.setBackgroundResource(R.drawable.button);
+                                holder.option4.setTextColor(Color.parseColor("#FFFFFF"));
+                            }
+
+                            ApiUtil.QUIZ_RESULT = ApiUtil.QUIZ_RESULT + 0;
                         }
                     }
 
                 }
             }
         });
-
     }
+
 
     @Override
     public int getItemCount() {

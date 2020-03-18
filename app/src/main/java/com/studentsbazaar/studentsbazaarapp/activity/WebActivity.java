@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -31,6 +32,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.crowdfire.cfalertdialog.CFAlertDialog;
 import com.studentsbazaar.studentsbazaarapp.R;
+import com.studentsbazaar.studentsbazaarapp.controller.Move_Show;
 import com.studentsbazaar.studentsbazaarapp.controller.ScreenShot;
 import com.studentsbazaar.studentsbazaarapp.controller.Monitor;
 
@@ -81,7 +83,7 @@ public class WebActivity extends AppCompatActivity {
         title = getIntent().getExtras() != null ? getIntent().getExtras().getString("title") : null;
 
         if (url.isEmpty()) {
-            url = "https://www.studentsbazaar.com";
+            url = "https://www.studentsbazaar.in/about-us/";
         }
 
         Log.d("WEB_URL", url);
@@ -175,10 +177,10 @@ public class WebActivity extends AppCompatActivity {
         super.onBackPressed();
 
         if (data == null) {
-            Intent i = new Intent(WebActivity.this, HomeActivity.class);
-            startActivity(i);
+           new Move_Show(WebActivity.this,HomeActivity.class);
             finish();
         } else {
+            new Move_Show(WebActivity.this,HomeActivity.class);
             finish();
         }
     }
@@ -208,11 +210,16 @@ public class WebActivity extends AppCompatActivity {
     private void loadWeb() {
         spotsDialog.show();
         //  url = bundle.getString("url");
+        imageView.setVisibility(View.GONE);
         Log.d("WEB_URL", url);
+        if (url.equals("https://coe1.annauniv.edu/home/") || url.equals("http://results.unom.ac.in/nov2019/")){
+            imageView.setVisibility(View.VISIBLE);
+        }
         wv1.setInitialScale(1);
         wv1.getSettings().setLoadsImagesAutomatically(true);
         wv1.getSettings().setJavaScriptEnabled(true);
-        wv1.setInitialScale(25 * 10);
+        wv1.setInitialScale(200);
+       wv1.setBackgroundColor(Color.parseColor("#002139"));
         wv1.setWebChromeClient(new MyWebChromeClient(this));
         wv1.setWebViewClient(new WebViewClient() {
             @Override
@@ -351,6 +358,7 @@ public class WebActivity extends AppCompatActivity {
         menu.findItem(R.id.item1).setVisible(false);
         menu.findItem(R.id.item2).setVisible(false);
         menu.findItem(R.id.action_search).setVisible(false);
+        menu.findItem(R.id.profile).setVisible(false);
         return true;
     }
 

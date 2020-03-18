@@ -1,5 +1,4 @@
 package com.studentsbazaar.studentsbazaarapp.activity;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -7,20 +6,22 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -29,36 +30,31 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager.widget.ViewPager;
-
 import com.crowdfire.cfalertdialog.CFAlertDialog;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
-import com.sanojpunchihewa.updatemanager.UpdateManager;
-import com.sanojpunchihewa.updatemanager.UpdateManagerConstant;
 import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.adapter.SliderPagerAdapter;
 import com.studentsbazaar.studentsbazaarapp.controller.Controller;
 import com.studentsbazaar.studentsbazaarapp.controller.Monitor;
 import com.studentsbazaar.studentsbazaarapp.controller.Move_Show;
-import com.studentsbazaar.studentsbazaarapp.controller.ShowConfirmDialog;
+import com.studentsbazaar.studentsbazaarapp.controller.Quiz_Control;
 import com.studentsbazaar.studentsbazaarapp.firebase.Config;
 import com.studentsbazaar.studentsbazaarapp.helper.PersistanceUtil;
 import com.studentsbazaar.studentsbazaarapp.model.Posters_Details;
 import com.studentsbazaar.studentsbazaarapp.model.Project_details;
 import com.studentsbazaar.studentsbazaarapp.retrofit.ApiUtil;
-
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
-
 import dmax.dialog.SpotsDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
-import static com.sanojpunchihewa.updatemanager.UpdateManager.*;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -84,7 +80,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private TextView[] dots;
     int page_position = 0;
     private static final int MY_PERMISSIONS_REQUEST_SEND_SMS = 0;
-    UpdateManager mUpdateManager;
+    int CURRENT_TIME;
+    int LOCAL_TIME = 18;
+    int LIMIT_TIME = 23;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +94,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 //                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_home);
         new Controller(this);
+        new Quiz_Control(this);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -103,19 +103,32 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         tvMemes = findViewById(R.id.tvMeme);
         tvPlacement = findViewById(R.id.tvPlacement);
         tvQuiz = findViewById(R.id.tvQuiz);
-        new ShowConfirmDialog(HomeActivity.this,"please a wait a min");
-        //ShowConfirmDialog.textView.setVisibility();
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
 
-        mUpdateManager = UpdateManager.Builder(this);
-        mUpdateManager.mode(UpdateManagerConstant.IMMEDIATE).start();
-        // Callback from Available version code
-        mUpdateManager.getAvailableVersionCode(new onVersionCheckListener() {
-            @Override
-            public void onReceiveVersionCode(final int code) {
-                Toast.makeText(context, "String.valueOf(code)", Toast.LENGTH_SHORT).show();
-
+            Calendar calander = Calendar.getInstance();
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH");
+            String time = simpleDateFormat.format(calander.getTime());
+            Log.d("Time", time);
+            CURRENT_TIME = Integer.valueOf(time);
+            if (LOCAL_TIME <= CURRENT_TIME && CURRENT_TIME <= LIMIT_TIME) {
+                if (Quiz_Control.getQuizstatus() == null && Quiz_Control.getseenquiz() == null) {
+                    Log.d("Time", time);
+                } else if (Quiz_Control.getQuizstatus().equals(Quiz_Control.ATTEND) && Quiz_Control.getseenquiz().equals(Quiz_Control.LATER)) {
+                    openDialog();
+                }
             }
-        });
+
+        }
+
+        //new ShowConfirmDialog(HomeActivity.this,"please a wait a min");
+        //ShowConfirmDialog.textView.setVisibility();
+        if (Controller.getprefer().equals(Controller.VISITOR)) {
+            if (Controller.getuservierify() == null) {
+                verifyaccount();
+            }
+
+        }
+
         if (toolbar != null) {
             setSupportActionBar(toolbar);
             getSupportActionBar().setTitle("");
@@ -177,7 +190,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         cvEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new Move_Show(HomeActivity.this, IntroActivity.class);
+                new Move_Show(HomeActivity.this, EventActivity.class);
+
+
             }
         });
 
@@ -185,19 +200,21 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View v) {
                 new Move_Show(HomeActivity.this, PlacementActivity.class);
+
             }
         });
         technews.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 new Move_Show(HomeActivity.this, Tech_News.class);
+
             }
         });
 
         cvQuiz.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Controller.getprefer().equals(Controller.REG) || Controller.getprefer().equals(Controller.ADMIN)) {
+                if (Controller.getprefer().equals(Controller.REG) || Controller.getprefer().equals(Controller.ADMIN) || Controller.getprefer().equals(Controller.INFOZUB)) {
                     new Move_Show(HomeActivity.this, Quiz_Events.class);
                 } else {
                     CFAlertDialog.Builder builder = new CFAlertDialog.Builder(HomeActivity.this);
@@ -209,6 +226,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
                             new Move_Show(HomeActivity.this, SignUp.class);
+
 
                         }
                     });
@@ -229,6 +247,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(View view) {
                 Controller.adddesignprefer(Controller.PREFER);
                 new Move_Show(HomeActivity.this, Mems.class);
+
             }
         });
         cvabout.setOnClickListener(new View.OnClickListener() {
@@ -236,11 +255,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(View view) {
                 Bundle b = new Bundle();
                 b.putString("url", "http://uniqsolutions.co.in/Admin/Files/Tech_Video.php");
-                b.putString("title", "INTERESTING VIDEOS");
-                b.putString("data", "INTERESTING VIDEOS");
+                b.putString("title", "Interesting Videos");
+                b.putString("data", "Interesting Videos");
                 Intent intEvent = new Intent(HomeActivity.this, WebActivity.class);
                 intEvent.putExtras(b);
                 startActivity(intEvent);
+
             }
         });
 
@@ -249,11 +269,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(View v) {
                 Bundle b = new Bundle();
                 b.putString("url", "https://coe1.annauniv.edu/home/");
-                b.putString("title", "RESULTS-AU");
-                b.putString("data", "RESULTS-AU");
+                b.putString("title", "AU Results");
+                b.putString("data", "AU Results");
                 Intent intEvent = new Intent(HomeActivity.this, WebActivity.class);
                 intEvent.putExtras(b);
                 startActivity(intEvent);
+
             }
         });
 
@@ -262,7 +283,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View v) {
                 new Move_Show(HomeActivity.this, MUActivity.class);
-
 
             }
         });
@@ -291,7 +311,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 } catch (Exception e) {
 
                 }
+                return true;
 
+            case R.id.profile:
+              new Move_Show(HomeActivity.this,ProfileActivity.class);
+              finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -305,21 +329,39 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         Fragment fragment = null;
         switch (item.getItemId()) {
             case R.id.nav_home:
+                new Move_Show(HomeActivity.this, HomeActivity.class);
+
                 break;
             case R.id.nav_sigin:
                 new Move_Show(HomeActivity.this, MainActivity.class);
+
                 break;
             case R.id.nav_signup:
                 new Move_Show(HomeActivity.this, SignUp.class);
+
                 break;
 
             case R.id.nav_disclaimer:
                 new Move_Show(HomeActivity.this, DisclaimerActivity.class);
+
+                break;
+            case R.id.nav_logout:
+                spotsDialog.show();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        spotsDialog.dismiss();
+                        Controller.clearuserdetails();
+                        Quiz_Control.clearquizControl();
+                        finishAffinity();
+                    }
+                }, 2000);
                 break;
             case R.id.nav_aboutus:
                 Bundle b = new Bundle();
                 b.putString("url", "https://www.studentsbazaar.in/about-us/");
                 b.putString("title", "ABOUT US");
+                b.putString("data", "ABOUT US");
                 Intent intEvent = new Intent(HomeActivity.this, WebActivity.class);
                 intEvent.putExtras(b);
                 startActivity(intEvent);
@@ -347,9 +389,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         getSupportActionBar().hide();*/
 
         navigationView.setNavigationItemSelectedListener(HomeActivity.this);
-        if (Controller.getprefer().equals(Controller.REG)) {
-          navigationView.getMenu().getItem(1).setVisible(false);
-          navigationView.getMenu().getItem(2).setVisible(false);
+        if (Controller.getprefer().equals(Controller.REG) || Controller.getprefer().equals(Controller.ADMIN)) {
+            navigationView.getMenu().getItem(1).setVisible(false);
+            navigationView.getMenu().getItem(2).setVisible(false);
         }
         requestPermission();
 
@@ -413,11 +455,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 LocalBroadcastManager.getInstance(context).sendBroadcast(registrationComplete);
                 STRTOKEN = Config.getPrefToken(context);
                 if (!STRTOKEN.equals("0")) {
-                    if (Controller.getTokenstatus() == Controller.SENT) {
+                    if (Controller.getTokenstatus() == null) {
                         pushToken(Config.getPrefToken(context));
-                        Log.d("TOKEN", Controller.SENT);
-                    } else {
-                        Log.d("TOKEN", Controller.SENT);
+                        Log.d("TOKEN", Config.getPrefToken(context));
+                    } else if (Controller.getTokenstatus().equals(Controller.SENT)) {
+                        Log.d("TOKEN", Config.getPrefToken(context));
                     }
 
                 }
@@ -428,7 +470,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void pushToken(String token) {
-
+        Log.d("TOKEN", "check");
         spotsDialog.show();
         Call<String> call = ApiUtil.getServiceClass().updatetoken(token, Controller.getUID());
         call.enqueue(new Callback<String>() {
@@ -512,35 +554,41 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private void openDialog() {
         CFAlertDialog.Builder builder = new CFAlertDialog.Builder(this);
         builder.setDialogStyle(CFAlertDialog.CFAlertStyle.ALERT);
-        builder.setTitle("Hey there ! Permission Denied!");
-        builder.setMessage("Without this permission the app is unable to share the content to your friends,unable to give accurate results by using location.");
-        builder.addButton("RE-TRY", -1, -1, CFAlertDialog.CFAlertActionStyle.POSITIVE, CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, new DialogInterface.OnClickListener() {
+        builder.setTitle("Quiz Results published...");
+        builder.setMessage("Click view to see your Quiz Results...");
+        builder.addButton("View", -1, -1, CFAlertDialog.CFAlertActionStyle.POSITIVE, CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                requestPermission();
-                dialog.dismiss();
+                Quiz_Control.addseenquiz(Quiz_Control.LATER);
+                new Move_Show(HomeActivity.this, Quiz_Events.class);
             }
         });
 
-        builder.addButton("I'M SURE", -1, -1, CFAlertDialog.CFAlertActionStyle.NEGATIVE, CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, new DialogInterface.OnClickListener() {
+        builder.addButton("Later", -1, -1, CFAlertDialog.CFAlertActionStyle.NEGATIVE, CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // Toast.makeText(SplashActivity.this, "Upgrade tapped", Toast.LENGTH_SHORT).show();
-
                 dialog.dismiss();
             }
         });
         builder.show();
     }
 
-    void getAlertwindow(String message) {
+    void getAlertwindow() {
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
-        builder.setTitle(message);
-        builder.setPositiveButton("DONE", new DialogInterface.OnClickListener() {
+        builder.setMessage("Are you sure, you want to exit now...");
+        builder.setCancelable(false);
+        builder.setIcon(R.drawable.iconnew);
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
+                finishAffinity();
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
 
             }
         });
@@ -549,140 +597,59 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         alertDialog.show();
     }
 
+    private void verifyaccount() {
+        Call call = ApiUtil.getServiceClass().getaccountverification(Controller.getUID(), Controller.getDIVID());
+        call.enqueue(new Callback() {
+            @Override
+            public void onResponse(Call call, Response response) {
+                if (!response.body().equals("0")) {
+                   displayaccountstatus(response.body().toString());
+                    Log.d("DEtails",response.body().toString());
+                }
+            }
 
-    //    void loadData() {
-//        Call<DownloadResponse> call = ApiUtil.getServiceClass().getHomeComponentList(ApiUtil.GET_RECENT_EVENTS);
-//        call.enqueue(new Callback<DownloadResponse>() {
-//            @Override
-//            public void onResponse(Call<DownloadResponse> call, Response<DownloadResponse> response) {
-//
-//                drawerResponseList = response.body().getProject_details();
-//
-//                d = new Dialog(HomeActivity.this);
-//                d.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//                d.setCancelable(false);
-//                d.setContentView(R.layout.results_design);
-//                ImageView imageView = d.findViewById(R.id.recentposter);
-//                TextView title = d.findViewById(R.id.recenttilte);
-//                TextView venue = d.findViewById(R.id.recentvenue);
-//                TextView day = d.findViewById(R.id.recent_start_date);
-//                TextView month = d.findViewById(R.id.recent_start_month);
-//                TextView apply = d.findViewById(R.id.recentapply);
-//                Button view = d.findViewById(R.id.recentview);
-//                Button later = d.findViewById(R.id.recentlater);
-//
-//                Glide.with(HomeActivity.this).load(drawerResponseList.get(0).getPoster()).into(imageView);
-//                title.setText(drawerResponseList.get(0).getEvent_Title());
-//                venue.setText(drawerResponseList.get(0).getEvent_Organiser() + "," + drawerResponseList.get(0).getCollege_Address());
-//                try {
-//                    Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(drawerResponseList.get(0).getEvent_Start_Date());
-//                    String[] sdate = date1.toString().split(" ");
-//                    if (sdate[0].equals("Sat") || sdate[0].equals("Sun")) {
-//                        day.setTextColor(Color.RED);
-//                        month.setTextColor(Color.RED);
-//
-//                    } else {
-//                        day.setTextColor(Color.parseColor("#1B4F72"));
-//                        month.setTextColor(Color.parseColor("#1B4F72"));
-//                    }
-//                    day.setText(sdate[0]);
-//                    month.setText(sdate[1] + " " + sdate[2]);
-//                } catch (Exception e) {
-//
-//                }
-//                apply.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        if (drawerResponseList.get(0).getEvent_Website().contains("http://") || drawerResponseList.get(0).getEvent_Website().contains("https://")) {
-//
-//                            weburl = drawerResponseList.get(0).getEvent_Website();
-//                        } else {
-//                            weburl = "http://" + drawerResponseList.get(0).getEvent_Website();
-//                        }
-//                        Bundle bundle = new Bundle();
-//                        bundle.putString("url", weburl);
-//                        bundle.putString("data", "reg url");
-//                        bundle.putString("title", "reg title");
-//                        Intent in = new Intent(context, WebActivity.class);
-//                        in.putExtras(bundle);
-//                        context.startActivity(in);
-//                    }
-//                });
-//                view.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        edit.putString("recentevent", "view").apply();
-//                        edit.putString("PREFER", "MORE").apply();
-//                        SharedPreferences sharedPreferences = context.getSharedPreferences("view_details", Context.MODE_PRIVATE);
-//                        SharedPreferences.Editor editor = sharedPreferences.edit();
-//                        editor.putString("coid", drawerResponseList.get(0).getEvent_Coordinator());
-//                        editor.putString("post", drawerResponseList.get(0).getPoster());
-//                        editor.putString("title", drawerResponseList.get(0).getEvent_Title());
-//                        editor.putString("cat", drawerResponseList.get(0).getEvent_Type());
-//                        editor.putString("sdate", drawerResponseList.get(0).getEvent_Start_Date());
-//                        editor.putString("edate", drawerResponseList.get(0).getEvent_End_Date());
-//                        editor.putString("organiser", drawerResponseList.get(0).getEvent_sponsors());
-//                        editor.putString("city", drawerResponseList.get(0).getCollege_District());
-//                        editor.putString("state", drawerResponseList.get(0).getCollege_State());
-//                        editor.putString("dis", drawerResponseList.get(0).getEvent_Discription());
-//                        editor.putString("Eventdetails", drawerResponseList.get(0).getEvent_Details());
-//                        editor.putString("dept", drawerResponseList.get(0).getDept());
-//                        editor.putString("guest", drawerResponseList.get(0).getEvent_guest());
-//                        editor.putString("pronites", drawerResponseList.get(0).getEvent_pro_nites());
-//                        editor.putString("etheme", drawerResponseList.get(0).getEvent_Name());
-//                        editor.putString("accom", drawerResponseList.get(0).getEvent_accomodations());
-//                        editor.putString("lastdate", drawerResponseList.get(0).getLast_date_registration());
-//                        editor.putString("fees", drawerResponseList.get(0).getEntry_Fees());
-//                        editor.putString("htr", drawerResponseList.get(0).getEvent_how_to_reach());
-//                        editor.putString("cpname1", drawerResponseList.get(0).getContact_Person1_Name());
-//                        editor.putString("cpno1", drawerResponseList.get(0).getContact_Person1_No());
-//                        editor.putString("cpname2", drawerResponseList.get(0).getContact_Person2_Name());
-//                        editor.putString("cpno2", drawerResponseList.get(0).getContact_Person2_No());
-//                        editor.putString("webevent", drawerResponseList.get(0).getEvent_Website());
-//                        editor.putString("webcoll", drawerResponseList.get(0).getCollege_Website());
-//                        editor.putString("view", "view");
-//                        editor.apply();
-//                        Intent intent = new Intent(HomeActivity.this, View_Details.class);
-//                        startActivity(intent);
-//                        d.dismiss();
-//                    }
-//                });
-//                later.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        edit.putString("recentevent", "later").apply();
-//                        d.dismiss();
-//                    }
-//                });
-//
-//
-//                d.show();
-//
-//
-//            }
-//
-//            @Override
-//            public void onFailure(Call<DownloadResponse> call, Throwable t) {
-//
-//            }
-//        });
-//
-//    }
+            @Override
+            public void onFailure(Call call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void displayaccountstatus(String name) {
+        Dialog d = new Dialog(HomeActivity.this);
+        d.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        d.setCancelable(false);
+        d.setContentView(R.layout.account_verification);
+        d.getWindow().setLayout(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
+        d.show();
+        TextView accountholdername = (TextView) d.findViewById(R.id.uitvaccountholdername);
+        Button okbtn = (Button) d.findViewById(R.id.uibtnaccountlogin);
+        Button laterbtn = (Button) d.findViewById(R.id.uibtnaccountlater);
+        String[] userdata=name.split("split");
+        Controller.addusername(userdata[0]);
+        Controller.addusermail(userdata[1]);
+        accountholdername.setText("Welcome Back , " + Controller.getusername());
+        okbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Move_Show(HomeActivity.this, MainActivity.class);
+            }
+        });
+        laterbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Controller.adduservierify(Controller.USERVERIFY);
+                d.dismiss();
+
+
+            }
+        });
+    }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        // Continue updates when resumed
-        mUpdateManager.continueUpdate();
-    }
+    public void onBackPressed() {
+       getAlertwindow();
+      //  super.onBackPressed();
 
-    public void callFlexibleUpdate(View view) {
-        // Start a Flexible Update
-        mUpdateManager.mode(UpdateManagerConstant.FLEXIBLE).start();
-    }
-
-    public void callImmediateUpdate(View view) {
-        // Start a Immediate Update
-        mUpdateManager.mode(UpdateManagerConstant.IMMEDIATE).start();
     }
 }

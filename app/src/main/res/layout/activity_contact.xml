@@ -39,17 +39,18 @@
                     />
 
             </LinearLayout>
+
             <TextView
                 android:id="@+id/testing"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Student Bazaar"
                 android:layout_alignParentBottom="true"
+                android:layout_marginBottom="20dp"
                 android:gravity="center"
-                android:typeface="monospace"
-                android:textSize="18sp"
+                android:text="Students Bazaar"
                 android:textColor="@color/white"
-                android:layout_marginBottom="20dp"/>
+                android:textSize="18sp"
+                android:typeface="monospace" />
 
         </RelativeLayout>
     </RelativeLayout>
@@ -117,12 +118,13 @@
 
 
     </androidx.cardview.widget.CardView>
-<ImageView
-    android:layout_width="150dp"
-    android:layout_height="150dp"
-    android:layout_gravity="center"
-    android:layout_marginTop="50dp"
-    android:background="@drawable/newlogo"/>
+
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/iconnew" />
 
 <TextView
     android:layout_width="match_parent"

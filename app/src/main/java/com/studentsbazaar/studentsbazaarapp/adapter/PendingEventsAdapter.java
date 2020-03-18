@@ -80,7 +80,7 @@ public class PendingEventsAdapter extends RecyclerView.Adapter<PendingEventsAdap
                 editor.putString("cat",listItem.getEvent_Type());
                 editor.putString("sdate",listItem.getEvent_Start_Date());
                 editor.putString("edate",listItem.getEvent_End_Date());
-                editor.putString("organiser",listItem.getEvent_sponsors());
+                editor.putString("organiser",listItem.getEvent_Organiser());
                 editor.putString("city",listItem.getCollege_District());
                 editor.putString("state",listItem.getCollege_State());
                 editor.putString("dis",listItem.getEvent_Discription());
@@ -99,6 +99,7 @@ public class PendingEventsAdapter extends RecyclerView.Adapter<PendingEventsAdap
                 editor.putString("cpno2",listItem.getContact_Person2_No());
                 editor.putString("webevent",listItem.getEvent_Website());
                 editor.putString("webcoll",listItem.getCollege_Website());
+                editor.putString("insta",listItem.getEvent_Instagram());
                 editor.apply();
                 Bundle b = new Bundle();
                 b.putString("view","pending");

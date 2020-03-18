@@ -128,7 +128,7 @@ public class DateChecker {
         System.out.println("date1 : " + sdf.format(date1));
         System.out.println("date2 : " + sdf.format(date2));
 
-        if (date2.compareTo(date1) > 0) {
+        if (date2.compareTo(date1) >= 0) {
             System.out.println("Date2 is after Date1");
             result = true;
         }else {

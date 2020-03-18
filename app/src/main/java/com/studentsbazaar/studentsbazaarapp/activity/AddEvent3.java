@@ -5,7 +5,9 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -18,8 +20,6 @@ import com.studentsbazaar.studentsbazaarapp.controller.Controller;
 import com.studentsbazaar.studentsbazaarapp.controller.Move_Show;
 import com.studentsbazaar.studentsbazaarapp.retrofit.ApiUtil;
 
-import java.net.URL;
-
 import dmax.dialog.SpotsDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -27,15 +27,17 @@ import retrofit2.Response;
 
 public class AddEvent3 extends AppCompatActivity {
 
-    EditText ecomments, fgust, fnits, eventheam, accomation, contactname1, contactno1, contactname2, contactno2, lastdate, regfees, howtoreach, sponser;
+    EditText einstagram,ecomments, fgust, fnits, eventheam, accomation, contactname1, contactno1, contactname2, contactno2, lastdate, howtoreach, sponser;
     SpotsDialog progressDialog;
     Button complete;
-    AutoCompleteTextView eventweb, collegeweb;
+    AutoCompleteTextView eventweb, collegeweb,regfees;
     String webevent, webcollege;
-    String ecommts, edis, econby, elist, epost, etitle, ecat, eorg, ecity, estae, esdate, eedate, edpt, efg, enits, etheam, eacc, conname1, conno1, conname2, conno2, eldate, eregf, ehreach, esponser;
+    String einsta,ecommts, edis, econby, elist, epost, etitle, ecat, eorg, ecity, estae, esdate, eedate, edpt, efg, enits, etheam, eacc, conname1, conno1, conname2, conno2, eldate, eregf, ehreach, esponser;
     SharedPreferences sf;
     SharedPreferences.Editor editor;
+    WebView webView;
     String[] urlformat = {"http://", "https://"};
+    String[] feesarray = {"No Entry Fees"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,58 +59,44 @@ public class AddEvent3 extends AppCompatActivity {
         howtoreach = findViewById(R.id.add3_howtoreach);
         sponser = findViewById(R.id.add3_sponser);
         complete = findViewById(R.id.button2);
+        einstagram = findViewById(R.id.add3_instagram);
         eventweb = (AutoCompleteTextView) findViewById(R.id.add3_eventweb);
         collegeweb = (AutoCompleteTextView) findViewById(R.id.add3_collegeweb);
         lastdate.setText(sf.getString("esdate", "none"));
+        fgust.requestFocus();
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(AddEvent3.this, android.R.layout.simple_list_item_1, urlformat);
         eventweb.setAdapter(arrayAdapter);
         eventweb.setThreshold(0);
         collegeweb.setAdapter(arrayAdapter);
         collegeweb.setThreshold(0);
-        eventweb.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        ArrayAdapter<String> feesadapter = new ArrayAdapter<>(AddEvent3.this, android.R.layout.simple_list_item_1, feesarray);
+        regfees.setAdapter(feesadapter);
+        regfees.setThreshold(0);
+        regfees.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onFocusChange(View view, boolean b) {
+            public boolean onTouch(View v, MotionEvent event) {
+                regfees.showDropDown();
+                return false;
+
+            }
+        });
+        eventweb.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
                 eventweb.showDropDown();
-                if (isValid(eventweb.getText().toString())) {
+                return false;
 
-                } else if (eventweb.getText().toString().length() == 0) {
-
-                } else {
-                    eventweb.setError("Invalid url format");
-                }
             }
         });
-
-        collegeweb.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        collegeweb.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onFocusChange(View view, boolean b) {
+            public boolean onTouch(View v, MotionEvent event) {
                 collegeweb.showDropDown();
-                if (isValid(collegeweb.getText().toString())) {
-
-                } else if (collegeweb.getText().toString().length() == 0) {
-
-                } else {
-                    collegeweb.setError("Invalid url format");
-                }
+                return false;
             }
         });
 
     }
-
-    public static boolean isValid(String url) {
-        /* Try creating a valid URL */
-        try {
-            new URL(url).toURI();
-            return true;
-        }
-
-        // If there was an Exception
-        // while creating URL object
-        catch (Exception e) {
-            return false;
-        }
-    }
-
 
     @Override
     protected void onResume() {
@@ -146,6 +134,7 @@ public class AddEvent3 extends AppCompatActivity {
                 webevent = eventweb.getText().toString();
                 webcollege = collegeweb.getText().toString();
                 ecommts = ecomments.getText().toString();
+                einsta = einstagram.getText().toString();
                 String Event_Title = etitle;
                 String Event_Type = ecat;
                 String Event_Name = etitle;
@@ -162,6 +151,7 @@ public class AddEvent3 extends AppCompatActivity {
                 String Event_Discription = edis;
                 String Event_Website = webevent;
                 String College_Website = webcollege;
+                String Event_Instagram = einsta ;
                 String Contact_Person1_Name = conname1;
                 String Contact_Person1_No = conno1;
                 String Contact_Person2_Name = conname2;
@@ -179,17 +169,29 @@ public class AddEvent3 extends AppCompatActivity {
                 String Last_date_registration = eldate;
                 String Event_status = "0";
                 String Comments = ecommts;
-                if (Contact_Person1_Name.isEmpty() && Contact_Person1_No.isEmpty() && Contact_Person2_Name.isEmpty() && Contact_Person2_No.isEmpty() && Last_date_registration.isEmpty() && Event_Website.isEmpty() && College_Website.isEmpty() && Entry_Fees.isEmpty()) {
-                    Move_Show.showToast("All Fields are mandatory...");
-                } else if (contactno1.getText().toString().length() < 10) {
-                    contactno1.setError("Please fill valid 10 Digit");
-                } else if (contactno2.getText().toString().length() < 10) {
-                    contactno2.setError("Please fill valid 10 Digit");
+                if (Event_guest.isEmpty()) {
+                    Move_Show.showToast("Enter Event Guest Name");
+                } else if (Event_accomodations.isEmpty()) {
+                    Move_Show.showToast("Enter Event Accommodation");
+                } else if (Contact_Person1_Name.isEmpty()) {
+                    Move_Show.showToast("Enter Contact Person");
+                } else if (Contact_Person1_No.length() < 10) {
+                    Move_Show.showToast("Please enter Valid 10 Digit Number");
+                }else if (Contact_Person2_Name.isEmpty()) {
+                    Move_Show.showToast("Enter Contact Person");
+                }  else if (Contact_Person2_No.length() < 10) {
+                    Move_Show.showToast("Please enter Valid 10 Digit Number");
+                }else if (Last_date_registration.isEmpty()) {
+                    Move_Show.showToast("Enter Last date for registration");
+                } else if (Entry_Fees.isEmpty()) {
+                    Move_Show.showToast("Enter Entry Fees");
+                } else if (Event_how_to_reach.isEmpty()) {
+                    Move_Show.showToast("Please Enter Landmark/Route");
                 } else {
                     progressDialog.show();
                     Log.d("eventdetails", Event_Details);
                     Log.d("alldatas", "onClick: " + Event_Title + " " + Event_Type + " " + Event_Name + " " + Event_Start_Date + " " + Event_End_Date + " " + Conductedby + " " + Degree + " " + Dept + " " + College_Address + " " + College_District + " " + College_State + " " + Event_organizer + " " + Event_Details + Event_Discription + " " + Event_Website + " " + College_Website + " " + Contact_Person1_Name + " " + Contact_Person1_No + " " + Contact_Person2_Name + " " + Contact_Person2_No + " " + " " + Entry_Fees + " " + Accepted + " " + Event_Lat + " " + Event_Long + " " + Event_guest + " " + Event_pro_nites + " " + Event_accomodations + " " + Event_how_to_reach + " " + Event_sponsors + " " + Last_date_registration + " " + Event_status);
-                    Call<String> call = ApiUtil.getServiceClass().insertUser(Controller.getUID(), Event_Title, Event_Type, Event_Name, Event_Start_Date, Event_End_Date, Conductedby, Degree, Dept, College_Address, College_District, College_State, Event_organizer, Event_Details, Event_Discription, Event_Website, College_Website, Contact_Person1_Name, Contact_Person1_No, Contact_Person2_Name, Contact_Person2_No, Poster, Entry_Fees, Accepted, Event_Lat, Event_Long, Event_guest, Event_pro_nites, Event_accomodations, Event_how_to_reach, Event_sponsors, Last_date_registration, Event_status, Comments);
+                    Call<String> call = ApiUtil.getServiceClass().insertUser(Controller.getUID(), Event_Title, Event_Type, Event_Name, Event_Start_Date, Event_End_Date, Conductedby, Degree, Dept, College_Address, College_District, College_State, Event_organizer, Event_Details, Event_Discription, Event_Website, College_Website,Event_Instagram, Contact_Person1_Name, Contact_Person1_No, Contact_Person2_Name, Contact_Person2_No, Poster, Entry_Fees, Accepted, Event_Lat, Event_Long, Event_guest, Event_pro_nites, Event_accomodations, Event_how_to_reach, Event_sponsors, Last_date_registration, Event_status, Comments);
                     call.enqueue(new Callback<String>() {
                         @Override
                         public void onResponse(Call<String> call, Response<String> response) {
@@ -198,11 +200,11 @@ public class AddEvent3 extends AppCompatActivity {
 
                             if (response.body().equals("1")) {
 
-                                getAlertwindow("Thank you...\nYour Request has been Sent...\nAdmin will reach you soon...", response.body());
+                                getAlertwindow("Thank you...\nYour Request has been Sent...\nAdmin will reach you soon..!!", response.body());
                                 progressDialog.dismiss();
 
                             } else {
-                                getAlertwindow("Sorry\n,Your Request Couldn't Send...Please try again...", response.body());
+                                getAlertwindow("Sorry\n,Your Request Couldn't Send...Please try again..!!", response.body());
                             }
 
 
@@ -229,10 +231,10 @@ public class AddEvent3 extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 if (res.equals("1")) {
-                    new Move_Show(AddEvent3.this,EventActivity.class);
+                    new Move_Show(AddEvent3.this, EventActivity.class);
                     finish();
                 } else {
-                    new Move_Show(AddEvent3.this,AddEvent2.class);
+                    new Move_Show(AddEvent3.this, AddEvent2.class);
                     finish();
                 }
 
@@ -242,4 +244,6 @@ public class AddEvent3 extends AppCompatActivity {
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
+
+
 }

@@ -43,6 +43,15 @@ public class Monitor {
         context.startActivity(Intent.createChooser(sharingIntent, context.getResources().getString(R.string.app_name)));
     }
 
+    public void shareResults(String mark,String qus,String ans) {
+        String shareBody = "Today I got "+mark+" point on Quiz\nQuestion : "+qus+"\nAnswer : "+ans+"\nStudents Bazaar,India's highest rated students app. \nSource : Students Bazaar \nclick below link: \n studentsbazaar.in/app/";
+        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
+        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Subject Here");
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+        context.startActivity(Intent.createChooser(sharingIntent, context.getResources().getString(R.string.app_name)));
+    }
+
     public void sharevideourl(String videourl) {
         String shareBody = "Video Link : "+videourl+"\nStudents Bazaar,India's highest rated students app. \nSource : Students Bazaar \nclick below link: \n studentsbazaar.in/app/";
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
@@ -61,7 +70,15 @@ public class Monitor {
                     .show();
         }
     }
-
+    public void postfacebook() {
+        if (whatsappInstalledOrNot("com.facebook.katana")) {
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("dgas"));
+            context.startActivity(browserIntent);
+        } else {
+            Toast.makeText(context, "WhatsApp not Installed", Toast.LENGTH_SHORT)
+                    .show();
+        }
+    }
     private boolean whatsappInstalledOrNot(String uri) {
         PackageManager pm = context.getPackageManager();
         boolean app_installed = false;
