@@ -18,14 +18,17 @@ public interface RetrofitInterface {
 
     @FormUrlEncoded
     @POST("/forgotpassword.php")
-    Call<String> updatepassword(@Field("uid") String uid,
-                                @Field("data") String data,
+    Call<String> updatepassword(@Field("data") String data,
                                 @Field("password") String password);
 
     @FormUrlEncoded
-    @POST("/updatedeviceid.php")
-    Call<String> updatedeviceid(@Field("device") String device);
+    @POST("/checkuid.php")
+    Call<String> checkuid(@Field("uid") String uid);
 
+    @FormUrlEncoded
+    @POST("/checgetuid.php")
+    Call<String> getuid(@Field("uid") String phno,
+                        @Field("did") String device);
 
     @FormUrlEncoded
     @POST("/updatememepost.php")
@@ -37,20 +40,33 @@ public interface RetrofitInterface {
     @FormUrlEncoded
     @POST("/updatetoken.php")
     Call<String> updatetoken(@Field("Token") String token,
-                             @Field("UID") String UID);
+                             @Field("UID") String UID,
+                             @Field("mobile_no") String mobno);
 
 
     @GET
     Call<String> addresultstoprofile(@Url String url);
 
     @GET
+    Call<String> addresulttable(@Url String url);
+
+    @GET
     Call<DownloadResponse> getposters(@Url String url);
 
+    @GET
+    Call<String> updateqsflag(@Url String url);
+
+    @GET
+    Call<String> updatephsts(@Url String url);
+
+    @GET
+    Call<DownloadResponse> getrs(@Url String url);
 
     @FormUrlEncoded
     @POST("/Login.php")
-    Call<String> getLoginDetails(@Field("mobile") String mobile,
-                                 @Field("password") String password);
+    Call<DownloadResponse> getLoginDetails(@Field("mobile") String mobile,
+                                           @Field("password") String password,
+                                           @Field("device") String device);
 
     @FormUrlEncoded
     @POST("/addtechnews.php")
@@ -66,9 +82,14 @@ public interface RetrofitInterface {
     @GET
     Call<String> updateEventStatus(@Url String url);
 
+    @GET
+    Call<String> getupdateapp(@Url String url);
 
     @GET
     Call<DownloadResponse> getcollegedetails(@Url String url);
+
+    @GET
+    Call<String> getserversts(@Url String url);
 
     @FormUrlEncoded
     @POST("/addplacement.php")
@@ -82,17 +103,13 @@ public interface RetrofitInterface {
 
     @FormUrlEncoded
     @POST("/update_quizquestion.php")
-    Call<String> addquizquestions(@Field("question") String question,
-                               @Field("optA") String optA,
-                               @Field("optB") String optB,
-                               @Field("optC") String optC,
-                               @Field("optD") String optD,
-                               @Field("crct") String crct);
-
+    Call<String> addquizquestions(@Field("type") String qstype,
+                               @Field("question") String qspicurl,
+                               @Field("answer") String anspicurl,
+                               @Field("crct") String ans);
 
     @GET("/Register.php")
-    Call<String> addaccount(@Query("name") String name,
-                            @Query("uid") String uid,
+    Call<DownloadResponse> addaccount(@Query("name") String name,
                             @Query("password") String password,
                             @Query("cname") String collegename,
                             @Query("affiliation") String affiliation,
@@ -103,14 +120,16 @@ public interface RetrofitInterface {
                             @Query("mobile") String mobile,
                             @Query("acyear") String acyear,
                             @Query("mail") String mail,
-                            @Query("device") String device);
+                            @Query("device") String device, @Query("refcode") String refcode);
 
     @GET("/accountverify.php")
-    Call<String> getaccountverification(@Query("uid") String uid,
-                                        @Query("device") String device);
+    Call<DownloadResponse> getaccountverification(@Query("device") String device);
 
     @GET("/get_quiz.php")
     Call<DownloadResponse> getQuizQuestions(@Query("uid") String uid);
+
+    @GET("/get_result_history.php")
+    Call<DownloadResponse> getquizresult(@Query("uid") String uid);
 
     @FormUrlEncoded
     @POST("/addeventdetails.php")
@@ -207,7 +226,8 @@ public interface RetrofitInterface {
                               @Field("reach") String reach,
                               @Field("lastdate") String lastdate,
                               @Field("guest") String guest,
-                              @Field("Eid") String Eid);
+                              @Field("Eid") String Eid,
+                              @Field("id") String id);
 
 }
 

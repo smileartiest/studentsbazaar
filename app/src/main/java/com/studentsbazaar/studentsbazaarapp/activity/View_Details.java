@@ -3,6 +3,7 @@ package com.studentsbazaar.studentsbazaarapp.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
@@ -13,18 +14,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.studentsbazaar.studentsbazaarapp.controller.Monitor;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.controller.Controller;
-import com.studentsbazaar.studentsbazaarapp.controller.Move_Show;
+import com.studentsbazaar.studentsbazaarapp.controller.Monitor;
 import com.studentsbazaar.studentsbazaarapp.retrofit.ApiUtil;
 
 import dmax.dialog.SpotsDialog;
@@ -42,13 +45,17 @@ public class View_Details extends AppCompatActivity {
     String stitle, sategory, ssdate, sedate, sorganizer, scity, sstate, sDiscription, seventdetails, sdepartment, sguest, spronites, stheme, saccomadtation, slastdate, sentryfees, showtoreach, scpnam1, scpno1, scpname2, scpno2;
     String posterurl, coid, webevent, webcoll, weburl,insta;
     SpotsDialog spotsDialog;
+    SharedPreferences sharedPreferences;
+    FloatingActionButton editbtn;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.view_details_page);
 
-        setContentView(R.layout.activity_view__details);
+        editbtn = findViewById(R.id.view_edit_event_btn);
+
         submit = (Button) findViewById(R.id.head_btSubmit);
         edit = (Button) findViewById(R.id.head_Update);
         title = (TextView) findViewById(R.id.head_title);
@@ -92,9 +99,17 @@ public class View_Details extends AppCompatActivity {
         instagram = (TextView)findViewById(R.id.head_event_instagram);
         register_now = (Button) findViewById(R.id.register_now);
         Toolbar toolbar = (Toolbar) findViewById(R.id.viewtoolb);
+
+        sharedPreferences = getSharedPreferences("view_details", Context.MODE_PRIVATE);
+
+        if(sharedPreferences.getString("coid","").equals(Controller.getUID())){
+            editbtn.setVisibility(View.VISIBLE);
+        }else{
+            editbtn.setVisibility(View.GONE);
+        }
+
         if (toolbar != null) {
             setSupportActionBar(toolbar);
-            getSupportActionBar().setTitle("View Details");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
 
@@ -107,13 +122,6 @@ public class View_Details extends AppCompatActivity {
         });
         spotsDialog = new SpotsDialog(this);
         new Controller(this);
-       /* if (spUserDetails.getString("PREFER", null).equals("PREF")) {
-            submit.setVisibility(View.VISIBLE);
-            edit.setVisibility(View.VISIBLE);
-        } else {
-            submit.setVisibility(View.VISIBLE);
-            edit.setVisibility(View.GONE);
-        }*/
         getviewDetails();
 
         w1.setOnClickListener(new View.OnClickListener() {
@@ -143,14 +151,14 @@ public class View_Details extends AppCompatActivity {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                updatedEvents(coid, "1");
+                updatedEvents(coid, "1" , sharedPreferences.getString("eid" ,""));
             }
         });
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                updatedEvents(coid, "2");
+                updatedEvents(coid, "2",sharedPreferences.getString("eid" ,""));
 
             }
         });
@@ -189,6 +197,14 @@ public class View_Details extends AppCompatActivity {
 
             }
         });
+
+        editbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(View_Details.this , Edit_Events.class).putExtra("id",sharedPreferences.getString("eid","")));
+            }
+        });
+
     }
 
     private void makeCall(String toString) {
@@ -210,7 +226,6 @@ public class View_Details extends AppCompatActivity {
     }
 
     void getviewDetails() {
-        SharedPreferences sharedPreferences = getSharedPreferences("view_details", Context.MODE_PRIVATE);
         coid = sharedPreferences.getString("coid", null);
         posterurl = sharedPreferences.getString("post", null);
         stitle = sharedPreferences.getString("title", null);
@@ -250,20 +265,20 @@ public class View_Details extends AppCompatActivity {
             edit.setVisibility(View.GONE);
             register_now.setVisibility(View.GONE);
         }
-        Glide.with(View_Details.this)
-                .load(posterurl).listener(new RequestListener<String, GlideDrawable>() {
+        Glide.with(View_Details.this).load(posterurl).listener(new RequestListener<Drawable>() {
             @Override
-            public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-               gifImageView.setVisibility(View.VISIBLE);
+            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                gifImageView.setVisibility(View.VISIBLE);
                 return false;
             }
 
             @Override
-            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-               gifImageView.setVisibility(View.GONE);
+            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                gifImageView.setVisibility(View.GONE);
                 return false;
             }
         }).into(head_poster);
+
         title.setText(stitle);
         category.setText(sategory);
         sdate.setText(ssdate);
@@ -359,9 +374,9 @@ public class View_Details extends AppCompatActivity {
 
     }
 
-    void updatedEvents(String coid, String status) {
+    void updatedEvents(String coid, String status , String eid) {
         spotsDialog.show();
-        Call<String> call = ApiUtil.getServiceClass().updateEventStatus(ApiUtil.UPDATE_STATUS + "?coid=" + coid + "&s=" + status);
+        Call<String> call = ApiUtil.getServiceClass().updateEventStatus(ApiUtil.UPDATE_STATUS + "?coid=" + coid + "&s=" + status +"&eid=" + eid);
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {

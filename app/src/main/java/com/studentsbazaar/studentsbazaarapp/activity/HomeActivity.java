@@ -1,108 +1,98 @@
 package com.studentsbazaar.studentsbazaarapp.activity;
-import android.app.AlertDialog;
+
 import android.app.Dialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
+
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import androidx.viewpager.widget.ViewPager;
+
 import com.crowdfire.cfalertdialog.CFAlertDialog;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
+import com.studentsbazaar.studentsbazaarapp.BuildConfig;
+import com.studentsbazaar.studentsbazaarapp.CheckUserNumber;
 import com.studentsbazaar.studentsbazaarapp.R;
-import com.studentsbazaar.studentsbazaarapp.adapter.SliderPagerAdapter;
 import com.studentsbazaar.studentsbazaarapp.controller.Controller;
 import com.studentsbazaar.studentsbazaarapp.controller.Monitor;
 import com.studentsbazaar.studentsbazaarapp.controller.Move_Show;
 import com.studentsbazaar.studentsbazaarapp.controller.Quiz_Control;
 import com.studentsbazaar.studentsbazaarapp.firebase.Config;
+import com.studentsbazaar.studentsbazaarapp.fragment.Frag_home;
 import com.studentsbazaar.studentsbazaarapp.helper.PersistanceUtil;
-import com.studentsbazaar.studentsbazaarapp.model.Posters_Details;
-import com.studentsbazaar.studentsbazaarapp.model.Project_details;
+import com.studentsbazaar.studentsbazaarapp.model.DownloadResponse;
+import com.studentsbazaar.studentsbazaarapp.model.Profile_Details;
+import com.studentsbazaar.studentsbazaarapp.model.Quiz_Details;
 import com.studentsbazaar.studentsbazaarapp.retrofit.ApiUtil;
+import com.studentsbazaar.studentsbazaarapp.service.BroadcastService;
+
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
 import dmax.dialog.SpotsDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    TextView tvEvent, tvPlacement, tvSyllabus, tvMemes, tvQuiz, tvHeadTitle;
-    CardView cvEvent, cvPlacement, cvSyllabus, cvMemes, cvQuiz, technews, cvdis, cvabout;
+
     LinearLayout linear2;
     Dialog d;
     private DrawerLayout drawer;
     private Toolbar toolbar;
     NavigationView navigationView;
-    String weburl;
     static String token = "", STRTOKEN = "0";
     Context context;
-    private ViewPager vp_slider;
     private static final int PERMISSION_REQUEST_CODE = 200;
     String refreshedToken;
-    private LinearLayout ll_dots;
     SpotsDialog spotsDialog;
-    SliderPagerAdapter sliderPagerAdapter;
-    ArrayList<String> slider_image_list;
-    List<Posters_Details> posters_details;
-    List<Project_details> drawerResponseList = null;
-    private TextView[] dots;
-    int page_position = 0;
-    private static final int MY_PERMISSIONS_REQUEST_SEND_SMS = 0;
     int CURRENT_TIME;
-    int LOCAL_TIME = 18;
+    int LOCAL_TIME = 19;
     int LIMIT_TIME = 23;
-
+    List<Profile_Details> getlogindetails = null;
+    List<Quiz_Details> drawerResponseList = null;
+    String uidata;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //  requestWindowFeature(Window.FEATURE_NO_TITLE);
         spotsDialog = new SpotsDialog(this);
-//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-//                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.login_main_page);
+        loadfragment(new Frag_home());
         new Controller(this);
         new Quiz_Control(this);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
-        tvEvent = findViewById(R.id.tvEventNew);
-        tvHeadTitle = findViewById(R.id.head_title);
-        tvMemes = findViewById(R.id.tvMeme);
-        tvPlacement = findViewById(R.id.tvPlacement);
-        tvQuiz = findViewById(R.id.tvQuiz);
+        toolbar = findViewById(R.id.toolbar);
+        drawer = findViewById(R.id.drawer_layout);
+        navigationView =  findViewById(R.id.nav_view);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
 
             Calendar calander = Calendar.getInstance();
@@ -119,193 +109,138 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             }
 
         }
-
-        //new ShowConfirmDialog(HomeActivity.this,"please a wait a min");
-        //ShowConfirmDialog.textView.setVisibility();
         if (Controller.getprefer().equals(Controller.VISITOR)) {
             if (Controller.getuservierify() == null) {
                 verifyaccount();
             }
 
         }
-
         if (toolbar != null) {
             setSupportActionBar(toolbar);
             getSupportActionBar().setTitle("");
 
         }
 
-
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-        tvSyllabus = findViewById(R.id.tvSylabus);
 
         linear2 = findViewById(R.id.linear2);
         checkToken();
         context = this;
-
-        cvEvent = findViewById(R.id.cardview2new);
-        cvPlacement = findViewById(R.id.cvplaced);
-        cvSyllabus = findViewById(R.id.cardview4);
-        cvMemes = findViewById(R.id.cardview5);
-        cvQuiz = findViewById(R.id.cardview6);
-        cvdis = findViewById(R.id.cvdis);
-        cvabout = findViewById(R.id.cvabut);
-        technews = findViewById(R.id.cardviewtechnews);
-        // rlLayout.setVisibility(View.GONE);
-//        spUserDetails = getSharedPreferences("USER_DETAILS", Context.MODE_PRIVATE);
-//        edit = spUserDetails.edit();
-//
-//        if (spUserDetails.getString("recentevent", null) == null) {
-//
-//            //   loadData();
-//        }
         init();
 
-        // method for adding indicators
-        //  addBottomDots(0);
-
-//        final Handler handler = new Handler();
-/*
-        final Runnable update = new Runnable() {
-            public void run() {
-                if (page_position == slider_image_list.size()) {
-                    page_position = 0;
-                } else {
-                    page_position = page_position + 1;
-                }
-                vp_slider.setCurrentItem(page_position, true);
-            }
-        };*/
-
-   /*     new Timer().schedule(new TimerTask() {
-
+        Call<DownloadResponse> call = ApiUtil.getServiceClass().getQuizQuestions("1");
+        call.enqueue(new Callback<DownloadResponse>() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
-            public void run() {
-                handler.post(update);
-            }
-        }, 100, 5000);*/
-
-        cvEvent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new Move_Show(HomeActivity.this, EventActivity.class);
-
-
-            }
-        });
-
-        cvPlacement.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new Move_Show(HomeActivity.this, PlacementActivity.class);
-
-            }
-        });
-        technews.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new Move_Show(HomeActivity.this, Tech_News.class);
-
-            }
-        });
-
-        cvQuiz.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (Controller.getprefer().equals(Controller.REG) || Controller.getprefer().equals(Controller.ADMIN) || Controller.getprefer().equals(Controller.INFOZUB)) {
-                    new Move_Show(HomeActivity.this, Quiz_Events.class);
-                } else {
-                    CFAlertDialog.Builder builder = new CFAlertDialog.Builder(HomeActivity.this);
-                    builder.setDialogStyle(CFAlertDialog.CFAlertStyle.ALERT);
-                    builder.setTitle("Hey there ! Do Register!");
-                    builder.setMessage("We will monitor your score and will give surprise for you.");
-                    builder.addButton("OKAY", -1, -1, CFAlertDialog.CFAlertActionStyle.POSITIVE, CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                            new Move_Show(HomeActivity.this, SignUp.class);
-
-
+            public void onResponse(Call<DownloadResponse> call, Response<DownloadResponse> response) {
+                Log.d("RESPONSE2", response.body().toString());
+                if (response.isSuccessful()) {
+                    assert response.body() != null;
+                    drawerResponseList = response.body().getQuiz_details();
+                    if (drawerResponseList.get(0).getId() != null) {
+                        Log.d("RESPONSE2", drawerResponseList.get(0).getId());
+                    } else {
+                        if (drawerResponseList.size() == 0) {
+                        } else {
+                            Quiz_Control.addviewrs(String.valueOf(drawerResponseList.get(0).getViewers()));
+                            Log.d("Viewers " , ""+drawerResponseList.get(0).getViewers());
+                            new Quiz_Control(HomeActivity.this).addresult(drawerResponseList.get(0).getCrct_Ans() ,drawerResponseList.get(0).getQuiz_Id() ,drawerResponseList.get(0).getQuiz_ques() ,drawerResponseList.get(0).getQuiz_Ans());
                         }
-                    });
-
-                    builder.addButton("NO", -1, -1, CFAlertDialog.CFAlertActionStyle.NEGATIVE, CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-                    builder.show();
+                    }
                 }
-
             }
-        });
-        cvdis.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Controller.adddesignprefer(Controller.PREFER);
-                new Move_Show(HomeActivity.this, Mems.class);
-
+            public void onFailure(Call<DownloadResponse> call, Throwable t) {
+                //showErrorMessage();
+                Log.d("RESPONSE3", "err" + t.getMessage());
             }
         });
-        cvabout.setOnClickListener(new View.OnClickListener() {
+
+        Call<String> call1 = ApiUtil.getServiceClass().getupdateapp(ApiUtil.GET_UPDATE);
+        call1.enqueue(new Callback<String>() {
             @Override
-            public void onClick(View view) {
-                Bundle b = new Bundle();
-                b.putString("url", "http://uniqsolutions.co.in/Admin/Files/Tech_Video.php");
-                b.putString("title", "Interesting Videos");
-                b.putString("data", "Interesting Videos");
-                Intent intEvent = new Intent(HomeActivity.this, WebActivity.class);
-                intEvent.putExtras(b);
-                startActivity(intEvent);
-
+            public void onResponse(Call<String> call, Response<String> response) {
+                if(response.isSuccessful()){
+                    if(BuildConfig.VERSION_NAME.equals(response.body().toString())){}else{ update_service(response.body()); }
+                }
+            }
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Log.d("Error" , t.getMessage());
             }
         });
 
-        cvMemes.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.main_contact_us).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bundle b = new Bundle();
-                b.putString("url", "https://coe1.annauniv.edu/home/");
-                b.putString("title", "AU Results");
-                b.putString("data", "AU Results");
-                Intent intEvent = new Intent(HomeActivity.this, WebActivity.class);
-                intEvent.putExtras(b);
-                startActivity(intEvent);
-
-            }
-        });
-
-
-        cvSyllabus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new Move_Show(HomeActivity.this, MUActivity.class);
-
+                new Move_Show(HomeActivity.this, ContactActivity.class);
             }
         });
 
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        finishAffinity();
+    public void loadfragment(Fragment frag) {
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.main_framelayout, frag);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
+
+    //this method action fro update notification to user.
+    public void update_service(String version1){
+        CFAlertDialog.Builder builder = new CFAlertDialog.Builder(this);
+        builder.setDialogStyle(CFAlertDialog.CFAlertStyle.NOTIFICATION);
+        if(Controller.getusername()!= null){
+            builder.setTitle("Hai , "+Controller.getusername()+" !");
+        }else{
+            builder.setTitle("Hai , User ! ");
+        }
+        builder.setMessage("Your current version is "+ BuildConfig.VERSION_NAME +". available version is "+version1+" . Update your application now.");
+        builder.addButton("UPDATE", -1, -1, CFAlertDialog.CFAlertActionStyle.POSITIVE, CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                Uri uri = Uri.parse("market://details?id=" + getApplicationContext().getPackageName());
+                Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
+                // To count with Play market backstack, After pressing back button,
+                // to taken back to our application, we need to add following flags to intent.
+                goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY |
+                        Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
+                        Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+                try {
+                    startActivity(goToMarket);
+                } catch (ActivityNotFoundException e) {
+                    startActivity(new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("http://play.google.com/store/apps/details?id=" + getApplicationContext().getPackageName())));
+                }
+            }
+        });
+        builder.addButton("NOT NOW", -1, -1, CFAlertDialog.CFAlertActionStyle.DEFAULT, CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.show();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.add_placement_menu, menu);
+
+        if(Controller.getprefer().equals(Controller.REG)){
+            menu.findItem(R.id.profile).setVisible(true);
+        }else{
+            menu.findItem(R.id.profile).setVisible(false);
+        }
         menu.findItem(R.id.item1).setVisible(false);
         menu.findItem(R.id.item2).setVisible(false);
         menu.findItem(R.id.action_search).setVisible(false);
-
         return true;
-
     }
 
     @Override
@@ -321,13 +256,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 return true;
 
             case R.id.profile:
-              new Move_Show(HomeActivity.this,ProfileActivity.class);
-              finish();
+                new Move_Show(HomeActivity.this,ProfileActivity.class);
+                finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
-
     }
 
     @Override
@@ -340,11 +274,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
                 break;
             case R.id.nav_sigin:
-                new Move_Show(HomeActivity.this, MainActivity.class);
+                new Move_Show(HomeActivity.this, Login_Page.class);
 
                 break;
             case R.id.nav_signup:
-                new Move_Show(HomeActivity.this, SignUp.class);
+                new Move_Show(HomeActivity.this, CheckUserNumber.class);
 
                 break;
 
@@ -353,16 +287,35 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
                 break;
             case R.id.nav_logout:
-                spotsDialog.show();
-                new Handler().postDelayed(new Runnable() {
+                CFAlertDialog.Builder builder = new CFAlertDialog.Builder(this);
+                builder.setDialogStyle(CFAlertDialog.CFAlertStyle.ALERT);
+                builder.setIcon(R.drawable.newlogo);
+                builder.setTitle("Hey , There !");
+                builder.setMessage("Are you sure, want to logout from this app ?");
+                builder.addButton("LOGOUT", -1, -1, CFAlertDialog.CFAlertActionStyle.POSITIVE, CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, new DialogInterface.OnClickListener() {
                     @Override
-                    public void run() {
-                        spotsDialog.dismiss();
-                        Controller.clearuserdetails();
-                        Quiz_Control.clearquizControl();
-                        finishAffinity();
+                    public void onClick(DialogInterface dialog, int which) {
+                        spotsDialog.show();
+                        dialog.dismiss();
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                spotsDialog.dismiss();
+                                Controller.clearuserdetails();
+                                Quiz_Control.clearquizControl();
+                                finishAffinity();
+                                startActivity(new Intent(getApplicationContext() , Login_Page.class));
+                            }
+                        }, 2000);
                     }
-                }, 2000);
+                });
+                builder.addButton("CANCEL", -1, -1, CFAlertDialog.CFAlertActionStyle.NEGATIVE, CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                builder.show();
                 break;
             case R.id.nav_aboutus:
                 Bundle b = new Bundle();
@@ -372,18 +325,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 Intent intEvent = new Intent(HomeActivity.this, WebActivity.class);
                 intEvent.putExtras(b);
                 startActivity(intEvent);
-
         }
-        if (fragment != null) {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction ft = fragmentManager.beginTransaction();
-            ft.replace(R.id.fragment_container, fragment);
-
-            //    mMapView.onResume();
-
-            ft.commit();
-        }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -391,59 +333,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
 
     private void init() {
-
-       /* setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
-        getSupportActionBar().hide();*/
-
         navigationView.setNavigationItemSelectedListener(HomeActivity.this);
         if (Controller.getprefer().equals(Controller.REG) || Controller.getprefer().equals(Controller.ADMIN)) {
             navigationView.getMenu().getItem(1).setVisible(false);
             navigationView.getMenu().getItem(2).setVisible(false);
+        }else{
+            navigationView.getMenu().getItem(5).setVisible(false);
         }
         requestPermission();
-
-
-//Add few items to slider_image_list ,this should contain url of images which should be displayed in slider
-// here i am adding few sample image links, you can add your own
-   /*     Call<DownloadResponse> call = ApiUtil.getServiceClass().getposters(ApiUtil.GET_POSTERS);
-        call.enqueue(new Callback<DownloadResponse>() {
-            @Override
-            public void onResponse(Call<DownloadResponse> call, Response<DownloadResponse> response) {
-                if (response.isSuccessful()) {
-                    posters_details = response.body().getPosters_details();
-                    for (int i = 0; i < posters_details.size(); i++) {
-                        Log.d("posters", String.valueOf(posters_details.get(i).getPoster()));
-                        slider_image_list.add(String.valueOf(posters_details.get(i).getPoster()));
-                    }
-                    sliderPagerAdapter = new SliderPagerAdapter(HomeActivity.this, slider_image_list);
-                    vp_slider.setAdapter(sliderPagerAdapter);
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<DownloadResponse> call, Throwable t) {
-
-            }
-        });*/
-
-
-      /*  vp_slider.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                addBottomDots(position);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });*/
     }
 
     private void checkToken() {
@@ -452,11 +349,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             public void onSuccess(InstanceIdResult instanceIdResult) {
                 refreshedToken = instanceIdResult.getToken();
                 PersistanceUtil.setUserID(refreshedToken);
-                // Saving reg id to shared preferences
+
                 storeRegIdInPref(refreshedToken);
+
                 Config.setPrefToken(context, refreshedToken);
-                // Notify UI that registration has completed, so the progress indicator can be hidden.
-                //token = refreshedToken;
+
                 Intent registrationComplete = new Intent(Config.REGISTRATION_COMPLETE);
                 registrationComplete.putExtra("token", refreshedToken);
                 LocalBroadcastManager.getInstance(context).sendBroadcast(registrationComplete);
@@ -472,21 +369,17 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 }
             }
         });
-
-
     }
-
     private void pushToken(String token) {
         Log.d("TOKEN", "check");
         spotsDialog.show();
-        Call<String> call = ApiUtil.getServiceClass().updatetoken(token, Controller.getUID());
+        Call<String> call = ApiUtil.getServiceClass().updatetoken(token, Controller.getUID(), new Controller(HomeActivity.this).getphno());
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 Controller.addTokenStatus(Controller.SENT);
                 assert response.body() != null;
                 spotsDialog.dismiss();
-
             }
 
             @Override
@@ -503,65 +396,17 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-/*    private void addBottomDots(int currentPage) {
-        dots = new TextView[slider_image_list.size()];
-
-        ll_dots.removeAllViews();
-        for (int i = 0; i < dots.length; i++) {
-            dots[i] = new TextView(this);
-            dots[i].setText(Html.fromHtml("&#8226;"));
-            dots[i].setTextSize(35);
-            dots[i].setTextColor(Color.parseColor("#000000"));
-            ll_dots.addView(dots[i]);
-        }
-
-        if (dots.length > 0)
-            dots[currentPage].setTextColor(Color.parseColor("#FFFFFF"));
-    }*/
-
     private void requestPermission() {
         ActivityCompat.requestPermissions(this, new String[]{WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
 
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case PERMISSION_REQUEST_CODE:
-//                boolean locationAccepted = false, locAccepted = false, coaseAccepted = false, smsAccepted = false;
-//                if (grantResults.length > 0) {
-//                    locationAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-//                    locAccepted = grantResults[1] == PackageManager.PERMISSION_GRANTED;
-//                    coaseAccepted = grantResults[2] == PackageManager.PERMISSION_GRANTED;
-//                    smsAccepted = grantResults[3] == PackageManager.PERMISSION_GRANTED;
-//
-//                    if (locationAccepted && locAccepted && coaseAccepted && smsAccepted) {
-//                        // userService.getDownloadingService();
-//                        System.out.println("Permission Granted, Now you can access location data and camera.");
-//                    } else {
-//                        // userService.getDownloadingService();
-//                        // openDialog();
-//                        System.out.println("Permission Granted, Now you can access location data and camera.");
-//                    }
-//                }
-//
-//                if (locationAccepted && locAccepted && coaseAccepted && smsAccepted) {
-//                    // userService.getDownloadingService();
-//                    System.out.println("Permission Granted, Now you can access location data and camera.");
-//                } else {
-//                    // userService.getDownloadingService();
-//                    openDialog();
-//                    System.out.println("Permission Granted, Now you can access location data and camera.");
-//                }
-                break;
-        }
-    }
-
-
     private void openDialog() {
         CFAlertDialog.Builder builder = new CFAlertDialog.Builder(this);
         builder.setDialogStyle(CFAlertDialog.CFAlertStyle.ALERT);
-        builder.setTitle("Quiz Results published...");
+        builder.setContentImageDrawable(R.drawable.congratulation_icon);
+        builder.setTextGravity(Gravity.CENTER);
+        builder.setTitle("Quiz Results published !");
         builder.setMessage("Click view to see your Quiz Results...");
         builder.addButton("View", -1, -1, CFAlertDialog.CFAlertActionStyle.POSITIVE, CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, new DialogInterface.OnClickListener() {
             @Override
@@ -580,83 +425,81 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         builder.show();
     }
 
-    void getAlertwindow() {
-
-        final AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
-        builder.setMessage("Are you sure, you want to exit now...");
-        builder.setCancelable(false);
-        builder.setIcon(R.drawable.iconnew);
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-
-                finishAffinity();
-            }
-        });
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+    private void verifyaccount() {
+        CFAlertDialog.Builder builder = new CFAlertDialog.Builder(this);
+        builder.setDialogStyle(CFAlertDialog.CFAlertStyle.ALERT);
+        builder.setIcon(R.drawable.newlogo);
+        builder.setCornerRadius(20);
+        builder.setTitle("Welcome Back , Student Bazaar");
+        builder.addButton("LOGIN", -1, -1, CFAlertDialog.CFAlertActionStyle.POSITIVE, CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+                dialog.dismiss();
+                new Move_Show(HomeActivity.this, Login_Page.class);
             }
         });
-
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
-    }
-
-    private void verifyaccount() {
-        Call call = ApiUtil.getServiceClass().getaccountverification(Controller.getUID(), Controller.getDIVID());
-        call.enqueue(new Callback() {
+        builder.addButton("NOT NOW", -1, -1, CFAlertDialog.CFAlertActionStyle.NEGATIVE, CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, new DialogInterface.OnClickListener() {
             @Override
-            public void onResponse(Call call, Response response) {
-                if (!response.body().equals("0")) {
-                   displayaccountstatus(response.body().toString());
-                    Log.d("DEtails",response.body().toString());
-                }
-            }
-
-            @Override
-            public void onFailure(Call call, Throwable t) {
-
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                Controller.adduservierify(Controller.USERVERIFY);
             }
         });
+        builder.show();
     }
 
     private void displayaccountstatus(String name) {
-        Dialog d = new Dialog(HomeActivity.this);
-        d.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        d.setCancelable(false);
-        d.setContentView(R.layout.account_verification);
-        d.getWindow().setLayout(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
-        d.show();
-        TextView accountholdername = (TextView) d.findViewById(R.id.uitvaccountholdername);
-        Button okbtn = (Button) d.findViewById(R.id.uibtnaccountlogin);
-        Button laterbtn = (Button) d.findViewById(R.id.uibtnaccountlater);
-        String[] userdata=name.split("split");
-        Controller.addusername(userdata[0]);
-        Controller.addusermail(userdata[1]);
-        accountholdername.setText("Welcome Back , " + Controller.getusername());
-        okbtn.setOnClickListener(new View.OnClickListener() {
+        CFAlertDialog.Builder builder = new CFAlertDialog.Builder(this);
+        builder.setDialogStyle(CFAlertDialog.CFAlertStyle.ALERT);
+        builder.setIcon(R.drawable.newlogo);
+        builder.setCornerRadius(20);
+        builder.setTitle("Welcome Back , " + name);
+        builder.addButton("LOGIN", -1, -1, CFAlertDialog.CFAlertActionStyle.POSITIVE, CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                new Move_Show(HomeActivity.this, MainActivity.class);
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                new Move_Show(HomeActivity.this, Login_Page.class);
             }
         });
-        laterbtn.setOnClickListener(new View.OnClickListener() {
+        builder.addButton("NOT NOW", -1, -1, CFAlertDialog.CFAlertActionStyle.NEGATIVE, CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
                 Controller.adduservierify(Controller.USERVERIFY);
-                d.dismiss();
-
-
             }
         });
+        builder.show();
     }
 
     @Override
     public void onBackPressed() {
-       getAlertwindow();
-      //  super.onBackPressed();
-
+        CFAlertDialog.Builder builder = new CFAlertDialog.Builder(this);
+        builder.setDialogStyle(CFAlertDialog.CFAlertStyle.ALERT);
+        builder.setIcon(R.drawable.newlogo);
+        builder.setCornerRadius(20);
+        builder.setTitle("Hey , There !");
+        builder.setMessage("Are You sure, want to close this app ?");
+        builder.addButton("EXIT", -1, -1, CFAlertDialog.CFAlertActionStyle.POSITIVE, CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                Intent myService = new Intent(HomeActivity.this, BroadcastService.class);
+                stopService(myService);
+                finishAffinity();
+            }
+        });
+        builder.addButton("NOT NOW", -1, -1, CFAlertDialog.CFAlertActionStyle.DEFAULT, CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.show();
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Intent myService = new Intent(HomeActivity.this, BroadcastService.class);
+        stopService(myService);
     }
 }

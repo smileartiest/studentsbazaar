@@ -25,7 +25,7 @@ public class DisclaimerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_disclaimer);
+        setContentView(R.layout.disclaimer_page);
         textView=(TextView)findViewById(R.id.textView40);
         textView.setJustificationMode(JUSTIFICATION_MODE_INTER_WORD);
         toolbar = (Toolbar) findViewById(R.id.toolbar);

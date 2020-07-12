@@ -12,6 +12,7 @@
         android:protectionLevel="signature"
         tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -22,18 +23,21 @@
         android:allowBackup="true"
         android:icon="@drawable/newlogo"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@drawable/newlogo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".Quiz_history_page"></activity>
+        <activity android:name=".VerifyPhoneNumber" />
+        <activity android:name=".CheckUserNumber" />
+        <activity android:name=".ForgetPassword" />
         <activity android:name=".activity.Update_Quiz_Questions" />
-        <activity android:name=".activity.Quiz_Results" />
         <activity android:name=".activity.MUActivity" />
         <activity android:name=".activity.Pending_Post" />
         <activity android:name=".activity.Mems" />
         <activity android:name=".activity.DisclaimerActivity" />
-        <activity android:name=".activity.Main5Activity" />
         <activity android:name=".activity.WebActivity" />
         <activity android:name=".activity.AddEvent" />
         <activity android:name=".activity.AddEvent2" />
@@ -45,14 +49,15 @@
             android:theme="@style/AppTheme" />
         <activity android:name=".activity.EventActivity" />
         <activity android:name=".activity.HomeActivity" />
-        <activity android:name=".activity.IntroActivity" />
-        <activity android:name=".activity.MainActivity" />
+        <activity android:name=".activity.Login_Page" />
         <activity android:name=".activity.Pending_Events" />
         <activity android:name=".activity.PlacementActivity" />
         <activity android:name=".activity.ProfileActivity" />
         <activity android:name=".activity.Quiz_Events" />
         <activity android:name=".activity.SignUp" />
-        <activity android:name=".activity.SplashActivty">
+        <activity
+            android:name=".activity.SplashActivty"
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -68,6 +73,7 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+        <service android:name=".service.BroadcastService" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

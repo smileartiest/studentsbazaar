@@ -20,9 +20,16 @@ public class ApiUtil {
     public static final String GET_USER_EVENTS=BASE_URL+"getuserevents.php";
     public static final String GET_NEWS=BASE_URL+"gettechnews.php";
     public static final String GET_RECENT_EVENTS=BASE_URL+"getrecentevents.php";
+    public static final String UPDATE_DAILY_FLAG = BASE_URL+ "dailyupdate.php";
+    public static final String GET_PROFILE_QUIZ = BASE_URL+"gettotalmarks.php";
+    public static final String UPDATE_RESULT_TABLE = BASE_URL + "addresulttable.php";
+    public static final String GET_UID_URL = BASE_URL + "checgetuid.php";
+    public static final String GET_SERVER_STATUS = BASE_URL + "servermaintain.php";
+    public static final String UPDATE_PHSTS = BASE_URL +"updatephsts.php";
+    public static final String GET_TEST = BASE_URL+"getres.php";
+    public static final String GET_UPDATE = BASE_URL +"getUpdate.php";
+    public static final String GET_QUIZ_RESULT = BASE_URL+"get_result_history.php";
     public static  final ArrayList<String> COLLEGEARRAY = new ArrayList<>();
-    public static  int QUIZ_RESULT=0;
-    public static  int TOTAL_QUIZ=0;
     public static int QUIZ_ATTENT=0;
 
 

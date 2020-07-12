@@ -6,7 +6,6 @@
         <item  android:id="@+id/item2"
             android:title="Update"
             app:showAsAction="always"
-            android:iconTint="#FFFFFF"
             android:icon="@drawable/ic_share_pink_24dp"/>
 
     </group>

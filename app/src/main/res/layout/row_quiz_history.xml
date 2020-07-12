@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    app:cardElevation="3dp"
+    android:layout_marginBottom="1dp"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/row_qs_history_sno"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="serif"
+            android:gravity="center"
+            android:text="1"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="@color/block"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/row_qs_history_qs_no"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="serif"
+            android:gravity="center"
+            android:text="quiz id"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="@color/block"
+            app:layout_constraintEnd_toStartOf="@+id/row_qs_history_at_date"
+            app:layout_constraintStart_toEndOf="@+id/row_qs_history_sno"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/row_qs_history_at_date"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="serif"
+            android:gravity="center"
+            android:text="attended date"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="@color/block"
+            app:layout_constraintEnd_toStartOf="@+id/row_qs_history_ans_sts"
+            app:layout_constraintStart_toEndOf="@+id/row_qs_history_qs_no"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/row_qs_history_ans_sts"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:padding="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/complete_green_tik_icon" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

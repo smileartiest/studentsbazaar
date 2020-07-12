@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -15,7 +16,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.adapter.PendingEventsAdapter;
 import com.studentsbazaar.studentsbazaarapp.controller.Controller;
-import com.studentsbazaar.studentsbazaarapp.controller.Move_Show;
 import com.studentsbazaar.studentsbazaarapp.model.DownloadResponse;
 import com.studentsbazaar.studentsbazaarapp.model.Project_details;
 import com.studentsbazaar.studentsbazaarapp.retrofit.ApiUtil;
@@ -32,30 +32,26 @@ public class Pending_Events extends AppCompatActivity {
     SpotsDialog progressDialog;
     List<Project_details> drawerResponseList = null;
     PendingEventsAdapter mAdapter;
+    TextView page_title;
     LinearLayout layout;
     String str;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pending__events);
+        setContentView(R.layout.events_pending);
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipepending);
         pendingeventsrecycler = (RecyclerView) findViewById(R.id.pending_events_recycler);
         pendingeventsrecycler.setHasFixedSize(true);
         pendingeventsrecycler.setLayoutManager(new LinearLayoutManager(this));
         progressDialog = new SpotsDialog(this);
         layout = (LinearLayout) findViewById(R.id.empty1);
+        page_title = findViewById(R.id.pending_events_title);
         progressDialog.show();
         Intent intent = getIntent();
          str = intent.getStringExtra("apitype");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarpending);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
-            if (str==null){
-                getSupportActionBar().setTitle("Pending Events");
-            }
-            else if (str.equals("uid")) {
-                getSupportActionBar().setTitle("My Events");
-            }
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
 
@@ -84,8 +80,10 @@ public class Pending_Events extends AppCompatActivity {
 
         if (str==null){
             call = ApiUtil.getServiceClass().getHomeComponentList(ApiUtil.GET_PENDING_EVENTS);
+            page_title.setText("Pending Event's");
         }else if (str.equals("uid")){
             call = ApiUtil.getServiceClass().getHomeComponentList(ApiUtil.GET_USER_EVENTS+"?uid="+ Controller.getUID());
+            page_title.setText("My Event's");
         }
         call.enqueue(new Callback<DownloadResponse>() {
             @Override
@@ -132,11 +130,12 @@ public class Pending_Events extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        if (str==null){
+        finish();
+        /*if (str==null){
             new Move_Show(Pending_Events.this,HomeActivity.class);
         }
         else if (str.equals("uid")){
             new Move_Show(Pending_Events.this,ProfileActivity.class);
-        }
+        }*/
     }
 }

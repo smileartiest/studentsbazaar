@@ -181,7 +181,6 @@ public class AddEvent extends AppCompatActivity {
                         cardnontech.setVisibility(View.VISIBLE);
                     }
                 });
-
                 d.show();
 
             }

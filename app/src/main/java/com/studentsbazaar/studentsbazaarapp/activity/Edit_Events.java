@@ -1,7 +1,9 @@
 package com.studentsbazaar.studentsbazaarapp.activity;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
@@ -33,13 +35,13 @@ import retrofit2.Response;
 
 public class Edit_Events extends AppCompatActivity {
     RelativeLayout layout, parentlayout;
-    TextView txtinsta,txtwebevent, txtwebcoll, title, category, sdate, edate, organizer, city, state, Discription, eventdetails, department, guest, pronites, theme, accomadtation, lastdate, entryfees, howtoreach, cpnam1, cpno1, cpname2, cpno2;
-    EditText edinsta,edwebevent, edwedcoll, edtitle, edcategory, edsdate, ededate, edorganizer, edcity, edstate, edDiscription, edeventdetails, eddepartment, edguest, edpronites, edtheme, edaccomadtation, edlastdate, edentryfees, edhowtoreach, edcpnam1, edcpno1, edcpname2, edcpno2;
+    TextView txtinsta, txtwebevent, txtwebcoll, title, category, sdate, edate, organizer, city, state, Discription, eventdetails, department, guest, pronites, theme, accomadtation, lastdate, entryfees, howtoreach, cpnam1, cpno1, cpname2, cpno2;
+    EditText edinsta, edwebevent, edwedcoll, edtitle, edcategory, edsdate, ededate, edorganizer, edcity, edstate, edDiscription, edeventdetails, eddepartment, edguest, edpronites, edtheme, edaccomadtation, edlastdate, edentryfees, edhowtoreach, edcpnam1, edcpno1, edcpname2, edcpno2;
     Button edit_btn, done_btn;
     ImageView head_poster, head_posteredit;
     RelativeLayout view_window, edit_window;
     List<Project_details> drawerResponseList = null;
-    String sinsta,stitle, sategory, ssdate, sedate, sorganizer, scity, sstate, sDiscription, seventdetails, sdepartment, sguest, spronites, stheme, saccomadtation, slastdate, sentryfees, showtoreach, scpnam1, scpno1, scpname2, scpno2;
+    String sinsta, stitle, sategory, ssdate, sedate, sorganizer, scity, sstate, sDiscription, seventdetails, sdepartment, sguest, spronites, stheme, saccomadtation, slastdate, sentryfees, showtoreach, scpnam1, scpno1, scpname2, scpno2;
     String eweb, cweb, eventid;
     SpotsDialog spotsDialog;
     LinearLayout layoutempty;
@@ -48,7 +50,7 @@ public class Edit_Events extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit__events);
+        setContentView(R.layout.events_edit);
         new Controller(this);
         spotsDialog = new SpotsDialog(this);
         layout = (RelativeLayout) findViewById(R.id.edit_window);
@@ -106,12 +108,13 @@ public class Edit_Events extends AppCompatActivity {
         edcpno1 = (EditText) findViewById(R.id.ed_ph1);
         edcpname2 = (EditText) findViewById(R.id.ed_cpname2);
         edcpno2 = (EditText) findViewById(R.id.ed_ph2);
-        txtinsta=(TextView)findViewById(R.id.edit_text_insta);
-        edinsta=(EditText)findViewById(R.id.edit_ed_insta);
+        txtinsta = (TextView) findViewById(R.id.edit_text_insta);
+        edinsta = (EditText) findViewById(R.id.edit_ed_insta);
         eventid = Controller.getUID();
         edit_window.setVisibility(View.GONE);
         layout.setVisibility(View.INVISIBLE);
-       Toolbar toolbar = (Toolbar) findViewById(R.id.edittoolbar);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.edittoolbar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
             getSupportActionBar().setTitle("Edit Event");
@@ -162,9 +165,9 @@ public class Edit_Events extends AppCompatActivity {
                 cweb = edwedcoll.getText().toString();
                 sinsta = edinsta.getText().toString();
 
+                SharedPreferences sharedPreferences = getSharedPreferences("view_details", Context.MODE_PRIVATE);
 
-
-                Call<String> call = ApiUtil.getServiceClass().updateevents(stitle, sategory, ssdate, sedate, sdepartment, scity, sstate, sorganizer, seventdetails, sDiscription, eweb, cweb,sinsta, scpnam1, scpno1, scpname2, scpno2, sentryfees, spronites, saccomadtation, showtoreach, slastdate, sguest, eventid);
+                Call<String> call = ApiUtil.getServiceClass().updateevents(stitle, sategory, ssdate, sedate, sdepartment, scity, sstate, sorganizer, seventdetails, sDiscription, eweb, cweb, sinsta, scpnam1, scpno1, scpname2, scpno2, sentryfees, spronites, saccomadtation, showtoreach, slastdate, sguest, eventid, sharedPreferences.getString("eid", ""));
                 call.enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
@@ -203,11 +206,10 @@ public class Edit_Events extends AppCompatActivity {
     void loadevents() {
         final SpotsDialog spotsDialog = new SpotsDialog(this);
         spotsDialog.show();
-        Call<DownloadResponse> call = ApiUtil.getServiceClass().getHomeComponentList(ApiUtil.LOAD_STUDENTEVENT + "?eid=" + eventid);
+        Call<DownloadResponse> call = ApiUtil.getServiceClass().getHomeComponentList(ApiUtil.LOAD_STUDENTEVENT + "?eid=" + getIntent().getStringExtra("id"));
         call.enqueue(new Callback<DownloadResponse>() {
             @Override
             public void onResponse(Call<DownloadResponse> call, Response<DownloadResponse> response) {
-
 
                 if (response.isSuccessful()) {
                     assert response.body() != null;
@@ -234,7 +236,7 @@ public class Edit_Events extends AppCompatActivity {
                                 .placeholder(R.drawable.please)
                                 .into(head_posteredit);
                         title.setText(drawerResponseList.get(0).getEvent_Title());
-                        category.setText(drawerResponseList.get(0).getEvent_Type().replaceAll("\\[", "").replaceAll("\\]",""));
+                        category.setText(drawerResponseList.get(0).getEvent_Type().replaceAll("\\[", "").replaceAll("\\]", ""));
                         sdate.setText(drawerResponseList.get(0).getEvent_Start_Date());
                         edate.setText(drawerResponseList.get(0).getEvent_End_Date());
                         organizer.setText(drawerResponseList.get(0).getEvent_Organiser());
@@ -243,7 +245,7 @@ public class Edit_Events extends AppCompatActivity {
                         Discription.setText(drawerResponseList.get(0).getEvent_Discription());
                         String output = drawerResponseList.get(0).getEvent_Details().replace("/*NonTechnical Events*/", "<font color=#000000><b><br>NonTechnical Events<br></b></font>").replace("/*Technical Events*/", "<font color=#000000><b>Technical Events<br></b></font>").replace("/*Workshop Events*/", "<font color=#000000><b><br>Workshop Events<br></b></font>").replace("/*Online Events*/", "<font color=#000000><b><br>Online Events<br></b></font>");
                         eventdetails.setText(Html.fromHtml(output));
-                        department.setText(drawerResponseList.get(0).getDept().replaceAll("\\[", "").replaceAll("\\]",""));
+                        department.setText(drawerResponseList.get(0).getDept().replaceAll("\\[", "").replaceAll("\\]", ""));
                         guest.setText(drawerResponseList.get(0).getEvent_guest());
                         pronites.setText(drawerResponseList.get(0).getEvent_pro_nites());
                         theme.setText(drawerResponseList.get(0).getEvent_Name());
@@ -260,16 +262,16 @@ public class Edit_Events extends AppCompatActivity {
                         txtinsta.setText(drawerResponseList.get(0).getEvent_Instagram());
 
                         edtitle.setText(drawerResponseList.get(0).getEvent_Title());
-                        edcategory.setText(drawerResponseList.get(0).getEvent_Type().replaceAll("\\[", "").replaceAll("\\]",""));
+                        edcategory.setText(drawerResponseList.get(0).getEvent_Type().replaceAll("\\[", "").replaceAll("\\]", ""));
                         edsdate.setText(drawerResponseList.get(0).getEvent_Start_Date());
                         ededate.setText(drawerResponseList.get(0).getEvent_End_Date());
                         edorganizer.setText(drawerResponseList.get(0).getEvent_Organiser());
                         edcity.setText(drawerResponseList.get(0).getCollege_District());
                         edstate.setText(drawerResponseList.get(0).getCollege_State());
                         edDiscription.setText(drawerResponseList.get(0).getEvent_Discription());
-                        String output1 =drawerResponseList.get(0).getEvent_Details().replace("/*NonTechnical Events*/", "<font color=#000000><b><br>NonTechnical Events<br></b></font>").replace("/*Technical Events*/", "<font color=#000000><b>Technical Events<br></b></font>").replace("/*Workshop Events*/", "<font color=#000000><b><br>Workshop Events<br></b></font>").replace("/*Online Events*/", "<font color=#000000><b><br>Online Events<br></b></font>");
+                        String output1 = drawerResponseList.get(0).getEvent_Details().replace("/*NonTechnical Events*/", "<font color=#000000><b><br>NonTechnical Events<br></b></font>").replace("/*Technical Events*/", "<font color=#000000><b>Technical Events<br></b></font>").replace("/*Workshop Events*/", "<font color=#000000><b><br>Workshop Events<br></b></font>").replace("/*Online Events*/", "<font color=#000000><b><br>Online Events<br></b></font>");
                         edeventdetails.setText(Html.fromHtml(output1));
-                        eddepartment.setText(drawerResponseList.get(0).getDept().replaceAll("\\[", "").replaceAll("\\]",""));
+                        eddepartment.setText(drawerResponseList.get(0).getDept().replaceAll("\\[", "").replaceAll("\\]", ""));
                         edguest.setText(drawerResponseList.get(0).getEvent_guest());
                         edpronites.setText(drawerResponseList.get(0).getEvent_pro_nites());
                         edtheme.setText(drawerResponseList.get(0).getEvent_Name());
@@ -292,10 +294,7 @@ public class Edit_Events extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<DownloadResponse
-
-                    > call, Throwable t) {
-                //showErrorMessage();
+            public void onFailure(Call<DownloadResponse> call, Throwable t) {
 
                 Log.d("RESPONSE3", "err" + t.getMessage());
             }
@@ -305,7 +304,7 @@ public class Edit_Events extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        new Move_Show(Edit_Events.this,HomeActivity.class);
+        new Move_Show(Edit_Events.this, HomeActivity.class);
         finish();
     }
 }

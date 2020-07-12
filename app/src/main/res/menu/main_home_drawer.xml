@@ -8,40 +8,32 @@
         <item
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_home_black_24dp"
-            android:iconTint="@android:color/white"
             android:title="Home" />
 
         <item
             android:id="@+id/nav_sigin"
             android:icon="@drawable/ic_login_black_24dp"
-            android:iconTint="@android:color/white"
             android:title="Sign in" />
 
         <item
             android:id="@+id/nav_signup"
             android:icon="@drawable/ic_add_black_24dp"
-            android:iconTint="@android:color/white"
             android:title="Sign up" />
 
         <item
             android:id="@+id/nav_disclaimer"
             android:icon="@drawable/ic_disclaimer_black_24dp"
-            android:iconTint="@android:color/white"
             android:title="Disclaimer" />
 
         <item
             android:id="@+id/nav_aboutus"
             android:icon="@drawable/ic_info_black_24dp"
-            android:iconTint="@android:color/white"
             android:title="About Us" />
         <item
             android:id="@+id/nav_logout"
             android:icon="@drawable/ic_logout"
-            android:iconTint="@android:color/white"
             android:title="Sign out" />
 
     </group>
-
-
 
 </menu>

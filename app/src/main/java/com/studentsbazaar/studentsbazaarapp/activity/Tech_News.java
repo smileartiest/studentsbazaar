@@ -5,6 +5,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Base64;
@@ -72,7 +74,7 @@ public class Tech_News extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tech_news);
+        setContentView(R.layout.tech_news_page);
 
         spotsDialog = new SpotsDialog(this);
         memeview = findViewById(R.id.newsview);
@@ -82,7 +84,6 @@ public class Tech_News extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbarnews);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
-            getSupportActionBar().setTitle("Interesting Facts");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
 
@@ -109,7 +110,7 @@ public class Tech_News extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        new Move_Show(Tech_News.this,HomeActivity.class);
+        new Move_Show(Tech_News.this, HomeActivity.class);
         finish();
     }
 
@@ -157,6 +158,7 @@ public class Tech_News extends AppCompatActivity {
         menu.findItem(R.id.item2).setVisible(false);
         menu.findItem(R.id.action_search).setVisible(false);
         menu.findItem(R.id.profile).setVisible(false);
+        menu.findItem(R.id.shareitem).setVisible(false);
         if (Controller.getprefer().equals(Controller.REG) || Controller.getprefer().equals(Controller.VISITOR)) {
             shareItem.setVisible(false);
         }
@@ -173,22 +175,21 @@ public class Tech_News extends AppCompatActivity {
                 } catch (Exception e) {
 
                 }
-
                 return true;
             case R.id.item1:
                 addJob();
                 return true;
-
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
     private void addJob() {
-
         dialog = new Dialog(Tech_News.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(true);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT , ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.technews_design);
         TextView post = dialog.findViewById(R.id.addnewstv);
         final EditText ednews = dialog.findViewById(R.id.addnewsed);

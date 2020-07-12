@@ -22,7 +22,7 @@ public class ContactActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_contact);
+        setContentView(R.layout.contact_page);
         phone = (ImageView) findViewById(R.id.phone);
         whatsapp = (ImageView) findViewById(R.id.whatsapp);
         mail = (ImageView) findViewById(R.id.mail);

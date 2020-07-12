@@ -3,15 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <item  android:id="@+id/profile"
-        android:title="profile"
+        android:title="Profile"
         app:showAsAction="always"
-        android:iconTint="#FFFFFF"
         android:icon="@drawable/ic_person_black_24dp"/>
 
     <item  android:id="@+id/shareitem"
-        android:title="shareapp"
+        android:title="Shareapp"
         app:showAsAction="always"
-        android:iconTint="#FFFFFF"
         android:icon="@drawable/sharenewic"/>
     <item
         android:id="@+id/action_search"
@@ -24,11 +22,10 @@
     <item  android:id="@+id/item2"
         android:title="Update"
         app:showAsAction="always"
-        android:iconTint="#FFFFFF"
-        android:icon="@drawable/ic_done_white_24dp"/>
+        android:icon="@drawable/pending_meme_icon"/>
 
     <item  android:id="@+id/item1"
-        android:title="ADD"
+        android:title="Add"
         app:showAsAction="always"
         android:iconTint="#FFFFFF"
         android:icon="@drawable/ic_add_white"/>

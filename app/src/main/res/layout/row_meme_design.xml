@@ -1,0 +1,169 @@
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="8dp"
+    app:cardElevation="0dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/r_meme_propic"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/avatar" />
+
+        <TextView
+            android:id="@+id/r_meme_usname"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="serif"
+            android:text="@string/app_name"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/r_meme_menuicon"
+            app:layout_constraintStart_toEndOf="@+id/r_meme_propic"
+            app:layout_constraintTop_toTopOf="@+id/r_meme_propic" />
+
+        <TextView
+            android:id="@+id/r_meme_datetime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:fontFamily="serif"
+            android:text="06 Tue 2020 - 10.00 AM"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintBottom_toBottomOf="@+id/r_meme_propic"
+            app:layout_constraintEnd_toEndOf="@+id/r_meme_usname"
+            app:layout_constraintStart_toEndOf="@+id/r_meme_propic"
+            app:layout_constraintTop_toBottomOf="@+id/r_meme_usname" />
+
+
+        <RelativeLayout
+            android:id="@+id/r_meme_card"
+            android:layout_width="0dp"
+            android:layout_height="450dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/block"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/r_meme_content">
+
+            <pl.droidsonroids.gif.GifImageView
+                android:id="@+id/r_meme_gif"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="1dp"
+                android:src="@drawable/loadgif" />
+
+            <ImageView
+                android:id="@+id/r_meme_postpic"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="1dp"
+                android:scaleType="fitXY"
+                tools:srcCompat="@tools:sample/backgrounds/scenic[17]" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/r_meme_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="serif"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/r_meme_propic"
+            app:layout_constraintTop_toBottomOf="@+id/r_meme_propic" />
+
+        <TextView
+            android:id="@+id/r_meme_viewers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="serif"
+            android:gravity="left"
+            android:text="view's 1.6K"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="@color/block"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/r_meme_card" />
+
+        <ImageView
+            android:id="@+id/r_meme_menuicon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintBottom_toBottomOf="@+id/r_meme_propic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/menu_dot_icon" />
+
+        <View
+            android:id="@+id/view6"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:background="@color/gray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/r_meme_viewers" />
+
+        <TextView
+            android:id="@+id/r_meme_likeicon"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:drawableLeft="@drawable/unlike_icon"
+            android:fontFamily="serif"
+            android:gravity="center"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="Like"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="@color/block"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/r_meme_shareicon"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view6" />
+
+        <TextView
+            android:id="@+id/r_meme_shareicon"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:drawableLeft="@drawable/share_icon"
+            android:fontFamily="serif"
+            android:gravity="center"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="Share"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="@color/block"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/r_meme_likeicon"
+            app:layout_constraintTop_toBottomOf="@+id/view6" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

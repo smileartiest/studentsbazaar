@@ -7,26 +7,27 @@
     android:padding="10dp">
 
 
-
     <androidx.cardview.widget.CardView
         android:id="@+id/eventtechnical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
         android:elevation="10dp"
+        android:visibility="gone"
         app:cardCornerRadius="10dp">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="serif"
                 android:gravity="left"
-                android:textSize="18sp"
                 android:text="Enter the list of Technical Events here*\n[if not available,please ignore]"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="@color/colorPrimaryDark"
                 android:textStyle="bold" />
 
@@ -34,38 +35,47 @@
                 android:id="@+id/addeventteched"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:gravity="top"
                 android:layout_marginTop="5dp"
                 android:background="@drawable/shape"
-                android:hint="enter your details here" />
+                android:fontFamily="serif"
+                android:gravity="top"
+                android:hint="enter your details here"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                 <Button
                     android:id="@+id/addeventing2"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="2dp"
                     android:layout_weight="1"
                     android:background="@drawable/button"
-                    android:layout_marginTop="5dp"
+                    android:fontFamily="serif"
+                    android:text="Cancel"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:layout_marginRight="2dp"
-                    android:text="Cancel"/>
+                    android:textStyle="bold" />
 
                 />
+
                 <Button
                     android:id="@+id/addeventnxt2"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/button"
                     android:layout_marginLeft="2dp"
                     android:layout_marginTop="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button"
+                    android:fontFamily="serif"
+                    android:text="Next"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:text="Next"/>
+                    android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
 
@@ -76,60 +86,72 @@
         android:id="@+id/eventnontechnical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
         android:elevation="10dp"
+        android:visibility="gone"
         app:cardCornerRadius="10dp">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="serif"
                 android:gravity="left"
-                android:textSize="18sp"
                 android:text="Enter the list of non Technical Events here*\n[if not available,please ignore]"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="@color/colorPrimaryDark"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/addnonteched"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:gravity="top"
                 android:layout_marginTop="5dp"
                 android:background="@drawable/shape"
-                android:hint="enter your details here" />
+                android:fontFamily="serif"
+                android:gravity="top"
+                android:hint="enter your details here"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                 <Button
                     android:id="@+id/addnonteching2"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="2dp"
                     android:layout_weight="1"
                     android:background="@drawable/button"
-                    android:layout_marginTop="5dp"
+                    android:fontFamily="serif"
+                    android:text="Back"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:layout_marginRight="2dp"
-                    android:text="Back"/>
+                    android:textStyle="bold" />
 
                 />
+
                 <Button
                     android:id="@+id/addeventnxt3"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/button"
                     android:layout_marginLeft="2dp"
                     android:layout_marginTop="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button"
+                    android:fontFamily="serif"
+                    android:text="Next"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:text="Next"/>
+                    android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
 
@@ -142,18 +164,20 @@
         android:elevation="10dp"
         android:visibility="gone"
         app:cardCornerRadius="10dp">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="serif"
                 android:gravity="left"
-                android:textSize="18sp"
                 android:text="Enter the list of Workshop's here*\n[if not available,please ignore]"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="@color/colorPrimaryDark"
                 android:textStyle="bold" />
 
@@ -161,38 +185,47 @@
                 android:id="@+id/addworksoped"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:gravity="top"
                 android:layout_marginTop="5dp"
                 android:background="@drawable/shape"
-                android:hint="enter your details here" />
+                android:fontFamily="serif"
+                android:gravity="top"
+                android:hint="enter your details here"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                 <Button
                     android:id="@+id/addworkshoping"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="2dp"
                     android:layout_weight="1"
                     android:background="@drawable/button"
-                    android:layout_marginTop="5dp"
+                    android:fontFamily="serif"
+                    android:text="Back"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:layout_marginRight="2dp"
-                    android:text="Back"/>
+                    android:textStyle="bold" />
 
                 />
+
                 <Button
                     android:id="@+id/addeventnxt4"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/button"
                     android:layout_marginLeft="2dp"
                     android:layout_marginTop="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button"
+                    android:fontFamily="serif"
+                    android:text="Next"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:text="Next"/>
+                    android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
 
@@ -205,18 +238,20 @@
         android:elevation="10dp"
         android:visibility="gone"
         app:cardCornerRadius="10dp">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="serif"
                 android:gravity="left"
-                android:textSize="18sp"
                 android:text="Enter the list of Online Event's here*\n[if not available,please ignore]"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="@color/colorPrimaryDark"
                 android:textStyle="bold" />
 
@@ -224,38 +259,47 @@
                 android:id="@+id/addonlineed"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:gravity="top"
                 android:layout_marginTop="5dp"
                 android:background="@drawable/shape"
-                android:hint="enter your details here" />
+                android:fontFamily="serif"
+                android:gravity="top"
+                android:hint="enter your details here"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                 <Button
                     android:id="@+id/addonlineing"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="2dp"
                     android:layout_weight="1"
                     android:background="@drawable/button"
-                    android:layout_marginTop="5dp"
+                    android:fontFamily="serif"
+                    android:text="Back"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:layout_marginRight="2dp"
-                    android:text="Back"/>
+                    android:textStyle="bold" />
 
                 />
+
                 <Button
                     android:id="@+id/addeventnxt5"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/button"
                     android:layout_marginLeft="2dp"
                     android:layout_marginTop="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button"
+                    android:fontFamily="serif"
+                    android:text="Next"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:text="Next"/>
+                    android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
 

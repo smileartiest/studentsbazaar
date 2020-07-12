@@ -12,7 +12,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.studentsbazaar.studentsbazaarapp.R;
@@ -44,7 +43,7 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.ViewHold
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.job_view, parent, false);
+                .inflate(R.layout.row_placement, parent, false);
 
 
         return new ViewHolder(v);
@@ -60,7 +59,7 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.ViewHold
         holder.tvDate.setText(listItem.getDate());
         holder.tvplaced.setText(listItem.getNo_of_Students());
         holder.tvSal_package.setText(listItem.getPackage() + " (Lakhs/Annum)");
-        holder.tvcollege.setText(listItem.getCollege_Name());
+        holder.tvcollege.setText("  "+listItem.getCollege_Name());
         if (listItem.getDomain().length() != 0) {
             holder.tvDomain.setText(listItem.getDomain());
         } else {
@@ -124,7 +123,6 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.ViewHold
 
         public TextView tvCompany, tvDomain, tvcollege, tvSal_package, tvplaced, tvDate;
         ImageView imBookmar, imShare;
-        CardView cardView;
         LinearLayout linearLayout, ld;
 
 
@@ -132,13 +130,11 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.ViewHold
             super(itemView);
 
             tvDomain = (TextView) itemView.findViewById(R.id.id_domain);
-            ld = (LinearLayout) itemView.findViewById(R.id.layout_domain);
             tvCompany = (TextView) itemView.findViewById(R.id.tvCompName);
             tvcollege = (TextView) itemView.findViewById(R.id.id_college_name);
             tvSal_package = (TextView) itemView.findViewById(R.id.id_package);
             tvplaced = (TextView) itemView.findViewById(R.id.id_students_placed);
             tvDate = (TextView) itemView.findViewById(R.id.id_date);
-            cardView = (CardView) itemView.findViewById(R.id.id_cardView);
             linearLayout = (LinearLayout) itemView.findViewById(R.id.id_cardLayout);
 
 

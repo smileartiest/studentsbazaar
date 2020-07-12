@@ -3,6 +3,8 @@ package com.studentsbazaar.studentsbazaarapp.activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -58,24 +60,20 @@ public class PlacementActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_placement);
+        setContentView(R.layout.placement_page);
         new Controller(this);
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeToRefresh);
         layout = (LinearLayout) findViewById(R.id.empty3);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
 
-        progressDialog = new SpotsDialog(this, R.style.Custom);
+        progressDialog = new SpotsDialog(this);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
-
-
             toolbar = (Toolbar) findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);
-            getSupportActionBar().setTitle("Placement's");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
-
 
         }
 
@@ -115,7 +113,7 @@ public class PlacementActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        new Move_Show(PlacementActivity.this,HomeActivity.class);
+        new Move_Show(PlacementActivity.this, HomeActivity.class);
         finish();
     }
 
@@ -169,26 +167,25 @@ public class PlacementActivity extends AppCompatActivity {
         MenuItem search = menu.findItem(R.id.action_search);
         menu.findItem(R.id.item2).setVisible(false);
         menu.findItem(R.id.profile).setVisible(false);
+        menu.findItem(R.id.shareitem).setVisible(false);
         SearchView searchView = (SearchView) search.getActionView();
         searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        if(Controller.getUID().equals("0")){
+            menu.findItem(R.id.item1).setVisible(true);
+        }else{
+            menu.findItem(R.id.item1).setVisible(false);
+        }
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 return false;
-
             }
-
             @Override
             public boolean onQueryTextChange(String newText) {
                 mAdapter.getFilter().filter(newText);
                 return false;
             }
         });
-
-
-        if (Controller.getprefer().equals(Controller.REG) || Controller.getprefer().equals(Controller.VISITOR) || Controller.getprefer().equals(Controller.INFOZUB) || Controller.getprefer().equals(Controller.MEMEACCEPT)) {
-            shareItem.setVisible(false);
-        }
         return true;
     }
 
@@ -218,7 +215,8 @@ public class PlacementActivity extends AppCompatActivity {
         final Dialog dialog = new Dialog(PlacementActivity.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(true);
-
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT , ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.add_placement_view);
 
         dClgName = (EditText) dialog.findViewById(R.id.add_placement_cgname);

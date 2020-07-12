@@ -4,29 +4,18 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.crowdfire.cfalertdialog.CFAlertDialog;
-import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.studentsbazaar.studentsbazaarapp.CheckUserNumber;
 import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.adapter.ViewPagerAdapter;
 import com.studentsbazaar.studentsbazaarapp.controller.Controller;
-import com.studentsbazaar.studentsbazaarapp.controller.Monitor;
 import com.studentsbazaar.studentsbazaarapp.controller.Move_Show;
 import com.studentsbazaar.studentsbazaarapp.helper.DepthPageTransformer;
 import com.studentsbazaar.studentsbazaarapp.model.DownloadResponse;
@@ -39,13 +28,12 @@ import dmax.dialog.SpotsDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 
-public class EventActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class EventActivity extends AppCompatActivity {
 
     ViewPager2 viewPager2;
-    private DrawerLayout drawer;
-    private Toolbar toolbar;
-    NavigationView navigationView;
     ViewPagerAdapter mAdapter;
+    LinearLayout eventcard;
+    FloatingActionButton backbtn,addevent,contact,pending;
 
     SpotsDialog progressDialog;
     List<Project_details> drawerResponseList = null;
@@ -54,53 +42,66 @@ public class EventActivity extends AppCompatActivity implements NavigationView.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_event);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        setContentView(R.layout.event_page);
         progressDialog = new SpotsDialog(this);
         layout = (LinearLayout) findViewById(R.id.empty2);
+        eventcard = findViewById(R.id.event_card);
+        backbtn = findViewById(R.id.event_backbtn);
+        addevent = findViewById(R.id.event_addbtn);
+        contact = findViewById(R.id.event_contactbtn);
+        pending = findViewById(R.id.event_pending);
+
         new Controller(this);
         viewPager2 = findViewById(R.id.viewPager2);
-
-        if (toolbar != null) {
-            setSupportActionBar(toolbar);
-            getSupportActionBar().setTitle("");
-
-        }
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-        onBackPressed();
-            }
-        });
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-
-        navigationView.setNavigationItemSelectedListener(EventActivity.this);
-        if (Controller.getprefer().equals(Controller.VISITOR)) {
-            navigationView.getMenu().getItem(2).setVisible(false);
-            navigationView.getMenu().getItem(3).setVisible(false);
-
-        } else if (Controller.getprefer().equals(Controller.REG)) {
-            navigationView.getMenu().getItem(2).setVisible(false);
-
-        } else if (Controller.getprefer().equals(Controller.INFOZUB) || Controller.getprefer().equals(Controller.MEMEACCEPT)) {
-            navigationView.getMenu().getItem(1).setVisible(false);
-            navigationView.getMenu().getItem(2).setVisible(false);
-            navigationView.getMenu().getItem(3).setVisible(false);
-        }
-
         viewPager2.setOrientation(ViewPager2.ORIENTATION_VERTICAL);
         viewPager2.setPageTransformer(new DepthPageTransformer());
         loadData();
+
+        pending.setVisibility(View.GONE);
+
+        if (Controller.getprefer().equals(Controller.ADMIN)) {
+            pending.setVisibility(View.VISIBLE);
+        } else {
+            pending.setVisibility(View.GONE);
+        }
+
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        backbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
+        addevent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addeventprocess();
+            }
+        });
+
+        contact.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                contactdetails();
+            }
+        });
+
+        pending.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pendingevent();
+            }
+        });
+
+    }
 
     private void loadData() {
-
         progressDialog.show();
         Call<DownloadResponse> call = ApiUtil.getServiceClass().getHomeComponentList(ApiUtil.LOAD_EVENTS);
         call.enqueue(new Callback<DownloadResponse>() {
@@ -111,10 +112,8 @@ public class EventActivity extends AppCompatActivity implements NavigationView.O
 
                 if (response.isSuccessful()) {
 
-
                     assert response.body() != null;
                     drawerResponseList = response.body().getProject_details();
-
                     Log.d("RESPONSE2", drawerResponseList.toString());
                     progressDialog.dismiss();
                     if (drawerResponseList.size() == 0) {
@@ -125,7 +124,6 @@ public class EventActivity extends AppCompatActivity implements NavigationView.O
                         viewPager2.setVisibility(View.VISIBLE);
                         mAdapter = new ViewPagerAdapter(EventActivity.this, drawerResponseList);
                         viewPager2.setAdapter(mAdapter);
-                        // mAdapter.notifyDataSetChanged();
                     }
                 }
             }
@@ -140,110 +138,47 @@ public class EventActivity extends AppCompatActivity implements NavigationView.O
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.add_placement_menu, menu);
-        menu.findItem(R.id.item1).setVisible(false);
-        menu.findItem(R.id.item2).setVisible(false);
-        menu.findItem(R.id.action_search).setVisible(false);
-        menu.findItem(R.id.profile).setVisible(false);
-        return true;
+    void addeventprocess(){
+        if (Controller.getprefer().equals(Controller.REG) || Controller.getprefer().equals(Controller.ADMIN)) {
+            new Move_Show(EventActivity.this, AddEvent2.class);
+        } else {
+            addEvent();
+        }
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        switch (id) {
-            case R.id.shareitem:
-                try {
-                    new Monitor(this).sharetowhatsapp();
-                } catch (Exception e) {
-
-                }
-
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-
+    void pendingevent(){
+        new Move_Show(EventActivity.this, Pending_Events.class);
     }
 
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-        Fragment fragment = null;
-        switch (item.getItemId()) {
-            case R.id.nav_home:
-                loadData();
-                break;
-
-            case R.id.nav_add_event:
-
-                if (Controller.getprefer().equals(Controller.REG) || Controller.getprefer().equals(Controller.ADMIN)) {
-                    new Move_Show(EventActivity.this, AddEvent2.class);
-                } else {
-                    addEvent();
-                }
-
-                break;
-
-            case R.id.nav_pending:
-                new Move_Show(EventActivity.this, Pending_Events.class);
-                break;
-
-            case R.id.nav_edit:
-                new Move_Show(EventActivity.this, Edit_Events.class);
-                break;
-            case R.id.nav_contact:
-                new Move_Show(EventActivity.this, ContactActivity.class);
-                break;
-
-            case R.id.nav_aboutus:
-
-                Bundle b = new Bundle();
-                b.putString("url", "https://www.studentsbazaar.in/about-us/");
-                b.putString("title", "ABOUT US");
-                b.putString("data","ABOUT US");
-                Intent intEvent = new Intent(EventActivity.this, WebActivity.class);
-                intEvent.putExtras(b);
-                startActivity(intEvent);
-                break;
-
-
-        }
-        if (fragment != null) {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction ft = fragmentManager.beginTransaction();
-            ft.replace(R.id.fragment_container, fragment);
-
-            //    mMapView.onResume();
-
-            ft.commit();
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
+    void contactdetails(){
+        new Move_Show(EventActivity.this, ContactActivity.class);
     }
 
     private void addEvent() {
         if (Controller.getprefer().equals(Controller.VISITOR)) {
-
-            CFAlertDialog.Builder builder = new CFAlertDialog.Builder(this);
-            builder.setDialogStyle(CFAlertDialog.CFAlertStyle.ALERT);
-            builder.setTitle("Hey there ! Need to Register!");
+            CFAlertDialog.Builder builder = new CFAlertDialog.Builder(EventActivity.this);
+            builder.setDialogStyle(CFAlertDialog.CFAlertStyle.NOTIFICATION);
+            builder.setIcon(R.drawable.sb_app_icon_small_theme);
+            builder.setTitle("Hey there , Do Register !");
             builder.setMessage("Kindly fill your details to continue adding event.");
-            builder.addButton("OKAY", -1, -1, CFAlertDialog.CFAlertActionStyle.POSITIVE, CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, new DialogInterface.OnClickListener() {
+
+            builder.addButton("LOGIN", -1, -1, CFAlertDialog.CFAlertActionStyle.POSITIVE, CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
-                    new Move_Show(EventActivity.this, SignUp.class);
-
+                    new Move_Show(EventActivity.this, Login_Page.class);
                 }
             });
 
-            builder.addButton("NO", -1, -1, CFAlertDialog.CFAlertActionStyle.NEGATIVE, CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, new DialogInterface.OnClickListener() {
+            builder.addButton("REGISTER", -1, -1, CFAlertDialog.CFAlertActionStyle.POSITIVE, CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    startActivity(new Intent(EventActivity.this , CheckUserNumber.class));
+                }
+            });
+
+            builder.addButton("NOT NOW", -1, -1, CFAlertDialog.CFAlertActionStyle.DEFAULT, CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();

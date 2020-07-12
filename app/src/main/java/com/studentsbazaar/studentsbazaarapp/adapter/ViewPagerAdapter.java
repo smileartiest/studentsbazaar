@@ -8,7 +8,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -17,9 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -27,9 +24,6 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
 import com.crowdfire.cfalertdialog.CFAlertDialog;
 import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.activity.EventActivity;
@@ -40,11 +34,8 @@ import com.studentsbazaar.studentsbazaarapp.model.Project_details;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-
-import pl.droidsonroids.gif.GifImageView;
 
 public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.ViewHolder> {
     View view;
@@ -54,7 +45,6 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
     String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
     List<Project_details> mData;
     Bitmap bitmap;
-    Button tvShare, read_more;
     String weburl;
     Controller controller;
 
@@ -63,15 +53,12 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
         this.context = context;
         this.mData = drawerResponseList;
         controller = new Controller(context);
-        //this.viewPager2 = viewPager2;
     }
 
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        view = mInflater.inflate(R.layout.fragment_child, parent, false);
-        tvShare = (Button) view.findViewById(R.id.share);
-        read_more = (Button) view.findViewById(R.id.read_more);
+        view = mInflater.inflate(R.layout.row_event_page, parent, false);
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
         return new ViewHolder(view);
@@ -83,46 +70,63 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
 
         Resources resources = context.getResources();
         holder.setIsRecyclable(false);
-        Glide.with(context)
-                .load(listItem.getPoster()).listener(new RequestListener<String, GlideDrawable>() {
-            @Override
-            public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                holder.gifviewevent.setVisibility(View.VISIBLE);
-                return false;
+        Glide.with(context).load(listItem.getPoster()).into(holder.postpic);
 
-            }
-
-            @Override
-            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                holder.gifviewevent.setVisibility(View.GONE);
-                return false;
-            }
-        }).into(holder.imageView);
         Log.d("IMG", listItem.getPoster() + "");
-        holder.tvHead.setText(listItem.getEvent_Title());
-        holder.tvCategory.setText(listItem.getEvent_Name());
-        holder.tvcon.setText(listItem.getConducted_By());
+        holder.title.setText(listItem.getEvent_Title().toUpperCase());
+        holder.categ.setText(listItem.getEvent_Name().toLowerCase());
+        holder.conductby.setText(listItem.getConducted_By().toLowerCase());
         urlsite = listItem.getEvent_Website();
         try {
-            Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(listItem.getEvent_Start_Date());
-            String[] sdate = date1.toString().split(" ");
-            if (sdate[0].equals("Sat") || sdate[0].equals("Sun")) {
-                holder.tvStartDate.setTextColor(Color.RED);
-                holder.tvmonth.setTextColor(Color.RED);
-
-            } else {
-                holder.tvStartDate.setTextColor(Color.parseColor("#1B4F72"));
-                holder.tvmonth.setTextColor(Color.parseColor("#1B4F72"));
+            String date1 = listItem.getEvent_Start_Date();
+            String[] sdate = date1.split("-");
+            String tempdisplaydate=sdate[2];
+            switch (sdate[1]){
+                case "1":
+                    tempdisplaydate = tempdisplaydate+" "+"January";
+                    break;
+                case "2":
+                    tempdisplaydate = tempdisplaydate+" "+"February";
+                    break;
+                case "3":
+                    tempdisplaydate = tempdisplaydate+" "+"March";
+                    break;
+                case "4":
+                    tempdisplaydate = tempdisplaydate+" "+"April";
+                    break;
+                case "5":
+                    tempdisplaydate = tempdisplaydate+" "+"May";
+                    break;
+                case "6":
+                    tempdisplaydate = tempdisplaydate+" "+"June";
+                    break;
+                case "7":
+                    tempdisplaydate = tempdisplaydate+" "+"July";
+                    break;
+                case "8":
+                    tempdisplaydate = tempdisplaydate+" "+"August";
+                    break;
+                case "9":
+                    tempdisplaydate = tempdisplaydate+" "+"September";
+                    break;
+                case "10":
+                    tempdisplaydate = tempdisplaydate+" "+"October";
+                    break;
+                case "11":
+                    tempdisplaydate = tempdisplaydate+" "+"November";
+                    break;
+                case "12":
+                    tempdisplaydate = tempdisplaydate+" "+"Decembar";
+                    break;
             }
-            holder.tvStartDate.setText(sdate[0]);
-            holder.tvmonth.setText(sdate[1] + " " + sdate[2]);
+            holder.infor.setText("Last Date for Registration "+tempdisplaydate.toUpperCase());
         } catch (Exception e) {
 
         }
-        holder.tvOrganizer.setText(listItem.getEvent_Organiser());
-        holder.tvCity.setText(listItem.getCollege_District());
-        holder.tvState.setText(listItem.getCollege_State());
-        holder.regview.setOnClickListener(new View.OnClickListener() {
+        holder.organiser.setText(listItem.getEvent_Organiser().toLowerCase());
+        holder.city.setText(listItem.getCollege_District().toLowerCase());
+        holder.state.setText(listItem.getCollege_State().toLowerCase());
+        holder.reg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (listItem.getEvent_Website().contains("http://") || listItem.getEvent_Website().contains("https://")) {
@@ -133,7 +137,7 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
                 }
                 Bundle bundle = new Bundle();
                 bundle.putString("url", weburl);
-                bundle.putString("data", "reg url");
+                bundle.putString("data", "Registration form");
                 bundle.putString("title", "reg title");
                 Intent in = new Intent(context, WebActivity.class);
                 in.putExtras(bundle);
@@ -141,7 +145,7 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
             }
         });
 
-        tvShare.setOnClickListener(new View.OnClickListener() {
+        holder.share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -152,21 +156,13 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
                 }
             }
         });
-
-      /*  holder.layout.setOnClickListener(new View.OnClickListener() {
+        holder.infor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                holder.imageView.
-                read_more.performClick();
-            }
-        });*/
-        read_more.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
 
                 SharedPreferences sharedPreferences = context.getSharedPreferences("view_details", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("eid" , listItem.getEvent_Id());
                 editor.putString("coid", listItem.getEvent_Coordinator());
                 editor.putString("post", listItem.getPoster());
                 editor.putString("title", listItem.getEvent_Title());
@@ -202,10 +198,8 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
                 intent.putExtras(b);
                 context.startActivity(intent);
 
-
             }
         });
-
 
     }
 
@@ -222,38 +216,26 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tvHead, tvCategory, tvStartDate, tvOrganizer, tvCity, tvState, tvmonth, regview, tvcon;
-        ImageView imageView;
-        LinearLayout layout;
-        GifImageView gifviewevent;
-
+        TextView title,categ,organiser,city,state,conductby,reg,infor,share;
+        ImageView postpic;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            tvHead = (TextView) itemView.findViewById(R.id.head_title);
-            tvCategory = itemView.findViewById(R.id.id_category);
-            tvStartDate = itemView.findViewById(R.id.id_start_date);
-            tvmonth = itemView.findViewById(R.id.id_start_month);
-            tvOrganizer = itemView.findViewById(R.id.id_organiser);
-            tvCity = itemView.findViewById(R.id.id_city);
-            tvState = itemView.findViewById(R.id.id_state);
-            regview = itemView.findViewById(R.id.regview);
-            tvcon = itemView.findViewById(R.id.id_cond_dept);
-            layout = itemView.findViewById(R.id.layout);
-            gifviewevent = itemView.findViewById(R.id.gifviewevent);
-
-
-            imageView = itemView.findViewById(R.id.tvParent);
+            title = (TextView) itemView.findViewById(R.id.r_event_title);
+            categ = itemView.findViewById(R.id.r_event_categ);
+            organiser = itemView.findViewById(R.id.r_event_organiser);
+            city = itemView.findViewById(R.id.r_event_city);
+            state = itemView.findViewById(R.id.r_event_state);
+            reg = itemView.findViewById(R.id.r_event_apply);
+            conductby = itemView.findViewById(R.id.r_event_conductedby);
+            postpic = itemView.findViewById(R.id.r_event_pic);
+            share = itemView.findViewById(R.id.r_event_share);
+            infor = itemView.findViewById(R.id.r_event_info);
         }
     }
 
     private void takeScreenshot(View view) {
-
-        //btmLayout.setVisibility(View.VISIBLE);
-        read_more.setVisibility(View.GONE);
-        tvShare.setVisibility(View.GONE);
-
 
         Date now = new Date();
         android.text.format.DateFormat.format("yyyy-MM-dd_hh:mm:ss", now);
@@ -290,8 +272,6 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
     }
 
     private void openScreenshot(File imageFile, Context context) {
-        read_more.setVisibility(View.VISIBLE);
-        tvShare.setVisibility(View.VISIBLE);
         Log.d("URLPATH", imageFile.toString());
         Uri uri = Uri.fromFile(imageFile);
         Intent intent = new Intent(Intent.ACTION_SEND);

@@ -5,45 +5,50 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.EditText;
+import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
 
 import com.crowdfire.cfalertdialog.CFAlertDialog;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputLayout;
 import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.controller.Controller;
 import com.studentsbazaar.studentsbazaarapp.controller.Move_Show;
+import com.studentsbazaar.studentsbazaarapp.model.DownloadResponse;
+import com.studentsbazaar.studentsbazaarapp.model.Login_Details;
 import com.studentsbazaar.studentsbazaarapp.retrofit.ApiUtil;
 
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import dmax.dialog.SpotsDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SignUp extends AppCompatActivity implements
         AdapterView.OnItemSelectedListener {
-    EditText name, email, phno, acyear, year, semester, password,conpass;
-    String uname, umail, uphone, uclname, cacyear, uyear, usemester,uconpass, upassword, degreestring, deptstring, sAffiliation;
+
+    List<Login_Details> getlogindetails = null;
+    TextView sts;
+    TextInputLayout name, email, acyear, year, semester, password, conpass,refcodetxt;
+    String uname, umail, uphone, uclname, cacyear, uyear, usemester, uconpass, upassword, degreestring, deptstring, sAffiliation,refcode;
     AutoCompleteTextView cgname, degree, department;
     String devid;
     Toolbar toolbar;
     String[] affiliation = {"-Select-", "Deemed University", "Autonomous", "Affiliated to Anna University", "Affiliated to Madras University", "Others"};
-    FloatingActionButton submit1, submit2, submit3;
+    Button submit3;
     SpotsDialog spotsDialog;
-    CardView c1, c2, c3;
     Spinner spin;
 
     String[] degreelist = {"BE", "BTech", "Bsc", "MSc", "ME", "MBA", "others"};
@@ -55,35 +60,25 @@ public class SignUp extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_up);
+        setContentView(R.layout.sign_up);
         spotsDialog = new SpotsDialog(this);
         new Controller(this);
+
+        sts = findViewById(R.id.reg_sts);
         name = findViewById(R.id.reg_name);
         email = findViewById(R.id.reg_email);
-        phno = findViewById(R.id.reg_phonenumber);
         cgname = findViewById(R.id.reg_cgname);
         acyear = findViewById(R.id.reg_acyear);
         year = findViewById(R.id.reg_year);
         semester = findViewById(R.id.reg_semester);
         degree = findViewById(R.id.reg_degree);
         department = findViewById(R.id.reg_department);
-        conpass=findViewById(R.id.reg_conpassword);
-        password = (EditText) findViewById(R.id.reg_password);
-        submit1 = findViewById(R.id.floatingActionButton1);
-        submit2 = findViewById(R.id.floatingActionButton2);
-        submit3 = findViewById(R.id.floatingActionButton3);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        conpass = findViewById(R.id.reg_conpassword);
+        password = findViewById(R.id.reg_password);
+        submit3 = findViewById(R.id.reg_complete);
+        refcodetxt = findViewById(R.id.reg_refcode);
+        toolbar = findViewById(R.id.toolbar);
         name.requestFocus();
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
 
         ArrayAdapter<String> ad1 = new ArrayAdapter<>(getApplicationContext(), R.layout.listrow, degreelist);
         degree.setAdapter(ad1);
@@ -97,9 +92,6 @@ public class SignUp extends AppCompatActivity implements
         department.setAdapter(ad2);
         department.setThreshold(1);
 
-        c1 = findViewById(R.id.cardView1);
-        c2 = findViewById(R.id.cardView2);
-        c3 = findViewById(R.id.cardView3);
 
         spin = (Spinner) findViewById(R.id.reg_university);
         spin.setOnItemSelectedListener(this);
@@ -109,6 +101,9 @@ public class SignUp extends AppCompatActivity implements
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //Setting the ArrayAdapter data on the Spinner
         spin.setAdapter(aa);
+
+        sts.setText("Your Mobile Number "+getIntent().getStringExtra("uid"));
+
     }
 
 
@@ -127,147 +122,133 @@ public class SignUp extends AppCompatActivity implements
     protected void onResume() {
         super.onResume();
 
-        submit1.setOnClickListener(new View.OnClickListener() {
+        submit3.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("RestrictedApi")
             @Override
             public void onClick(View v) {
-                i = 1;
+                uname = name.getEditText().getText().toString();
+                umail = email.getEditText().getText().toString();
+                uphone = getIntent().getStringExtra("uid");
+                uclname = cgname.getText().toString();
+                cacyear = acyear.getEditText().getText().toString();
+                sAffiliation = spin.getSelectedItem().toString();
+                Log.d("Affiliation", sAffiliation + "<-");
+                uyear = year.getEditText().getText().toString();
+                usemester = semester.getEditText().getText().toString();
+                upassword = password.getEditText().getText().toString();
+                degreestring = degree.getText().toString();
+                deptstring = department.getText().toString();
+                uconpass = conpass.getEditText().getText().toString();
+                refcode = refcodetxt.getEditText().getText().toString();
+                devid = Controller.getDIVID();
 
-                if (!name.getText().toString().isEmpty()) {
+                Log.d("Responsdate", devid);
 
-                    if (emailvalid(email.getText().toString())) {
-                        if (phno.getText().toString().length() == 10) {
-                            c1.setVisibility(View.INVISIBLE);
-                            c2.setVisibility(View.VISIBLE);
-                            c3.setVisibility(View.INVISIBLE);
-                            submit1.setVisibility(View.INVISIBLE);
-                            submit2.setVisibility(View.VISIBLE);
-                            submit3.setVisibility(View.INVISIBLE);
-                        } else {
-                            Move_Show.showToast("Enter Valid mobile no");
-                            phno.requestFocus();
-                        }
-                    } else {
-                        Move_Show.showToast("Enter Valid Email id");
-                        email.requestFocus();
-                    }
-                } else {
-                    Move_Show.showToast("Enter Username");
+                if(!checkname(uname)){
+                    name.getEditText().setError("Enter valid name");
                     name.requestFocus();
-                }
-            }
-        });
-
-        submit2.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("RestrictedApi")
-            @Override
-            public void onClick(View v) {
-                i = 2;
-                if (cgname.getText().toString().isEmpty()) {
-                    Move_Show.showToast("Enter your College name");
+                } else if(!emailvalid(umail)){
+                    email.getEditText().setError("Please enter valid Email ID");
+                    email.requestFocus();
+                }else if (cgname.getText().toString().isEmpty()) {
+                    cgname.setError("Enter your College name");
                     cgname.requestFocus();
                 } else if (spin.getSelectedItem().equals("-Select-")) {
                     Move_Show.showToast("Select your University Type");
                     spin.requestFocus();
                 } else if (degree.getText().toString().isEmpty()) {
-                    Move_Show.showToast("Enter Degree");
+                    degree.setError("Enter Degree");
                     degree.requestFocus();
-                } else if (acyear.getText().toString().isEmpty() || acyear.getText().toString().length() < 9) {
-                    Move_Show.showToast("Enter Academic Year");
+                } else if (acyear.getEditText().getText().toString().isEmpty() || acyear.getEditText().getText().toString().length() < 9) {
+                    acyear.getEditText().setError("Enter Academic Year");
                     acyear.requestFocus();
+                } else if (deptstring.isEmpty()) {
+                    department.setError("Enter Department");
+                    department.requestFocus();
+                } else if (uyear.isEmpty()) {
+                    year.getEditText().setError("Enter Year of Studying");
+                    year.requestFocus();
+                } else if (usemester.isEmpty()) {
+                    semester.getEditText().setError("Enter semester");
+                    semester.requestFocus();
+                } else if (upassword.isEmpty() || uconpass.isEmpty()) {
+                    password.getEditText().setError("Please check password");
+                    conpass.getEditText().setError("Please check password");
+                    password.requestFocus();
                 } else {
-                    c1.setVisibility(View.INVISIBLE);
-                    c2.setVisibility(View.INVISIBLE);
-                    c3.setVisibility(View.VISIBLE);
-                    submit1.setVisibility(View.INVISIBLE);
-                    submit2.setVisibility(View.INVISIBLE);
-                    submit3.setVisibility(View.VISIBLE);
+                    if (upassword.equals(uconpass)) {
+                        spotsDialog.show();
+                        Call<DownloadResponse> call = ApiUtil.getServiceClass().addaccount(uname, upassword, uclname, sAffiliation, degreestring, deptstring, uyear, usemester, uphone, cacyear, umail, devid , refcode);
+                        call.enqueue(new Callback<DownloadResponse>() {
+                            @Override
+                            public void onResponse(Call<DownloadResponse> call, Response<DownloadResponse> response) {
+                                if (response.isSuccessful()) {
+                                    Log.d("Resopnse", response.body().toString());
+                                    assert response.body() != null;
+                                    getlogindetails = response.body().getLogin_Details();
+                                    if (getlogindetails.get(0).getSts().equals("0")) {
+                                        spotsDialog.dismiss();
+                                        Log.d("User sts  ", "Registration Error , Please Try again..?");
+                                        errordialog("Registration Error , Please Try again..?");
+                                    } else {
+                                        spotsDialog.dismiss();
+                                        Log.d("User ID   ", getlogindetails.get(0).getUser_Id());
+                                        Log.d("User Name ", getlogindetails.get(0).getUser_Name());
+                                        Log.d("Email ID  ", getlogindetails.get(0).getEmail_Id());
+                                        Log.d("Mobile No ", getlogindetails.get(0).getMobile_No());
+                                        Log.d("User Type ", getlogindetails.get(0).getUser_Type());
+                                        Controller.addUserID(getlogindetails.get(0).getUser_Id());
+                                        Controller.addusername(getlogindetails.get(0).getUser_Name());
+                                        Controller.addusermail(getlogindetails.get(0).getEmail_Id());
+                                        new Controller(SignUp.this).addphno(getlogindetails.get(0).getMobile_No());
+                                        Controller.addprefer(getlogindetails.get(0).getUser_Type());
+                                        getAlert();
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<DownloadResponse> call, Throwable t) {
+
+                            }
+                        });
+                    } else {
+                        conpass.getEditText().setError("Password mismatch");
+                        conpass.requestFocus();
+                    }
                 }
-            }
-        });
-        acyear.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (acyear.getText().toString().length()==4){
-                    acyear.setText(acyear.getText().toString()+"-");
-
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-        submit3.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("RestrictedApi")
-            @Override
-            public void onClick(View v) {
-                uname = name.getText().toString();
-                umail = email.getText().toString();
-                uphone = phno.getText().toString();
-                uclname = cgname.getText().toString();
-                cacyear = acyear.getText().toString();
-                sAffiliation = spin.getSelectedItem().toString();
-                Log.d("Affiliation", sAffiliation + "<-");
-                uyear = year.getText().toString();
-                usemester = semester.getText().toString();
-                upassword = password.getText().toString();
-                degreestring = degree.getText().toString();
-                deptstring = department.getText().toString();
-                uconpass=conpass.getText().toString();
-                devid = Controller.getDIVID();
-                Log.d("Responsdate", devid);
-
-
-                    if (deptstring.isEmpty()) {
-                        Move_Show.showToast("Enter Department");
-                    } else if (uyear.isEmpty()) {
-                        Move_Show.showToast("Enter Year of Studying");
-                    } else if (usemester.isEmpty()) {
-                        Move_Show.showToast("Enter semester");
-                    }else if (upassword.isEmpty() || uconpass.isEmpty()){
-                        Move_Show.showToast("Enter password");
-                    }else{
-                        if (upassword.equals(uconpass)){
-                            spotsDialog.show();
-                Call<String> call = ApiUtil.getServiceClass().addaccount(uname, Controller.getUID(), upassword, uclname, sAffiliation, degreestring, deptstring, uyear, usemester, uphone, cacyear, umail, devid);
-                call.enqueue(new Callback<String>() {
-                    @Override
-                    public void onResponse(Call<String> call, retrofit2.Response<String> response) {
-                        Log.d("Responsdate", response.raw().toString());
-                        spotsDialog.dismiss();
-                        if (response.body().equals("1")) {
-                            Controller.addprefer(Controller.REG);
-                            getAlert();
-                        } else {
-
-                            Move_Show.showToast(response.body().toString());
-                        }
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<String> call, Throwable t) {
-
-                    }
-                });
-                        }else
-                        {
-                            Move_Show.showToast("Password mismatch");
-                        }
-                    }
             }
         });
 
 
     }
 
+    public void errordialog(String sts) {
+        spotsDialog.dismiss();
+        /*final Dialog d = new Dialog(SignUp.this);
+        d.setContentView(R.layout.calertdialog);
+        TextView title = d.findViewById(R.id.calert_title);
+        TextView message = d.findViewById(R.id.calert_message);
+        Button btn1 = d.findViewById(R.id.calert_loginbtn);
+        Button btn2 = d.findViewById(R.id.calert_registerbtn);
+        Button btn3 = d.findViewById(R.id.calert_notnowbtn);
+
+        title.setText("Oops !");
+        message.setText(sts);
+
+        btn3.setVisibility(View.GONE);
+        btn2.setVisibility(View.GONE);
+
+        btn1.setText("ok");
+
+        btn1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                d.dismiss();
+            }
+        });
+        d.show();*/
+    }
 
     public Boolean checkname(String name) {
         if (name.matches("\\d+(?:\\.\\d+)?")) {
@@ -287,30 +268,8 @@ public class SignUp extends AppCompatActivity implements
     @SuppressLint("RestrictedApi")
     @Override
     public void onBackPressed() {
-
-        if (i == 0) {
-            new Move_Show(SignUp.this, HomeActivity.class);
-            finish();
-        } else if (i == 1) {
-            i = 0;
-            c1.setVisibility(View.VISIBLE);
-            c2.setVisibility(View.INVISIBLE);
-            c3.setVisibility(View.INVISIBLE);
-            submit1.setVisibility(View.VISIBLE);
-            submit2.setVisibility(View.INVISIBLE);
-            submit3.setVisibility(View.INVISIBLE);
-        } else if (i == 2) {
-            i = 1;
-            c1.setVisibility(View.INVISIBLE);
-            c2.setVisibility(View.VISIBLE);
-            c3.setVisibility(View.INVISIBLE);
-            submit1.setVisibility(View.INVISIBLE);
-            submit2.setVisibility(View.VISIBLE);
-            submit3.setVisibility(View.INVISIBLE);
-        }
-
+        Toast.makeText(this, "Please complete Your Process", Toast.LENGTH_SHORT).show();
     }
-
 
     void getAlert() {
         SharedPreferences smeme = getSharedPreferences("meme", Context.MODE_PRIVATE);

@@ -8,12 +8,13 @@ public class Controller {
     public static SharedPreferences sharedPreferences;
     public static SharedPreferences.Editor editor;
     public static String VISITOR = "visitor";
-    public static String ADMIN = "admin";
-    public static String REG = "reg";
+    public static String ADMIN = "Admin";
+    public static String REG = "Users";
     public static String INITIAL = "0";
     public static String SENT = "sent";
     public static String PREFER = "prefer";
     public static String MORE = "more";
+    public static String USER = "0";
     public static String INFOZUB = "infozub";
     public static String MEMEACCEPT = "meme";
     public static String MEMEVIEW = "memeview";
@@ -38,8 +39,24 @@ public class Controller {
         editor.putString("UID", user).apply();
     }
 
+    public void addmobsts(String msts){
+        editor.putString("msts",msts).apply();
+    }
+
+    public String getmsts(){
+        return sharedPreferences.getString("msts",null);
+    }
+
     public static void addTokenStatus(String token) {
         editor.putString("TOKEN_STAT", token).apply();
+    }
+
+    public void addphno(String phno) {
+        editor.putString("PHNO",phno  ).apply();
+    }
+
+    public String getphno(){
+        return sharedPreferences.getString("PHNO","none");
     }
 
     public static void addusername(String name) {
@@ -59,6 +76,14 @@ public class Controller {
     public static  void clearuserdetails(){
         editor.clear();
         editor.apply();
+    }
+
+    public static void addflagsts(String flagdate){
+        editor.putString("fdate",flagdate).apply();
+    }
+
+    public static String getflagdate(){
+        return sharedPreferences.getString("fdate","2020-02-02");
     }
 
     public static void adduservierify(String later) {
@@ -107,4 +132,6 @@ public class Controller {
     public static String getuservierify(){
         return sharedPreferences.getString("LATER", null);
     }
+
+
 }

@@ -10,19 +10,21 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        android:text="Add New Event Basic's"
-        android:textColor="@color/colorBlack"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/profile_email"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="serif"
+            android:text="Add New Event Basic's"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="@color/block"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:id="@+id/imagelayout"
@@ -34,16 +36,17 @@
         android:orientation="horizontal"
         android:weightSum="2"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2">
+        app:layout_constraintTop_toBottomOf="@+id/profile_email">
 
         <TextView
-            android:id="@+id/textView5"
+            android:id="@+id/profile_initial"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1.7"
+            android:fontFamily="serif"
             android:text="Add Event Poster *"
-            android:textColor="#000"
-            android:textStyle="bold" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/block" />
 
     </LinearLayout>
 
@@ -69,7 +72,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                android:src="@drawable/adddummyimageback1" />
+                android:src="@drawable/add_icon_white" />
 
             <ImageView
                 android:id="@+id/aevent_post_icon"
@@ -104,32 +107,38 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:layout_marginTop="16dp"
+            android:fontFamily="serif"
             android:text="Add Events Details *"
-            android:textColor="#000"
-            android:textStyle="bold" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/block" />
 
         <ImageView
             android:id="@+id/aevent_eventadd_icon"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:src="@drawable/add_event_icon" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
+            android:fontFamily="serif"
             android:gravity="center"
-            android:text="Click to add Event Details"/>
+            android:text="Click to add Event Details"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textStyle="bold" />
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fillViewport="true">
+
             <TextView
                 android:id="@+id/uitveventdetails"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"
-                />
+                android:fontFamily="serif"
+                android:textStyle="bold" />
 
         </ScrollView>
 

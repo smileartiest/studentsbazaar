@@ -1,15 +1,15 @@
 package com.studentsbazaar.studentsbazaarapp.activity;
 
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.LinearLayout;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.LinearLayout;
 
 import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.adapter.Memes_Adapter;
@@ -35,7 +35,7 @@ public class Pending_Post extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pending__post);
+        setContentView(R.layout.post_pending);
         swipeRefreshLayout=findViewById(R.id.swipeToRefreshpost);
         layout=findViewById(R.id.empty7);
         memeview=findViewById(R.id.postview);
@@ -45,8 +45,8 @@ public class Pending_Post extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarpost);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
-            getSupportActionBar().setTitle("Pending Post");
-
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
         loadData();
         memeview.setHasFixedSize(true);
@@ -55,6 +55,13 @@ public class Pending_Post extends AppCompatActivity {
             @Override
             public void onRefresh() {
                 loadData();
+            }
+        });
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
             }
         });
 

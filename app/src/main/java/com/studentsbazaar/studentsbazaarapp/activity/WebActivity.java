@@ -73,7 +73,7 @@ public class WebActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         spotsDialog = new SpotsDialog(this);
-        setContentView(R.layout.activity_web);
+        setContentView(R.layout.web_page);
         imageView = (ImageView) findViewById(R.id.shareweb);
       /*  Intent intent = getIntent();
         bundle = intent.getExtras();*/
@@ -131,44 +131,7 @@ public class WebActivity extends AppCompatActivity {
                 startActivity(Intent.createChooser(share, "Share via"));
             }
         });
-        //Toolbar toolbar = findViewById(R.id.toolbar);
-        // btmAd = findViewById(R.id.adBtmView);
-      /*  if (toolbar != null) {
-            setSupportActionBar(toolbar);
-            getSupportActionBar().setTitle("ROJGAR LIVE");
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-        }*/
-        //  progressDialog = new SpotsDialog(this, R.style.Custom);
-
-           /* progressDialog.setMessage("Loading...");
-            progressDialog.setCancelable(false);*/
-
-        // showProgressDialog();
-
-      /*  PublisherAdRequest.Builder builder = new PublisherAdRequest.Builder();
-        PublisherAdRequest adRequest = builder.build();
-        btmAd.loadAd(adRequest);
-*/
-
-        //Toast.makeText(getApplicationContext(),bundle.getString("url"),Toast.LENGTH_SHORT).show();
         loadWeb();
-
-/*        assert toolbar != null;
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                onBackPressed();
-
-            }
-        });*/
-     /*   }catch (Exception e){
-            Log.e("WEB_EXCEPTION",e.getMessage());
-            transferToNoPackageFoundActivity(url);
-        }*/
-
 
     }
 
@@ -185,18 +148,6 @@ public class WebActivity extends AppCompatActivity {
         }
     }
 
-/* private void showProgressDialog() {
-        if (progressDialog == null) {
-            progressDialog = new SpotsDialog(this, R.style.Custom);
-        }
-        progressDialog.show();
-    }
-
-    private void dismissProgressDialog() {
-        if (progressDialog != null && progressDialog.isShowing()) {
-            progressDialog.dismiss();
-        }
-    }*/
 
     private void transferToNoPackageFoundActivity(String url) {
 
@@ -219,7 +170,7 @@ public class WebActivity extends AppCompatActivity {
         wv1.getSettings().setLoadsImagesAutomatically(true);
         wv1.getSettings().setJavaScriptEnabled(true);
         wv1.setInitialScale(200);
-       wv1.setBackgroundColor(Color.parseColor("#002139"));
+        wv1.setBackgroundColor(Color.parseColor("#EBF6FB"));
         wv1.setWebChromeClient(new MyWebChromeClient(this));
         wv1.setWebViewClient(new WebViewClient() {
             @Override
@@ -233,7 +184,6 @@ public class WebActivity extends AppCompatActivity {
                     new Monitor(WebActivity.this).sharevideourl(url);
                 }
                 return super.shouldOverrideUrlLoading(view, url);
-
             }
 
             @Override
@@ -293,55 +243,18 @@ public class WebActivity extends AppCompatActivity {
 
     }
 
-/*    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        if ("notification".equals(data)) {
-            Intent i = new Intent(WebActivity.this, HomeActivity.class);
-            startActivity(i);
-        } else {
-            finish();
-        }
-    }*/
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
 
-        // dismissProgressDialog();
-
     }
-
-/*    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_main, menu);
-        MenuItem shareItem = menu.findItem(R.id.item1);
-
-        if (title.isEmpty()) {
-            shareItem.setVisible(false);
-        }
-        // getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.item1) {
-            shareIntent();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }*/
 
     private void shareIntent() {
         //String url = getIntent().getExtras() != null ? getIntent().getExtras().getString("url") : null;
         title = getIntent().getExtras() != null ? getIntent().getExtras().getString("title") : null;
         assert title != null;
         if (title.isEmpty()) {
-            title = "ROJGAR LIVE - GOVT JOBS";
+            title = "Rojgar Live  - Govt Jobs";
         }
         String content = "Shared via RojgarLive App \n \n https://bit.ly/2Tap4ru";
         String finalContent = title + "\n\nClick Below Link for more details.\n\n" + url + "\n\n" + content;
@@ -359,6 +272,7 @@ public class WebActivity extends AppCompatActivity {
         menu.findItem(R.id.item2).setVisible(false);
         menu.findItem(R.id.action_search).setVisible(false);
         menu.findItem(R.id.profile).setVisible(false);
+        menu.findItem(R.id.shareitem).setVisible(false);
         return true;
     }
 
@@ -372,7 +286,6 @@ public class WebActivity extends AppCompatActivity {
                 } catch (Exception e) {
 
                 }
-
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

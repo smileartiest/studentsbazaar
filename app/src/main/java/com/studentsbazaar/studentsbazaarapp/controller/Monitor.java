@@ -35,7 +35,16 @@ public class Monitor {
     }
 
     public void sharetowhatsapp() {
-        String shareBody = "Students Bazaar,India's highest rated students app. \nSource : Students Bazaar \nclick below link: \n studentsbazaar.in/app/";
+        String shareBody = "Students Bazaar,"+"\nIndia's highest rated students app. Install and know more about app.\n \nTo download.. click below link: \n studentsbazaar.in/app/";
+        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
+        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Subject Here");
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+        context.startActivity(Intent.createChooser(sharingIntent, context.getResources().getString(R.string.app_name)));
+    }
+
+    public void sharerefcode(String refcode){
+        String shareBody = "Students Bazaar,"+"\nIndia's highest rated students app. Install and know more about app."+"\nReferral Code is "+refcode+"\n\nTo download.. click below link: \n studentsbazaar.in/app/";
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
         sharingIntent.setType("text/plain");
         sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Subject Here");
@@ -117,7 +126,7 @@ public class Monitor {
                 share.setType("image/*");
                 String shareBody = "Students Bazaar,India's highest rated students app. \nSource : Students Bazaar \nclick below link: \nstudentsbazaar.in/app/";
                 share.putExtra(Intent.EXTRA_STREAM, uri);
-                share.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+                share.putExtra(Intent.EXTRA_TEXT, shareBody);
                 context.startActivity(Intent.createChooser(share, "Share Image"));
             }
 
@@ -135,6 +144,4 @@ public class Monitor {
     public void downloadpdf(String url) {
         context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
     }
-
-
 }

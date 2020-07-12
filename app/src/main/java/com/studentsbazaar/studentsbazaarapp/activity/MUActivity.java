@@ -1,9 +1,5 @@
 package com.studentsbazaar.studentsbazaarapp.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
-
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -13,8 +9,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.studentsbazaar.studentsbazaarapp.controller.Monitor;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
+
 import com.studentsbazaar.studentsbazaarapp.R;
+import com.studentsbazaar.studentsbazaarapp.controller.Monitor;
 import com.studentsbazaar.studentsbazaarapp.controller.Move_Show;
 
 public class MUActivity extends AppCompatActivity {
@@ -27,7 +27,7 @@ public class MUActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mu);
+        setContentView(R.layout.munive_page);
 
         cardResults = (CardView)findViewById(R.id.cardresult);
         cardQuestions = (CardView)findViewById(R.id.cardQuestions);
@@ -38,7 +38,6 @@ public class MUActivity extends AppCompatActivity {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
-
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -50,8 +49,8 @@ public class MUActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Bundle b = new Bundle();
                 b.putString("url", "http://results.unom.ac.in/nov2019/");
-                b.putString("title", "RESULTS");
-                b.putString("data", "RESULTS-MU");
+                b.putString("title", "Results");
+                b.putString("data", "Results-MU");
                 Intent i = new Intent(MUActivity.this,WebActivity.class);
                 i.putExtras(b);
                 startActivity(i);
@@ -62,9 +61,9 @@ public class MUActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Bundle b = new Bundle();
-                b.putString("url", "https://egovernance.unom.ac.in/questionbank/question_main.asp");
-                b.putString("title", "RESULTS-MU");
-                b.putString("data", "QUESTION PAPERS");
+                b.putString("url", "https://egovernance.unom.ac.in/qpregular/question_main.asp");
+                b.putString("title", "Results-MU");
+                b.putString("data", "Question papers");
                 Intent i = new Intent(MUActivity.this,WebActivity.class);
                 i.putExtras(b);
                 startActivity(i);
@@ -93,6 +92,7 @@ public class MUActivity extends AppCompatActivity {
         menu.findItem(R.id.item2).setVisible(false);
         menu.findItem(R.id.action_search).setVisible(false);
         menu.findItem(R.id.profile).setVisible(false);
+        menu.findItem(R.id.shareitem).setVisible(false);
         return  true;
     }
     @Override

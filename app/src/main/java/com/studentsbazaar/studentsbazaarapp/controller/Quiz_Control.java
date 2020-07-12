@@ -22,10 +22,43 @@ public class Quiz_Control {
         editor.putString("total", total).apply();
     }
 
-    public static void addCorrectans(String correct) {
-        editor.putString("correct", correct).apply();
+    public void addresult( String cans ,String qid , String qpic ,String qans){
+        editor.putString("cans",cans);
+        editor.putString("qid",qid);
+        editor.putString("qpic",qpic);
+        editor.putString("apic",qans);
+        editor.apply();
     }
 
+    public static void addtodayans(String value){
+        editor.putString("sanswer",value);
+        editor.apply();
+    }
+
+    public static void addviewrs(String views){
+        editor.putString("vs",views).apply();
+    }
+
+    public static String getviews(){
+        return sharedPreferences.getString("vs",null);
+    }
+
+    public static String getcans(){
+        return sharedPreferences.getString("cans","");
+    }
+
+    public static String getanswer(){
+        return sharedPreferences.getString("sanswer","none");
+    }
+    public static String getqid(){
+        return sharedPreferences.getString("qid","none");
+    }
+    public static String getQpic(){
+        return sharedPreferences.getString("qpic","none");
+    }
+    public static String getAnspic(){
+        return sharedPreferences.getString("apic","none");
+    }
     public static void addworngans(String wrong) {
         editor.putString("wrong", wrong).apply();
     }
@@ -48,6 +81,14 @@ public class Quiz_Control {
 
     public static void addcrctans(String seen) {
         editor.putString("crctans", seen).apply();
+    }
+
+    public static void adddate(String date){
+        editor.putString("date", date).apply();
+    }
+
+    public static String getdate(){
+        return sharedPreferences.getString("date",null);
     }
 
     public static String getTotalPoint() {
