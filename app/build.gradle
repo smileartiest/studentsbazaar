@@ -7,8 +7,8 @@ android {
         applicationId "com.studentsbazaar.studentsbazaarapp"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 18
-        versionName "2.2.0.3"
+        versionCode 19
+        versionName "2.2.0.4"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -50,6 +50,7 @@ dependencies {
     implementation 'com.facebook.android:audience-network-sdk:5.9.0'
     implementation 'com.facebook.android:facebook-android-sdk:7.0.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "com.airbnb.android:lottie:$lottieVersion"
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'

@@ -114,6 +114,18 @@ public class Quiz_history_page extends AppCompatActivity {
                                     temp = temp + 1;
                                     Log.d("Matched", temp + " / " + download_response.get(i).getScore());
                                 }
+                            }else{
+                                if(new TimeDate().getDateYMD().equals(download_response.get(i).getCreate_Date())){
+                                    if (START_TIME <= CURRENT_TIME && LOCAL_TIME > CURRENT_TIME){
+                                        today = today+1;
+                                    }else{
+                                        today = 0;
+                                        temp = temp + 1;
+                                    }
+                                }else {
+                                    temp = temp + 0;
+                                    Log.d("Matched", temp + " / " + download_response.get(i).getScore());
+                                }
                             }
                         }
                         int wrongans = download_response.size() - temp - today;

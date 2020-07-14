@@ -2,18 +2,19 @@ package com.studentsbazaar.studentsbazaarapp.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
-import android.view.Gravity;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
-import com.crowdfire.cfalertdialog.CFAlertDialog;
+import com.airbnb.lottie.LottieAnimationView;
 import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.controller.Controller;
 import com.studentsbazaar.studentsbazaarapp.controller.Move_Show;
@@ -32,6 +33,9 @@ import retrofit2.Response;
 public class SplashActivty extends AppCompatActivity {
     List<College_Details> college_details;
     String androidId;
+    ConstraintLayout main_screen,no_internet_screen;
+    TextView message,retry_btn;
+    LottieAnimationView animationView;
 
     @SuppressLint("HardwareIds")
     @Override
@@ -40,6 +44,13 @@ public class SplashActivty extends AppCompatActivity {
         setContentView(R.layout.splash);
         new Controller(SplashActivty.this);
         androidId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+
+        main_screen = findViewById(R.id.splase_screen);
+        no_internet_screen = findViewById(R.id.splace_no_internet);
+        message = findViewById(R.id.splace_message);
+        retry_btn = findViewById(R.id.splace_retry_btn);
+        animationView = findViewById(R.id.splace_animation_view);
+
         connectionverify();
 
         startService(new Intent(this, BroadcastService.class));
@@ -81,23 +92,18 @@ public class SplashActivty extends AppCompatActivity {
         if (isNetworkAvailable()) {
             checkservice();
         } else {
-
-            CFAlertDialog.Builder builder = new CFAlertDialog.Builder(SplashActivty.this);
-            builder.setCornerRadius(20);
-            builder.setDialogStyle(CFAlertDialog.CFAlertStyle.ALERT);
-            builder.setContentImageDrawable(R.drawable.check_internet_icon);
-            builder.setTextGravity(Gravity.CENTER);
-            builder.setTitle("Internet Connection is not available. Please switch on internet !");
-            builder.addButton("DONE", -1, -1, CFAlertDialog.CFAlertActionStyle.POSITIVE, CFAlertDialog.CFAlertActionAlignment.JUSTIFIED
-                    , new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            connectionverify();
-                            dialog.dismiss();
-                        }
-                    });
-            builder.show();
-
+            main_screen.setVisibility(View.GONE);
+            no_internet_screen.setVisibility(View.VISIBLE);
+            message.setText("Internet Connection is not available. Please switch on internet !");
+            animationView.setAnimation(R.raw.internet_gif);
+            animationView.playAnimation();
+            animationView.loop(true);
+            retry_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    connectionverify();
+                }
+            });
         }
 
     }
@@ -114,23 +120,18 @@ public class SplashActivty extends AppCompatActivity {
                         Controller.addDIVID(androidId);
                         collegedetails();
                     }else {
-                        CFAlertDialog.Builder builder = new CFAlertDialog.Builder(SplashActivty.this);
-                        builder.setDialogStyle(CFAlertDialog.CFAlertStyle.ALERT);
-                        builder.setCornerRadius(20);
-                        builder.setContentImageDrawable(R.drawable.server_maintain);
-                        builder.setTextGravity(Gravity.CENTER);
-                        builder.setTitle("Server Maintenance.So Please Try Again After some time. !");
-                        builder.addButton("OK", -1, -1, CFAlertDialog.CFAlertActionStyle.POSITIVE, CFAlertDialog.CFAlertActionAlignment.JUSTIFIED
-                                , new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        androidId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-                                        Controller.addDIVID(androidId);
-                                        collegedetails();
-                                        //finish();
-                                    }
-                                });
-                        builder.show();
+                        main_screen.setVisibility(View.GONE);
+                        no_internet_screen.setVisibility(View.VISIBLE);
+                        message.setText("Server Maintenance.So Please Try Again After some time. !");
+                        animationView.setAnimation(R.raw.server_maintain);
+                        animationView.playAnimation();
+                        animationView.loop(true);
+                        retry_btn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                finish();
+                            }
+                        });
                     }
                 }
             }

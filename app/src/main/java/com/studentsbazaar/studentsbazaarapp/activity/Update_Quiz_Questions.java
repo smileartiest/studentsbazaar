@@ -42,7 +42,7 @@ public class Update_Quiz_Questions extends AppCompatActivity {
     TextInputLayout ans;
     Button postquiz;
     SpotsDialog spotsDialog;
-    String qspicstring,anspicstring,qstypestring;
+    String qspicstring = null,anspicstring = null,qstypestring = null;
     String[] qstypelist = {"Choose Qstion Type" , "Choice","FillBlanks"};
     private static int RESULT_LOAD_IMAGE = 1;
     private static int RESULT_LOAD_IMAGE1 = 2;
@@ -129,10 +129,10 @@ public class Update_Quiz_Questions extends AppCompatActivity {
                 anspicstring = sf.getString("apost","");
                 String ans1 = ans.getEditText().getText().toString();
 
-                if(qspicstring.length()!=0){
-                    if(anspicstring.length()!=0){
+                if(qspicstring!= null){
+                    if(anspicstring!= null){
                         if(ans1.length()!=0){
-                            if(qstypestring.length()!=0) {
+                            if(qstypestring != null) {
                                 spotsDialog.show();
                                 Call call = ApiUtil.getServiceClass().addquizquestions(qstypestring, qspicstring, anspicstring, ans1);
                                 call.enqueue(new Callback() {

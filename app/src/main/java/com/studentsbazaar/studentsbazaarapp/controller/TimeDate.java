@@ -33,9 +33,13 @@ public class TimeDate {
         String MON = "", DAY = "";
         if((calendar.get(Calendar.MONTH)+1) < 10){
             MON = "0"+(calendar.get(Calendar.MONTH)+1);
+        }else {
+            MON = String.valueOf(calendar.get(Calendar.MONTH)+1);
         }
         if(calendar.get(Calendar.DATE)<10){
             DAY = "0"+calendar.get(Calendar.DATE);
+        }else{
+            DAY = String.valueOf(calendar.get(Calendar.DATE));
         }
         date = calendar.get(Calendar.YEAR)+"-"+MON+"-"+DAY;
         return date;
