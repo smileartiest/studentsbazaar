@@ -10,48 +10,56 @@
         android:id="@+id/event_backbtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:backgroundTint="@color/white"
         android:clickable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/event_contactbtn"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/event_card"
         app:srcCompat="@drawable/leftarrow_theam" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/event_addbtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:backgroundTint="@color/white"
         android:clickable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/event_pending"
         app:layout_constraintStart_toEndOf="@+id/event_contactbtn"
+        app:layout_constraintTop_toBottomOf="@+id/event_card"
         app:srcCompat="@drawable/add_event_icon" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/event_contactbtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:backgroundTint="@color/white"
         android:clickable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/event_addbtn"
         app:layout_constraintStart_toEndOf="@+id/event_backbtn"
+        app:layout_constraintTop_toBottomOf="@+id/event_card"
         app:srcCompat="@drawable/contact_icon" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/event_pending"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:backgroundTint="@color/white"
         android:clickable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/event_addbtn"
+        app:layout_constraintTop_toBottomOf="@+id/event_card"
         app:srcCompat="@drawable/event_pending_icon" />
 
     <LinearLayout

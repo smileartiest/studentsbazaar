@@ -10,22 +10,12 @@
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
     android:layout_marginTop="8dp"
-    app:cardElevation="3dp">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorPrimaryDark">
-
+    app:cardElevation="0dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="1dp"
-            android:layout_marginEnd="1dp"
-            android:layout_marginBottom="1dp"
-            android:background="@drawable/card_curve_bg"
+            android:background="@color/colorAccent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -41,7 +31,7 @@
                 android:fontFamily="serif"
                 android:text="Company Name"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textColor="@color/block"
+                android:textColor="@color/colorPrimaryDark"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -54,11 +44,12 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
-                android:drawableLeft="@drawable/college"
+                android:drawableLeft="@drawable/college_icon1"
                 android:fontFamily="serif"
                 android:gravity="center_vertical"
                 android:text="  College Name"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/block"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -71,7 +62,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:drawableLeft="@drawable/domain"
+                android:drawableLeft="@drawable/domain_icon1"
                 android:fontFamily="serif"
                 android:gravity="center_vertical"
                 android:text="   Domain"
@@ -104,7 +95,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:drawableLeft="@drawable/placed"
+                android:drawableLeft="@drawable/placed_icon1"
                 android:fontFamily="serif"
                 android:gravity="center_vertical"
                 android:text="   Students Placed"
@@ -137,10 +128,10 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:drawableLeft="@drawable/salary"
+                android:drawableLeft="@drawable/package_icon1"
                 android:fontFamily="serif"
                 android:gravity="center_vertical"
-                android:text="  Package"
+                android:text="   Package"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:textColor="@color/block"
                 app:layout_constraintEnd_toStartOf="@+id/id_package"
@@ -171,7 +162,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="16dp"
-                android:drawableLeft="@drawable/date"
+                android:drawableLeft="@drawable/date_icon1"
                 android:fontFamily="serif"
                 android:gravity="center_vertical"
                 android:text="   Date"
@@ -198,6 +189,5 @@
                 app:layout_constraintStart_toEndOf="@+id/textView15"
                 app:layout_constraintTop_toTopOf="@+id/textView15" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>

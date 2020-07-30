@@ -24,6 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
+import dmax.dialog.SpotsDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -41,11 +42,15 @@ public class Quiz_history_page extends AppCompatActivity {
     Calendar calander;
 
     Toolbar my_toolbar;
+    SpotsDialog spotsDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.quiz_history);
+
+        spotsDialog = new SpotsDialog(this);
+        spotsDialog.show();
 
         my_toolbar = findViewById(R.id.quiz_hs_menu);
         name_card = findViewById(R.id.quiz_hs_name_card);
@@ -86,11 +91,13 @@ public class Quiz_history_page extends AppCompatActivity {
                         history_list.setVisibility(View.GONE);
                         score_card.setVisibility(View.GONE);
                         no_data.setVisibility(View.VISIBLE);
+                        spotsDialog.dismiss();
                     }else if(response.body().equals("0") ){
                         name_card.setVisibility(View.GONE);
                         history_list.setVisibility(View.GONE);
                         score_card.setVisibility(View.GONE);
                         no_data.setVisibility(View.VISIBLE);
+                        spotsDialog.dismiss();
                     }else{
                         calander = Calendar.getInstance();
                         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH");
@@ -138,12 +145,14 @@ public class Quiz_history_page extends AppCompatActivity {
                         score_card.setVisibility(View.VISIBLE);
                         quiz_history_adapter = new Quiz_History_Adapter(Quiz_history_page.this , download_response);
                         history_list.setAdapter(quiz_history_adapter);
+                        spotsDialog.dismiss();
                     }
                 }
             }
             @Override
             public void onFailure(Call<DownloadResponse> call, Throwable t) {
                 Log.d("Error " , t.getMessage());
+                spotsDialog.dismiss();
             }
         });
     }

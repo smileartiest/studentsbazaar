@@ -47,7 +47,7 @@ public class PendingEventsAdapter extends RecyclerView.Adapter<PendingEventsAdap
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        view = mInflater.inflate(R.layout.pending_events, parent, false);
+        view = mInflater.inflate(R.layout.row_pending_events, parent, false);
         return new ViewHolder(view);
     }
 
@@ -64,10 +64,18 @@ public class PendingEventsAdapter extends RecyclerView.Adapter<PendingEventsAdap
         holder.phone.setText(listItem.getContact_Person1_No());
         holder.city.setText(listItem.getCollege_Address());
         holder.department.setText(listItem.getConducted_By());
+
+        if(listItem.getAccepted().equals("0")){
+            holder.sts.setVisibility(View.VISIBLE);
+            holder.sts.setImageResource(R.drawable.yello_current_icon);
+        }else{
+            holder.sts.setVisibility(View.VISIBLE);
+            holder.sts.setImageResource(R.drawable.complete_green_tik_icon);
+        }
+
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//
                 SharedPreferences sharedPreferences = context.getSharedPreferences("view_details", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putString("coid",listItem.getEvent_Coordinator());
@@ -118,13 +126,14 @@ public class PendingEventsAdapter extends RecyclerView.Adapter<PendingEventsAdap
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView eventname, coordinator, College, department, phone, city;
-        ImageView imBookmar, imShare;
+        ImageView sts;
         CardView cardView;
         LinearLayout linearLayout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             spotsDialog = new SpotsDialog(context);
+            sts = itemView.findViewById(R.id.id_sts);
             eventname = (TextView) itemView.findViewById(R.id.tvEventName);
             coordinator = (TextView) itemView.findViewById(R.id.id_coordinator_name);
             College = (TextView) itemView.findViewById(R.id.id_organiser_name);

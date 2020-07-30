@@ -3,20 +3,21 @@ package com.studentsbazaar.studentsbazaarapp.activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputLayout;
 import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.controller.Move_Show;
 import com.studentsbazaar.studentsbazaarapp.helper.DateChecker;
@@ -29,26 +30,30 @@ import java.util.Date;
 public class AddEvent2 extends AppCompatActivity {
 
     FloatingActionButton next;
-    EditText title, catagory, orgnniser, conducted, evendiscrition;
-    AutoCompleteTextView city, state;
-    TextView startdate, enddate, departmentlist;
-    ImageView adddepartment;
+    TextInputLayout title,catagory, orgnniser, conducted, evendiscrition,departmentlist, city, state,startdate, enddate;
     CheckBox catworkshop, cattechfest, catculfest, catsympo, catconference, catmanagefest, catothers;
-    Button catdone, catcancel;
+    TextView catdone, catcancel;
     Dialog d, catd;
-    ToggleButton cse, ece, it, eee, civl, chemical, agri, medical, pharm, arts, biotech, mba, mca, commerce, law, biomedical, mech, aeronoutical, aerospace, design, fashion, media, bba;
-    TextView cancel, done, txtcat;
-    ArrayList<String> catlist = new ArrayList<>();
+    TextView cse, ece, it, eee, civl, chemical, agri, medical, pharm, arts, biotech, mba, mca, commerce, law, biomedical, mech, aeronoutical, aerospace, design, fashion, media, bba;
+    TextView done, txtcat , cat_click , s_date_click , e_date_click , department_click;
+    ImageView cancel;
+    StringBuilder catlist = new StringBuilder();
     ArrayList<String> deptlist = new ArrayList<>();
-
     private int mYear, mMonth, mDay;
     String day;
     String disevent, conby, etitle, ecat, eorg, ecity, estae, esdate, eedate, edpt;
+
+    Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_event2);
+
+        mToolbar = findViewById(R.id.add2_toolbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         title = findViewById(R.id.add2_eventtitle);
         catagory = findViewById(R.id.add2_eventcatagory);
         orgnniser = findViewById(R.id.add2_eventorganiser);
@@ -58,26 +63,18 @@ public class AddEvent2 extends AppCompatActivity {
         startdate = findViewById(R.id.add2_eventstartdate);
         enddate = findViewById(R.id.add2_eventenddate);
         departmentlist = findViewById(R.id.add2_eventdepartment);
-        adddepartment = findViewById(R.id.add2_departmentaddicon);
         evendiscrition = findViewById(R.id.add2_discrition);
+        cat_click = findViewById(R.id.add2_eventcatagory_click);
+        s_date_click = findViewById(R.id.add2_eventstartdate_click);
+        e_date_click = findViewById(R.id.add2_eventenddate_click);
+        department_click = findViewById(R.id.add2_eventdepartment_click);
         txtcat = findViewById(R.id.textView9);
-        catagory.setShowSoftInputOnFocus(false);
         next = findViewById(R.id.add2_nextbtn);
         title.requestFocus();
 
-        if (departmentlist.getText().length() == 0) {
-            departmentlist.setText("No Department Selected");
-        }
-        catagory.setOnClickListener(new View.OnClickListener() {
+        cat_click.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                adddepart();
-            }
-        });
-
-        catagory.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
                 adddepart();
             }
         });
@@ -88,12 +85,21 @@ public class AddEvent2 extends AppCompatActivity {
             }
         });
 
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
 
     }
 
     void adddepart() {
         catd = new Dialog(AddEvent2.this);
         catd.setContentView(R.layout.cat_degin);
+        catd.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT , LinearLayout.LayoutParams.WRAP_CONTENT);
+        catd.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         catworkshop = (CheckBox) catd.findViewById(R.id.catworkshop);
         cattechfest = (CheckBox) catd.findViewById(R.id.cattechfest);
         catculfest = (CheckBox) catd.findViewById(R.id.catculfest);
@@ -108,7 +114,6 @@ public class AddEvent2 extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 catd.dismiss();
-
             }
         });
 
@@ -117,27 +122,27 @@ public class AddEvent2 extends AppCompatActivity {
             public void onClick(View view) {
 
                 if (catworkshop.isChecked()) {
-                    catlist.add("Workshop ");
+                    catlist.append("Workshop ,");
                 }
                 if (cattechfest.isChecked()) {
-                    catlist.add("Tech fest ");
+                    catlist.append("Tech fest ,");
                 }
                 if (catothers.isChecked()) {
-                    catlist.add("Others ");
+                    catlist.append("Others ,");
                 }
                 if (catculfest.isChecked()) {
-                    catlist.add("Cultural fest ");
+                    catlist.append("Cultural fest ,");
                 }
                 if (catsympo.isChecked()) {
-                    catlist.add("Symposium ");
+                    catlist.append("Symposium ,");
                 }
                 if (catconference.isChecked()) {
-                    catlist.add("Conference ");
+                    catlist.append("Conference ,");
                 }
                 if (catmanagefest.isChecked()) {
-                    catlist.add("Management fest ");
+                    catlist.append("Management fest ,");
                 }
-                catagory.setText(String.valueOf(catlist));
+                catagory.getEditText().setText(catlist.toString());
                 catd.dismiss();
                 conducted.requestFocus();
 
@@ -151,7 +156,7 @@ public class AddEvent2 extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        startdate.setOnClickListener(new View.OnClickListener() {
+        s_date_click.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -178,11 +183,11 @@ public class AddEvent2 extends AppCompatActivity {
                                 String dateToStr = format.format(today);
                                 DateChecker dateChecker = new DateChecker();
                                 if (dateChecker.checkPrevDate(dateToStr, esdate)) {
-                                    startdate.setText(esdate);
-                                    enddate.setText(esdate);
+                                    startdate.getEditText().setText(esdate);
+                                    enddate.getEditText().setText(esdate);
                                 } else {
                                     Move_Show.showToast("StartDate must be after CurrentDate");
-                                    //startdate.setText(esdate);
+                                    startdate.getEditText().setText(esdate);
                                 }
 
                             }
@@ -191,7 +196,7 @@ public class AddEvent2 extends AppCompatActivity {
             }
         });
 
-        enddate.setOnClickListener(new View.OnClickListener() {
+        e_date_click.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -218,10 +223,10 @@ public class AddEvent2 extends AppCompatActivity {
 
                                 DateChecker dateChecker = new DateChecker();
                                 if (dateChecker.checkPrevDate(esdate, eedate)) {
-                                    enddate.setText(eedate);
+                                    enddate.getEditText().setText(eedate);
                                 } else {
                                     Move_Show.showToast("EndDate must be after StartDate");
-                                    enddate.setText(esdate);
+                                    enddate.getEditText().setText(esdate);
                                 }
 
                             }
@@ -232,12 +237,13 @@ public class AddEvent2 extends AppCompatActivity {
             }
         });
 
-        adddepartment.setOnClickListener(new View.OnClickListener() {
+        department_click.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                deptlist.clear();
                 d = new Dialog(AddEvent2.this);
                 d.setContentView(R.layout.departmentlist_box);
+                d.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT , LinearLayout.LayoutParams.WRAP_CONTENT);
+                d.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 cse = d.findViewById(R.id.cse);
                 ece = d.findViewById(R.id.ece);
                 it = d.findViewById(R.id.it);
@@ -266,42 +272,18 @@ public class AddEvent2 extends AppCompatActivity {
                 cancel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        deptlist.clear();
-                        cse.setBackgroundResource(R.drawable.button);
-                        ece.setBackgroundResource(R.drawable.button);
-                        it.setBackgroundResource(R.drawable.button);
-                        eee.setBackgroundResource(R.drawable.button);
-                        civl.setBackgroundResource(R.drawable.button);
-                        chemical.setBackgroundResource(R.drawable.button);
-                        agri.setBackgroundResource(R.drawable.button);
-                        medical.setBackgroundResource(R.drawable.button);
-                        pharm.setBackgroundResource(R.drawable.button);
-                        arts.setBackgroundResource(R.drawable.button);
-                        biotech.setBackgroundResource(R.drawable.button);
-                        mba.setBackgroundResource(R.drawable.button);
-                        mca.setBackgroundResource(R.drawable.button);
-                        commerce.setBackgroundResource(R.drawable.button);
-                        law.setBackgroundResource(R.drawable.button);
-                        biomedical.setBackgroundResource(R.drawable.button);
-                        mech.setBackgroundResource(R.drawable.button);
-                        aeronoutical.setBackgroundResource(R.drawable.button);
-                        aerospace.setBackgroundResource(R.drawable.button);
-                        design.setBackgroundResource(R.drawable.button);
-                        fashion.setBackgroundResource(R.drawable.button);
-                        media.setBackgroundResource(R.drawable.button);
-                        bba.setBackgroundResource(R.drawable.button);
-
+                        d.cancel();
                     }
                 });
                 cse.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (cse.getText().toString().equals("Added")) {
-                            deptlist.add("cse");
-                            cse.setBackgroundResource(R.drawable.button2);
-                        }else{
+                        if(deptlist.contains("cse")){
+                            cse.setBackgroundResource(R.drawable.border_gray);
                             deptlist.remove("cse");
-                            cse.setBackgroundResource(R.drawable.button);
+                        }else{
+                            cse.setBackgroundResource(R.drawable.border_green);
+                            deptlist.add("cse");
                         }
                     }
                 });
@@ -309,12 +291,12 @@ public class AddEvent2 extends AppCompatActivity {
                 ece.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (ece.getText().toString().equals("Added")) {
-                            deptlist.add("ece");
-                            ece.setBackgroundResource(R.drawable.button2);
-                        }else{
+                        if(deptlist.contains("ece")){
+                            ece.setBackgroundResource(R.drawable.border_gray);
                             deptlist.remove("ece");
-                            ece.setBackgroundResource(R.drawable.button);
+                        }else{
+                            ece.setBackgroundResource(R.drawable.border_green);
+                            deptlist.add("ece");
                         }
                     }
                 });
@@ -322,12 +304,12 @@ public class AddEvent2 extends AppCompatActivity {
                 it.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (it.getText().toString().equals("Added")) {
-                            deptlist.add("it");
-                            it.setBackgroundResource(R.drawable.button2);
-                        }else{
+                        if(deptlist.contains("it")){
+                            it.setBackgroundResource(R.drawable.border_gray);
                             deptlist.remove("it");
-                            it.setBackgroundResource(R.drawable.button);
+                        }else{
+                            it.setBackgroundResource(R.drawable.border_green);
+                            deptlist.add("it");
                         }
                     }
                 });
@@ -335,12 +317,12 @@ public class AddEvent2 extends AppCompatActivity {
                 eee.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (eee.getText().toString().equals("Added")) {
-                            deptlist.add("eee");
-                            eee.setBackgroundResource(R.drawable.button2);
-                        }else{
+                        if(deptlist.contains("eee")){
+                            eee.setBackgroundResource(R.drawable.border_gray);
                             deptlist.remove("eee");
-                            eee.setBackgroundResource(R.drawable.button);
+                        }else{
+                            eee.setBackgroundResource(R.drawable.border_green);
+                            deptlist.add("eee");
                         }
                     }
                 });
@@ -348,12 +330,12 @@ public class AddEvent2 extends AppCompatActivity {
                 civl.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (civl.getText().toString().equals("Added")) {
-                            deptlist.add("civl");
-                            civl.setBackgroundResource(R.drawable.button2);
-                        }else{
+                        if(deptlist.contains("civl")){
+                            civl.setBackgroundResource(R.drawable.border_gray);
                             deptlist.remove("civl");
-                            civl.setBackgroundResource(R.drawable.button);
+                        }else{
+                            civl.setBackgroundResource(R.drawable.border_green);
+                            deptlist.add("civl");
                         }
                     }
                 });
@@ -361,12 +343,12 @@ public class AddEvent2 extends AppCompatActivity {
                 chemical.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (chemical.getText().toString().equals("Added")) {
-                            deptlist.add("chemical");
-                            chemical.setBackgroundResource(R.drawable.button2);
-                        }else{
+                        if(deptlist.contains("chemical")){
+                            chemical.setBackgroundResource(R.drawable.border_gray);
                             deptlist.remove("chemical");
-                            chemical.setBackgroundResource(R.drawable.button);
+                        }else{
+                            chemical.setBackgroundResource(R.drawable.border_green);
+                            deptlist.add("chemical");
                         }
                     }
                 });
@@ -374,12 +356,12 @@ public class AddEvent2 extends AppCompatActivity {
                 agri.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (agri.getText().toString().equals("Added")) {
-                            deptlist.add("agri");
-                            agri.setBackgroundResource(R.drawable.button2);
-                        }else{
+                        if(deptlist.contains("agri")){
+                            agri.setBackgroundResource(R.drawable.border_gray);
                             deptlist.remove("agri");
-                            agri.setBackgroundResource(R.drawable.button);
+                        }else{
+                            agri.setBackgroundResource(R.drawable.border_green);
+                            deptlist.add("agri");
                         }
                     }
                 });
@@ -387,12 +369,12 @@ public class AddEvent2 extends AppCompatActivity {
                 medical.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (medical.getText().toString().equals("Added")) {
-                            deptlist.add("medical");
-                            medical.setBackgroundResource(R.drawable.button2);
-                        }else{
+                        if(deptlist.contains("medical")){
+                            medical.setBackgroundResource(R.drawable.border_gray);
                             deptlist.remove("medical");
-                            medical.setBackgroundResource(R.drawable.button);
+                        }else{
+                            medical.setBackgroundResource(R.drawable.border_green);
+                            deptlist.add("medical");
                         }
                     }
                 });
@@ -400,12 +382,12 @@ public class AddEvent2 extends AppCompatActivity {
                 pharm.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (pharm.getText().toString().equals("Added")) {
-                            deptlist.add("pharm");
-                            pharm.setBackgroundResource(R.drawable.button2);
-                        }else{
+                        if(deptlist.contains("pharm")){
+                            pharm.setBackgroundResource(R.drawable.border_gray);
                             deptlist.remove("pharm");
-                            pharm.setBackgroundResource(R.drawable.button);
+                        }else{
+                            pharm.setBackgroundResource(R.drawable.border_green);
+                            deptlist.add("pharm");
                         }
                     }
                 });
@@ -413,12 +395,12 @@ public class AddEvent2 extends AppCompatActivity {
                 arts.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (arts.getText().toString().equals("Added")) {
-                            deptlist.add("arts");
-                            arts.setBackgroundResource(R.drawable.button2);
-                        }else{
+                        if(deptlist.contains("arts")){
+                            arts.setBackgroundResource(R.drawable.border_gray);
                             deptlist.remove("arts");
-                            arts.setBackgroundResource(R.drawable.button);
+                        }else{
+                            arts.setBackgroundResource(R.drawable.border_green);
+                            deptlist.add("arts");
                         }
                     }
                 });
@@ -426,12 +408,12 @@ public class AddEvent2 extends AppCompatActivity {
                 biotech.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (biotech.getText().toString().equals("Added")) {
-                            deptlist.add("biotech");
-                            biotech.setBackgroundResource(R.drawable.button2);
-                        }else{
+                        if(deptlist.contains("biotech")){
+                            biotech.setBackgroundResource(R.drawable.border_gray);
                             deptlist.remove("biotech");
-                            biotech.setBackgroundResource(R.drawable.button);
+                        }else {
+                            biotech.setBackgroundResource(R.drawable.border_green);
+                            deptlist.add("biotech");
                         }
                     }
                 });
@@ -439,12 +421,12 @@ public class AddEvent2 extends AppCompatActivity {
                 mba.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (mba.getText().toString().equals("Added")) {
-                            deptlist.add("mba");
-                            mba.setBackgroundResource(R.drawable.button2);
-                        }else{
+                        if(deptlist.contains("mba")){
+                            mba.setBackgroundResource(R.drawable.border_gray);
                             deptlist.remove("mba");
-                            mba.setBackgroundResource(R.drawable.button);
+                        }else {
+                            mba.setBackgroundResource(R.drawable.border_green);
+                            deptlist.add("mba");
                         }
                     }
                 });
@@ -452,12 +434,12 @@ public class AddEvent2 extends AppCompatActivity {
                 mca.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (mca.getText().toString().equals("Added")) {
-                            deptlist.add("mca");
-                            mca.setBackgroundResource(R.drawable.button2);
-                        }else{
+                        if(deptlist.contains("mca")){
+                            mca.setBackgroundResource(R.drawable.border_gray);
                             deptlist.remove("mca");
-                            mca.setBackgroundResource(R.drawable.button);
+                        }else {
+                            mca.setBackgroundResource(R.drawable.border_green);
+                            deptlist.add("mca");
                         }
                     }
                 });
@@ -465,12 +447,12 @@ public class AddEvent2 extends AppCompatActivity {
                 commerce.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (commerce.getText().toString().equals("Added")) {
-                            deptlist.add("commerce");
-                            commerce.setBackgroundResource(R.drawable.button2);
-                        }else{
+                        if(deptlist.contains("commerce")){
+                            commerce.setBackgroundResource(R.drawable.border_gray);
                             deptlist.remove("commerce");
-                            commerce.setBackgroundResource(R.drawable.button);
+                        }else {
+                            commerce.setBackgroundResource(R.drawable.border_green);
+                            deptlist.add("commerce");
                         }
                     }
                 });
@@ -478,12 +460,12 @@ public class AddEvent2 extends AppCompatActivity {
                 law.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (law.getText().toString().equals("Added")) {
-                            deptlist.add("law");
-                            law.setBackgroundResource(R.drawable.button2);
-                        }else{
+                        if(deptlist.contains("law")){
+                            law.setBackgroundResource(R.drawable.border_gray);
                             deptlist.remove("law");
-                            law.setBackgroundResource(R.drawable.button);
+                        }else {
+                            law.setBackgroundResource(R.drawable.border_green);
+                            deptlist.add("law");
                         }
                     }
                 });
@@ -491,12 +473,12 @@ public class AddEvent2 extends AppCompatActivity {
                 biomedical.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (biomedical.getText().toString().equals("Added")) {
-                            deptlist.add("biomedical");
-                            biomedical.setBackgroundResource(R.drawable.button2);
-                        }else{
+                        if(deptlist.contains("biomedical")){
+                            biomedical.setBackgroundResource(R.drawable.border_gray);
                             deptlist.remove("biomedical");
-                            biomedical.setBackgroundResource(R.drawable.button);
+                        }else {
+                            biomedical.setBackgroundResource(R.drawable.border_green);
+                            deptlist.add("biomedical");
                         }
                     }
                 });
@@ -504,12 +486,12 @@ public class AddEvent2 extends AppCompatActivity {
                 mech.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (mech.getText().toString().equals("Added")) {
-                            deptlist.add("mech");
-                            mech.setBackgroundResource(R.drawable.button2);
-                        }else{
+                        if(deptlist.contains("mech")){
+                            mech.setBackgroundResource(R.drawable.border_gray);
                             deptlist.remove("mech");
-                            mech.setBackgroundResource(R.drawable.button);
+                        }else {
+                            mech.setBackgroundResource(R.drawable.border_green);
+                            deptlist.add("mech");
                         }
                     }
                 });
@@ -517,12 +499,12 @@ public class AddEvent2 extends AppCompatActivity {
                 aeronoutical.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (aeronoutical.getText().toString().equals("Added")) {
-                            deptlist.add("aeronoutical");
-                            aeronoutical.setBackgroundResource(R.drawable.button2);
-                        }else{
+                        if(deptlist.contains("aeronoutical")){
+                            aeronoutical.setBackgroundResource(R.drawable.border_gray);
                             deptlist.remove("aeronoutical");
-                            aeronoutical.setBackgroundResource(R.drawable.button);
+                        }else {
+                            aeronoutical.setBackgroundResource(R.drawable.border_green);
+                            deptlist.add("aeronoutical");
                         }
                     }
                 });
@@ -530,12 +512,12 @@ public class AddEvent2 extends AppCompatActivity {
                 aerospace.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (aerospace.getText().toString().equals("Added")) {
-                            deptlist.add("aerospace");
-                            aerospace.setBackgroundResource(R.drawable.button2);
-                        }else{
+                        if(deptlist.contains("aerospace")){
+                            aerospace.setBackgroundResource(R.drawable.border_gray);
                             deptlist.remove("aerospace");
-                            aerospace.setBackgroundResource(R.drawable.button);
+                        }else {
+                            aerospace.setBackgroundResource(R.drawable.border_green);
+                            deptlist.add("aerospace");
                         }
                     }
                 });
@@ -543,12 +525,12 @@ public class AddEvent2 extends AppCompatActivity {
                 design.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (design.getText().toString().equals("Added")) {
-                            deptlist.add("design");
-                            design.setBackgroundResource(R.drawable.button2);
-                        }else{
+                        if(deptlist.contains("design")){
+                            design.setBackgroundResource(R.drawable.border_gray);
                             deptlist.remove("design");
-                            design.setBackgroundResource(R.drawable.button);
+                        }else {
+                            design.setBackgroundResource(R.drawable.border_green);
+                            deptlist.add("design");
                         }
                     }
                 });
@@ -556,12 +538,12 @@ public class AddEvent2 extends AppCompatActivity {
                 fashion.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (fashion.getText().toString().equals("Added")) {
-                            deptlist.add("fashion");
-                            fashion.setBackgroundResource(R.drawable.button2);
-                        }else{
+                        if(deptlist.contains("fashion")){
+                            fashion.setBackgroundResource(R.drawable.border_gray);
                             deptlist.remove("fashion");
-                            fashion.setBackgroundResource(R.drawable.button);
+                        }else {
+                            fashion.setBackgroundResource(R.drawable.border_green);
+                            deptlist.add("fashion");
                         }
                     }
                 });
@@ -569,12 +551,12 @@ public class AddEvent2 extends AppCompatActivity {
                 media.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (media.getText().toString().equals("Added")) {
-                            deptlist.add("media");
-                            media.setBackgroundResource(R.drawable.button2);
-                        }else{
+                        if(deptlist.contains("media")){
+                            media.setBackgroundResource(R.drawable.border_gray);
                             deptlist.remove("media");
-                            media.setBackgroundResource(R.drawable.button);
+                        }else {
+                            media.setBackgroundResource(R.drawable.border_green);
+                            deptlist.add("media");
                         }
                     }
                 });
@@ -582,12 +564,12 @@ public class AddEvent2 extends AppCompatActivity {
                 bba.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (bba.getText().toString().equals("Added")) {
-                            deptlist.add("bba");
-                            bba.setBackgroundResource(R.drawable.button2);
-                        }else{
+                        if(deptlist.contains("bba")){
+                            bba.setBackgroundResource(R.drawable.border_gray);
                             deptlist.remove("bba");
-                            bba.setBackgroundResource(R.drawable.button);
+                        }else {
+                            bba.setBackgroundResource(R.drawable.border_green);
+                            deptlist.add("bba");
                         }
                     }
                 });
@@ -595,8 +577,11 @@ public class AddEvent2 extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
 
-                        departmentlist.setText(deptlist.toString());
-
+                        StringBuilder dplist_new = new StringBuilder();
+                        for(int i = 0 ; i < deptlist.size() ; i++){
+                            dplist_new.append(deptlist.get(i)+" , ");
+                        }
+                        departmentlist.getEditText().setText(dplist_new.toString());
                         d.dismiss();
                     }
                 });
@@ -609,34 +594,44 @@ public class AddEvent2 extends AppCompatActivity {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                etitle = title.getText().toString();
-                ecat = catagory.getText().toString();
-                eorg = orgnniser.getText().toString();
-                ecity = city.getText().toString();
-                estae = state.getText().toString();
-                edpt = departmentlist.getText().toString();
-                conby = conducted.getText().toString();
-                disevent = evendiscrition.getText().toString();
+                etitle = title.getEditText().getText().toString();
+                ecat = catagory.getEditText().getText().toString();
+                eorg = orgnniser.getEditText().getText().toString();
+                ecity = city.getEditText().getText().toString();
+                estae = state.getEditText().getText().toString();
+                edpt = departmentlist.getEditText().getText().toString();
+                conby = conducted.getEditText().getText().toString();
+                disevent = evendiscrition.getEditText().getText().toString();
                 if (etitle.isEmpty()) {
-                    Move_Show.showToast("Enter Event Title");
+                    title.getEditText().setError("Enter Event Title");
+                    title.getEditText().setFocusable(true);
                 } else if (disevent.isEmpty()) {
-                    Move_Show.showToast("Enter Event Description");
+                    evendiscrition.getEditText().setError("Enter Event Description");
+                    evendiscrition.getEditText().setFocusable(true);
                 } else if (ecat.isEmpty()) {
-                    Move_Show.showToast("Tap to select event Category");
+                    catagory.getEditText().setError("Tap to select event Category");
+                    catagory.getEditText().setFocusable(true);
                 } else if (conby.isEmpty()) {
-                    Move_Show.showToast("Enter Department");
+                    conducted.getEditText().setError("Enter college / club name");
+                    conducted.getEditText().setFocusable(true);
                 } else if (eorg.isEmpty()) {
-                    Move_Show.showToast("Enter Organiser Name");
-                } else if (startdate.getText().toString().equals("choose")) {
-                    Move_Show.showToast("Please set Event Start Date");
-                } else if (enddate.getText().toString().equals("choose")) {
-                    Move_Show.showToast("Please set Event end Date");
+                    orgnniser.getEditText().setError("Enter Organiser Name");
+                    orgnniser.getEditText().setFocusable(true);
+                } else if (startdate.getEditText().getText().toString().equals("choose")) {
+                    startdate.getEditText().setError("Please set Event Start Date");
+                    startdate.getEditText().setFocusable(true);
+                } else if (enddate.getEditText().getText().toString().equals("choose")) {
+                    enddate.getEditText().setError("Please set Event end Date");
+                    enddate.getEditText().setFocusable(true);
                 } else if (ecity.isEmpty()) {
-                    Move_Show.showToast("Enter City Name");
+                    city.getEditText().setError("Enter City Name");
+                    city.getEditText().setFocusable(true);
                 } else if (estae.isEmpty()) {
-                    Move_Show.showToast("Enter State Name");
-                } else if (departmentlist.getText().toString().equals("No Department Selected")) {
-                    Move_Show.showToast("Please Select  Eligible Departments");
+                    state.getEditText().setError("Enter State Name");
+                    state.getEditText().setFocusable(true);
+                } else if (departmentlist.getEditText().getText().toString().equals("tap here")) {
+                    departmentlist.getEditText().setError("Please click Select  Eligible Departments");
+                    departmentlist.getEditText().setFocusable(true);
                 } else {
                     SharedPreferences sf = getSharedPreferences("event", MODE_PRIVATE);
                     SharedPreferences.Editor ed = sf.edit();
@@ -647,8 +642,8 @@ public class AddEvent2 extends AppCompatActivity {
                     ed.putString("ecity", ecity);
                     ed.putString("estate", estae);
                     ed.putString("edpt", edpt);
-                    ed.putString("esdate", startdate.getText().toString().trim());
-                    ed.putString("eedate", enddate.getText().toString().trim());
+                    ed.putString("esdate", startdate.getEditText().getText().toString().trim());
+                    ed.putString("eedate", enddate.getEditText().getText().toString().trim());
                     ed.putString("edis", disevent);
                     ed.apply();
                     new Move_Show(AddEvent2.this, AddEvent.class);
@@ -658,4 +653,8 @@ public class AddEvent2 extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 }

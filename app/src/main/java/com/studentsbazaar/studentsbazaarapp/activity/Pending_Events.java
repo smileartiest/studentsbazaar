@@ -54,8 +54,6 @@ public class Pending_Events extends AppCompatActivity {
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-
         }
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,15 +86,10 @@ public class Pending_Events extends AppCompatActivity {
         call.enqueue(new Callback<DownloadResponse>() {
             @Override
             public void onResponse(Call<DownloadResponse> call, retrofit2.Response<DownloadResponse> response) {
-
                 Log.d("RESPONSE1", response.message().toString());
-
                 if (response.isSuccessful()) {
-
-
                     assert response.body() != null;
                     drawerResponseList = response.body().getProject_details();
-
                     Log.d("RESPONSE2", drawerResponseList.toString());
                     progressDialog.dismiss();
                     swipeRefreshLayout.setRefreshing(false);
@@ -106,13 +99,10 @@ public class Pending_Events extends AppCompatActivity {
                         layout.setVisibility(View.VISIBLE);
                         pendingeventsrecycler.setVisibility(View.INVISIBLE);
                     } else {
-
                         layout.setVisibility(View.INVISIBLE);
                         pendingeventsrecycler.setVisibility(View.VISIBLE);
                     }
-
                     // mAdapter.notifyDataSetChanged();
-
                 }
 
             }

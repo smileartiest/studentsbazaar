@@ -58,8 +58,6 @@ import retrofit2.Response;
 
 public class Quiz_Events extends AppCompatActivity {
 
-
-    SpotsDialog progressDialog;
     List<Quiz_Details> drawerResponseList = null;
     private Toolbar toolbar;
     private AlarmHelper alarmHelper;
@@ -80,6 +78,7 @@ public class Quiz_Events extends AppCompatActivity {
     TextView qssts, completebtn, views, title, headtitle;
     FloatingActionButton add_qstn;
     Calendar calander;
+    SpotsDialog spotsDialog;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -87,26 +86,11 @@ public class Quiz_Events extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.quiz_events);
 
-        alarmHelper = new AlarmHelper(this);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        init();
 
-        userpage = findViewById(R.id.quiz_user_page_card);
-        adminpage = findViewById(R.id.quiz_admin_page);
-        quizqstn = findViewById(R.id.f_quiz_pic);
-        option_type = findViewById(R.id.f_quiz_type1);
-        fill_blank_ans = findViewById(R.id.f_quiz_type2_ans);
-        qssts = findViewById(R.id.f_quiz_sts);
-        title = findViewById(R.id.f_quiz_title);
-        headtitle = findViewById(R.id.quiz_id_title);
-        completebtn = findViewById(R.id.f_quiz_completebtn);
-        add_qstn = findViewById(R.id.quiz_add_qstn);
-        views = findViewById(R.id.f_quiz_views);
-        a = findViewById(R.id.type1_a);
-        b = findViewById(R.id.type1_b);
-        c = findViewById(R.id.type1_c);
-        d = findViewById(R.id.type1_d);
+        spotsDialog.show();
 
-        headtitle.setText("Today's Question ID . " + new Quiz_Control(Quiz_Events.this).getqid());
+        headtitle.setText("Today's Question No . " + new Quiz_Control(Quiz_Events.this).getqid());
         if(Quiz_Control.getviews()!=null){
             views.setText("Total viewers . " + Quiz_Control.getviews());
         }
@@ -138,7 +122,7 @@ public class Quiz_Events extends AppCompatActivity {
             fill_blank_ans.setVisibility(View.GONE);
             title.setVisibility(View.GONE);
             Glide.with(getApplicationContext()).load(new Quiz_Control(Quiz_Events.this).getQpic()).into(quizqstn);
-            qssts.setText("Today's quiz session over. Will catch you tomorrow with new question.");
+            qssts.setText("Today's quiz timing over. Will catch you tomorrow with new question.");
             if (Quiz_Control.getdate() != null) {
                 if (Quiz_Control.getanswer() != null && Quiz_Control.getdate().equals(calander.get(Calendar.YEAR) + "/" + (calander.get(Calendar.MONTH) + 1) + "/" + calander.get(Calendar.DATE))) {
                     Log.d("Quiz ", Quiz_Control.getanswer() + " , " + Quiz_Control.getdate());
@@ -149,7 +133,9 @@ public class Quiz_Events extends AppCompatActivity {
             } else {
                 todaynotattenquizdialog();
             }
+            spotsDialog.dismiss();
         } else {
+            spotsDialog.dismiss();
             completebtn.setVisibility(View.GONE);
             views.setVisibility(View.GONE);
             userpage.setVisibility(View.GONE);
@@ -174,7 +160,6 @@ public class Quiz_Events extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
-        progressDialog = new SpotsDialog(this);
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -252,9 +237,9 @@ public class Quiz_Events extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                String ans = s.toString();
-                new Quiz_Control(Quiz_Events.this).addtodayans(ans);
-                Move_Show.showToast("Your Answer : " + ans);
+                today_ans = s.toString();
+                new Quiz_Control(Quiz_Events.this).addtodayans(today_ans);
+                Move_Show.showToast("Your Answer : " + today_ans);
                 ApiUtil.QUIZ_ATTENT = 1;
                 completebtn.setVisibility(View.VISIBLE);
             }
@@ -294,9 +279,9 @@ public class Quiz_Events extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-                progressDialog.show();
+                spotsDialog.show();
                 if (ApiUtil.QUIZ_ATTENT == 0) {
-                    progressDialog.dismiss();
+                    spotsDialog.dismiss();
                     Move_Show.showToast("Please answer the question");
                 } else {
                     Log.d("Quizresults", "" + ApiUtil.QUIZ_ATTENT);
@@ -330,20 +315,20 @@ public class Quiz_Events extends AppCompatActivity {
                     assert response.body() != null;
                     drawerResponseList = response.body().getQuiz_details();
                     if (drawerResponseList.size() == 0) {
-
+                        spotsDialog.dismiss();
                     } else if (drawerResponseList.get(0).getId() != null) {
                         Log.d("RESPONSE2", drawerResponseList.get(0).getId());
-                        progressDialog.dismiss();
+                        spotsDialog.dismiss();
                         option_type.setVisibility(View.GONE);
                         fill_blank_ans.setVisibility(View.GONE);
                         completebtn.setVisibility(View.GONE);
                         title.setText("Wait for your Result !");
                         Glide.with(getApplicationContext()).load(Quiz_Control.getQpic()).into(quizqstn);
-                        qssts.setText("You already Submitted your answer as "+  Quiz_Control.getanswer()+
+                        qssts.setText("You have already Submitted your answer as "+  Quiz_Control.getanswer()+
                                 "\nYou will get your result by 7pm today.\n" +
                                 "Stay tuned.");
+                        spotsDialog.dismiss();
                     } else {
-                        progressDialog.dismiss();
                         Quiz_Control.addquizquestion(drawerResponseList.get(0).getQuiz_ques());
                         Quiz_Control.addcrctans(drawerResponseList.get(0).getCrct_Ans());
                         Quiz_Control.addviewrs(String.valueOf(drawerResponseList.get(0).getViewers()));
@@ -363,6 +348,8 @@ public class Quiz_Events extends AppCompatActivity {
                             title.setText("Please Enter Your Answer");
                             qssts.setText("Today's quiz session will end by 7:00 PM.");
                         }
+
+                        spotsDialog.dismiss();
 
                     }
                 }
@@ -385,7 +372,7 @@ public class Quiz_Events extends AppCompatActivity {
         builder.setDialogStyle(CFAlertDialog.CFAlertStyle.ALERT);
         builder.setContentImageDrawable(R.drawable.timing_closed_icon);
         builder.setTextGravity(Gravity.CENTER);
-        builder.setTitle("Hai , " + Controller.getusername()+"\n"+"Quiz Timing 9AM to 7PM , So please wait for your question !. Thanks for your interest !");
+        builder.setTitle("Hai , " + Controller.getusername()+"\n"+"Today's Quiz Timing 9AM to 7PM. Thanks for your interest !");
         builder.addButton("Ok", -1, -1, CFAlertDialog.CFAlertActionStyle.POSITIVE, CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -443,21 +430,25 @@ public class Quiz_Events extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     assert response.body() != null;
                     drawerResponseList = response.body().getQuiz_details();
-                    progressDialog.dismiss();
+                    spotsDialog.dismiss();
                     if (drawerResponseList.size() == 0) {
+                        spotsDialog.dismiss();
                     } else {
                         qsntlist.setVisibility(View.VISIBLE);
                         Quiz_Control.addquizquestion(drawerResponseList.get(0).getQuiz_ques());
                         Quiz_Control.addcrctans(drawerResponseList.get(0).getCrct_Ans());
                         quiz_result_adapter = new Quiz_Result_Adapter(Quiz_Events.this, drawerResponseList);
                         qsntlist.setAdapter(quiz_result_adapter);
+                        spotsDialog.dismiss();
                     }
+                }else{
+                    spotsDialog.dismiss();
                 }
             }
-
             @Override
             public void onFailure(Call<DownloadResponse> call, Throwable t) {
                 Log.d("RESPONSE3", "err" + t.getMessage());
+                spotsDialog.dismiss();
             }
         });
     }
@@ -470,17 +461,17 @@ public class Quiz_Events extends AppCompatActivity {
             public void onResponse(Call<String> call, Response<String> response) {
                 Log.d("status", "uploaded");
                 if (response.isSuccessful()) {
-                    progressDialog.dismiss();
+                    spotsDialog.dismiss();
                     if (response.body().equals("1")) {
                         Calendar c1 = Calendar.getInstance();
                         Quiz_Control.adddate(c1.get(Calendar.YEAR) + "/" + (c1.get(Calendar.MONTH) + 1) + "/" + c1.get(Calendar.DATE));
                         conformationdialog("Congratulations ! \nYour answer has been updated successfully. Thanks for your participation.");
                     } else if (response.body().equals("2")) {
-                        progressDialog.dismiss();
+                        spotsDialog.dismiss();
                         Log.d("Quiz Update Error ", response.body());
                         conformationdialog("Oops ! Update error");
                     } else {
-                        progressDialog.dismiss();
+                        spotsDialog.dismiss();
                         Log.d("Quiz Update Error ", response.body());
                         conformationdialog("Oops ! Insert error");
                     }
@@ -489,8 +480,7 @@ public class Quiz_Events extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-                progressDialog.dismiss();
-                Log.d("errorlog", t.getMessage());
+                spotsDialog.dismiss();Log.d("errorlog", t.getMessage());
             }
         });
     }
@@ -508,7 +498,7 @@ public class Quiz_Events extends AppCompatActivity {
                 dialog.dismiss();
                 finishAffinity();
                 new Move_Show(Quiz_Events.this, HomeActivity.class);
-                setnotification();
+                //setnotification();
             }
         });
         builder.show();
@@ -537,6 +527,28 @@ public class Quiz_Events extends AppCompatActivity {
         am.setRepeating(AlarmManager.RTC, timeInMillis, AlarmManager.INTERVAL_DAY, pi);
         Toast.makeText(this, "Remainder Set", Toast.LENGTH_SHORT).show();
 
+    }
+
+    void init(){
+        alarmHelper = new AlarmHelper(this);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        spotsDialog = new SpotsDialog(this);
+
+        userpage = findViewById(R.id.quiz_user_page_card);
+        adminpage = findViewById(R.id.quiz_admin_page);
+        quizqstn = findViewById(R.id.f_quiz_pic);
+        option_type = findViewById(R.id.f_quiz_type1);
+        fill_blank_ans = findViewById(R.id.f_quiz_type2_ans);
+        qssts = findViewById(R.id.f_quiz_sts);
+        title = findViewById(R.id.f_quiz_title);
+        headtitle = findViewById(R.id.quiz_id_title);
+        completebtn = findViewById(R.id.f_quiz_completebtn);
+        add_qstn = findViewById(R.id.quiz_add_qstn);
+        views = findViewById(R.id.f_quiz_views);
+        a = findViewById(R.id.type1_a);
+        b = findViewById(R.id.type1_b);
+        c = findViewById(R.id.type1_c);
+        d = findViewById(R.id.type1_d);
     }
 
     @Override

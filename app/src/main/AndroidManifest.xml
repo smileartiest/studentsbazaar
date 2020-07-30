@@ -55,6 +55,12 @@
         <activity android:name=".activity.ProfileActivity" />
         <activity android:name=".activity.Quiz_Events" />
         <activity android:name=".activity.SignUp" />
+        <meta-data
+            android:name="notification_app_id"
+            android:value="936515287919:android:9634f3e5963d96f5a6069a" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/default_notification_channel_id" />
         <activity
             android:name=".activity.SplashActivty"
             android:theme="@style/AppTheme">

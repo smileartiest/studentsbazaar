@@ -5,16 +5,14 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.WebView;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
+import com.google.android.material.textfield.TextInputLayout;
 import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.controller.Controller;
 import com.studentsbazaar.studentsbazaarapp.controller.Move_Show;
@@ -27,14 +25,14 @@ import retrofit2.Response;
 
 public class AddEvent3 extends AppCompatActivity {
 
-    EditText einstagram,ecomments, fgust, fnits, eventheam, accomation, contactname1, contactno1, contactname2, contactno2, lastdate, howtoreach, sponser;
+    TextInputLayout eventweb, collegeweb,regfees,einstagram,ecomments, fgust, fnits, eventheam, accomation, contactname1, contactno1, contactname2, contactno2, lastdate, howtoreach, sponser;
     SpotsDialog progressDialog;
     Button complete;
-    AutoCompleteTextView eventweb, collegeweb,regfees;
     String webevent, webcollege;
     String einsta,ecommts, edis, econby, elist, epost, etitle, ecat, eorg, ecity, estae, esdate, eedate, edpt, efg, enits, etheam, eacc, conname1, conno1, conname2, conno2, eldate, eregf, ehreach, esponser;
     SharedPreferences sf;
     SharedPreferences.Editor editor;
+    Toolbar my_toolbar;
     WebView webView;
     String[] urlformat = {"http://", "https://"};
     String[] feesarray = {"No Entry Fees"};
@@ -44,27 +42,32 @@ public class AddEvent3 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_event3);
         new Controller(this);
+
+        my_toolbar = findViewById(R.id.add3_toolbar);
+        setSupportActionBar(my_toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         sf = getSharedPreferences("event", MODE_PRIVATE);
         fgust = findViewById(R.id.add3_fgusest);
         fnits = findViewById(R.id.add3_fnits);
         eventheam = findViewById(R.id.add3_etheam);
         accomation = findViewById(R.id.add3_accomodation);
         contactname1 = findViewById(R.id.add3_contactdetails);
-        contactno1 = (EditText) findViewById(R.id.add3_contactnumber);
-        contactname2 = (EditText) findViewById(R.id.add3_contactdetails2);
-        contactno2 = (EditText) findViewById(R.id.add3_contactnumber2);
-        ecomments = (EditText) findViewById(R.id.add3_comments);
+        contactno1 = findViewById(R.id.add3_contactnumber);
+        contactname2 = findViewById(R.id.add3_contactdetails2);
+        contactno2 = findViewById(R.id.add3_contactnumber2);
+        ecomments = findViewById(R.id.add3_comments);
         lastdate = findViewById(R.id.add3_lastdate);
         regfees = findViewById(R.id.add3_regfees);
         howtoreach = findViewById(R.id.add3_howtoreach);
         sponser = findViewById(R.id.add3_sponser);
         complete = findViewById(R.id.button2);
         einstagram = findViewById(R.id.add3_instagram);
-        eventweb = (AutoCompleteTextView) findViewById(R.id.add3_eventweb);
-        collegeweb = (AutoCompleteTextView) findViewById(R.id.add3_collegeweb);
-        lastdate.setText(sf.getString("esdate", "none"));
+        eventweb = findViewById(R.id.add3_eventweb);
+        collegeweb = findViewById(R.id.add3_collegeweb);
+        lastdate.getEditText().setText(sf.getString("esdate", "none"));
         fgust.requestFocus();
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(AddEvent3.this, android.R.layout.simple_list_item_1, urlformat);
+        /*ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(AddEvent3.this, android.R.layout.simple_list_item_1, urlformat);
         eventweb.setAdapter(arrayAdapter);
         eventweb.setThreshold(0);
         collegeweb.setAdapter(arrayAdapter);
@@ -94,6 +97,13 @@ public class AddEvent3 extends AppCompatActivity {
                 collegeweb.showDropDown();
                 return false;
             }
+        });*/
+
+        my_toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
         });
 
     }
@@ -119,22 +129,22 @@ public class AddEvent3 extends AppCompatActivity {
                 eedate = sf.getString("eedate", "none");
                 econby = sf.getString("conduct", "none");
                 edis = sf.getString("edis", null);
-                efg = fgust.getText().toString();
-                enits = fnits.getText().toString();
-                etheam = eventheam.getText().toString();
-                eacc = accomation.getText().toString();
-                conname1 = contactname1.getText().toString();
-                conno1 = contactno1.getText().toString();
-                conname2 = contactname2.getText().toString();
-                conno2 = contactno2.getText().toString();
-                eldate = lastdate.getText().toString();
-                eregf = regfees.getText().toString();
-                ehreach = howtoreach.getText().toString();
-                esponser = sponser.getText().toString();
-                webevent = eventweb.getText().toString();
-                webcollege = collegeweb.getText().toString();
-                ecommts = ecomments.getText().toString();
-                einsta = einstagram.getText().toString();
+                efg = fgust.getEditText().getText().toString();
+                enits = fnits.getEditText().getText().toString();
+                etheam = eventheam.getEditText().getText().toString();
+                eacc = accomation.getEditText().getText().toString();
+                conname1 = contactname1.getEditText().getText().toString();
+                conno1 = contactno1.getEditText().getText().toString();
+                conname2 = contactname2.getEditText().getText().toString();
+                conno2 = contactno2.getEditText().getText().toString();
+                eldate = lastdate.getEditText().getText().toString();
+                eregf = regfees.getEditText().getText().toString();
+                ehreach = howtoreach.getEditText().getText().toString();
+                esponser = sponser.getEditText().getText().toString();
+                webevent = eventweb.getEditText().getText().toString();
+                webcollege = collegeweb.getEditText().getText().toString();
+                ecommts = ecomments.getEditText().getText().toString();
+                einsta = einstagram.getEditText().getText().toString();
                 String Event_Title = etitle;
                 String Event_Type = ecat;
                 String Event_Name = etitle;
@@ -245,5 +255,8 @@ public class AddEvent3 extends AppCompatActivity {
         alertDialog.show();
     }
 
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 }

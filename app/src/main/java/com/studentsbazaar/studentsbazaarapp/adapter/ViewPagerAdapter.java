@@ -116,10 +116,10 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
                     tempdisplaydate = tempdisplaydate+" "+"November";
                     break;
                 case "12":
-                    tempdisplaydate = tempdisplaydate+" "+"Decembar";
+                    tempdisplaydate = tempdisplaydate+" "+"December";
                     break;
             }
-            holder.infor.setText("Last Date for Registration "+tempdisplaydate.toUpperCase());
+            holder.date1.setText(tempdisplaydate.toUpperCase());
         } catch (Exception e) {
 
         }
@@ -216,7 +216,7 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView title,categ,organiser,city,state,conductby,reg,infor,share;
+        TextView title,categ,organiser,city,state,conductby,reg,infor,share,date1;
         ImageView postpic;
 
         public ViewHolder(@NonNull View itemView) {
@@ -232,6 +232,7 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
             postpic = itemView.findViewById(R.id.r_event_pic);
             share = itemView.findViewById(R.id.r_event_share);
             infor = itemView.findViewById(R.id.r_event_info);
+            date1 = itemView.findViewById(R.id.r_event_date);
         }
     }
 

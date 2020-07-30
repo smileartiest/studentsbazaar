@@ -1,27 +1,24 @@
 package com.studentsbazaar.studentsbazaarapp.activity;
 
-import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.Html;
 import android.util.Base64;
-import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
+import androidx.appcompat.widget.Toolbar;
 
+import com.crowdfire.cfalertdialog.CFAlertDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputLayout;
 import com.iceteck.silicompressorr.SiliCompressor;
 import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.controller.Move_Show;
@@ -35,29 +32,40 @@ import java.io.InputStream;
 
 public class AddEvent extends AppCompatActivity {
 
-    ImageView imagepost, addpost, addevent;
+    ImageView imagepost, addpost;
     FloatingActionButton next;
+    TextInputLayout technical, non_technical, workshop, online;
     String encoded;
-    CardView cardtech, cardnontech, cardworkshop, cardonline;
-    EditText edtech, ednontech, edworkshop, edonline;
-    Button teching, technext, nonteching, nontechnext, workshoping, workshopnext, onlineing, onlinenext;
-    StringBuilder stringBuilder,builderevent;
-    TextView eventdetailstxt;
-    Dialog d;
     Bitmap profilePicture;
     private static int RESULT_LOAD_IMAGE = 1;
     int i = 0;
-    SharedPreferences sf;
-    SharedPreferences.Editor ed;
+    Toolbar my_Toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_event);
+
+        my_Toolbar = findViewById(R.id.aevent_toolbar);
+        setSupportActionBar(my_Toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         imagepost = findViewById(R.id.aevent_post_image);
         addpost = findViewById(R.id.aevent_post_icon);
-        addevent = findViewById(R.id.aevent_eventadd_icon);
-        next = findViewById(R.id.aevent_complete);
-        eventdetailstxt=findViewById(R.id.uitveventdetails);
+
+        technical = findViewById(R.id.aevent_technical);
+        non_technical = findViewById(R.id.aevent_non_technical);
+        workshop = findViewById(R.id.aevent_workshop);
+        online = findViewById(R.id.aevent_online);
+
+        next = findViewById(R.id.aevent_next);
+
+        my_Toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
     }
 
@@ -73,136 +81,49 @@ public class AddEvent extends AppCompatActivity {
             }
         });
 
-        addevent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                d = new Dialog(AddEvent.this);
-                d.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                d.setCancelable(false);
-                d.setContentView(R.layout.add_even_dialogbox);
-                cardtech = d.findViewById(R.id.eventtechnical);
-                cardnontech = d.findViewById(R.id.eventnontechnical);
-                cardworkshop = d.findViewById(R.id.eventworkshop);
-                cardonline = d.findViewById(R.id.eventonline);
-                edtech = d.findViewById(R.id.addeventteched);
-                ednontech = d.findViewById(R.id.addnonteched);
-                edworkshop = d.findViewById(R.id.addworksoped);
-                edonline = d.findViewById(R.id.addonlineed);
-                teching = d.findViewById(R.id.addeventing2);
-                technext = d.findViewById(R.id.addeventnxt2);
-                nonteching = d.findViewById(R.id.addnonteching2);
-                nontechnext = d.findViewById(R.id.addeventnxt3);
-                workshoping = d.findViewById(R.id.addworkshoping);
-                workshopnext = d.findViewById(R.id.addeventnxt4);
-                onlineing = d.findViewById(R.id.addonlineing);
-                onlinenext = d.findViewById(R.id.addeventnxt5);
-                cardtech.setVisibility(View.VISIBLE);
-                edtech.requestFocus();
-                technext.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        cardtech.setVisibility(View.GONE);
-                        cardnontech.setVisibility(View.VISIBLE);
-                        ednontech.requestFocus();
-
-                    }
-                });
-                nontechnext.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        cardnontech.setVisibility(View.GONE);
-                        cardworkshop.setVisibility(View.VISIBLE);
-                        edworkshop.requestFocus();
-
-                    }
-                });
-                workshopnext.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        cardworkshop.setVisibility(View.GONE);
-                        cardonline.setVisibility(View.VISIBLE);
-                       edonline.requestFocus();
-
-                    }
-                });
-                onlinenext.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        d.dismiss();
-                        stringBuilder = new StringBuilder();
-                        if (edtech.getText().toString().isEmpty()) {
-                            stringBuilder.append("");
-                        } else {
-                            stringBuilder.append("/*Technical Events*/\n" + edtech.getText().toString() + "\n");
-
-                        }
-                        if (ednontech.getText().toString().isEmpty()) {
-                            stringBuilder.append("");
-                        } else {
-                            stringBuilder.append("/*NonTechnical Events*/\n" + ednontech.getText().toString() + "\n");
-
-                        }
-                        if (edworkshop.getText().toString().isEmpty()) {
-                            stringBuilder.append("");
-                        } else {
-                            stringBuilder.append("/*Workshop Events*/\n" + edworkshop.getText().toString() + "\n");
-
-                        }
-                        if (edonline.getText().toString().isEmpty()) {
-                            stringBuilder.append("");
-                        } else {
-                            stringBuilder.append("/*Online Events*/\n" + edonline.getText().toString() + "\n");
-
-                        }
-
-                        String output = String.valueOf(stringBuilder).replace("/*NonTechnical Events*/", "<font color=#000000><b><br>NonTechnical Events<br></b></font>").replace("/*Technical Events*/", "<font color=#000000><b>Technical Events<br></b></font>").replace("/*Workshop Events*/", "<font color=#000000><b><br>Workshop Events<br></b></font>").replace("/*Online Events*/", "<font color=#000000><b><br>Online Events<br></b></font>");
-                        eventdetailstxt.setText(Html.fromHtml(output));
-
-                    }
-                });
-                teching.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        d.dismiss();
-
-                    }
-                });
-                nonteching.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        cardnontech.setVisibility(View.GONE);
-                        cardtech.setVisibility(View.VISIBLE);
-                    }
-                });
-                workshoping.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        cardworkshop.setVisibility(View.GONE);
-                        cardnontech.setVisibility(View.VISIBLE);
-                    }
-                });
-                d.show();
-
-            }
-        });
-
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (encoded == null) {
-                    Move_Show.showToast("Please add Poster Image and Event Details...");
-                } else if (stringBuilder == null) {
-                    Move_Show.showToast("Please add Event Details");
-                } else {
-                    sf = getSharedPreferences("event", MODE_PRIVATE);
-                    ed = sf.edit();
-                    ed.putString("elist", stringBuilder.toString());
-                    ed.apply();
-                    Log.d("getstringbuilderdata", stringBuilder.toString());
-                    new Move_Show(AddEvent.this, AddEvent3.class);
+                if(encoded.length()!=0) {
+                    String tech1 = technical.getEditText().getText().toString();
+                    String non_tech1 = non_technical.getEditText().getText().toString();
+                    String workshop1 = workshop.getEditText().getText().toString();
+                    String online1 = online.getEditText().getText().toString();
+                    String event_list = "1. Technical : " + tech1 + "\n2. Non-Technical : " + non_tech1 + "\n3. Workshop : " + workshop1 + "\n4. Online : " + online1;
+                    openDialog(event_list);
+                }else{
+                    Snackbar.make(v , "Please choose poster picture" , Snackbar.LENGTH_SHORT).show();
                 }
             }
         });
+
+    }
+
+    void openDialog(String str) {
+        CFAlertDialog.Builder builder = new CFAlertDialog.Builder(AddEvent.this);
+        builder.setDialogStyle(CFAlertDialog.CFAlertStyle.ALERT);
+        builder.setCornerRadius(20);
+        builder.setCancelable(false);
+        builder.setTitle("Please Conform Details !");
+        builder.setMessage(str);
+        builder.addButton("continue", -1, -1, CFAlertDialog.CFAlertActionStyle.POSITIVE, CFAlertDialog.CFAlertActionAlignment.JUSTIFIED
+                , new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        SharedPreferences sf = getSharedPreferences("event", MODE_PRIVATE);
+                        SharedPreferences.Editor ed = sf.edit();
+                        ed.putString("elist", str).apply();
+                        new Move_Show(AddEvent.this, AddEvent3.class);
+                    }
+                });
+        builder.addButton("Cancel", -1, -1, CFAlertDialog.CFAlertActionStyle.NEGATIVE, CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
     }
 
     @Override
@@ -235,5 +156,10 @@ public class AddEvent extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

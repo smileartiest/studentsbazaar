@@ -41,10 +41,12 @@
         >
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:id="@+id/swipepending"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorAccent">
+            android:background="@color/white">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/pending_events_recycler"

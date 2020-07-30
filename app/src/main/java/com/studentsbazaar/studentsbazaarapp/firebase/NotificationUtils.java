@@ -127,7 +127,7 @@ public class NotificationUtils extends ContextWrapper {
             }
         } else {
             showSmallNotification(mBuilder, icon, title, message, resultPendingIntent, alarmSound);
-            playNotificationSound();
+           // playNotificationSound();
         }
     }
 
