@@ -149,7 +149,7 @@ public class Mems extends AppCompatActivity {
                 } else {
                     CFAlertDialog.Builder builder = new CFAlertDialog.Builder(Mems.this);
                     builder.setDialogStyle(CFAlertDialog.CFAlertStyle.NOTIFICATION);
-                    builder.setIcon(R.drawable.sb_app_icon_small_theme);
+                    builder.setIcon(R.drawable.newlogo);
                     builder.setTitle("Hey there , Do Register !");
                     builder.setMessage("Then Enjoy the Meme Box .Fun Guarantee !");
 

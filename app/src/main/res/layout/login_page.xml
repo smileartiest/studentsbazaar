@@ -30,8 +30,9 @@
             android:layout_height="35dp"
             android:background="@color/colorWhite"
             android:fontFamily="serif"
+            android:hint="Phone Number"
             android:inputType="phone"
-            android:hint="Phone Number" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Small" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -55,8 +56,9 @@
             android:layout_height="35dp"
             android:background="@color/colorWhite"
             android:fontFamily="serif"
+            android:hint="Password"
             android:inputType="textPassword"
-            android:hint="Password" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Small" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <CheckBox
@@ -82,6 +84,7 @@
         android:background="@drawable/button"
         android:fontFamily="serif"
         android:text="login"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
         android:textColor="@color/colorWhite"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -98,7 +101,7 @@
         android:gravity="center"
         android:padding="10dp"
         android:text="Forget your password ? Click"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
         android:textColor="@color/block"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -115,7 +118,7 @@
         android:gravity="center"
         android:padding="10dp"
         android:text="Create a new account ? Click"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
         android:textColor="@color/block"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

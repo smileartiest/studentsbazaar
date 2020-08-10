@@ -112,7 +112,6 @@ public class PendingEventsAdapter extends RecyclerView.Adapter<PendingEventsAdap
                 intent.putExtras(b);
                 context.startActivity(intent);
                 ((Activity)context).finish();
-
             }
         });
 

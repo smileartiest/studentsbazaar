@@ -90,7 +90,7 @@ public class Quiz_Events extends AppCompatActivity {
 
         spotsDialog.show();
 
-        headtitle.setText("Today's Question No . " + new Quiz_Control(Quiz_Events.this).getqid());
+        headtitle.setText("Question No . " + new Quiz_Control(Quiz_Events.this).getqid());
         if(Quiz_Control.getviews()!=null){
             views.setText("Total viewers . " + Quiz_Control.getviews());
         }
@@ -144,7 +144,7 @@ public class Quiz_Events extends AppCompatActivity {
             builder.setContentImageDrawable(R.drawable.timing_closed_icon);
             builder.setDialogStyle(CFAlertDialog.CFAlertStyle.ALERT);
             builder.setTextGravity(Gravity.CENTER);
-            builder.setTitle("Hai , " + Controller.getusername() +" . Quiz Time is 9AM to 7PM So wait until arrival to question!. Thanks for your interest !");
+            builder.setTitle("Hai , " + Controller.getusername() +" . Quiz Timing from 9AM to 7PM . So wait for question. Thanks for your interest !");
             builder.addButton("Ok", -1, -1, CFAlertDialog.CFAlertActionStyle.POSITIVE, CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -339,14 +339,14 @@ public class Quiz_Events extends AppCompatActivity {
                             option_type.setVisibility(View.VISIBLE);
                             fill_blank_ans.setVisibility(View.GONE);
                             title.setText("Please Choose Your Answer");
-                            qssts.setText("Today's quiz session will end by 7:00 PM.");
+                            qssts.setText("Today's quiz timing will end by 7:00 PM.");
                         } else {
                             Glide.with(getApplicationContext()).load(new Quiz_Control(Quiz_Events.this).getQpic()).into(quizqstn);
                             views.setVisibility(View.VISIBLE);
                             option_type.setVisibility(View.GONE);
                             fill_blank_ans.setVisibility(View.VISIBLE);
                             title.setText("Please Enter Your Answer");
-                            qssts.setText("Today's quiz session will end by 7:00 PM.");
+                            qssts.setText("Today's quiz timing will end by 7:00 PM.");
                         }
 
                         spotsDialog.dismiss();
@@ -372,7 +372,7 @@ public class Quiz_Events extends AppCompatActivity {
         builder.setDialogStyle(CFAlertDialog.CFAlertStyle.ALERT);
         builder.setContentImageDrawable(R.drawable.timing_closed_icon);
         builder.setTextGravity(Gravity.CENTER);
-        builder.setTitle("Hai , " + Controller.getusername()+"\n"+"Today's Quiz Timing 9AM to 7PM. Thanks for your interest !");
+        builder.setTitle("Hai , " + Controller.getusername()+"\n"+"Quiz Timing from 9AM to 7PM. Thanks for your interest !");
         builder.addButton("Ok", -1, -1, CFAlertDialog.CFAlertActionStyle.POSITIVE, CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

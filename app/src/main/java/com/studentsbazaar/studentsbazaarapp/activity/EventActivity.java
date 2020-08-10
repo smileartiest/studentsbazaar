@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.crowdfire.cfalertdialog.CFAlertDialog;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.studentsbazaar.studentsbazaarapp.CheckUserNumber;
 import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.adapter.ViewPagerAdapter;
@@ -33,7 +32,6 @@ public class EventActivity extends AppCompatActivity {
     ViewPager2 viewPager2;
     ViewPagerAdapter mAdapter;
     LinearLayout eventcard;
-    FloatingActionButton backbtn,addevent,contact,pending;
 
     SpotsDialog progressDialog;
     List<Project_details> drawerResponseList = null;
@@ -45,11 +43,6 @@ public class EventActivity extends AppCompatActivity {
         setContentView(R.layout.event_page);
         progressDialog = new SpotsDialog(this);
         layout = (LinearLayout) findViewById(R.id.empty2);
-        eventcard = findViewById(R.id.event_card);
-        backbtn = findViewById(R.id.event_backbtn);
-        addevent = findViewById(R.id.event_addbtn);
-        contact = findViewById(R.id.event_contactbtn);
-        pending = findViewById(R.id.event_pending);
 
         new Controller(this);
         viewPager2 = findViewById(R.id.viewPager2);
@@ -57,47 +50,11 @@ public class EventActivity extends AppCompatActivity {
         viewPager2.setPageTransformer(new DepthPageTransformer());
         loadData();
 
-        pending.setVisibility(View.GONE);
-
-        if (Controller.getprefer().equals(Controller.ADMIN)) {
-            pending.setVisibility(View.VISIBLE);
-        } else {
-            pending.setVisibility(View.GONE);
-        }
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
-        backbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
-
-        addevent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addeventprocess();
-            }
-        });
-
-        contact.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                contactdetails();
-            }
-        });
-
-        pending.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                pendingevent();
-            }
-        });
 
     }
 
@@ -131,7 +88,6 @@ public class EventActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<DownloadResponse> call, Throwable t) {
                 //showErrorMessage();
-
                 Log.d("RESPONSE3", "err" + t.getMessage());
             }
         });
@@ -146,10 +102,6 @@ public class EventActivity extends AppCompatActivity {
         }
     }
 
-    void pendingevent(){
-        new Move_Show(EventActivity.this, Pending_Events.class);
-    }
-
     void contactdetails(){
         new Move_Show(EventActivity.this, ContactActivity.class);
     }
@@ -158,7 +110,7 @@ public class EventActivity extends AppCompatActivity {
         if (Controller.getprefer().equals(Controller.VISITOR)) {
             CFAlertDialog.Builder builder = new CFAlertDialog.Builder(EventActivity.this);
             builder.setDialogStyle(CFAlertDialog.CFAlertStyle.NOTIFICATION);
-            builder.setIcon(R.drawable.sb_app_icon_small_theme);
+            builder.setIcon(R.drawable.newlogo);
             builder.setTitle("Hey there , Do Register !");
             builder.setMessage("Kindly fill your details to continue adding event.");
 

@@ -35,7 +35,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
-import com.studentsbazaar.studentsbazaarapp.BuildConfig;
 import com.studentsbazaar.studentsbazaarapp.CheckUserNumber;
 import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.controller.Controller;
@@ -55,6 +54,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
+import dmax.dialog.BuildConfig;
 import dmax.dialog.SpotsDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -94,7 +94,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         drawer = findViewById(R.id.drawer_layout);
         navigationView =  findViewById(R.id.nav_view);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-
             Calendar calander = Calendar.getInstance();
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH");
             String time = simpleDateFormat.format(calander.getTime());
@@ -113,19 +112,15 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             if (Controller.getuservierify() == null) {
                 verifyaccount();
             }
-
         }
         if (toolbar != null) {
             setSupportActionBar(toolbar);
-            getSupportActionBar().setTitle("");
-
         }
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
         linear2 = findViewById(R.id.linear2);
         checkToken();
         context = this;

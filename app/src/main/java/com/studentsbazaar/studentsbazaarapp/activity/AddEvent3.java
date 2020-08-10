@@ -1,6 +1,7 @@
 package com.studentsbazaar.studentsbazaarapp.activity;
 
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -8,6 +9,8 @@ import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -18,6 +21,8 @@ import com.studentsbazaar.studentsbazaarapp.controller.Controller;
 import com.studentsbazaar.studentsbazaarapp.controller.Move_Show;
 import com.studentsbazaar.studentsbazaarapp.retrofit.ApiUtil;
 
+import java.util.Calendar;
+
 import dmax.dialog.SpotsDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -25,14 +30,17 @@ import retrofit2.Response;
 
 public class AddEvent3 extends AppCompatActivity {
 
-    TextInputLayout eventweb, collegeweb,regfees,einstagram,ecomments, fgust, fnits, eventheam, accomation, contactname1, contactno1, contactname2, contactno2, lastdate, howtoreach, sponser;
+    TextInputLayout eventweb, collegeweb, regfees, einstagram, ecomments, fgust, fnits, eventheam, accomation, contactname1, contactno1, contactname2, contactno2, lastdate, howtoreach, sponser;
     SpotsDialog progressDialog;
     Button complete;
     String webevent, webcollege;
-    String einsta,ecommts, edis, econby, elist, epost, etitle, ecat, eorg, ecity, estae, esdate, eedate, edpt, efg, enits, etheam, eacc, conname1, conno1, conname2, conno2, eldate, eregf, ehreach, esponser;
+    String einsta, ecommts, edis, econby, elist, epost, etitle, ecat, eorg, ecity, estae, esdate, eedate, edpt, efg, enits, etheam, eacc, conname1, conno1, conname2, conno2, eldate, eregf, ehreach, esponser;
     SharedPreferences sf;
     SharedPreferences.Editor editor;
     Toolbar my_toolbar;
+    ImageView add_date_icon;
+    private int mYear, mMonth, mDay;
+    String day;
     WebView webView;
     String[] urlformat = {"http://", "https://"};
     String[] feesarray = {"No Entry Fees"};
@@ -65,6 +73,7 @@ public class AddEvent3 extends AppCompatActivity {
         einstagram = findViewById(R.id.add3_instagram);
         eventweb = findViewById(R.id.add3_eventweb);
         collegeweb = findViewById(R.id.add3_collegeweb);
+        add_date_icon = findViewById(R.id.add3_lastdate_add_icon);
         lastdate.getEditText().setText(sf.getString("esdate", "none"));
         fgust.requestFocus();
         /*ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(AddEvent3.this, android.R.layout.simple_list_item_1, urlformat);
@@ -111,6 +120,33 @@ public class AddEvent3 extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        add_date_icon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar c = Calendar.getInstance();
+                mYear = c.get(Calendar.YEAR);
+                mMonth = c.get(Calendar.MONTH);
+                mDay = c.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog(AddEvent3.this,
+                        new DatePickerDialog.OnDateSetListener() {
+
+                            @Override
+                            public void onDateSet(DatePicker view, int year,
+                                                  int monthOfYear, int dayOfMonth) {
+                                if (dayOfMonth < 10) {
+                                    day = "0" + dayOfMonth;
+                                } else {
+                                    day = String.valueOf(dayOfMonth);
+                                }
+                                esdate = year + "-" + (monthOfYear + 1) + "-" + day;
+                                lastdate.getEditText().setText(esdate);
+                            }
+                        }, mYear, mMonth, mDay);
+                datePickerDialog.show();
+            }
+        });
 
         complete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -161,7 +197,7 @@ public class AddEvent3 extends AppCompatActivity {
                 String Event_Discription = edis;
                 String Event_Website = webevent;
                 String College_Website = webcollege;
-                String Event_Instagram = einsta ;
+                String Event_Instagram = einsta;
                 String Contact_Person1_Name = conname1;
                 String Contact_Person1_No = conno1;
                 String Contact_Person2_Name = conname2;
@@ -187,11 +223,11 @@ public class AddEvent3 extends AppCompatActivity {
                     Move_Show.showToast("Enter Contact Person");
                 } else if (Contact_Person1_No.length() < 10) {
                     Move_Show.showToast("Please enter Valid 10 Digit Number");
-                }else if (Contact_Person2_Name.isEmpty()) {
+                } else if (Contact_Person2_Name.isEmpty()) {
                     Move_Show.showToast("Enter Contact Person");
-                }  else if (Contact_Person2_No.length() < 10) {
+                } else if (Contact_Person2_No.length() < 10) {
                     Move_Show.showToast("Please enter Valid 10 Digit Number");
-                }else if (Last_date_registration.isEmpty()) {
+                } else if (Last_date_registration.isEmpty()) {
                     Move_Show.showToast("Enter Last date for registration");
                 } else if (Entry_Fees.isEmpty()) {
                     Move_Show.showToast("Enter Entry Fees");
@@ -201,7 +237,7 @@ public class AddEvent3 extends AppCompatActivity {
                     progressDialog.show();
                     Log.d("eventdetails", Event_Details);
                     Log.d("alldatas", "onClick: " + Event_Title + " " + Event_Type + " " + Event_Name + " " + Event_Start_Date + " " + Event_End_Date + " " + Conductedby + " " + Degree + " " + Dept + " " + College_Address + " " + College_District + " " + College_State + " " + Event_organizer + " " + Event_Details + Event_Discription + " " + Event_Website + " " + College_Website + " " + Contact_Person1_Name + " " + Contact_Person1_No + " " + Contact_Person2_Name + " " + Contact_Person2_No + " " + " " + Entry_Fees + " " + Accepted + " " + Event_Lat + " " + Event_Long + " " + Event_guest + " " + Event_pro_nites + " " + Event_accomodations + " " + Event_how_to_reach + " " + Event_sponsors + " " + Last_date_registration + " " + Event_status);
-                    Call<String> call = ApiUtil.getServiceClass().insertUser(Controller.getUID(), Event_Title, Event_Type, Event_Name, Event_Start_Date, Event_End_Date, Conductedby, Degree, Dept, College_Address, College_District, College_State, Event_organizer, Event_Details, Event_Discription, Event_Website, College_Website,Event_Instagram, Contact_Person1_Name, Contact_Person1_No, Contact_Person2_Name, Contact_Person2_No, Poster, Entry_Fees, Accepted, Event_Lat, Event_Long, Event_guest, Event_pro_nites, Event_accomodations, Event_how_to_reach, Event_sponsors, Last_date_registration, Event_status, Comments);
+                    Call<String> call = ApiUtil.getServiceClass().insertUser(Controller.getUID(), Event_Title, Event_Type, Event_Name, Event_Start_Date, Event_End_Date, Conductedby, Degree, Dept, College_Address, College_District, College_State, Event_organizer, Event_Details, Event_Discription, Event_Website, College_Website, Event_Instagram, Contact_Person1_Name, Contact_Person1_No, Contact_Person2_Name, Contact_Person2_No, Poster, Entry_Fees, Accepted, Event_Lat, Event_Long, Event_guest, Event_pro_nites, Event_accomodations, Event_how_to_reach, Event_sponsors, Last_date_registration, Event_status, Comments);
                     call.enqueue(new Callback<String>() {
                         @Override
                         public void onResponse(Call<String> call, Response<String> response) {

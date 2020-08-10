@@ -191,6 +191,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
+                android:drawableLeft="@drawable/info_icon"
                 android:fontFamily="serif"
                 android:text="Your Question will be show Till 7.00 PM only. So Quick To submite your answer"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"

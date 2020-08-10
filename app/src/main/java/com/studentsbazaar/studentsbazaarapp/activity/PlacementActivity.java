@@ -170,7 +170,9 @@ public class PlacementActivity extends AppCompatActivity {
         menu.findItem(R.id.shareitem).setVisible(false);
         SearchView searchView = (SearchView) search.getActionView();
         searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-        if(Controller.getUID().equals("0")){
+        if(Controller.getUID() == null){
+            menu.findItem(R.id.item1).setVisible(false);
+        }else if(Controller.getUID().equals("0")){
             menu.findItem(R.id.item1).setVisible(true);
         }else{
             menu.findItem(R.id.item1).setVisible(false);

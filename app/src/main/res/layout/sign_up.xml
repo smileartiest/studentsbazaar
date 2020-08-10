@@ -50,7 +50,8 @@
                 android:background="@color/colorWhite"
                 android:fontFamily="serif"
                 android:hint="Name"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
@@ -89,8 +90,9 @@
                 android:layout_height="35dp"
                 android:background="@color/colorWhite"
                 android:fontFamily="serif"
+                android:hint="Email ID"
                 android:inputType="textEmailAddress"
-                android:hint="Email ID" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
@@ -119,6 +121,7 @@
             android:hint="College name"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView59" />
@@ -149,6 +152,7 @@
             android:hint="Degree"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView60" />
@@ -175,7 +179,8 @@
                 android:background="@color/colorWhite"
                 android:fontFamily="serif"
                 android:hint="Academic Year"
-                android:inputType="date" />
+                android:inputType="date"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
@@ -228,7 +233,8 @@
                 android:background="@color/colorWhite"
                 android:fontFamily="serif"
                 android:hint="Year"
-                android:inputType="number" />
+                android:inputType="number"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -253,7 +259,8 @@
                 android:background="@color/colorWhite"
                 android:fontFamily="serif"
                 android:hint="Semester"
-                android:inputType="number" />
+                android:inputType="number"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
@@ -267,6 +274,7 @@
             android:background="@drawable/button"
             android:fontFamily="serif"
             android:text="complete"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:textColor="@color/colorWhite"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -321,7 +329,8 @@
                 android:layout_height="35dp"
                 android:background="@color/colorWhite"
                 android:fontFamily="serif"
-                android:hint="Password" />
+                android:hint="Password"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -346,7 +355,8 @@
                 android:background="@color/colorWhite"
                 android:fontFamily="serif"
                 android:hint="Conform Password"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
@@ -386,7 +396,8 @@
                 android:layout_height="35dp"
                 android:background="@color/white"
                 android:fontFamily="serif"
-                android:hint="Referel Code" />
+                android:hint="Referel Code"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
         </com.google.android.material.textfield.TextInputLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

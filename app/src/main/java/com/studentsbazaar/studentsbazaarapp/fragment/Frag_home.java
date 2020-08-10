@@ -15,10 +15,12 @@ import androidx.fragment.app.Fragment;
 import com.crowdfire.cfalertdialog.CFAlertDialog;
 import com.studentsbazaar.studentsbazaarapp.CheckUserNumber;
 import com.studentsbazaar.studentsbazaarapp.R;
+import com.studentsbazaar.studentsbazaarapp.activity.AddEvent2;
 import com.studentsbazaar.studentsbazaarapp.activity.EventActivity;
 import com.studentsbazaar.studentsbazaarapp.activity.Login_Page;
 import com.studentsbazaar.studentsbazaarapp.activity.MUActivity;
 import com.studentsbazaar.studentsbazaarapp.activity.Mems;
+import com.studentsbazaar.studentsbazaarapp.activity.Pending_Events;
 import com.studentsbazaar.studentsbazaarapp.activity.PlacementActivity;
 import com.studentsbazaar.studentsbazaarapp.activity.Quiz_Events;
 import com.studentsbazaar.studentsbazaarapp.activity.Tech_News;
@@ -29,7 +31,7 @@ import com.studentsbazaar.studentsbazaarapp.controller.Move_Show;
 public class Frag_home extends Fragment {
 
     View v;
-    CardView event, ifacts, auresult, muresult,placement, quiz , memes , ivideos;
+    CardView event, ifacts, auresult, muresult,placement, quiz , memes , ivideos , add_event , pending_event;
 
     public Frag_home() {
     }
@@ -48,6 +50,14 @@ public class Frag_home extends Fragment {
         quiz = v.findViewById(R.id.home_quiz);
         memes = v.findViewById(R.id.home_memes);
         ivideos = v.findViewById(R.id.home_ivideos);
+        add_event = v.findViewById(R.id.home_add_event);
+        pending_event = v.findViewById(R.id.home_pending_event);
+
+        if (Controller.getprefer().equals(Controller.ADMIN)) {
+            pending_event.setVisibility(View.VISIBLE);
+        } else {
+            pending_event.setVisibility(View.GONE);
+        }
 
         return v;
     }
@@ -86,7 +96,7 @@ public class Frag_home extends Fragment {
 
                     CFAlertDialog.Builder builder = new CFAlertDialog.Builder(getContext());
                     builder.setDialogStyle(CFAlertDialog.CFAlertStyle.NOTIFICATION);
-                    builder.setIcon(R.drawable.sb_app_icon_small_theme);
+                    builder.setIcon(R.drawable.newlogo);
                     builder.setTitle("Hey there , Do Register !");
                     builder.setMessage("We will monitor your score and will give surprise for you.");
 
@@ -156,5 +166,68 @@ public class Frag_home extends Fragment {
             }
         });
 
+        add_event.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addeventprocess();
+            }
+        });
+
+        pending_event.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pendingevent();
+            }
+        });
+
     }
+
+    void pendingevent(){
+        new Move_Show(getContext(), Pending_Events.class);
+    }
+
+    void addeventprocess(){
+        if (Controller.getprefer().equals(Controller.REG) || Controller.getprefer().equals(Controller.ADMIN)) {
+            new Move_Show(getContext(), AddEvent2.class);
+        } else {
+            addEvent();
+        }
+    }
+
+    private void addEvent() {
+        if (Controller.getprefer().equals(Controller.VISITOR)) {
+            CFAlertDialog.Builder builder = new CFAlertDialog.Builder(getContext());
+            builder.setDialogStyle(CFAlertDialog.CFAlertStyle.NOTIFICATION);
+            builder.setIcon(R.drawable.newlogo);
+            builder.setTitle("Hey there , Do Register !");
+            builder.setMessage("Kindly fill your details to continue adding event.");
+
+            builder.addButton("LOGIN", -1, -1, CFAlertDialog.CFAlertActionStyle.POSITIVE, CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    new Move_Show(getContext(), Login_Page.class);
+                }
+            });
+
+            builder.addButton("REGISTER", -1, -1, CFAlertDialog.CFAlertActionStyle.POSITIVE, CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    startActivity(new Intent(getContext() , CheckUserNumber.class));
+                }
+            });
+
+            builder.addButton("NOT NOW", -1, -1, CFAlertDialog.CFAlertActionStyle.DEFAULT, CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            builder.show();
+        } else {
+            new Move_Show(getContext(), AddEvent2.class);
+        }
+    }
+
 }
