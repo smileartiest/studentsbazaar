@@ -37,8 +37,8 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="serif"
                     android:text="Disclaimer"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                    android:textColor="@color/block"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="@color/colorPrimaryDark"
                     android:textStyle="bold" />
             </androidx.appcompat.widget.Toolbar>
 
@@ -63,12 +63,11 @@
             android:layout_centerHorizontal="true"
             android:layout_margin="16dp"
             android:layout_marginTop="10dp"
-            android:background="@drawable/borderline"
             android:fontFamily="serif"
             android:gravity="center"
             android:text="DISCLAIMER"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="@color/block"
+            android:textColor="@color/colorPrimaryDark"
             android:textStyle="bold" />
 
         <TextView
@@ -77,12 +76,12 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/dis"
             android:layout_margin="16dp"
-            android:background="@drawable/borderline"
             android:fontFamily="serif"
             android:justificationMode="inter_word"
             android:padding="10dp"
             android:text="     Students Bazaar is not the official/authorized application of Anna University/Madras University. Here we provide live educational updates for Anna University's Affiliated Colleges and Madras University’s Affiliated Colleges. These specific informations are gathering from official website.These informations are not completely official or final. For helping students and to avoid rumors Students Bazaar tries to provide precise updates. For official and confirming any updates contact your College Management / Respective University.
 \n \n Students Bazaar describes the statistics of those students who got placed in top MNC IT companies by ON campus recruitment in the reputed engineering colleges. These statistics are useful for engineering students for getting updated information about companies visited in different colleges. Also the details like venue, date of campus recruitment, No of students placed are good to know, however, it may not be so accurate. These details will be a motivation for upcoming graduate students for better career planning and get placed. This information is updated directly from the student contact and it is not official from any colleges or companies."
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/colorPrimaryDark" />
     </LinearLayout>
 </ScrollView>

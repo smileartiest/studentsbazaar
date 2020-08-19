@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -32,7 +33,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.crowdfire.cfalertdialog.CFAlertDialog;
 import com.iceteck.silicompressorr.SiliCompressor;
-import com.studentsbazaar.studentsbazaarapp.CheckUserNumber;
 import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.adapter.Memes_Adapter;
 import com.studentsbazaar.studentsbazaarapp.controller.Controller;
@@ -92,6 +92,7 @@ public class Mems extends AppCompatActivity {
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
+            toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.colorPrimaryDark) , PorterDuff.Mode.SRC_ATOP);
         }
         loadData();
         memeview.setHasFixedSize(true);

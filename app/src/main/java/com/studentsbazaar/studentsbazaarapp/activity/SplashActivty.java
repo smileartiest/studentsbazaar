@@ -109,7 +109,6 @@ public class SplashActivty extends AppCompatActivity {
     }
 
     void checkservice(){
-
         Call<String> call = ApiUtil.getServiceClass().getserversts(ApiUtil.GET_SERVER_STATUS);
         call.enqueue(new Callback<String>() {
             @Override
@@ -129,13 +128,12 @@ public class SplashActivty extends AppCompatActivity {
                         retry_btn.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                finish();
+                                checkservice();
                             }
                         });
                     }
                 }
             }
-
             @Override
             public void onFailure(Call<String> call, Throwable t) {
                 Log.d("splase error " , t.getMessage());

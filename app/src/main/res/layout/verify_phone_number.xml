@@ -11,6 +11,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView6"
         android:layout_width="0dp"
+        app:cardElevation="6dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,8 +30,8 @@
                 android:layout_height="match_parent"
                 android:fontFamily="serif"
                 android:text="Mobile Number Verification"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textColor="@color/block"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/colorPrimaryDark"
                 android:textStyle="bold" />
 
         </androidx.appcompat.widget.Toolbar>

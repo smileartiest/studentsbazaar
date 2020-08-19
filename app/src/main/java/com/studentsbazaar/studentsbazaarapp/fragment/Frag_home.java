@@ -13,7 +13,7 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import com.crowdfire.cfalertdialog.CFAlertDialog;
-import com.studentsbazaar.studentsbazaarapp.CheckUserNumber;
+import com.studentsbazaar.studentsbazaarapp.activity.CheckUserNumber;
 import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.activity.AddEvent2;
 import com.studentsbazaar.studentsbazaarapp.activity.EventActivity;

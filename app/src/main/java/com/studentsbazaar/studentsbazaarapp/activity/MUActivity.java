@@ -1,6 +1,7 @@
 package com.studentsbazaar.studentsbazaarapp.activity;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Menu;
@@ -41,7 +42,7 @@ public class MUActivity extends AppCompatActivity {
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
-
+            toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.colorPrimaryDark) , PorterDuff.Mode.SRC_ATOP);
         }
 
         cardResults.setOnClickListener(new View.OnClickListener() {

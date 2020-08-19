@@ -28,8 +28,8 @@
                 android:layout_height="match_parent"
                 android:fontFamily="serif"
                 android:text="Pending Event's"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textColor="@color/block" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/colorPrimaryDark" />
 
         </androidx.appcompat.widget.Toolbar>
 

@@ -27,7 +27,7 @@
             android:fontFamily="serif"
             android:text="Placement Details"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textColor="@color/block"
+            android:textColor="@color/colorPrimaryDark"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

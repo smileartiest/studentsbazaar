@@ -1,4 +1,4 @@
-package com.studentsbazaar.studentsbazaarapp;
+package com.studentsbazaar.studentsbazaarapp.firebase;
 
 import android.app.Activity;
 import android.app.Application;

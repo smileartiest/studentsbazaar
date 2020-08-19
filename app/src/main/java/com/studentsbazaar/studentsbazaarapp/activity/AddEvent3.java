@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -54,6 +55,7 @@ public class AddEvent3 extends AppCompatActivity {
         my_toolbar = findViewById(R.id.add3_toolbar);
         setSupportActionBar(my_toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        my_toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.colorPrimaryDark) , PorterDuff.Mode.SRC_ATOP);
 
         sf = getSharedPreferences("event", MODE_PRIVATE);
         fgust = findViewById(R.id.add3_fgusest);

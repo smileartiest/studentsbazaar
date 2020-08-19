@@ -15,8 +15,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.crowdfire.cfalertdialog.CFAlertDialog;
 import com.google.android.material.textfield.TextInputLayout;
 import com.studentsbazaar.studentsbazaarapp.BuildConfig;
-import com.studentsbazaar.studentsbazaarapp.CheckUserNumber;
-import com.studentsbazaar.studentsbazaarapp.ForgetPassword;
 import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.controller.Controller;
 import com.studentsbazaar.studentsbazaarapp.controller.Move_Show;

@@ -128,8 +128,8 @@ public interface RetrofitInterface {
     @GET("/get_quiz.php")
     Call<DownloadResponse> getQuizQuestions(@Query("uid") String uid);
 
-    @GET("/get_result_history.php")
-    Call<DownloadResponse> getquizresult(@Query("uid") String uid);
+    @GET
+    Call<DownloadResponse> getquizresult(@Url String uid);
 
     @FormUrlEncoded
     @POST("/addeventdetails.php")

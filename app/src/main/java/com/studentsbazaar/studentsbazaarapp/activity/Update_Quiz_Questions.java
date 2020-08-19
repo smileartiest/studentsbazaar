@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Base64;
@@ -63,8 +64,7 @@ public class Update_Quiz_Questions extends AppCompatActivity {
             getSupportActionBar().setTitle("Post Quiz");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-
+            toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.colorPrimaryDark) , PorterDuff.Mode.SRC_ATOP);
         }   // use a l
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

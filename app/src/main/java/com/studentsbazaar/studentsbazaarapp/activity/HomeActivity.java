@@ -35,7 +35,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
-import com.studentsbazaar.studentsbazaarapp.CheckUserNumber;
+import com.studentsbazaar.studentsbazaarapp.BuildConfig;
 import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.controller.Controller;
 import com.studentsbazaar.studentsbazaarapp.controller.Monitor;
@@ -45,7 +45,6 @@ import com.studentsbazaar.studentsbazaarapp.firebase.Config;
 import com.studentsbazaar.studentsbazaarapp.fragment.Frag_home;
 import com.studentsbazaar.studentsbazaarapp.helper.PersistanceUtil;
 import com.studentsbazaar.studentsbazaarapp.model.DownloadResponse;
-import com.studentsbazaar.studentsbazaarapp.model.Profile_Details;
 import com.studentsbazaar.studentsbazaarapp.model.Quiz_Details;
 import com.studentsbazaar.studentsbazaarapp.retrofit.ApiUtil;
 import com.studentsbazaar.studentsbazaarapp.service.BroadcastService;
@@ -54,7 +53,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
-import dmax.dialog.BuildConfig;
 import dmax.dialog.SpotsDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -78,9 +76,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     int CURRENT_TIME;
     int LOCAL_TIME = 19;
     int LIMIT_TIME = 23;
-    List<Profile_Details> getlogindetails = null;
     List<Quiz_Details> drawerResponseList = null;
-    String uidata;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,11 +98,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             if (LOCAL_TIME <= CURRENT_TIME && CURRENT_TIME <= LIMIT_TIME) {
                 if (Quiz_Control.getQuizstatus() == null && Quiz_Control.getseenquiz() == null) {
                     Log.d("Time", time);
-                } else if (Quiz_Control.getQuizstatus().equals(Quiz_Control.ATTEND) && Quiz_Control.getseenquiz().equals(Quiz_Control.LATER)) {
-                    openDialog();
                 }
             }
-
         }
         if (Controller.getprefer().equals(Controller.VISITOR)) {
             if (Controller.getuservierify() == null) {
@@ -135,8 +128,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 if (response.isSuccessful()) {
                     assert response.body() != null;
                     drawerResponseList = response.body().getQuiz_details();
-                    if (drawerResponseList.get(0).getId() != null) {
-                        Log.d("RESPONSE2", drawerResponseList.get(0).getId());
+                    if (drawerResponseList.get(0).getQuiz_Id() != null) {
+                        Log.d("RESPONSE2", drawerResponseList.get(0).getQuiz_Id());
+                        Quiz_Control.addviewrs(String.valueOf(drawerResponseList.get(0).getViewers()));
+                        Log.d("Viewers " , ""+drawerResponseList.get(0).getViewers());
+                        new Quiz_Control(HomeActivity.this).addresult(drawerResponseList.get(0).getCrct_Ans() ,drawerResponseList.get(0).getQuiz_Id() ,drawerResponseList.get(0).getQuiz_ques() ,drawerResponseList.get(0).getQuiz_Ans());
                     } else {
                         if (drawerResponseList.size() == 0) {
                         } else {
@@ -326,7 +322,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-
     private void init() {
         navigationView.setNavigationItemSelectedListener(HomeActivity.this);
         if (Controller.getprefer().equals(Controller.REG) || Controller.getprefer().equals(Controller.ADMIN)) {
@@ -393,7 +388,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     private void requestPermission() {
         ActivityCompat.requestPermissions(this, new String[]{WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
-
     }
 
     private void openDialog() {

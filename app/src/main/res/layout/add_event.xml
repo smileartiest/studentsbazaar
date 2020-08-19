@@ -89,7 +89,7 @@
                     android:layout_height="match_parent"
                     android:fontFamily="serif"
                     android:text="Add Event Details - Basics"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="@color/colorPrimaryDark"
                     android:textStyle="bold" />
 

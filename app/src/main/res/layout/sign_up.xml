@@ -104,7 +104,7 @@
             android:fontFamily="serif"
             android:text="College Name"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="@color/block"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/reg_email" />
@@ -135,7 +135,7 @@
             android:fontFamily="serif"
             android:text="Degree"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="@color/block"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/reg_university" />
@@ -192,7 +192,7 @@
             android:fontFamily="serif"
             android:text="Department"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="@color/block"
+            android:textColor="@color/colorPrimaryDark"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/reg_acyear" />
 
@@ -291,7 +291,7 @@
             android:fontFamily="serif"
             android:text="University Type"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="@color/block"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/reg_cgname" />
@@ -369,7 +369,7 @@
             android:fontFamily="serif"
             android:text="Complete Your Sign Up"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textColor="@color/block"
+            android:textColor="@color/colorPrimaryDark"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

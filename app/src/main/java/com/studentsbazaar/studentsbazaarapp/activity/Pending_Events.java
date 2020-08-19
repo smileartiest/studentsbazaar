@@ -1,6 +1,7 @@
 package com.studentsbazaar.studentsbazaarapp.activity;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -54,6 +55,7 @@ public class Pending_Events extends AppCompatActivity {
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
+            toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.colorPrimaryDark) , PorterDuff.Mode.SRC_ATOP);
         }
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,13 +106,10 @@ public class Pending_Events extends AppCompatActivity {
                     }
                     // mAdapter.notifyDataSetChanged();
                 }
-
             }
-
             @Override
             public void onFailure(Call<DownloadResponse> call, Throwable t) {
                 //showErrorMessage();
-
                 Log.d("RESPONSE3", "err" + t.getMessage());
             }
         });

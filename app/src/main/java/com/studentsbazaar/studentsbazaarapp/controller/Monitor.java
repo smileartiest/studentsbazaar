@@ -141,6 +141,37 @@ public class Monitor {
         });
     }
 
+    public void DownloadImage(String url){
+        Picasso.with(context).load(url).into(new Target() {
+            @Override
+            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                spotsDialog.dismiss();
+                try {
+                    File mydir = new File(Environment.getExternalStorageDirectory() + "/StudentBazaar");
+                    if (!mydir.exists()) {
+                        mydir.mkdirs();
+                    }
+                    fileUri = mydir.getAbsolutePath() + File.separator + System.currentTimeMillis() + ".jpg";
+                    FileOutputStream outputStream = new FileOutputStream(fileUri);
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+                    outputStream.flush();
+                    outputStream.close();
+                    Toast.makeText(context, "Download Successful", Toast.LENGTH_LONG).show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Toast.makeText(context, "Download Faild", Toast.LENGTH_LONG).show();
+                }
+            }
+            @Override
+            public void onBitmapFailed(Drawable errorDrawable) {
+            }
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {
+                spotsDialog.show();
+            }
+        });
+    }
+
     public void downloadpdf(String url) {
         context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
     }

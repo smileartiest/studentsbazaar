@@ -1,9 +1,7 @@
 package com.studentsbazaar.studentsbazaarapp.activity;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
+import android.annotation.SuppressLint;
+import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
@@ -12,8 +10,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.studentsbazaar.studentsbazaarapp.controller.Monitor;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import com.studentsbazaar.studentsbazaarapp.R;
+import com.studentsbazaar.studentsbazaarapp.controller.Monitor;
 import com.studentsbazaar.studentsbazaarapp.controller.Move_Show;
 
 import static android.text.Layout.JUSTIFICATION_MODE_INTER_WORD;
@@ -21,6 +23,7 @@ import static android.text.Layout.JUSTIFICATION_MODE_INTER_WORD;
 public class DisclaimerActivity extends AppCompatActivity {
     Toolbar toolbar;
     TextView textView;
+    @SuppressLint("WrongConstant")
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +35,7 @@ public class DisclaimerActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.colorPrimaryDark) , PorterDuff.Mode.SRC_ATOP);
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

@@ -43,7 +43,7 @@
                 android:fontFamily="serif"
                 android:text="Update Event Full Details"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="@color/block"
+                android:textColor="@color/colorPrimaryDark"
                 android:textStyle="bold" />
 
         </androidx.appcompat.widget.Toolbar>

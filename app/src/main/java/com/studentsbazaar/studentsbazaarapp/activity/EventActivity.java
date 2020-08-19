@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.crowdfire.cfalertdialog.CFAlertDialog;
-import com.studentsbazaar.studentsbazaarapp.CheckUserNumber;
 import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.adapter.ViewPagerAdapter;
 import com.studentsbazaar.studentsbazaarapp.controller.Controller;

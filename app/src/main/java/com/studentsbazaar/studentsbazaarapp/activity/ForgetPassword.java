@@ -1,6 +1,7 @@
-package com.studentsbazaar.studentsbazaarapp;
+package com.studentsbazaar.studentsbazaarapp.activity;
 
 import android.content.DialogInterface;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -17,6 +18,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.crowdfire.cfalertdialog.CFAlertDialog;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
+import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.controller.SendSMS;
 import com.studentsbazaar.studentsbazaarapp.retrofit.ApiUtil;
 
@@ -52,6 +54,7 @@ public class ForgetPassword extends AppCompatActivity {
         mytoolbar = findViewById(R.id.fpass_toolbar);
         setSupportActionBar(mytoolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mytoolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.colorPrimaryDark) , PorterDuff.Mode.SRC_ATOP);
         mytoolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

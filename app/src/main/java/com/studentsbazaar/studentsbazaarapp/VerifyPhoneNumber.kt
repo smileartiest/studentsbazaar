@@ -1,6 +1,7 @@
 package com.studentsbazaar.studentsbazaarapp
 
 import android.app.ProgressDialog
+import android.graphics.PorterDuff
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
@@ -39,6 +40,7 @@ class VerifyPhoneNumber : AppCompatActivity() {
 
         setSupportActionBar(vphone_toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        vphone_toolbar.getNavigationIcon()?.setColorFilter(resources.getColor(R.color.colorPrimaryDark), PorterDuff.Mode.SRC_ATOP)
 
         val c = Calendar.getInstance()
         CURRENT_TIME = c[Calendar.HOUR]

@@ -4,6 +4,7 @@ public class Memes_Details {
 
 
 
+    private int Id;
     private String User_Id;
     private String User_Name;
     private String Caption;
@@ -12,6 +13,14 @@ public class Memes_Details {
     private String Notbad;
     private String Created_Date;
 
+
+    public int getId() {
+        return Id;
+    }
+
+    public void setId(int id) {
+        Id = id;
+    }
 
     // Getter Methods
     public String getUser_Id() {

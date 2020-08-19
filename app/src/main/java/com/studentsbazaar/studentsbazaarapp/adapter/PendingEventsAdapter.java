@@ -1,6 +1,5 @@
 package com.studentsbazaar.studentsbazaarapp.adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -53,6 +52,7 @@ public class PendingEventsAdapter extends RecyclerView.Adapter<PendingEventsAdap
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+
         final Project_details listItem = mData.get(position);
 
         Resources resources = context.getResources();
@@ -111,7 +111,6 @@ public class PendingEventsAdapter extends RecyclerView.Adapter<PendingEventsAdap
                 Intent intent=new Intent(context, View_Details.class);
                 intent.putExtras(b);
                 context.startActivity(intent);
-                ((Activity)context).finish();
             }
         });
 

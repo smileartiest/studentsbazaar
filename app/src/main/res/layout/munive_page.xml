@@ -28,8 +28,8 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="serif"
                 android:text="Madras University"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textColor="@color/block"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/colorPrimaryDark"
                 android:textStyle="bold" />
         </androidx.appcompat.widget.Toolbar>
 

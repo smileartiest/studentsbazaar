@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import androidx.viewpager.widget.PagerAdapter;
 
 import com.bumptech.glide.Glide;
-import com.squareup.picasso.Picasso;
 import com.studentsbazaar.studentsbazaarapp.R;
 
 import java.util.ArrayList;
@@ -35,8 +34,6 @@ public class SliderPagerAdapter extends PagerAdapter {
                 .load(image_arraylist.get(position))
                 .placeholder(R.drawable.load)
                 .into(im_slider);
-
-
         container.addView(view);
 
         return view;

@@ -1,5 +1,6 @@
 package com.studentsbazaar.studentsbazaarapp.activity;
 
+import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.Dialog;
 import android.app.PendingIntent;
@@ -7,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -35,8 +37,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.crowdfire.cfalertdialog.CFAlertDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.studentsbazaar.studentsbazaarapp.AlarmHelper;
-import com.studentsbazaar.studentsbazaarapp.NotificationPublisher;
+import com.studentsbazaar.studentsbazaarapp.notification.AlarmHelper;
+import com.studentsbazaar.studentsbazaarapp.notification.NotificationPublisher;
 import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.adapter.Quiz_Result_Adapter;
 import com.studentsbazaar.studentsbazaarapp.controller.Controller;
@@ -70,7 +72,7 @@ public class Quiz_Events extends AppCompatActivity {
     Quiz_Result_Adapter quiz_result_adapter;
     RecyclerView qsntlist;
     String uidata;
-    ImageView quizqstn;
+    ImageView quizqstn,indication_icon;
     RadioGroup option_type;
     RadioButton a, b, c, d;
     String today_ans;
@@ -80,6 +82,7 @@ public class Quiz_Events extends AppCompatActivity {
     Calendar calander;
     SpotsDialog spotsDialog;
 
+    @SuppressLint("ResourceType")
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,9 +94,6 @@ public class Quiz_Events extends AppCompatActivity {
         spotsDialog.show();
 
         headtitle.setText("Question No . " + new Quiz_Control(Quiz_Events.this).getqid());
-        if(Quiz_Control.getviews()!=null){
-            views.setText("Total viewers . " + Quiz_Control.getviews());
-        }
         qsntlist = findViewById(R.id.quiz_quiz_list);
 
         qsntlist.setHasFixedSize(true);
@@ -109,7 +109,7 @@ public class Quiz_Events extends AppCompatActivity {
         CURRENT_TIME = Integer.valueOf(time);
 
         if (Controller.getprefer().equals(Controller.ADMIN) || Controller.getprefer().equals(Controller.INFOZUB)) {
-            loadaresult();
+            loadFulldetails();
         } else if (START_TIME <= CURRENT_TIME && LOCAL_TIME > CURRENT_TIME) {
             userpage.setVisibility(View.VISIBLE);
             adminpage.setVisibility(View.GONE);
@@ -121,19 +121,8 @@ public class Quiz_Events extends AppCompatActivity {
             option_type.setVisibility(View.GONE);
             fill_blank_ans.setVisibility(View.GONE);
             title.setVisibility(View.GONE);
-            Glide.with(getApplicationContext()).load(new Quiz_Control(Quiz_Events.this).getQpic()).into(quizqstn);
             qssts.setText("Today's quiz timing over. Will catch you tomorrow with new question.");
-            if (Quiz_Control.getdate() != null) {
-                if (Quiz_Control.getanswer() != null && Quiz_Control.getdate().equals(calander.get(Calendar.YEAR) + "/" + (calander.get(Calendar.MONTH) + 1) + "/" + calander.get(Calendar.DATE))) {
-                    Log.d("Quiz ", Quiz_Control.getanswer() + " , " + Quiz_Control.getdate());
-                    todayansdialog();
-                } else {
-                    todaynotattenquizdialog();
-                }
-            } else {
-                todaynotattenquizdialog();
-            }
-            spotsDialog.dismiss();
+            loadaresult();
         } else {
             spotsDialog.dismiss();
             completebtn.setVisibility(View.GONE);
@@ -159,6 +148,7 @@ public class Quiz_Events extends AppCompatActivity {
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
+            toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.colorPrimaryDark) , PorterDuff.Mode.SRC_ATOP);
         }
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -178,10 +168,14 @@ public class Quiz_Events extends AppCompatActivity {
         completebtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (today_ans != null && today_ans.length() != 0) {
-                    completedialog();
-                } else {
-                    errordialog();
+                if(completebtn.getText().toString().equals("Tab to get Answer")){
+                    todayansdialog();
+                }else{
+                    if (today_ans != null && today_ans.length() != 0) {
+                        completedialog();
+                    } else {
+                        errordialog();
+                    }
                 }
             }
         });
@@ -274,8 +268,8 @@ public class Quiz_Events extends AppCompatActivity {
         builder.setDialogStyle(CFAlertDialog.CFAlertStyle.ALERT);
         builder.setContentImageDrawable(R.drawable.happy_emoji_icon);
         builder.setTextGravity(Gravity.CENTER);
-        builder.setTitle("Please confirm your answer !"+"\n"+"Your answer is "+today_ans +" . Proceed yes to continue.");
-        builder.addButton("YES", -1, -1, CFAlertDialog.CFAlertActionStyle.POSITIVE, CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, new DialogInterface.OnClickListener() {
+        builder.setTitle("Please confirm your answer !"+"\n"+"Your answer is "+today_ans +"\n . Proceed yes to continue.");
+        builder.addButton("Continue", -1, -1, CFAlertDialog.CFAlertActionStyle.POSITIVE, CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
@@ -286,14 +280,14 @@ public class Quiz_Events extends AppCompatActivity {
                 } else {
                     Log.d("Quizresults", "" + ApiUtil.QUIZ_ATTENT);
                     if (Quiz_Control.getanswer().equals(Quiz_Control.getcans())) {
-                        addresults(Controller.getUID(), "1", new Quiz_Control(Quiz_Events.this).getqid());
+                        addresults(Controller.getUID(), "1", new Quiz_Control(Quiz_Events.this).getqid(),new Quiz_Control(Quiz_Events.this).getQuizquestion() ,new Quiz_Control(Quiz_Events.this).getAnspic() , new Quiz_Control(Quiz_Events.this).getcans() ,today_ans);
                     } else {
-                        addresults(Controller.getUID(), "0", new Quiz_Control(Quiz_Events.this).getqid());
+                        addresults(Controller.getUID(), "0", new Quiz_Control(Quiz_Events.this).getqid(),new Quiz_Control(Quiz_Events.this).getQuizquestion() ,new Quiz_Control(Quiz_Events.this).getAnspic() , new Quiz_Control(Quiz_Events.this).getcans() ,today_ans);
                     }
                 }
             }
         });
-        builder.addButton("NOT NOW", -1, -1, CFAlertDialog.CFAlertActionStyle.DEFAULT, CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, new DialogInterface.OnClickListener() {
+        builder.addButton("Not now", -1, -1, CFAlertDialog.CFAlertActionStyle.DEFAULT, CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
@@ -316,22 +310,25 @@ public class Quiz_Events extends AppCompatActivity {
                     drawerResponseList = response.body().getQuiz_details();
                     if (drawerResponseList.size() == 0) {
                         spotsDialog.dismiss();
-                    } else if (drawerResponseList.get(0).getId() != null) {
-                        Log.d("RESPONSE2", drawerResponseList.get(0).getId());
+                    } else if (drawerResponseList.get(0).getMsg().equals("1")) {
+                        Log.d("RESPONSE2", drawerResponseList.get(0).getMsg());
                         spotsDialog.dismiss();
                         option_type.setVisibility(View.GONE);
                         fill_blank_ans.setVisibility(View.GONE);
                         completebtn.setVisibility(View.GONE);
                         title.setText("Wait for your Result !");
-                        Glide.with(getApplicationContext()).load(Quiz_Control.getQpic()).into(quizqstn);
-                        qssts.setText("You have already Submitted your answer as "+  Quiz_Control.getanswer()+
-                                "\nYou will get your result by 7pm today.\n" +
+                        views.setText("Total viewers ."+new Quiz_Control(Quiz_Events.this).getviews());
+                        Glide.with(getApplicationContext()).load(drawerResponseList.get(0).getQuiz_ques()).into(quizqstn);
+                        qssts.setText("You have already Submitted your answer as : "+  drawerResponseList.get(0).getSubmit_Answer()+
+                                "\nYou will get your result by 7 PM today.\n" +
                                 "Stay tuned.");
+                        indication_icon.setImageResource(R.drawable.complete_green_round_icon);
                         spotsDialog.dismiss();
-                    } else {
+                    } else if(drawerResponseList.get(0).getMsg().equals("0")) {
                         Quiz_Control.addquizquestion(drawerResponseList.get(0).getQuiz_ques());
                         Quiz_Control.addcrctans(drawerResponseList.get(0).getCrct_Ans());
                         Quiz_Control.addviewrs(String.valueOf(drawerResponseList.get(0).getViewers()));
+                        views.setText("Total viewers ."+drawerResponseList.get(0).getViewers());
                         new Quiz_Control(Quiz_Events.this).addresult(drawerResponseList.get(0).getCrct_Ans(), drawerResponseList.get(0).getQuiz_Id(), drawerResponseList.get(0).getQuiz_ques(), drawerResponseList.get(0).getQuiz_Ans());
                         if (drawerResponseList.get(0).getQuiz_Type().equals("0")) {
                             Glide.with(getApplicationContext()).load(new Quiz_Control(Quiz_Events.this).getQpic()).into(quizqstn);
@@ -348,13 +345,10 @@ public class Quiz_Events extends AppCompatActivity {
                             title.setText("Please Enter Your Answer");
                             qssts.setText("Today's quiz timing will end by 7:00 PM.");
                         }
-
                         spotsDialog.dismiss();
-
                     }
                 }
             }
-
             @Override
             public void onFailure(Call<DownloadResponse> call, Throwable t) {
                 //showErrorMessage();
@@ -377,7 +371,6 @@ public class Quiz_Events extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-                finish();
             }
         });
         builder.show();
@@ -395,14 +388,15 @@ public class Quiz_Events extends AppCompatActivity {
         ImageView closebtn = d1.findViewById(R.id.uiivclosebtn);
         CardView resultshare = (CardView) d1.findViewById(R.id.cardView9);
 
-        if (Quiz_Control.getanswer().equals(Quiz_Control.getcans())) {
-            totalmark.setText("1");
+        if (new Quiz_Control(Quiz_Events.this).getscore().equals("0")) {
+            totalmark.setText("Wrong Answer");
+            totalmark.setTextColor(getResources().getColor(R.color.red));
         } else {
-            totalmark.setText("0");
+            totalmark.setText("Correct Answer");
+            totalmark.setTextColor(getResources().getColor(R.color.green));
         }
         Quiz_Control.addseenquiz(Quiz_Control.SEEN);
-        Quiz_Control.addQuizStatus(Quiz_Control.ATTEND);
-        Glide.with(Quiz_Events.this).load(Quiz_Control.getAnspic()).into(anspic);
+        Glide.with(Quiz_Events.this).load(new Quiz_Control(Quiz_Events.this).getanspic()).into(anspic);
         closebtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -418,7 +412,7 @@ public class Quiz_Events extends AppCompatActivity {
         d1.show();
     }
 
-    void loadaresult() {
+    void loadFulldetails() {
         userpage.setVisibility(View.GONE);
         adminpage.setVisibility(View.VISIBLE);
         Call<DownloadResponse> call = ApiUtil.getServiceClass().getQuizQuestions("0");
@@ -453,8 +447,48 @@ public class Quiz_Events extends AppCompatActivity {
         });
     }
 
-    void addresults(String uid, String results, String qid) {
-        Call<String> call = ApiUtil.getServiceClass().addresultstoprofile(ApiUtil.ADD_QUIZ_RESULTS + "?uid=" + uid + "&qid=" + qid + "&result=" + results);
+    void loadaresult(){
+        uidata = Controller.getUID();
+        Call<DownloadResponse> call = ApiUtil.getServiceClass().getQuizQuestions(uidata);
+        call.enqueue(new Callback<DownloadResponse>() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onResponse(Call<DownloadResponse> call, Response<DownloadResponse> response) {
+                Log.d("RESPONSE2", response.body().toString());
+                if (response.isSuccessful()) {
+                    assert response.body() != null;
+                    drawerResponseList = response.body().getQuiz_details();
+                    if (drawerResponseList.size() == 0) {
+                        spotsDialog.dismiss();
+                    } else if (drawerResponseList.get(0).getMsg().equals("1")) {
+                        Log.d("RESPONSE2", drawerResponseList.get(0).getMsg());
+                        spotsDialog.dismiss();
+                        option_type.setVisibility(View.GONE);
+                        fill_blank_ans.setVisibility(View.GONE);
+                        title.setText("Wait for your Result !");
+                        Glide.with(getApplicationContext()).load(Quiz_Control.getQpic()).into(quizqstn);
+                        qssts.setText("Today's quiz timing over. Will catch you tomorrow with new question.");
+                        spotsDialog.dismiss();
+                        views.setText("Total viewers ."+new Quiz_Control(Quiz_Events.this).getviews());
+                        new Quiz_Control(Quiz_Events.this).addqsResult(drawerResponseList.get(0).getQuiz_Ans() , String.valueOf(drawerResponseList.get(0).getScore()));
+                        completebtn.setText("Tab to get Answer");
+                        completebtn.setVisibility(View.VISIBLE);
+                    } else if(drawerResponseList.get(0).getMsg().equals("0")) {
+                        todaynotattenquizdialog();
+                        spotsDialog.dismiss();
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<DownloadResponse> call, Throwable t) {
+                //showErrorMessage();
+                Log.d("RESPONSE3", "err" + t.getMessage());
+            }
+        });
+    }
+
+    void addresults(String uid, String results, String qid , String qpic , String anspic , String cans , String sans) {
+        Call<String> call = ApiUtil.getServiceClass().addresultstoprofile(ApiUtil.ADD_QUIZ_RESULTS + "?uid=" + uid + "&qid=" + qid + "&result=" + results+"&qpic="+qpic +"&apic="+anspic +"&cans="+cans +"&sans="+sans);
         Log.d("status", "upload");
         call.enqueue(new Callback<String>() {
             @Override
@@ -492,7 +526,7 @@ public class Quiz_Events extends AppCompatActivity {
         builder.setDialogStyle(CFAlertDialog.CFAlertStyle.ALERT);
         builder.setTextGravity(Gravity.CENTER);
         builder.setTitle(title);
-        builder.addButton("DONE", -1, -1, CFAlertDialog.CFAlertActionStyle.POSITIVE, CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, new DialogInterface.OnClickListener() {
+        builder.addButton("Done", -1, -1, CFAlertDialog.CFAlertActionStyle.POSITIVE, CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
@@ -545,6 +579,7 @@ public class Quiz_Events extends AppCompatActivity {
         completebtn = findViewById(R.id.f_quiz_completebtn);
         add_qstn = findViewById(R.id.quiz_add_qstn);
         views = findViewById(R.id.f_quiz_views);
+        indication_icon = findViewById(R.id.f_quiz_indication_icon);
         a = findViewById(R.id.type1_a);
         b = findViewById(R.id.type1_b);
         c = findViewById(R.id.type1_c);

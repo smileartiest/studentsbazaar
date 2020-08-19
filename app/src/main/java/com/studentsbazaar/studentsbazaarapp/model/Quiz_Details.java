@@ -2,24 +2,23 @@ package com.studentsbazaar.studentsbazaarapp.model;
 
 public class Quiz_Details {
 
-    private String Quiz_Id;
-    private String Quiz_Type;
-    private String Quiz_ques;
-    private String Quiz_Ans;
-    private String Crct_Ans;
-    private int Viewers;
-    private int Flag;
-    private String Created_Date;
-    private String Modified_Date;
-    private String responsedata;
-    private String id;
+    private String User_ID,Result_ID,Quiz_Id,Quiz_Type,Quiz_ques,Quiz_Ans,Crct_Ans,Created_Date,Modified_Date,Submit_Answer,msg;
+    private int Viewers,Flag,Score;
 
-    public int getViewers() {
-        return Viewers;
+    public String getUser_ID() {
+        return User_ID;
     }
 
-    public void setViewers(int viewers) {
-        Viewers = viewers;
+    public void setUser_ID(String user_ID) {
+        User_ID = user_ID;
+    }
+
+    public String getResult_ID() {
+        return Result_ID;
+    }
+
+    public void setResult_ID(String result_ID) {
+        Result_ID = result_ID;
     }
 
     public String getModified_Date() {
@@ -30,12 +29,28 @@ public class Quiz_Details {
         Modified_Date = modified_Date;
     }
 
-    public int getFlag() {
-        return Flag;
+    public String getSubmit_Answer() {
+        return Submit_Answer;
     }
 
-    public void setFlag(int flag) {
-        Flag = flag;
+    public void setSubmit_Answer(String submit_Answer) {
+        Submit_Answer = submit_Answer;
+    }
+
+    public int getScore() {
+        return Score;
+    }
+
+    public void setScore(int score) {
+        Score = score;
+    }
+
+    public String getQuiz_Id() {
+        return Quiz_Id;
+    }
+
+    public void setQuiz_Id(String quiz_Id) {
+        Quiz_Id = quiz_Id;
     }
 
     public String getQuiz_Type() {
@@ -46,6 +61,14 @@ public class Quiz_Details {
         Quiz_Type = quiz_Type;
     }
 
+    public String getQuiz_ques() {
+        return Quiz_ques;
+    }
+
+    public void setQuiz_ques(String quiz_ques) {
+        Quiz_ques = quiz_ques;
+    }
+
     public String getQuiz_Ans() {
         return Quiz_Ans;
     }
@@ -54,67 +77,43 @@ public class Quiz_Details {
         Quiz_Ans = quiz_Ans;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getResponsedata() {
-        return responsedata;
-    }
-
-    public void setResponsedata(String responsedata) {
-        this.responsedata = responsedata;
-    }
-
-    public Quiz_Details(String quiz_Id, String quiz_ques,  String crct_Ans, String created_Date) {
-        Quiz_Id = quiz_Id;
-        Quiz_ques = quiz_ques;
-        Crct_Ans = crct_Ans;
-        Created_Date = created_Date;
-    }
-
-// Getter Methods
-
-
-
-    public String getQuiz_Id() {
-        return Quiz_Id;
-    }
-
-    public String getQuiz_ques() {
-        return Quiz_ques;
-    }
-
-
     public String getCrct_Ans() {
         return Crct_Ans;
+    }
+
+    public void setCrct_Ans(String crct_Ans) {
+        Crct_Ans = crct_Ans;
     }
 
     public String getCreated_Date() {
         return Created_Date;
     }
 
-    // Setter Methods
-    public void setQuiz_Id(String Quiz_Id) {
-        this.Quiz_Id = Quiz_Id;
+    public void setCreated_Date(String created_Date) {
+        Created_Date = created_Date;
     }
 
-    public void setQuiz_ques(String Quiz_ques) {
-        this.Quiz_ques = Quiz_ques;
+    public String getMsg() {
+        return msg;
     }
 
-
-    public void setCrct_Ans(String Crct_Ans) {
-        this.Crct_Ans = Crct_Ans;
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 
-    public void setCreated_Date(String Created_Date) {
-        this.Created_Date = Created_Date;
+    public int getViewers() {
+        return Viewers;
     }
 
+    public void setViewers(int viewers) {
+        Viewers = viewers;
+    }
 
+    public int getFlag() {
+        return Flag;
+    }
+
+    public void setFlag(int flag) {
+        Flag = flag;
+    }
 }

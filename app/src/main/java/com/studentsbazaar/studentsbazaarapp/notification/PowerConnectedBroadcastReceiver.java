@@ -1,4 +1,4 @@
-package com.studentsbazaar.studentsbazaarapp;
+package com.studentsbazaar.studentsbazaarapp.notification;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

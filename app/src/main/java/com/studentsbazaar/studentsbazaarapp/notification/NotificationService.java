@@ -1,4 +1,4 @@
-package com.studentsbazaar.studentsbazaarapp;
+package com.studentsbazaar.studentsbazaarapp.notification;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -11,6 +11,8 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
+
+import com.studentsbazaar.studentsbazaarapp.R;
 
 import java.util.Timer;
 import java.util.TimerTask;

@@ -1,4 +1,4 @@
-package com.studentsbazaar.studentsbazaarapp;
+package com.studentsbazaar.studentsbazaarapp.notification;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;

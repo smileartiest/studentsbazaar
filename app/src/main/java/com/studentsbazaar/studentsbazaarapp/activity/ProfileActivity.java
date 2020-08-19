@@ -12,7 +12,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.crowdfire.cfalertdialog.CFAlertDialog;
 import com.studentsbazaar.studentsbazaarapp.BuildConfig;
-import com.studentsbazaar.studentsbazaarapp.Quiz_history_page;
 import com.studentsbazaar.studentsbazaarapp.R;
 import com.studentsbazaar.studentsbazaarapp.VerifyPhoneNumber;
 import com.studentsbazaar.studentsbazaarapp.controller.Controller;
@@ -98,8 +97,7 @@ List<Score_Details> scoreresponse;
         events.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(ProfileActivity.this,Pending_Events.class);
-                intent.putExtra("apitype","uid");
+                Intent intent=new Intent(ProfileActivity.this, MyEvents.class);
                 startActivity(intent);
             }
         });

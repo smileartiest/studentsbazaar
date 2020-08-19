@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Base64;
@@ -49,6 +50,7 @@ public class AddEvent extends AppCompatActivity {
         my_Toolbar = findViewById(R.id.aevent_toolbar);
         setSupportActionBar(my_Toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        my_Toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.colorPrimaryDark) , PorterDuff.Mode.SRC_ATOP);
 
         imagepost = findViewById(R.id.aevent_post_image);
         addpost = findViewById(R.id.aevent_post_icon);

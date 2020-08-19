@@ -18,10 +18,6 @@ public class Quiz_Control {
         editor.apply();
     }
 
-    public static void addTotalPoint(String total) {
-        editor.putString("total", total).apply();
-    }
-
     public void addresult( String cans ,String qid , String qpic ,String qans){
         editor.putString("cans",cans);
         editor.putString("qid",qid);
@@ -33,6 +29,20 @@ public class Quiz_Control {
     public static void addtodayans(String value){
         editor.putString("sanswer",value);
         editor.apply();
+    }
+
+    public static void addqsResult(String anspic , String score){
+        editor.putString("anspic",anspic);
+        editor.putString("score" , score);
+        editor.apply();
+    }
+
+    public String getanspic(){
+        return sharedPreferences.getString("anspic",null);
+    }
+
+    public String getscore(){
+        return sharedPreferences.getString("score" , null);
     }
 
     public static void addviewrs(String views){
