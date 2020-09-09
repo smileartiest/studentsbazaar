@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    tools:context=".activity.Pending_Events">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        app:cardElevation="6dp"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarpending"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme"
+            app:titleTextColor="@color/colorPrimaryDark" >
+
+            <TextView
+                android:id="@+id/pending_events_title"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="serif"
+                android:text="Pending Event's"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/colorPrimaryDark" />
+
+        </androidx.appcompat.widget.Toolbar>
+
+    </androidx.cardview.widget.CardView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:id="@+id/swipepending"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/pending_events_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:scrollbars="vertical" />
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <LinearLayout
+            android:id="@+id/empty1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:background="@drawable/no_data_icon" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="serif"
+                android:gravity="center"
+                android:text="No Records Found...!!!"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textColor="@color/colorPrimaryDark"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+
+
+    </RelativeLayout>
+</LinearLayout>

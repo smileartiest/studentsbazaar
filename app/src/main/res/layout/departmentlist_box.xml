@@ -1,0 +1,461 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardElevation="6dp"
+    app:cardCornerRadius="10dp"
+    android:layout_margin="20dp"
+    android:background="@color/colorWhite">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
+
+        <TextView
+            android:id="@+id/textView21"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="24dp"
+            android:fontFamily="serif"
+            android:text="Choose Departments"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/colorPrimaryDark"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/view4"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/gray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView21" />
+
+        <TextView
+            android:id="@+id/cse"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="serif"
+            android:text="CSE"
+            android:background="@drawable/border_gray"
+            android:gravity="center"
+            android:padding="5dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintEnd_toStartOf="@+id/ece"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view4" />
+
+        <TextView
+            android:id="@+id/ece"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="serif"
+            android:text="ECE"
+            android:background="@drawable/border_gray"
+            android:gravity="center"
+            android:padding="5dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintEnd_toStartOf="@+id/it"
+            app:layout_constraintStart_toEndOf="@+id/cse"
+            app:layout_constraintTop_toBottomOf="@+id/view4" />
+
+        <TextView
+            android:id="@+id/it"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="serif"
+            android:text="IT"
+            android:background="@drawable/border_gray"
+            android:gravity="center"
+            android:padding="5dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintEnd_toStartOf="@+id/eee"
+            app:layout_constraintStart_toEndOf="@+id/ece"
+            app:layout_constraintTop_toBottomOf="@+id/view4" />
+
+        <TextView
+            android:id="@+id/eee"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="serif"
+            android:text="EEE"
+            android:background="@drawable/border_gray"
+            android:gravity="center"
+            android:padding="5dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintEnd_toStartOf="@+id/civl"
+            app:layout_constraintStart_toEndOf="@+id/it"
+            app:layout_constraintTop_toBottomOf="@+id/view4" />
+
+        <TextView
+            android:id="@+id/civl"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="24dp"
+            android:fontFamily="serif"
+            android:text="CIVL"
+            android:background="@drawable/border_gray"
+            android:gravity="center"
+            android:padding="5dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/eee"
+            app:layout_constraintTop_toBottomOf="@+id/view4" />
+
+        <TextView
+            android:id="@+id/chemical"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="serif"
+            android:text="Chemical"
+            android:background="@drawable/border_gray"
+            android:gravity="center"
+            android:padding="5dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintEnd_toStartOf="@+id/agri"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cse" />
+
+        <TextView
+            android:id="@+id/agri"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/border_gray"
+            android:fontFamily="serif"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="Agriculture"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintEnd_toStartOf="@+id/medical"
+            app:layout_constraintStart_toEndOf="@+id/chemical"
+            app:layout_constraintTop_toTopOf="@+id/chemical" />
+
+        <TextView
+            android:id="@+id/medical"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="24dp"
+            android:background="@drawable/border_gray"
+            android:fontFamily="serif"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="Medical"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/agri"
+            app:layout_constraintTop_toTopOf="@+id/agri" />
+
+        <TextView
+            android:id="@+id/pharmacy"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="serif"
+            android:text="Pharmacy"
+            android:background="@drawable/border_gray"
+            android:gravity="center"
+            android:padding="5dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintEnd_toStartOf="@+id/arts"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/chemical" />
+
+        <TextView
+            android:id="@+id/arts"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/border_gray"
+            android:fontFamily="serif"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="Arts"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintEnd_toStartOf="@+id/mba"
+            app:layout_constraintStart_toEndOf="@+id/pharmacy"
+            app:layout_constraintTop_toTopOf="@+id/pharmacy" />
+
+        <TextView
+            android:id="@+id/mba"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/border_gray"
+            android:fontFamily="serif"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="MBA"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintEnd_toStartOf="@+id/mca"
+            app:layout_constraintStart_toEndOf="@+id/arts"
+            app:layout_constraintTop_toTopOf="@+id/arts" />
+
+        <TextView
+            android:id="@+id/mca"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="24dp"
+            android:background="@drawable/border_gray"
+            android:fontFamily="serif"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="MCA"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/mba"
+            app:layout_constraintTop_toTopOf="@+id/mba" />
+
+        <TextView
+            android:id="@+id/biotech"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="serif"
+            android:text="Bio Technology"
+            android:background="@drawable/border_gray"
+            android:gravity="center"
+            android:padding="5dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintEnd_toStartOf="@+id/commerce"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/pharmacy" />
+
+        <TextView
+            android:id="@+id/commerce"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/border_gray"
+            android:fontFamily="serif"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="Commerce"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintEnd_toStartOf="@+id/law"
+            app:layout_constraintStart_toEndOf="@+id/biotech"
+            app:layout_constraintTop_toTopOf="@+id/biotech" />
+
+        <TextView
+            android:id="@+id/law"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="24dp"
+            android:background="@drawable/border_gray"
+            android:fontFamily="serif"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="Law"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/commerce"
+            app:layout_constraintTop_toTopOf="@+id/commerce" />
+
+        <TextView
+            android:id="@+id/biomedi"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="serif"
+            android:text="Bio Medical"
+            android:background="@drawable/border_gray"
+            android:gravity="center"
+            android:padding="5dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintEnd_toStartOf="@+id/mech"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/biotech" />
+
+        <TextView
+            android:id="@+id/mech"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/border_gray"
+            android:fontFamily="serif"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="Mechanics"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintEnd_toStartOf="@+id/aeronoutical"
+            app:layout_constraintStart_toEndOf="@+id/biomedi"
+            app:layout_constraintTop_toTopOf="@+id/biomedi" />
+
+        <TextView
+            android:id="@+id/aeronoutical"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="24dp"
+            android:background="@drawable/border_gray"
+            android:fontFamily="serif"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="Aeronoutical"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/mech"
+            app:layout_constraintTop_toTopOf="@+id/biomedi" />
+
+        <TextView
+            android:id="@+id/bba"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="serif"
+            android:text="BBA"
+            android:background="@drawable/border_gray"
+            android:gravity="center"
+            android:padding="5dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintEnd_toStartOf="@+id/design"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/biomedi" />
+
+        <TextView
+            android:id="@+id/design"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/border_gray"
+            android:fontFamily="serif"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="Design"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintEnd_toStartOf="@+id/fashion"
+            app:layout_constraintStart_toEndOf="@+id/bba"
+            app:layout_constraintTop_toTopOf="@+id/bba" />
+
+        <TextView
+            android:id="@+id/fashion"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/border_gray"
+            android:fontFamily="serif"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="Fashion"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintEnd_toStartOf="@+id/media"
+            app:layout_constraintStart_toEndOf="@+id/design"
+            app:layout_constraintTop_toTopOf="@+id/design" />
+
+        <TextView
+            android:id="@+id/media"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="24dp"
+            android:background="@drawable/border_gray"
+            android:fontFamily="serif"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="Media"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/fashion"
+            app:layout_constraintTop_toTopOf="@+id/fashion" />
+
+        <TextView
+            android:id="@+id/aerospace"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/border_gray"
+            android:fontFamily="serif"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="Aerospace"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintEnd_toEndOf="@+id/design"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/bba" />
+
+        <View
+            android:id="@+id/view8"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/gray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/aerospace" />
+
+        <TextView
+            android:id="@+id/d_done"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="serif"
+            android:padding="10dp"
+            android:text="Complete"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="@color/colorPrimaryDark"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view8" />
+
+        <ImageView
+            android:id="@+id/cancel"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/cancel_icon" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.cardview.widget.CardView>

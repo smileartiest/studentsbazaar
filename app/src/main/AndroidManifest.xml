@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.studentsbazaar.studentsbazaarapp">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission
+        android:name="android.permission.GET_ACCOUNTS_PRIVILEGED"
+        android:protectionLevel="signature"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <application
+        android:name=".firebase.StudentBazaarApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/newlogo"
+        android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
+        android:roundIcon="@drawable/newlogo"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true"
+        tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".activity.MyEvents"></activity>
+        <activity android:name=".activity.Quiz_history_page" />
+        <activity android:name=".VerifyPhoneNumber" />
+        <activity android:name=".activity.CheckUserNumber" />
+        <activity android:name=".activity.ForgetPassword" />
+        <activity android:name=".activity.Update_Quiz_Questions" />
+        <activity android:name=".activity.MUActivity" />
+        <activity android:name=".activity.Pending_Post" />
+        <activity android:name=".activity.Mems" />
+        <activity android:name=".activity.DisclaimerActivity" />
+        <activity android:name=".activity.WebActivity" />
+        <activity android:name=".activity.AddEvent" />
+        <activity android:name=".activity.AddEvent2" />
+        <activity android:name=".activity.AddEvent3" />
+        <activity android:name=".activity.ContactActivity" />
+        <activity android:name=".activity.Tech_News" />
+        <activity
+            android:name=".activity.Edit_Events"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".activity.EventActivity" />
+        <activity
+            android:name=".activity.HomeActivity"
+            android:label="" />
+        <activity android:name=".activity.Login_Page" />
+        <activity android:name=".activity.Pending_Events" />
+        <activity android:name=".activity.PlacementActivity" />
+        <activity android:name=".activity.ProfileActivity" />
+        <activity android:name=".activity.Quiz_Events" />
+        <activity android:name=".activity.SignUp" />
+
+        <meta-data
+            android:name="notification_app_id"
+            android:value="936515287919:android:9634f3e5963d96f5a6069a" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/default_notification_channel_id" />
+
+        <activity
+            android:name=".activity.SplashActivty"
+            android:theme="@style/AppTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activity.View_Details" />
+
+        <service
+            android:name=".firebase.MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name=".service.BroadcastService" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+
+        <receiver
+            android:name=".notification.NotificationPublisher"
+            android:enabled="true"
+            android:exported="true" />
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+    </application>
+
+</manifest>

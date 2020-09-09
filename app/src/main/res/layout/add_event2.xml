@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorAccent"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorAccent">
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView8"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            app:cardElevation="6dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/add2_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/colorPrimary"
+                android:backgroundTint="@color/white"
+                android:minHeight="?attr/actionBarSize"
+                android:theme="?attr/actionBarTheme">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="serif"
+                    android:text="Add event Basic details"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textStyle="bold" />
+
+            </androidx.appcompat.widget.Toolbar>
+        </androidx.cardview.widget.CardView>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/add2_eventtitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/borderline"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="2dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardView8">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:background="@color/white"
+                android:fontFamily="serif"
+                android:hint="Event Title"
+                android:inputType="textCapSentences"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/add2_discrition"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/borderline"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="2dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/add2_eventtitle">
+
+            <EditText
+                android:id="@+id/editTextTextMultiLine2"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:ems="10"
+                android:fontFamily="serif"
+                android:gravity="start|top"
+                android:hint="Event Description"
+                android:inputType="textMultiLine"
+                android:paddingTop="5dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/add2_eventcatagory"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/borderline"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="2dp"
+            app:layout_constraintEnd_toStartOf="@+id/add2_eventcatagory_click"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/add2_discrition">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editText"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:fontFamily="serif"
+                android:hint="Event Category"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/add3_conductedby"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/borderline"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="2dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/add2_eventcatagory">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:background="@color/white"
+                android:fontFamily="serif"
+                android:hint="Conducted by"
+                android:inputType="text"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/add2_eventorganiser"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/borderline"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="2dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/add3_conductedby">
+
+            <AutoCompleteTextView
+                android:id="@+id/autoCompleteTextView"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:fontFamily="serif"
+                android:inputType="textCapSentences"
+                android:hint="Organiser : ( ex : college name  / club name )"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/add2_eventstartdate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="4dp"
+            android:background="@drawable/borderline"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="2dp"
+            app:layout_constraintEnd_toStartOf="@+id/add2_eventstartdate_click"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/add2_eventorganiser">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:background="@color/white"
+                android:fontFamily="serif"
+                android:hint="Start Date"
+                android:inputType="date"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/add2_eventenddate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="4dp"
+            android:background="@drawable/borderline"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="2dp"
+            app:layout_constraintEnd_toStartOf="@+id/add2_eventenddate_click"
+            app:layout_constraintStart_toEndOf="@+id/add2_eventstartdate_click"
+            app:layout_constraintTop_toBottomOf="@+id/add2_eventorganiser">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:background="@color/white"
+                android:fontFamily="serif"
+                android:hint="End Date"
+                android:inputType="date"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/add2_eventcity"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/borderline"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="2dp"
+            app:layout_constraintEnd_toStartOf="@+id/add2_eventstate"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/add2_eventstartdate">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:background="@color/white"
+                android:fontFamily="serif"
+                android:hint="City"
+                android:inputType="textCapSentences"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/add2_eventstate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/borderline"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="2dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/add2_eventcity"
+            app:layout_constraintTop_toBottomOf="@+id/add2_eventenddate">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:background="@color/white"
+                android:fontFamily="serif"
+                android:hint="State"
+                android:inputType="textCapSentences"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/add2_eventdepartment"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/borderline"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="2dp"
+            app:layout_constraintEnd_toStartOf="@+id/add2_eventdepartment_click"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/add2_eventcity">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:background="@color/white"
+                android:fontFamily="serif"
+                android:hint="Departments"
+                android:inputType="text"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/add2_nextbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:clickable="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/add2_eventdepartment"
+            app:srcCompat="@drawable/right_icon_white" />
+
+        <TextView
+            android:id="@+id/add2_eventdepartment_click"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:drawableLeft="@drawable/insert_icon1"
+            android:fontFamily="serif"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintBottom_toBottomOf="@+id/add2_eventdepartment"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/add2_eventdepartment"
+            app:layout_constraintTop_toTopOf="@+id/add2_eventdepartment" />
+
+        <TextView
+            android:id="@+id/add2_eventstartdate_click"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
+            android:drawableLeft="@drawable/date_icon1"
+            android:fontFamily="serif"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintBottom_toBottomOf="@+id/add2_eventstartdate"
+            app:layout_constraintEnd_toStartOf="@+id/add2_eventenddate"
+            app:layout_constraintStart_toEndOf="@+id/add2_eventstartdate"
+            app:layout_constraintTop_toTopOf="@+id/add2_eventstartdate" />
+
+        <TextView
+            android:id="@+id/add2_eventenddate_click"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
+            android:drawableLeft="@drawable/date_icon1"
+            android:fontFamily="serif"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintBottom_toBottomOf="@+id/add2_eventenddate"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/add2_eventenddate"
+            app:layout_constraintTop_toTopOf="@+id/add2_eventenddate" />
+
+        <TextView
+            android:id="@+id/add2_eventcatagory_click"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
+            android:drawableLeft="@drawable/event_note_icon1"
+            android:fontFamily="serif"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintBottom_toBottomOf="@+id/add2_eventcatagory"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/add2_eventcatagory"
+            app:layout_constraintTop_toTopOf="@+id/add2_eventcatagory" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

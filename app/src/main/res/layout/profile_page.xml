@@ -1,0 +1,451 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white">
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="0dp"
+        android:layout_height="160dp"
+        android:background="@color/colorPrimaryDark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/r_meme_propic"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="@+id/view"
+        app:layout_constraintTop_toTopOf="@+id/view"
+        app:srcCompat="@drawable/arrow_left_white" />
+
+    <TextView
+        android:id="@+id/profile_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="serif"
+        android:text="Mohamed Ismail"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/profile_initial"
+        app:layout_constraintStart_toStartOf="@+id/view"
+        app:layout_constraintTop_toBottomOf="@+id/r_meme_propic" />
+
+    <TextView
+        android:id="@+id/profile_email"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="serif"
+        android:text="smileartiest@gmail.com"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/profile_name"
+        app:layout_constraintStart_toStartOf="@+id/view"
+        app:layout_constraintTop_toBottomOf="@+id/profile_name" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:fontFamily="serif"
+        android:text="User ID :"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/profile_uid"
+        app:layout_constraintStart_toStartOf="@+id/view"
+        app:layout_constraintTop_toTopOf="@+id/profile_uid"
+        app:layout_constraintVertical_bias="0.4" />
+
+    <TextView
+        android:id="@+id/profile_uid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="serif"
+        android:text="1025"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/textView3"
+        app:layout_constraintTop_toBottomOf="@+id/profile_email" />
+
+    <TextView
+        android:id="@+id/profile_initial"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/bg_round"
+        android:fontFamily="serif"
+        android:gravity="center"
+        android:text="M"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display2"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/view"
+        app:layout_constraintTop_toTopOf="@+id/view" />
+
+    <TextView
+        android:id="@+id/profile_edit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_round_white_50dp"
+        android:drawableRight="@drawable/edit_icon_theme"
+        android:fontFamily="serif"
+        android:gravity="center"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
+        android:paddingRight="5dp"
+        android:paddingBottom="5dp"
+        android:text="Edit    "
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textColor="@color/colorPrimaryDark"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/view"
+        app:layout_constraintEnd_toEndOf="@+id/profile_initial"
+        app:layout_constraintStart_toStartOf="@+id/profile_initial"
+        app:layout_constraintTop_toBottomOf="@+id/profile_initial" />
+
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/profile_versionname"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            tools:context=".activity.ProfileActivity">
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:fontFamily="serif"
+                android:text="Account Holder Mobile Number"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textColor="@color/block"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:padding="10dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView6"
+                app:srcCompat="@drawable/phone_icon_theme" />
+
+            <TextView
+                android:id="@+id/uitvprofilephno"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="16dp"
+                android:fontFamily="serif"
+                android:gravity="center_vertical"
+                android:text="8344864479"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/block"
+                app:layout_constraintBottom_toTopOf="@+id/profile_phno_sts_complete"
+                app:layout_constraintEnd_toStartOf="@+id/uitvprofilephno_check"
+                app:layout_constraintStart_toEndOf="@+id/imageView2"
+                app:layout_constraintTop_toTopOf="@+id/imageView2" />
+
+            <TextView
+                android:id="@+id/profile_phno_sts_complete"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="16dp"
+                android:drawableLeft="@drawable/complete_green_tik_icon"
+                android:fontFamily="serif"
+                android:gravity="center_vertical"
+                android:text="Mobile number Verifiyed"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView2"
+                app:layout_constraintEnd_toEndOf="@+id/uitvprofilephno"
+                app:layout_constraintStart_toEndOf="@+id/imageView2"
+                app:layout_constraintTop_toBottomOf="@+id/uitvprofilephno" />
+
+            <ImageView
+                android:id="@+id/uitvprofilephno_check"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/imageView2"
+                app:srcCompat="@drawable/right_arrow" />
+
+            <View
+                android:id="@+id/view2"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:background="@color/gray"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/profile_phno_sts_complete" />
+
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:padding="10dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view2"
+                app:srcCompat="@drawable/giftcard_icon_theme" />
+
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:fontFamily="serif"
+                android:text="Invite and Earn Gift"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                app:layout_constraintBottom_toTopOf="@+id/textView10"
+                app:layout_constraintEnd_toStartOf="@+id/profile_refcode_send"
+                app:layout_constraintStart_toEndOf="@+id/imageView4"
+                app:layout_constraintTop_toTopOf="@+id/imageView4" />
+
+            <TextView
+                android:id="@+id/textView10"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="16dp"
+                android:fontFamily="serif"
+                android:gravity="center_vertical"
+                android:text="Share this code"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView4"
+                app:layout_constraintStart_toEndOf="@+id/imageView4"
+                app:layout_constraintTop_toBottomOf="@+id/textView9" />
+
+            <TextView
+                android:id="@+id/profile_refcode_send"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/gray_border"
+                android:fontFamily="serif"
+                android:gravity="center"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:text="send"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textColor="@color/colorPrimaryDark"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView4"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/imageView4" />
+
+            <TextView
+                android:id="@+id/profile_refcode"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="16dp"
+                android:fontFamily="serif"
+                android:gravity="center_vertical"
+                android:text="1025"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/colorPrimaryDark"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/textView10"
+                app:layout_constraintEnd_toStartOf="@+id/profile_refcode_send"
+                app:layout_constraintStart_toEndOf="@+id/textView10"
+                app:layout_constraintTop_toTopOf="@+id/textView10" />
+
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:padding="10dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view7"
+                app:srcCompat="@drawable/meme_icon_theme" />
+
+            <TextView
+                android:id="@+id/profile_memes"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:drawableRight="@drawable/right_arrow"
+                android:fontFamily="serif"
+                android:gravity="center_vertical"
+                android:text="My Meme's"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textColor="@color/block"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView5"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imageView5"
+                app:layout_constraintTop_toTopOf="@+id/imageView5" />
+
+            <ImageView
+                android:id="@+id/imageView6"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="16dp"
+                android:padding="10dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView5"
+                app:srcCompat="@drawable/event_icon_theme" />
+
+            <TextView
+                android:id="@+id/profile_evnets"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:drawableRight="@drawable/right_arrow"
+                android:fontFamily="serif"
+                android:gravity="center_vertical"
+                android:text="My Events"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textColor="@color/block"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView6"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imageView6"
+                app:layout_constraintTop_toTopOf="@+id/imageView6" />
+
+            <ImageView
+                android:id="@+id/imageView7"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="16dp"
+                android:padding="10dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView6"
+                app:srcCompat="@drawable/quiz_sts_icon_theme" />
+
+            <TextView
+                android:id="@+id/profile_quiz"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:drawableRight="@drawable/right_arrow"
+                android:fontFamily="serif"
+                android:gravity="center_vertical"
+                android:text="Quiz Details"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textColor="@color/block"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView7"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imageView7"
+                app:layout_constraintTop_toTopOf="@+id/imageView7" />
+
+            <ImageView
+                android:id="@+id/imageView8"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="16dp"
+                android:padding="10dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView7"
+                app:srcCompat="@drawable/logout_icon_theme" />
+
+            <TextView
+                android:id="@+id/profile_logout"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:drawableRight="@drawable/right_arrow"
+                android:fontFamily="serif"
+                android:gravity="center_vertical"
+                android:text="Logout"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textColor="@color/block"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView8"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imageView8"
+                app:layout_constraintTop_toTopOf="@+id/imageView8" />
+
+
+            <View
+                android:id="@+id/view7"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:background="@color/gray"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView4" />
+
+            <TextView
+                android:id="@+id/profile_phno_sts_incomplete"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="16dp"
+                android:drawableLeft="@drawable/incomplete_gray_tik_icon"
+                android:fontFamily="serif"
+                android:gravity="center_vertical"
+                android:text="Please verify Mobile Number"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView2"
+                app:layout_constraintEnd_toStartOf="@+id/uitvprofilephno_check"
+                app:layout_constraintStart_toEndOf="@+id/imageView2"
+                app:layout_constraintTop_toBottomOf="@+id/uitvprofilephno" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+    <TextView
+        android:id="@+id/profile_versionname"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="serif"
+        android:gravity="center"
+        android:text="StudentBazaar . version 1.3.0"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textColor="@color/block"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

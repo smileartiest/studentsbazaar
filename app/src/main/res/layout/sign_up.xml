@@ -1,0 +1,404 @@
+<ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:scrollbars="none"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorWhite"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/profile_uid"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="20dp"
+            android:fontFamily="serif"
+            android:text="Enter your valid details Here"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/colorPrimaryDark"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/reg_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/borderline"
+            android:paddingLeft="10dp"
+            android:paddingTop="8dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/reg_sts">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:background="@color/colorWhite"
+                android:fontFamily="serif"
+                android:hint="Name"
+                android:inputType="textPersonName"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/reg_sts"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="20dp"
+            android:fontFamily="serif"
+            android:text="Enter valid details here"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profile_uid" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/reg_email"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/borderline"
+            android:paddingLeft="10dp"
+            android:paddingTop="8dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/reg_name">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:background="@color/colorWhite"
+                android:fontFamily="serif"
+                android:hint="Email ID"
+                android:inputType="textEmailAddress"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/textView59"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="serif"
+            android:text="College Name"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/reg_email" />
+
+        <AutoCompleteTextView
+            android:id="@+id/reg_cgname"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/borderline"
+            android:fontFamily="serif"
+            android:hint="College name"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView59" />
+
+        <TextView
+            android:id="@+id/textView60"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="serif"
+            android:text="Degree"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/reg_university" />
+
+        <AutoCompleteTextView
+            android:id="@+id/reg_degree"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/borderline"
+            android:fontFamily="serif"
+            android:hint="Degree"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView60" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/reg_acyear"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/borderline"
+            android:paddingLeft="10dp"
+            android:paddingTop="8dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/reg_degree">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:background="@color/colorWhite"
+                android:fontFamily="serif"
+                android:hint="Academic Year"
+                android:inputType="date"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/textView61"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="serif"
+            android:text="Department"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/colorPrimaryDark"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/reg_acyear" />
+
+        <AutoCompleteTextView
+            android:id="@+id/reg_department"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/borderline"
+            android:hint="Department"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView61" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/reg_year"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/borderline"
+            android:paddingLeft="10dp"
+            android:paddingTop="8dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/reg_department">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:background="@color/colorWhite"
+                android:fontFamily="serif"
+                android:hint="Year"
+                android:inputType="number"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/reg_semester"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/borderline"
+            android:paddingLeft="10dp"
+            android:paddingTop="8dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/reg_year">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:background="@color/colorWhite"
+                android:fontFamily="serif"
+                android:hint="Semester"
+                android:inputType="number"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/reg_complete"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/button"
+            android:fontFamily="serif"
+            android:text="complete"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="@color/colorWhite"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/reg_refcode" />
+
+        <TextView
+            android:id="@+id/textView62"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="serif"
+            android:text="University Type"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/reg_cgname" />
+
+        <Spinner
+            android:id="@+id/reg_university"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/borderline"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView62" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/reg_password"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/borderline"
+            android:paddingLeft="10dp"
+            android:paddingTop="8dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/reg_semester">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:background="@color/colorWhite"
+                android:fontFamily="serif"
+                android:hint="Password"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/reg_conpassword"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/borderline"
+            android:paddingLeft="10dp"
+            android:paddingTop="8dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/reg_password">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:background="@color/colorWhite"
+                android:fontFamily="serif"
+                android:hint="Conform Password"
+                android:inputType="textPassword"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="20dp"
+            android:fontFamily="serif"
+            android:text="Complete Your Sign Up"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="@color/colorPrimaryDark"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/reg_refcode"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/borderline"
+            android:paddingLeft="10dp"
+            android:paddingTop="8dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/reg_conpassword">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:background="@color/white"
+                android:fontFamily="serif"
+                android:hint="Referel Code"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

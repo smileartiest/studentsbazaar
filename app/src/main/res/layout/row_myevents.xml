@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    app:cardElevation="0dp"
+    app:cardCornerRadius="15dp"
+    android:layout_marginBottom="8dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginRight="16dp"
+    android:layout_marginLeft="16dp"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/myevent_card"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorAccent">
+
+        <TextView
+            android:id="@+id/myevent_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:ellipsize="end"
+            android:fontFamily="serif"
+            android:text="Event Name"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="@color/colorPrimaryDark"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/myevent_organiser_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:drawableLeft="@drawable/college_icon1"
+            android:drawablePadding="10dp"
+            android:ellipsize="end"
+            android:fontFamily="serif"
+            android:text="TextView"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/block"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/myevent_name" />
+
+        <TextView
+            android:id="@+id/textView45"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:drawableLeft="@drawable/ic_account_circle_black_24dp"
+            android:drawablePadding="10dp"
+            android:fontFamily="serif"
+            android:gravity="center_vertical"
+            android:text="Coordinator"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintEnd_toStartOf="@+id/myevent_coordinator_name"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/myevent_organiser_name" />
+
+        <TextView
+            android:id="@+id/myevent_coordinator_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:ellipsize="end"
+            android:fontFamily="serif"
+            android:lines="1"
+            android:text="TextView"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintBottom_toBottomOf="@+id/textView45"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textView45"
+            app:layout_constraintTop_toBottomOf="@+id/myevent_organiser_name" />
+
+        <TextView
+            android:id="@+id/textView49"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:drawableLeft="@drawable/ic_security_black_24dp"
+            android:drawablePadding="10dp"
+            android:fontFamily="serif"
+            android:gravity="center_vertical"
+            android:text="Department"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintEnd_toStartOf="@+id/myevent_deptartment"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView45" />
+
+        <TextView
+            android:id="@+id/myevent_deptartment"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:ellipsize="end"
+            android:fontFamily="serif"
+            android:lines="1"
+            android:text="TextView"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintBottom_toBottomOf="@+id/textView49"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textView49"
+            app:layout_constraintTop_toTopOf="@+id/textView49" />
+
+        <TextView
+            android:id="@+id/textView51"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:drawableLeft="@drawable/ic_call_black_24dp"
+            android:drawablePadding="10dp"
+            android:fontFamily="serif"
+            android:gravity="center_vertical"
+            android:text="Phone"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintEnd_toStartOf="@+id/myevent_phoneno"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView49" />
+
+        <TextView
+            android:id="@+id/myevent_phoneno"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:ellipsize="end"
+            android:fontFamily="serif"
+            android:lines="1"
+            android:text="TextView"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintBottom_toBottomOf="@+id/textView51"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textView51" />
+
+        <TextView
+            android:id="@+id/textView71"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:drawableLeft="@drawable/ic_location_on_black_24dp"
+            android:drawablePadding="10dp"
+            android:fontFamily="serif"
+            android:gravity="center_vertical"
+            android:text="City"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/myevent_eventcity"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView51" />
+
+        <TextView
+            android:id="@+id/myevent_eventcity"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif"
+            android:lines="1"
+            android:text="TextView"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintBottom_toBottomOf="@+id/textView71"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textView71"
+            app:layout_constraintTop_toTopOf="@+id/textView71" />
+
+        <ImageView
+            android:id="@+id/myevent_sts"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/complete_green_round_icon" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
